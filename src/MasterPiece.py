@@ -3,7 +3,6 @@
 import BApplication
 import MasterWindow
 
-from BNode import BNode
 from AppKit import B_QUIT_REQUESTED
 
 class MasterPieceApplication(BApplication.BApplication):
@@ -11,8 +10,7 @@ class MasterPieceApplication(BApplication.BApplication):
 		BApplication.BApplication.__init__(self,
 			"application/x-vnd.pjr-MasterPiece")
 	def ReadyToRun(self):
-		node = BNode("images/document-new.png")
-		window = MasterWindow.MasterWindow(node)
+		window = MasterWindow.MasterWindow()
 		window.Show()
 
 MasterPieceApp = MasterPieceApplication()
