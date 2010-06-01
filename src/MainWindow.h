@@ -5,6 +5,7 @@
 
 #include <Window.h>
 #include <MenuBar.h>
+#include <View.h>
 
 #define MENU_NEW_MSG	'new'
 #define MENU_OPN_MSG	'open'
@@ -23,6 +24,8 @@ private:
 			BMenuItem	*openFileMenuItem;
 			BMenuItem	*quitMenuItem;
 			NewWindow	*newWindow;
+			BBitmap		*testImage;
+			BView		*toolbarView;
 };
 
 #endif

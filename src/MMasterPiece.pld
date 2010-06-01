@@ -20,6 +20,7 @@ SYSTEMINCLUDE=/boot/develop/headers/posix
 SYSTEMINCLUDE=/boot/home/config/include
 LIBRARY=/boot/develop/lib/x86/libroot.so
 LIBRARY=/boot/develop/lib/x86/libbe.so
+LIBRARY=/boot/develop/lib/x86/libtranslation.so
 RUNARGS=
 CCDEBUG=yes
 CCPROFILE=no

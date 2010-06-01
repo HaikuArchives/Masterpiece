@@ -5,6 +5,12 @@
 #include <Menu.h>
 #include <MenuItem.h>
 #include <View.h>
+#include <TranslationUtils.h>
+#include <TranslatorRoster.h>
+#include <TranslatorFormats.h>
+#include <TypeConstants.h>
+#include <TranslationDefs.h>
+#include <Bitmap.h>
 
 MainWindow::MainWindow(void)
 	:	BWindow(BRect(100,100,500,400),"MasterPiece",B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
@@ -25,6 +31,10 @@ MainWindow::MainWindow(void)
 	fMenuBar->AddItem(fileMenu);
 	
 	AddChild(fMenuBar);
+	toolbarView = new BView(BRect(100, 100, 500, 270), "view", B_FOLLOW_ALL, B_WILL_DRAW);
+	testImage = BTranslationUtils::GetBitmapFile("images/document-new.png", NULL);
+	//toolbarView->AddChild(testImage);
+	AddChild(toolbarView);
 }
 
 
