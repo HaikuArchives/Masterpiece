@@ -6,6 +6,8 @@
 #include <Window.h>
 #include <MenuBar.h>
 #include <View.h>
+#include <Picture.h>
+#include <PictureButton.h>
 
 #define MENU_NEW_MSG	'new'
 #define MENU_OPN_MSG	'open'
@@ -26,6 +28,8 @@ private:
 			NewWindow	*newWindow;
 			BBitmap		*testImage;
 			BView		*toolbarView;
+			BPicture	*onImage;
+			BPictureButton *newButton;
 };
 
 #endif

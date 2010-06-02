@@ -33,6 +33,9 @@ MainWindow::MainWindow(void)
 	AddChild(fMenuBar);
 	toolbarView = new BView(BRect(100, 100, 500, 270), "view", B_FOLLOW_ALL, B_WILL_DRAW);
 	testImage = BTranslationUtils::GetBitmapFile("images/document-new.png", NULL);
+	//toolbarView->BeginPicture(new BPicture);
+	//toolbarView->DrawBitmap(testImage);
+	//onImage = toolbarView->EndPicture();
 	//toolbarView->AddChild(testImage);
 	AddChild(toolbarView);
 }
