@@ -42,6 +42,11 @@ void NewWindow::MessageReceived(BMessage *msg)
 			const char *textFieldText;
 			textFieldText = titleText->Text();
 			BAlert *alert = new BAlert("Alert", textFieldText, "OK");
+			const char *tmpRoot;
+			tmpRoot = "/boot/home/MasterPiece/";
+			const char *finalString;
+			finalString->sprintf("%s%s", tmpRoot, textFieldText);
+			create_directory(finalString, 0777);
 			long result = alert->Go();
 			Close();
 		}
