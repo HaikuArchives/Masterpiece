@@ -1,15 +1,13 @@
 #include "MainWindow.h"
 #include "NewWindow.h"
+#include "PictureView.h"
 
 #include <Application.h>
 #include <Menu.h>
 #include <MenuItem.h>
 #include <View.h>
 #include <TranslationUtils.h>
-#include <TranslatorRoster.h>
 #include <TranslatorFormats.h>
-#include <TypeConstants.h>
-#include <TranslationDefs.h>
 #include <Bitmap.h>
 
 MainWindow::MainWindow(void)
@@ -31,13 +29,18 @@ MainWindow::MainWindow(void)
 	fMenuBar->AddItem(fileMenu);
 	
 	AddChild(fMenuBar);
+	PictureView *picView = new PictureView();
 	toolbarView = new BView(BRect(100, 100, 500, 270), "view", B_FOLLOW_ALL, B_WILL_DRAW);
 	testImage = BTranslationUtils::GetBitmapFile("images/document-new.png", NULL);
 	//toolbarView->BeginPicture(new BPicture);
 	//toolbarView->DrawBitmap(testImage);
 	//onImage = toolbarView->EndPicture();
 	//toolbarView->AddChild(testImage);
-	AddChild(toolbarView);
+	//AddChild(toolbarView);
+	AddChild(picView);
+	picView->MoveTo((Bounds().Width() - picView->Bounds().Width()) / 2.0,
+					(Bounds().Height() - picView->Bounds().Height()) / 2.0);
+	
 }
 
 
