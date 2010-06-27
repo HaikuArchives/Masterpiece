@@ -8,9 +8,12 @@
 #include <View.h>
 #include <Picture.h>
 #include <PictureButton.h>
+#include <TextView.h>
 
-#define MENU_NEW_MSG	'new'
-#define MENU_OPN_MSG	'open'
+#define MENU_NEW_MSG		'new'
+#define MENU_OPN_MSG		'open'
+#define ADD_NEW_COURSE		'add'
+#define CANCEL_NEW_COURSE	'cnc'
 
 class MainWindow : public BWindow
 {
@@ -30,6 +33,8 @@ private:
 			BView		*toolbarView;
 			BPicture	*onImage;
 			BPictureButton *newButton;
+			BTextView	*titleText;
+			BView		*fullView;
 };
 
 #endif

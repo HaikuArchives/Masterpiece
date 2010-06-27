@@ -9,6 +9,10 @@
 #include <TranslationUtils.h>
 #include <TranslatorFormats.h>
 #include <Bitmap.h>
+#include <StringView.h>
+#include <Button.h>
+
+#define TEXT_INSET 3.0
 
 MainWindow::MainWindow(void)
 	:	BWindow(BRect(100,100,500,400),"MasterPiece",B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
@@ -29,6 +33,9 @@ MainWindow::MainWindow(void)
 	fMenuBar->AddItem(fileMenu);
 	
 	AddChild(fMenuBar);
+	/*
+	 * Adding Picture's Test...
+	 *
 	PictureView *picView = new PictureView();
 	toolbarView = new BView(BRect(100, 100, 500, 270), "view", B_FOLLOW_ALL, B_WILL_DRAW);
 	testImage = BTranslationUtils::GetBitmapFile("images/document-new.png", NULL);
@@ -40,7 +47,28 @@ MainWindow::MainWindow(void)
 	AddChild(picView);
 	picView->MoveTo((Bounds().Width() - picView->Bounds().Width()) / 2.0,
 					(Bounds().Height() - picView->Bounds().Height()) / 2.0);
-	
+	*/
+	BRect viewFrame(110, 10, 280, 30);
+	BRect textFrame;
+	textFrame.left = TEXT_INSET;
+	textFrame.right = viewFrame.right - viewFrame.left - TEXT_INSET;
+	textFrame.top = TEXT_INSET;
+	textFrame.bottom = viewFrame.bottom - viewFrame.top - TEXT_INSET;
+	fullView = new BView(BRect(30, 100, 330, 200), 0, B_FOLLOW_ALL, B_WILL_DRAW);
+	BStringView *titleString = new BStringView(BRect(10, 10, 100, 20), NULL, "Enter Title:");
+	titleText = new BTextView(viewFrame, "textTitle", textFrame, B_FOLLOW_NONE, B_WILL_DRAW);
+	BButton *addButton = new BButton(BRect(190, 50, 270, 75), NULL, "Add", new BMessage(ADD_NEW_COURSE), B_FOLLOW_NONE, B_WILL_DRAW);
+	BButton *cancelButton = new BButton(BRect(100, 50, 180, 75), NULL, "Cancel", new BMessage(CANCEL_NEW_COURSE), B_FOLLOW_NONE, B_WILL_DRAW);
+	fullView->AddChild(titleString);
+	fullView->AddChild(addButton);
+	fullView->AddChild(cancelButton);
+	fullView->AddChild(titleText);
+	AddChild(fullView);
+	viewFrame.InsetBy(-2.0, -2.0);
+	rgb_color myColor = {215, 215, 215, 255};
+	fullView->SetViewColor(myColor);
+	titleString->SetViewColor(myColor);
+	fullView->Hide();
 }
 
 
@@ -52,14 +80,28 @@ MainWindow::MessageReceived(BMessage *msg)
 		case MENU_NEW_MSG:
 			// do something here...
 			// 1.  need to center the modal window on the parent...
-			newWindow = new NewWindow();
-			newWindow->Show();
+			//newWindow = new NewWindow();
+			//newWindow->Show();
+			this->fullView->Show();
 			break;
 		
 		case MENU_OPN_MSG:
 			// do something here...
 			break;
-				
+		
+		case ADD_NEW_COURSE:
+			this->SetTitle(titleText->Text());
+			titleText->SetText("");
+			this->fullView->Hide();
+			// do something here...
+			break;
+		
+		case CANCEL_NEW_COURSE:
+			this->fullView->Hide();
+			titleText->SetText("");
+			// do soemthing here...
+			break;
+			 
 		default:
 		{
 			BWindow::MessageReceived(msg);

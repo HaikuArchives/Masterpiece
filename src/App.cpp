@@ -2,7 +2,7 @@
 #include "MainWindow.h"
 
 App::App(void)
-	:	BApplication("application/x-vnd.pjr-MMasterPiece")
+	:	BApplication("application/x-vnd.pjr-MasterPiece")
 {
 	MainWindow *mainwin = new MainWindow();
 	mainwin->Show();
