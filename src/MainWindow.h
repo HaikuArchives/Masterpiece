@@ -13,6 +13,8 @@
 #define MENU_OPN_MSG		'open'
 #define ADD_NEW_COURSE		'add'
 #define CANCEL_NEW_COURSE	'cnc'
+#define MNG_CONTENT_MSG		'mcm'
+#define MNG_LAYOUT_MSG		'mlm'
 
 class MainWindow : public BWindow
 {
@@ -24,16 +26,19 @@ public:
 private:
 			BMenuBar	*fMenuBar;
 			BMenu		*fileMenu;
+			BMenu		*manageMenu;
 			BMenuItem	*newFileMenuItem;
 			BMenuItem	*openFileMenuItem;
 			BMenuItem	*quitMenuItem;
+			BMenuItem	*contentMenuItem;
+			BMenuItem	*layoutMenuItem;
 			BBitmap		*testImage;
 			BView		*toolbarView;
 			BPicture	*onImage;
 			BPictureButton *newButton;
 			BTextView	*titleText;
 			BView		*fullView;
-			BTabView	*mpTabView;
+			BTabView	*contentTabView;
 			BTab		*tmpTab;
 };
 

@@ -20,17 +20,26 @@ MainWindow::MainWindow(void)
 	BRect r(Bounds());
 	r.bottom = 20;
 	fMenuBar = new BMenuBar(r,"menubar");
-	BMenu* fileMenu = new BMenu("File");
+	fileMenu = new BMenu("File");
+	manageMenu = new BMenu("Manage");
 	newFileMenuItem = new BMenuItem("New MasterPiece", new BMessage(MENU_NEW_MSG));
 	openFileMenuItem = new BMenuItem("Open Existing", new BMessage(MENU_OPN_MSG));
 	quitMenuItem = new BMenuItem("Quit", new BMessage(B_QUIT_REQUESTED));
+	
+	contentMenuItem = new BMenuItem("Content", new BMessage(MNG_CONTENT_MSG));
+	layoutMenuItem = new BMenuItem("Layout", new BMessage(MNG_LAYOUT_MSG));
 
 	fileMenu->AddItem(newFileMenuItem);
 	fileMenu->AddItem(openFileMenuItem);
 	fileMenu->AddSeparatorItem();
 	fileMenu->AddItem(quitMenuItem);
+	
+	manageMenu->AddItem(contentMenuItem);
+	manageMenu->AddItem(layoutMenuItem);
 
 	fMenuBar->AddItem(fileMenu);
+	fMenuBar->AddItem(manageMenu);
+	manageMenu->SetEnabled(false);
 	
 	AddChild(fMenuBar);
 	/*
@@ -72,19 +81,19 @@ MainWindow::MainWindow(void)
 	
 	BRect tr = Bounds();
 	tr.top = 20;
-	mpTabView = new BTabView(tr, "tab_view");
-	mpTabView->SetViewColor(myColor);
-	tr = mpTabView->Bounds();
+	contentTabView = new BTabView(tr, "tab_view");
+	contentTabView->SetViewColor(myColor);
+	tr = contentTabView->Bounds();
 	tr.InsetBy(5,5);
-	tr.bottom -= mpTabView->TabHeight();
+	tr.bottom -= contentTabView->TabHeight();
 	tmpTab = new BTab();
-	mpTabView->AddTab(new BView(tr, 0, B_FOLLOW_ALL, B_WILL_DRAW), tmpTab);
+	contentTabView->AddTab(new BView(tr, 0, B_FOLLOW_ALL, B_WILL_DRAW), tmpTab);
 	tmpTab->SetLabel("Thoughts");
 	tmpTab = new BTab();
-	mpTabView->AddTab(new BView(tr, 0, B_FOLLOW_ALL, B_WILL_DRAW), tmpTab);
-	tmpTab->SetLabel("Layout");
-	AddChild(mpTabView);
-	mpTabView->Hide();
+	contentTabView->AddTab(new BView(tr, 0, B_FOLLOW_ALL, B_WILL_DRAW), tmpTab);
+	tmpTab->SetLabel("Images");
+	AddChild(contentTabView);
+	contentTabView->Hide();
 	
 }
 
@@ -117,13 +126,24 @@ MainWindow::MessageReceived(BMessage *msg)
 			// do something here...
 			// 1. Also need to create a folder in the file system, or simply an entry in the DB.
 			// 2. Also need to show the correct tabset of views...
-			this->mpTabView->Show();
+			this->manageMenu->SetEnabled(true);
+			this->contentTabView->Show();
 			break;
 		
 		case CANCEL_NEW_COURSE:
 			this->fullView->Hide();
 			titleText->SetText("");
 			// do soemthing here...
+			break;
+			
+		case MNG_CONTENT_MSG:
+			this->contentTabView->Show();
+			// do something here...
+			break;
+			
+		case MNG_LAYOUT_MSG:
+			this->contentTabView->Hide();
+			// do something here...
 			break;
 			 
 		default:
