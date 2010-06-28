@@ -1,5 +1,4 @@
 #include "MainWindow.h"
-#include "NewWindow.h"
 #include "PictureView.h"
 
 #include <Application.h>
@@ -11,6 +10,7 @@
 #include <Bitmap.h>
 #include <StringView.h>
 #include <Button.h>
+#include <stdio.h>
 
 #define TEXT_INSET 3.0
 
@@ -69,6 +69,23 @@ MainWindow::MainWindow(void)
 	fullView->SetViewColor(myColor);
 	titleString->SetViewColor(myColor);
 	fullView->Hide();
+	
+	BRect tr = Bounds();
+	tr.top = 20;
+	mpTabView = new BTabView(tr, "tab_view");
+	mpTabView->SetViewColor(myColor);
+	tr = mpTabView->Bounds();
+	tr.InsetBy(5,5);
+	tr.bottom -= mpTabView->TabHeight();
+	tmpTab = new BTab();
+	mpTabView->AddTab(new BView(tr, 0, B_FOLLOW_ALL, B_WILL_DRAW), tmpTab);
+	tmpTab->SetLabel("Thoughts");
+	tmpTab = new BTab();
+	mpTabView->AddTab(new BView(tr, 0, B_FOLLOW_ALL, B_WILL_DRAW), tmpTab);
+	tmpTab->SetLabel("Layout");
+	AddChild(mpTabView);
+	mpTabView->Hide();
+	
 }
 
 
@@ -90,10 +107,17 @@ MainWindow::MessageReceived(BMessage *msg)
 			break;
 		
 		case ADD_NEW_COURSE:
+			//sprintf(comboText, "%s - %s", this->Title(), titleText->Text());
+			//comboText = this->Title();
+			//strcat((char*)comboText, titleText->Text());
+			//this->SetTitle(comboText);
 			this->SetTitle(titleText->Text());
 			titleText->SetText("");
 			this->fullView->Hide();
 			// do something here...
+			// 1. Also need to create a folder in the file system, or simply an entry in the DB.
+			// 2. Also need to show the correct tabset of views...
+			this->mpTabView->Show();
 			break;
 		
 		case CANCEL_NEW_COURSE:

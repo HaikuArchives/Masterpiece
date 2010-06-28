@@ -1,14 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "NewWindow.h"
-
 #include <Window.h>
 #include <MenuBar.h>
 #include <View.h>
 #include <Picture.h>
 #include <PictureButton.h>
 #include <TextView.h>
+#include <TabView.h>
 
 #define MENU_NEW_MSG		'new'
 #define MENU_OPN_MSG		'open'
@@ -28,13 +27,14 @@ private:
 			BMenuItem	*newFileMenuItem;
 			BMenuItem	*openFileMenuItem;
 			BMenuItem	*quitMenuItem;
-			NewWindow	*newWindow;
 			BBitmap		*testImage;
 			BView		*toolbarView;
 			BPicture	*onImage;
 			BPictureButton *newButton;
 			BTextView	*titleText;
 			BView		*fullView;
+			BTabView	*mpTabView;
+			BTab		*tmpTab;
 };
 
 #endif
