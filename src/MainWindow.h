@@ -8,6 +8,9 @@
 #include <PictureButton.h>
 #include <TextView.h>
 #include <TabView.h>
+#include <Entry.h>
+#include <Path.h>
+#include <Directory.h>
 
 #define MENU_NEW_MSG		'new'
 #define MENU_OPN_MSG		'open'
@@ -40,6 +43,10 @@ private:
 			BView		*fullView;
 			BTabView	*contentTabView;
 			BTab		*tmpTab;
+			BEntry		homeEntry;
+			BEntry		newCourseTestEntry;
+			BPath		tmpPath;
+			BDirectory 	*homeDir;
 };
 
 #endif

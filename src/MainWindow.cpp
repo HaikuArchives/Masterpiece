@@ -11,6 +11,8 @@
 #include <StringView.h>
 #include <Button.h>
 #include <stdio.h>
+#include <String.h>
+#include <Directory.h>
 
 #define TEXT_INSET 3.0
 
@@ -116,16 +118,25 @@ MainWindow::MessageReceived(BMessage *msg)
 			break;
 		
 		case ADD_NEW_COURSE:
-			//sprintf(comboText, "%s - %s", this->Title(), titleText->Text());
-			//comboText = this->Title();
-			//strcat((char*)comboText, titleText->Text());
-			//this->SetTitle(comboText);
-			this->SetTitle(titleText->Text());
-			titleText->SetText("");
-			this->fullView->Hide();
+			homeEntry = BEntry("/boot/home/MasterPiece", false);
+			homeDir = new BDirectory("/boot/home/MasterPiece");
+			if(!homeEntry.Exists()) // does not exist
+			{
+				// create directory...
+			}
+			else // does exist
+			{
+				
+				// directory exists, must not create the course...
+				int returnValue = homeDir->CreateDirectory(titleText->Text(), homeDir);
+				printf("%d", returnValue);
+			}
 			// do something here...
 			// 1. Also need to create a folder in the file system, or simply an entry in the DB.
 			// 2. Also need to show the correct tabset of views...
+			this->SetTitle(titleText->Text()); // move into proper if statement
+			titleText->SetText("");
+			this->fullView->Hide();
 			this->manageMenu->SetEnabled(true);
 			this->contentTabView->Show();
 			break;
