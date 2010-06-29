@@ -11,6 +11,7 @@
 #include <Entry.h>
 #include <Path.h>
 #include <Directory.h>
+#include <Alert.h>
 
 #define MENU_NEW_MSG		'new'
 #define MENU_OPN_MSG		'open'
@@ -47,6 +48,7 @@ private:
 			BEntry		newCourseTestEntry;
 			BPath		tmpPath;
 			BDirectory 	*homeDir;
+			BAlert		*debugAlert;
 };
 
 #endif

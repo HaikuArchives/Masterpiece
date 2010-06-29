@@ -122,14 +122,15 @@ MainWindow::MessageReceived(BMessage *msg)
 			homeDir = new BDirectory("/boot/home/MasterPiece");
 			if(!homeEntry.Exists()) // does not exist
 			{
-				// create directory...
+				// create MasterPiece directory...
 			}
 			else // does exist
 			{
 				
 				// directory exists, must not create the course...
 				int returnValue = homeDir->CreateDirectory(titleText->Text(), homeDir);
-				printf("%d", returnValue);
+				debugAlert = new BAlert("Debug Value", strerror(returnValue), "OK", 0, 0, B_WIDTH_AS_USUAL, B_INFO_ALERT);
+				if(returnValue != B_OK) int alertReturn = debugAlert->Go();
 			}
 			// do something here...
 			// 1. Also need to create a folder in the file system, or simply an entry in the DB.
