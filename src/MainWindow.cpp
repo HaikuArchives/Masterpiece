@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <String.h>
 #include <Directory.h>
+#include <ScrollView.h>
 
 #define TEXT_INSET 3.0
 
@@ -67,6 +68,16 @@ MainWindow::MainWindow(void)
 	cancelButton->SetLowColor(myColor);
 	fullView->Hide();
 	
+	openView = new BView(BRect(30, 100, 730, 500), 0, B_FOLLOW_ALL, B_WILL_DRAW);
+	BStringView *openTitleString = new BStringView(BRect(10, 10, 175, 20), NULL, "Select a MasterPiece:");
+	openListView = new BListView(BRect(180, 10, 600, 390), "mpList", B_SINGLE_SELECTION_LIST, B_FOLLOW_NONE, B_WILL_DRAW);
+	openView->AddChild(openTitleString);
+	openView->AddChild(new BScrollView("scroll_mpList", openListView, B_FOLLOW_NONE, 0, false, true));
+	AddChild(openView);
+	openView->SetViewColor(myColor);
+	openTitleString->SetViewColor(myColor);
+	openView->Hide();
+	
 	BRect tr = Bounds();
 	tr.top = 20;
 	contentTabView = new BTabView(tr, "tab_view");
@@ -101,6 +112,9 @@ MainWindow::MessageReceived(BMessage *msg)
 		
 		case MENU_OPN_MSG:
 			// do something here...
+			this->contentTabView->Hide();
+			this->fullView->Hide();
+			this->openView->Show();
 			break;
 		
 		case ADD_NEW_COURSE:
@@ -123,6 +137,7 @@ MainWindow::MessageReceived(BMessage *msg)
 					tmpString += "?";
 				}
 				debugAlert = new BAlert("Debug Value", tmpString, "Yes", "No", 0, B_WIDTH_AS_USUAL, B_INFO_ALERT);
+				debugAlert->MoveTo(350, 250);
 				debugAlert->SetShortcut(1, B_ESCAPE);
 				if(returnValue != B_OK)
 				{

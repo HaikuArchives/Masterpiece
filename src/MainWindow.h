@@ -12,6 +12,7 @@
 #include <Path.h>
 #include <Directory.h>
 #include <Alert.h>
+#include <ListView.h>
 
 #define MENU_NEW_MSG		'new'
 #define MENU_OPN_MSG		'open'
@@ -42,6 +43,7 @@ private:
 			BPictureButton *newButton;
 			BTextView	*titleText;
 			BView		*fullView;
+			BView		*openView;
 			BTabView	*contentTabView;
 			BTab		*tmpTab;
 			BEntry		homeEntry;
@@ -49,6 +51,7 @@ private:
 			BPath		tmpPath;
 			BDirectory 	*homeDir;
 			BAlert		*debugAlert;
+			BListView	*openListView;
 };
 
 #endif
