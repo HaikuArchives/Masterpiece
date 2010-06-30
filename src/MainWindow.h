@@ -48,6 +48,7 @@ private:
 			BTab		*tmpTab;
 			BEntry		homeEntry;
 			BEntry		newCourseTestEntry;
+			BEntry		entry;
 			BPath		tmpPath;
 			BDirectory 	*homeDir;
 			BAlert		*debugAlert;

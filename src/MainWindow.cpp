@@ -72,7 +72,7 @@ MainWindow::MainWindow(void)
 	BStringView *openTitleString = new BStringView(BRect(10, 10, 175, 20), NULL, "Select a MasterPiece:");
 	openListView = new BListView(BRect(180, 10, 600, 390), "mpList", B_SINGLE_SELECTION_LIST, B_FOLLOW_NONE, B_WILL_DRAW);
 	openView->AddChild(openTitleString);
-	openView->AddChild(new BScrollView("scroll_mpList", openListView, B_FOLLOW_NONE, 0, false, true));
+	openView->AddChild(new BScrollView("scroll_mpList", openListView, B_FOLLOW_NONE, 0, false, true, B_FANCY_BORDER));
 	AddChild(openView);
 	openView->SetViewColor(myColor);
 	openTitleString->SetViewColor(myColor);
@@ -101,12 +101,15 @@ void
 MainWindow::MessageReceived(BMessage *msg)
 {
 
+	homeDir = new BDirectory("/boot/home/MasterPiece");
+
 	switch (msg->what)
 	{
 		case MENU_NEW_MSG:
 			// do something here...
 			// 1.  need to center the modal window on the parent...
 			this->contentTabView->Hide();
+			this->openView->Hide();
 			this->fullView->Show();
 			break;
 		
@@ -114,12 +117,21 @@ MainWindow::MessageReceived(BMessage *msg)
 			// do something here...
 			this->contentTabView->Hide();
 			this->fullView->Hide();
+			homeDir->Rewind();
+			while(homeDir->GetNextEntry(&entry) == B_OK)
+			{
+				char name[B_FILE_NAME_LENGTH];
+				entry.GetName(name);
+				if(entry.IsDirectory())
+				{
+					this->openListView->AddItem(new BStringItem(name));
+				}
+			}
 			this->openView->Show();
 			break;
 		
 		case ADD_NEW_COURSE:
 			homeEntry = BEntry("/boot/home/MasterPiece", false);
-			homeDir = new BDirectory("/boot/home/MasterPiece");
 			if(!homeEntry.Exists()) // does not exist
 			{
 				// create MasterPiece directory...
