@@ -66,6 +66,8 @@ MainWindow::MainWindow(void)
 	titleString->SetViewColor(myColor);
 	addButton->SetLowColor(myColor);
 	cancelButton->SetLowColor(myColor);
+	fullView->SetHighColor(0, 0, 0);
+	fullView->StrokeRect(BRect(25, 90, 320, 190));
 	fullView->Hide();
 	
 	openView = new BView(BRect(30, 100, 730, 500), 0, B_FOLLOW_ALL, B_WILL_DRAW);
