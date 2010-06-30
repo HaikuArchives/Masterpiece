@@ -1,5 +1,4 @@
 #include "MainWindow.h"
-#include "PictureView.h"
 
 #include <Application.h>
 #include <Menu.h>
@@ -17,7 +16,7 @@
 #define TEXT_INSET 3.0
 
 MainWindow::MainWindow(void)
-	:	BWindow(BRect(100,100,500,400),"MasterPiece",B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
+	:	BWindow(BRect(100,100,900,700),"MasterPiece",B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
 {
 	BRect r(Bounds());
 	r.bottom = 20;
@@ -44,21 +43,6 @@ MainWindow::MainWindow(void)
 	manageMenu->SetEnabled(false);
 	
 	AddChild(fMenuBar);
-	/*
-	 * Adding Picture's Test...
-	 *
-	PictureView *picView = new PictureView();
-	toolbarView = new BView(BRect(100, 100, 500, 270), "view", B_FOLLOW_ALL, B_WILL_DRAW);
-	testImage = BTranslationUtils::GetBitmapFile("images/document-new.png", NULL);
-	//toolbarView->BeginPicture(new BPicture);
-	//toolbarView->DrawBitmap(testImage);
-	//onImage = toolbarView->EndPicture();
-	//toolbarView->AddChild(testImage);
-	//AddChild(toolbarView);
-	AddChild(picView);
-	picView->MoveTo((Bounds().Width() - picView->Bounds().Width()) / 2.0,
-					(Bounds().Height() - picView->Bounds().Height()) / 2.0);
-	*/
 	BRect viewFrame(110, 10, 280, 30);
 	BRect textFrame;
 	textFrame.left = TEXT_INSET;
@@ -79,6 +63,8 @@ MainWindow::MainWindow(void)
 	rgb_color myColor = {215, 215, 215, 255};
 	fullView->SetViewColor(myColor);
 	titleString->SetViewColor(myColor);
+	addButton->SetLowColor(myColor);
+	cancelButton->SetLowColor(myColor);
 	fullView->Hide();
 	
 	BRect tr = Bounds();
@@ -103,13 +89,13 @@ MainWindow::MainWindow(void)
 void
 MainWindow::MessageReceived(BMessage *msg)
 {
+
 	switch (msg->what)
 	{
 		case MENU_NEW_MSG:
 			// do something here...
 			// 1.  need to center the modal window on the parent...
-			//newWindow = new NewWindow();
-			//newWindow->Show();
+			this->contentTabView->Hide();
 			this->fullView->Show();
 			break;
 		
@@ -128,18 +114,43 @@ MainWindow::MessageReceived(BMessage *msg)
 			{
 				
 				// directory exists, must not create the course...
+				BString tmpString;
 				int returnValue = homeDir->CreateDirectory(titleText->Text(), homeDir);
-				debugAlert = new BAlert("Debug Value", strerror(returnValue), "OK", 0, 0, B_WIDTH_AS_USUAL, B_INFO_ALERT);
-				if(returnValue != B_OK) int alertReturn = debugAlert->Go();
+				if(returnValue == B_FILE_EXISTS)
+				{
+					tmpString = "Do you want to open the course ";
+					tmpString += titleText->Text();
+					tmpString += "?";
+				}
+				debugAlert = new BAlert("Debug Value", tmpString, "Yes", "No", 0, B_WIDTH_AS_USUAL, B_INFO_ALERT);
+				debugAlert->SetShortcut(1, B_ESCAPE);
+				if(returnValue != B_OK)
+				{
+					int alertReturn = debugAlert->Go();
+					if(alertReturn == 0) // Yes
+					{
+						this->SetTitle(titleText->Text());
+						this->fullView->Hide();
+						this->manageMenu->SetEnabled(true);
+						this->contentTabView->Show();
+					}
+					else if(alertReturn == 1) // No
+					{
+						titleText->SetText("");
+					}
+				}
+				else
+				{
+					this->SetTitle(titleText->Text()); // move into proper if statement
+					this->fullView->Hide();
+					this->manageMenu->SetEnabled(true);
+					this->contentTabView->Show();
+				}
 			}
 			// do something here...
 			// 1. Also need to create a folder in the file system, or simply an entry in the DB.
 			// 2. Also need to show the correct tabset of views...
-			this->SetTitle(titleText->Text()); // move into proper if statement
 			titleText->SetText("");
-			this->fullView->Hide();
-			this->manageMenu->SetEnabled(true);
-			this->contentTabView->Show();
 			break;
 		
 		case CANCEL_NEW_COURSE:
