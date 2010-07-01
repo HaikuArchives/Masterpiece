@@ -70,14 +70,9 @@ MainWindow::MainWindow(void)
 	fullView->StrokeRect(BRect(25, 90, 320, 190));
 	fullView->Hide();
 	
-	openView = new BView(BRect(30, 100, 730, 500), 0, B_FOLLOW_ALL, B_WILL_DRAW);
-	BStringView *openTitleString = new BStringView(BRect(10, 10, 175, 20), NULL, "Select a MasterPiece:");
-	openListView = new BListView(BRect(180, 10, 600, 390), "mpList", B_SINGLE_SELECTION_LIST, B_FOLLOW_NONE, B_WILL_DRAW);
-	openView->AddChild(openTitleString);
-	openView->AddChild(new BScrollView("scroll_mpList", openListView, B_FOLLOW_NONE, 0, false, true, B_FANCY_BORDER));
+	openView = new OpenMasterView();
 	AddChild(openView);
 	openView->SetViewColor(myColor);
-	openTitleString->SetViewColor(myColor);
 	openView->Hide();
 	
 	BRect tr = Bounds();
@@ -119,6 +114,7 @@ MainWindow::MessageReceived(BMessage *msg)
 			// do something here...
 			this->contentTabView->Hide();
 			this->fullView->Hide();
+			this->openView->openListView->MakeEmpty();
 			homeDir->Rewind();
 			while(homeDir->GetNextEntry(&entry) == B_OK)
 			{
@@ -126,7 +122,7 @@ MainWindow::MessageReceived(BMessage *msg)
 				entry.GetName(name);
 				if(entry.IsDirectory())
 				{
-					this->openListView->AddItem(new BStringItem(name));
+					this->openView->openListView->AddItem(new BStringItem(name));
 				}
 			}
 			this->openView->Show();
@@ -197,7 +193,26 @@ MainWindow::MessageReceived(BMessage *msg)
 			this->contentTabView->Hide();
 			// do something here...
 			break;
-			 
+		case CANCEL_OPEN_COURSE:
+			this->openView->Hide();
+			// do something here...
+			break;
+		case OPEN_EXISTING_COURSE:
+			// do something here...
+			int32 selected;
+			selected = this->openView->openListView->CurrentSelection();
+			if(selected < 0)
+			{
+				// error here
+			}
+			BStringItem *item;
+			item = dynamic_cast<BStringItem*>(this->openView->openListView->ItemAt(selected));
+			if(item)
+			{
+				this->SetTitle(item->Text());
+				this->openView->Hide();
+			}
+			break;
 		default:
 		{
 			BWindow::MessageReceived(msg);

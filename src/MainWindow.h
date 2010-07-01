@@ -14,6 +14,8 @@
 #include <Alert.h>
 #include <ListView.h>
 
+#include "OpenMasterView.h"
+
 #define MENU_NEW_MSG		'new'
 #define MENU_OPN_MSG		'open'
 #define ADD_NEW_COURSE		'add'
@@ -43,7 +45,7 @@ private:
 			BPictureButton *newButton;
 			BTextView	*titleText;
 			BView		*fullView;
-			BView		*openView;
+			// BView		*openView;
 			BTabView	*contentTabView;
 			BTab		*tmpTab;
 			BEntry		homeEntry;
@@ -53,6 +55,7 @@ private:
 			BDirectory 	*homeDir;
 			BAlert		*debugAlert;
 			BListView	*openListView;
+			OpenMasterView	*openView;
 };
 
 #endif
