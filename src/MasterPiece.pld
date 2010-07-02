@@ -3,6 +3,7 @@ TARGETNAME=MasterPiece
 GROUP=Source Files
 EXPANDGROUP=yes
 SOURCEFILE=NewMasterView.cpp
+DEPENDENCY=/HaikuData/Projects/masterpiece/NewMasterView.cpp|/HaikuData/Projects/masterpiece/NewMasterView.
 SOURCEFILE=ContentTabView.cpp
 SOURCEFILE=OpenMasterView.cpp
 DEPENDENCY=/HaikuData/Projects/masterpiece/OpenMasterView.cpp|/HaikuData/Projects/masterpiece/OpenMasterView.
