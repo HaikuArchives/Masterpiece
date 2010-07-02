@@ -14,8 +14,6 @@
 #include <Directory.h>
 #include <ScrollView.h>
 
-#define TEXT_INSET 3.0
-
 MainWindow::MainWindow(void)
 	:	BWindow(BRect(100,100,900,700),"MasterPiece",B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
 {
@@ -44,30 +42,11 @@ MainWindow::MainWindow(void)
 	manageMenu->SetEnabled(false);
 	
 	AddChild(fMenuBar);
-	BRect viewFrame(110, 10, 280, 30);
-	BRect textFrame;
-	textFrame.left = TEXT_INSET;
-	textFrame.right = viewFrame.right - viewFrame.left - TEXT_INSET;
-	textFrame.top = TEXT_INSET;
-	textFrame.bottom = viewFrame.bottom - viewFrame.top - TEXT_INSET;
-	fullView = new BView(BRect(30, 100, 330, 200), 0, B_FOLLOW_ALL, B_WILL_DRAW);
-	BStringView *titleString = new BStringView(BRect(10, 10, 100, 20), NULL, "Enter Title:");
-	titleText = new BTextView(viewFrame, "textTitle", textFrame, B_FOLLOW_NONE, B_WILL_DRAW);
-	BButton *addButton = new BButton(BRect(190, 50, 270, 75), NULL, "Add", new BMessage(ADD_NEW_COURSE), B_FOLLOW_NONE, B_WILL_DRAW);
-	BButton *cancelButton = new BButton(BRect(100, 50, 180, 75), NULL, "Cancel", new BMessage(CANCEL_NEW_COURSE), B_FOLLOW_NONE, B_WILL_DRAW);
-	fullView->AddChild(titleString);
-	fullView->AddChild(addButton);
-	fullView->AddChild(cancelButton);
-	fullView->AddChild(titleText);
-	AddChild(fullView);
-	viewFrame.InsetBy(-2.0, -2.0);
 	rgb_color myColor = {215, 215, 215, 255};
+	
+	fullView = new NewMasterView();
+	AddChild(fullView);
 	fullView->SetViewColor(myColor);
-	titleString->SetViewColor(myColor);
-	addButton->SetLowColor(myColor);
-	cancelButton->SetLowColor(myColor);
-	fullView->SetHighColor(0, 0, 0);
-	fullView->StrokeRect(BRect(25, 90, 320, 190));
 	fullView->Hide();
 	
 	openView = new OpenMasterView();
@@ -139,11 +118,11 @@ MainWindow::MessageReceived(BMessage *msg)
 				
 				// directory exists, must not create the course...
 				BString tmpString;
-				int returnValue = homeDir->CreateDirectory(titleText->Text(), homeDir);
+				int returnValue = homeDir->CreateDirectory(this->fullView->titleText->Text(), homeDir);
 				if(returnValue == B_FILE_EXISTS)
 				{
 					tmpString = "Do you want to open the course ";
-					tmpString += titleText->Text();
+					tmpString += this->fullView->titleText->Text();
 					tmpString += "?";
 				}
 				debugAlert = new BAlert("Debug Value", tmpString, "Yes", "No", 0, B_WIDTH_AS_USUAL, B_INFO_ALERT);
@@ -154,19 +133,19 @@ MainWindow::MessageReceived(BMessage *msg)
 					int alertReturn = debugAlert->Go();
 					if(alertReturn == 0) // Yes
 					{
-						this->SetTitle(titleText->Text());
+						this->SetTitle(this->fullView->titleText->Text());
 						this->fullView->Hide();
 						this->manageMenu->SetEnabled(true);
 						this->contentTabView->Show();
 					}
 					else if(alertReturn == 1) // No
 					{
-						titleText->SetText("");
+						this->fullView->titleText->SetText("");
 					}
 				}
 				else
 				{
-					this->SetTitle(titleText->Text()); // move into proper if statement
+					this->SetTitle(this->fullView->titleText->Text()); // move into proper if statement
 					this->fullView->Hide();
 					this->manageMenu->SetEnabled(true);
 					this->contentTabView->Show();
@@ -175,12 +154,12 @@ MainWindow::MessageReceived(BMessage *msg)
 			// do something here...
 			// 1. Also need to create a folder in the file system, or simply an entry in the DB.
 			// 2. Also need to show the correct tabset of views...
-			titleText->SetText("");
+			this->fullView->titleText->SetText("");
 			break;
 		
 		case CANCEL_NEW_COURSE:
 			this->fullView->Hide();
-			titleText->SetText("");
+			this->fullView->titleText->SetText("");
 			// do soemthing here...
 			break;
 			

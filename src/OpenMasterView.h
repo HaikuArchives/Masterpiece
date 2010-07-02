@@ -23,6 +23,7 @@ public:
 
 		BListView		*openListView;
 		BStringView		*openTitleString;
+		BTextView		*titleText;
 		BButton			*openButton;
 		BButton			*cancelButton;
 		

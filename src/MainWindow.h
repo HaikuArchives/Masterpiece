@@ -14,47 +14,44 @@
 #include <Alert.h>
 #include <ListView.h>
 
+#include "NewMasterView.h"
 #include "OpenMasterView.h"
 
 #define MENU_NEW_MSG		'new'
 #define MENU_OPN_MSG		'open'
-#define ADD_NEW_COURSE		'add'
-#define CANCEL_NEW_COURSE	'cnc'
 #define MNG_CONTENT_MSG		'mcm'
 #define MNG_LAYOUT_MSG		'mlm'
 
 class MainWindow : public BWindow
 {
 public:
-						MainWindow(void);
-			void		MessageReceived(BMessage *msg);
-			bool		QuitRequested(void);
+							MainWindow(void);
+			void			MessageReceived(BMessage *msg);
+			bool			QuitRequested(void);
 			
 private:
-			BMenuBar	*fMenuBar;
-			BMenu		*fileMenu;
-			BMenu		*manageMenu;
-			BMenuItem	*newFileMenuItem;
-			BMenuItem	*openFileMenuItem;
-			BMenuItem	*quitMenuItem;
-			BMenuItem	*contentMenuItem;
-			BMenuItem	*layoutMenuItem;
-			BBitmap		*testImage;
-			BView		*toolbarView;
-			BPicture	*onImage;
-			BPictureButton *newButton;
-			BTextView	*titleText;
-			BView		*fullView;
-			// BView		*openView;
-			BTabView	*contentTabView;
-			BTab		*tmpTab;
-			BEntry		homeEntry;
-			BEntry		newCourseTestEntry;
-			BEntry		entry;
-			BPath		tmpPath;
-			BDirectory 	*homeDir;
-			BAlert		*debugAlert;
-			BListView	*openListView;
+			BMenuBar		*fMenuBar;
+			BMenu			*fileMenu;
+			BMenu			*manageMenu;
+			BMenuItem		*newFileMenuItem;
+			BMenuItem		*openFileMenuItem;
+			BMenuItem		*quitMenuItem;
+			BMenuItem		*contentMenuItem;
+			BMenuItem		*layoutMenuItem;
+			BBitmap			*testImage;
+			BView			*toolbarView;
+			BPicture		*onImage;
+			BPictureButton 	*newButton;
+			NewMasterView	*fullView;
+			BTabView		*contentTabView;
+			BTab			*tmpTab;
+			BEntry			homeEntry;
+			BEntry			newCourseTestEntry;
+			BEntry			entry;
+			BPath			tmpPath;
+			BDirectory 		*homeDir;
+			BAlert			*debugAlert;
+			BListView		*openListView;
 			OpenMasterView	*openView;
 };
 
