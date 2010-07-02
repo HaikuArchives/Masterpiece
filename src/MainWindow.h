@@ -16,7 +16,7 @@
 
 #include "NewMasterView.h"
 #include "OpenMasterView.h"
-#include "ContentTabView.h"
+//#include "ContentTabView.h"
 
 #define MENU_NEW_MSG		'new'
 #define MENU_OPN_MSG		'open'
@@ -44,8 +44,8 @@ private:
 			BPicture		*onImage;
 			BPictureButton 	*newButton;
 			NewMasterView	*fullView;
-			//BTabView		*contentTabView;
-			//BTab			*tmpTab;
+			BTabView		*contentTabView;
+			BTab			*tmpTab;
 			BEntry			homeEntry;
 			BEntry			newCourseTestEntry;
 			BEntry			entry;
@@ -54,7 +54,7 @@ private:
 			BAlert			*debugAlert;
 			BListView		*openListView;
 			OpenMasterView	*openView;
-			ContentTabView	*contentTabView;
+			//ContentTabView	*contentTabView;
 };
 
 #endif

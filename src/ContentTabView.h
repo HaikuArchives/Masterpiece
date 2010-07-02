@@ -23,6 +23,7 @@ public:
 		void			Draw(BRect rect);
 		
 		BTab			*tmpTab;
+		BTab			*imageTab;
 		/*
 		BTextView		*titleText;
 		BStringView		*titleString;

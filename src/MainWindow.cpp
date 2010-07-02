@@ -53,7 +53,7 @@ MainWindow::MainWindow(void)
 	AddChild(openView);
 	openView->SetViewColor(myColor);
 	openView->Hide();
-	
+	/*
 	contentTabView = new ContentTabView();
 	BRect tr = Bounds();
 	tr.top = 20;
@@ -62,7 +62,8 @@ MainWindow::MainWindow(void)
 	
 	AddChild(contentTabView);
 	contentTabView->Hide();
-/*	
+	*/
+
 	BRect tr = Bounds();
 	tr.top = 20;
 	contentTabView = new BTabView(tr, "tab_view");
@@ -78,7 +79,6 @@ MainWindow::MainWindow(void)
 	tmpTab->SetLabel("Images");
 	AddChild(contentTabView);
 	contentTabView->Hide();
-*/	
 }
 
 
