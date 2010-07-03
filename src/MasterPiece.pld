@@ -5,6 +5,7 @@ EXPANDGROUP=yes
 SOURCEFILE=NewMasterView.cpp
 DEPENDENCY=/HaikuData/Projects/masterpiece/NewMasterView.cpp|/HaikuData/Projects/masterpiece/NewMasterView.
 SOURCEFILE=ContentTabView.cpp
+DEPENDENCY=/HaikuData/Projects/masterpiece/ContentTabView.cpp|/HaikuData/Projects/masterpiece/ContentTabView.
 SOURCEFILE=OpenMasterView.cpp
 DEPENDENCY=/HaikuData/Projects/masterpiece/OpenMasterView.cpp|/HaikuData/Projects/masterpiece/OpenMasterView.
 SOURCEFILE=App.cpp

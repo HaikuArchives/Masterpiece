@@ -3,6 +3,8 @@
 
 #include <Application.h>
 
+#include "MainWindow.h"
+
 class App : public BApplication
 {
 public:

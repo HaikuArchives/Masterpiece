@@ -1,19 +1,5 @@
 #include "MainWindow.h"
 
-#include <Application.h>
-#include <Menu.h>
-#include <MenuItem.h>
-#include <View.h>
-#include <TranslationUtils.h>
-#include <TranslatorFormats.h>
-#include <Bitmap.h>
-#include <StringView.h>
-#include <Button.h>
-#include <stdio.h>
-#include <String.h>
-#include <Directory.h>
-#include <ScrollView.h>
-
 MainWindow::MainWindow(void)
 	:	BWindow(BRect(100,100,900,700),"MasterPiece",B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
 {

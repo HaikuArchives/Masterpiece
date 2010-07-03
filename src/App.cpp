@@ -1,5 +1,4 @@
 #include "App.h"
-#include "MainWindow.h"
 
 App::App(void)
 	:	BApplication("application/x-vnd.pjr-MasterPiece")

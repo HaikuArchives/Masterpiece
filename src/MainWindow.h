@@ -3,6 +3,7 @@
 
 #include <Window.h>
 #include <MenuBar.h>
+#include <MenuItem.h>
 #include <View.h>
 #include <Picture.h>
 #include <PictureButton.h>
@@ -13,6 +14,7 @@
 #include <Directory.h>
 #include <Alert.h>
 #include <ListView.h>
+#include <Application.h>
 
 #include "NewMasterView.h"
 #include "OpenMasterView.h"
