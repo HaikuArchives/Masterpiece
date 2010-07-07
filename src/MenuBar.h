@@ -6,6 +6,8 @@
 
 #define MENU_NEW_MSG		'new'
 #define MENU_OPN_MSG		'open'
+#define MENU_THT_MSG		'mtm'
+#define MENU_IMG_MSG		'mim'
 
 class MenuBar : public BMenuBar
 {
@@ -17,7 +19,8 @@ public:
 			BMenuItem		*newFileMenuItem;
 			BMenuItem		*openFileMenuItem;
 			BMenuItem		*quitMenuItem;
-
+			BMenuItem		*thoughtsMenuItem;
+			BMenuItem		*imagesMenuItem;
 private:
 
 };
