@@ -5,29 +5,8 @@ MainWindow::MainWindow(void)
 {
 	BRect r(Bounds());
 	r.bottom = 20;
-	fMenuBar = new BMenuBar(r,"menubar");
-	fileMenu = new BMenu("File");
-	manageMenu = new BMenu("Manage");
-	newFileMenuItem = new BMenuItem("New MasterPiece", new BMessage(MENU_NEW_MSG));
-	openFileMenuItem = new BMenuItem("Open Existing", new BMessage(MENU_OPN_MSG));
-	quitMenuItem = new BMenuItem("Quit", new BMessage(B_QUIT_REQUESTED));
-	
-	contentMenuItem = new BMenuItem("Content", new BMessage(MNG_CONTENT_MSG));
-	layoutMenuItem = new BMenuItem("Layout", new BMessage(MNG_LAYOUT_MSG));
-
-	fileMenu->AddItem(newFileMenuItem);
-	fileMenu->AddItem(openFileMenuItem);
-	fileMenu->AddSeparatorItem();
-	fileMenu->AddItem(quitMenuItem);
-	
-	manageMenu->AddItem(contentMenuItem);
-	manageMenu->AddItem(layoutMenuItem);
-
-	fMenuBar->AddItem(fileMenu);
-	fMenuBar->AddItem(manageMenu);
-	manageMenu->SetEnabled(false);
-	
-	AddChild(fMenuBar);
+	mpMenuBar = new MenuBar(r);
+	AddChild(mpMenuBar);
 	rgb_color myColor = {215, 215, 215, 255};
 	
 	fullView = new NewMasterView();
@@ -39,16 +18,6 @@ MainWindow::MainWindow(void)
 	AddChild(openView);
 	openView->SetViewColor(myColor);
 	openView->Hide();
-	/*
-	contentTabView = new ContentTabView();
-	BRect tr = Bounds();
-	tr.top = 20;
-	contentTabView->ResizeTo(tr.right - tr.left, tr.bottom - tr.top);
-	contentTabView->MoveTo(0, 20);
-	
-	AddChild(contentTabView);
-	contentTabView->Hide();
-	*/
 
 	BRect tr = Bounds();
 	tr.top = 20;
@@ -130,7 +99,7 @@ MainWindow::MessageReceived(BMessage *msg)
 					{
 						this->SetTitle(this->fullView->titleText->Text());
 						this->fullView->Hide();
-						this->manageMenu->SetEnabled(true);
+						//this->manageMenu->SetEnabled(true);
 						this->contentTabView->Show();
 					}
 					else if(alertReturn == 1) // No
@@ -142,7 +111,7 @@ MainWindow::MessageReceived(BMessage *msg)
 				{
 					this->SetTitle(this->fullView->titleText->Text()); // move into proper if statement
 					this->fullView->Hide();
-					this->manageMenu->SetEnabled(true);
+					//this->manageMenu->SetEnabled(true);
 					this->contentTabView->Show();
 				}
 			}
