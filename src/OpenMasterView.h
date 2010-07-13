@@ -9,6 +9,7 @@
 #include <StringView.h>
 #include <ScrollView.h>
 #include <Button.h>
+#include <TextView.h>
 
 #define OPEN_EXISTING_COURSE	'oec'
 #define CANCEL_OPEN_COURSE		'coc'
