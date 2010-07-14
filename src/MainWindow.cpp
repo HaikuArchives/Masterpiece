@@ -34,6 +34,7 @@ MainWindow::MainWindow(void)
 	tmpTab->SetLabel("Images");
 	AddChild(contentTabView);
 	contentTabView->Hide();
+	homeDir = new BDirectory("/boot/home/MasterPiece");
 }
 
 
@@ -41,7 +42,7 @@ void
 MainWindow::MessageReceived(BMessage *msg)
 {
 
-	homeDir = new BDirectory("/boot/home/MasterPiece");
+//	homeDir = new BDirectory("/boot/home/MasterPiece");
 
 	switch (msg->what)
 	{
@@ -49,15 +50,16 @@ MainWindow::MessageReceived(BMessage *msg)
 			// do something here...
 			// 1.  need to center the modal window on the parent...
 			this->contentTabView->Hide();
-			this->openView->Hide();
-			this->fullView->Show();
+			if(this->openView->IsHidden() == false) this->openView->Hide();
+			if(this->fullView->IsHidden() == true) this->fullView->Show();
 			break;
 		
 		case MENU_OPN_MSG:
 			// do something here...
 			this->contentTabView->Hide();
-			this->fullView->Hide();
+			if(!this->fullView->IsHidden()) this->fullView->Hide();
 			this->openView->openListView->MakeEmpty();
+			/*
 			homeDir->Rewind();
 			while(homeDir->GetNextEntry(&entry) == B_OK)
 			{
@@ -68,7 +70,9 @@ MainWindow::MessageReceived(BMessage *msg)
 					this->openView->openListView->AddItem(new BStringItem(name));
 				}
 			}
-			this->openView->Show();
+			*/
+			if(this->openView->IsHidden()) this->openView->Show();
+			
 			break;
 		
 		case ADD_NEW_COURSE:
