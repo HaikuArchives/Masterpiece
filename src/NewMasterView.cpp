@@ -31,6 +31,10 @@ void NewMasterView::Draw(BRect rect)
 	SetDrawingMode(B_OP_ALPHA);
 	SetHighColor(215, 215, 215);
 	titleString->SetViewColor(backColor);
+	titleString->SetHighColor(backColor);
+	titleString->FillRect(titleString->Bounds());
+	titleString->SetHighColor(0, 0, 0);
+	titleString->SetText("Enter Title:");
 	newButton->SetLowColor(backColor);
 	cancelButton->SetLowColor(backColor);
 	FillRect(Bounds());

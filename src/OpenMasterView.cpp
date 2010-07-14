@@ -23,10 +23,11 @@ void OpenMasterView::Draw(BRect rect)
 
 	SetDrawingMode(B_OP_ALPHA);
 	SetHighColor(215, 215, 215);
-	//openTitleString->SetViewColor(backColor);
-	//BRect tb = openTitleString->Bounds();
-	//openTitleString->SetLowColor(215, 215, 215);
-	//openTitleString->FillRect(tb);
+	openTitleString->SetViewColor(backColor); // group of commands set's the color back to gray like the view.
+	openTitleString->SetHighColor(backColor);
+	openTitleString->FillRect(openTitleString->Bounds());
+	openTitleString->SetHighColor(0, 0, 0);
+	openTitleString->SetText("Select a MasterPiece:");
 	openButton->SetLowColor(backColor);
 	cancelButton->SetLowColor(backColor);
 	FillRect(Bounds());
