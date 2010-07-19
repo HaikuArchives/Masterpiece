@@ -18,6 +18,11 @@ MainWindow::MainWindow(void)
 	AddChild(openView);
 	openView->SetViewColor(myColor);
 	openView->Hide();
+	
+	sumView = new SummaryView();
+	AddChild(sumView);
+	sumView->SetViewColor(myColor);
+	sumView->Hide();
 
 	/*
 	* NEED TO ABSTRACT THE THOUGHT STUFF TO A TAB
@@ -53,13 +58,15 @@ MainWindow::MessageReceived(BMessage *msg)
 			// do something here...
 			// 1.  need to center the modal window on the parent...
 			//this->contentTabView->Hide();
-			if(this->openView->IsHidden() == false) this->openView->Hide();
+			if(!this->sumView->IsHidden()) this->sumView->Hide();
+			if(!this->openView->IsHidden()) this->openView->Hide();
 			if(this->fullView->IsHidden() == true) this->fullView->Show();
 			break;
 		
 		case MENU_OPN_MSG:
 			// do something here...
 			//this->contentTabView->Hide();
+			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->fullView->IsHidden()) this->fullView->Hide();
 			this->openView->openListView->MakeEmpty();
 			/*
@@ -105,7 +112,7 @@ MainWindow::MessageReceived(BMessage *msg)
 					if(alertReturn == 0) // Yes
 					{
 						this->SetTitle(this->fullView->titleText->Text());
-						this->fullView->Hide();
+						if(!this->fullView->IsHidden()) this->fullView->Hide();
 						//this->manageMenu->SetEnabled(true);
 						//this->contentTabView->Show();
 					}
@@ -117,7 +124,7 @@ MainWindow::MessageReceived(BMessage *msg)
 				else
 				{
 					this->SetTitle(this->fullView->titleText->Text()); // move into proper if statement
-					this->fullView->Hide();
+					if(!this->fullView->IsHidden()) this->fullView->Hide();
 					//this->manageMenu->SetEnabled(true);
 					//this->contentTabView->Show();
 				}
@@ -134,7 +141,8 @@ MainWindow::MessageReceived(BMessage *msg)
 			// do soemthing here...
 			break;
 			
-		case MNG_CONTENT_MSG:
+		case MENU_THT_MSG:
+			if(this->sumView->IsHidden()) this->sumView->Show();
 			//this->contentTabView->Show();
 			// do something here...
 			break;
@@ -144,7 +152,7 @@ MainWindow::MessageReceived(BMessage *msg)
 			// do something here...
 			break;
 		case CANCEL_OPEN_COURSE:
-			this->openView->Hide();
+			if(!this->openView->IsHidden())this->openView->Hide();
 			// do something here...
 			break;
 		case OPEN_EXISTING_COURSE:

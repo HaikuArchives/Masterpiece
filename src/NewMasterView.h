@@ -1,7 +1,7 @@
 #ifndef NEWMASTERVIEW_H
 #define NEWMASTERVIEW_H
 
-#include <Message.h>
+//#include <Message.h>
 #include <Bitmap.h>
 #include <String.h>
 #include <View.h>

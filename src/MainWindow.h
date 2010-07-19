@@ -15,6 +15,7 @@
 #include "MenuBar.h"
 #include "NewMasterView.h"
 #include "OpenMasterView.h"
+#include "SummaryView.h"
 
 #define MNG_CONTENT_MSG		'mcm'
 #define MNG_LAYOUT_MSG		'mlm'
@@ -43,6 +44,7 @@ private:
 			BAlert			*debugAlert;
 			BListView		*openListView;
 			OpenMasterView	*openView;
+			SummaryView		*sumView;
 };
 
 #endif
