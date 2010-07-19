@@ -19,6 +19,8 @@ MainWindow::MainWindow(void)
 	openView->SetViewColor(myColor);
 	openView->Hide();
 
+	/*
+	* NEED TO ABSTRACT THE THOUGHT STUFF TO A TAB
 	BRect tr = Bounds();
 	tr.top = 20;
 	contentTabView = new BTabView(tr, "tab_view");
@@ -34,6 +36,7 @@ MainWindow::MainWindow(void)
 	tmpTab->SetLabel("Images");
 	AddChild(contentTabView);
 	contentTabView->Hide();
+	*/
 	homeDir = new BDirectory("/boot/home/MasterPiece");
 }
 
@@ -49,14 +52,14 @@ MainWindow::MessageReceived(BMessage *msg)
 		case MENU_NEW_MSG:
 			// do something here...
 			// 1.  need to center the modal window on the parent...
-			this->contentTabView->Hide();
+			//this->contentTabView->Hide();
 			if(this->openView->IsHidden() == false) this->openView->Hide();
 			if(this->fullView->IsHidden() == true) this->fullView->Show();
 			break;
 		
 		case MENU_OPN_MSG:
 			// do something here...
-			this->contentTabView->Hide();
+			//this->contentTabView->Hide();
 			if(!this->fullView->IsHidden()) this->fullView->Hide();
 			this->openView->openListView->MakeEmpty();
 			/*
@@ -104,7 +107,7 @@ MainWindow::MessageReceived(BMessage *msg)
 						this->SetTitle(this->fullView->titleText->Text());
 						this->fullView->Hide();
 						//this->manageMenu->SetEnabled(true);
-						this->contentTabView->Show();
+						//this->contentTabView->Show();
 					}
 					else if(alertReturn == 1) // No
 					{
@@ -116,7 +119,7 @@ MainWindow::MessageReceived(BMessage *msg)
 					this->SetTitle(this->fullView->titleText->Text()); // move into proper if statement
 					this->fullView->Hide();
 					//this->manageMenu->SetEnabled(true);
-					this->contentTabView->Show();
+					//this->contentTabView->Show();
 				}
 			}
 			// do something here...
@@ -132,12 +135,12 @@ MainWindow::MessageReceived(BMessage *msg)
 			break;
 			
 		case MNG_CONTENT_MSG:
-			this->contentTabView->Show();
+			//this->contentTabView->Show();
 			// do something here...
 			break;
 			
 		case MNG_LAYOUT_MSG:
-			this->contentTabView->Hide();
+			//this->contentTabView->Hide();
 			// do something here...
 			break;
 		case CANCEL_OPEN_COURSE:
