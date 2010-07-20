@@ -45,6 +45,8 @@ private:
 			BListView		*openListView;
 			OpenMasterView	*openView;
 			SummaryView		*sumView;
+			BString			tmpString;
+			int				returnValue;
 };
 
 #endif

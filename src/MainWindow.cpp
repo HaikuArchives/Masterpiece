@@ -43,7 +43,13 @@ MainWindow::MainWindow(void)
 	AddChild(contentTabView);
 	contentTabView->Hide();
 	*/
-	homeDir = new BDirectory("/boot/home/MasterPiece");
+	// Check that the MasterPiece directory exists and create it if it doesn't
+	// possibly check if user want's to create it or select a new one...
+	homeEntry = BEntry("/boot/home/MasterPiece", false);
+	if(!homeEntry.Exists()) // does not exist
+	{
+		// create MasterPiece directory...
+	}
 }
 
 
@@ -51,24 +57,19 @@ void
 MainWindow::MessageReceived(BMessage *msg)
 {
 
-//	homeDir = new BDirectory("/boot/home/MasterPiece");
-
 	switch (msg->what)
 	{
 		case MENU_NEW_MSG:
-			// do something here...
 			// 1.  need to center the modal window on the parent...
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->openView->IsHidden()) this->openView->Hide();
-			if(this->fullView->IsHidden() == true) this->fullView->Show();
+			if(this->fullView->IsHidden()) this->fullView->Show();
 			break;
 		
 		case MENU_OPN_MSG:
-			// do something here...
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->fullView->IsHidden()) this->fullView->Hide();
 			this->openView->openListView->MakeEmpty();
-			/*
 			homeDir->Rewind();
 			while(homeDir->GetNextEntry(&entry) == B_OK)
 			{
@@ -79,61 +80,52 @@ MainWindow::MessageReceived(BMessage *msg)
 					this->openView->openListView->AddItem(new BStringItem(name));
 				}
 			}
-			*/
 			if(this->openView->IsHidden()) this->openView->Show();
 			
 			break;
 		
 		case ADD_NEW_COURSE:
-			homeEntry = BEntry("/boot/home/MasterPiece", false);
-			if(!homeEntry.Exists()) // does not exist
+		
+			homeDir = new BDirectory("/boot/home/MasterPiece");
+			
+			returnValue = homeDir->CreateDirectory(this->fullView->titleText->Text(), homeDir);
+			if(returnValue == B_FILE_EXISTS)
 			{
-				// create MasterPiece directory...
+				tmpString = "Do you want to open the course ";
+				tmpString += this->fullView->titleText->Text();
+				tmpString += "?";
 			}
-			else // does exist
+			if(returnValue != B_OK)
 			{
-				
-				// directory exists, must not create the course...
-				BString tmpString;
-				int returnValue = homeDir->CreateDirectory(this->fullView->titleText->Text(), homeDir);
-				if(returnValue == B_FILE_EXISTS)
-				{
-					tmpString = "Do you want to open the course ";
-					tmpString += this->fullView->titleText->Text();
-					tmpString += "?";
-				}
 				debugAlert = new BAlert("Debug Value", tmpString, "Yes", "No", 0, B_WIDTH_AS_USUAL, B_INFO_ALERT);
 				debugAlert->MoveTo(350, 250);
 				debugAlert->SetShortcut(1, B_ESCAPE);
-				if(returnValue != B_OK)
+				int alertReturn = debugAlert->Go();
+				if(alertReturn == 0) // Yes
 				{
-					int alertReturn = debugAlert->Go();
-					if(alertReturn == 0) // Yes
-					{
-						this->SetTitle(this->fullView->titleText->Text());
-						if(!this->fullView->IsHidden()) this->fullView->Hide();
-					}
-					else if(alertReturn == 1) // No
-					{
-						this->fullView->titleText->SetText("");
-					}
-				}
-				else
-				{
-					this->SetTitle(this->fullView->titleText->Text()); // move into proper if statement
+					this->SetTitle(this->fullView->titleText->Text());
 					if(!this->fullView->IsHidden()) this->fullView->Hide();
-					this->mpMenuBar->contentMenu->SetEnabled(true);
-					this->mpMenuBar->layoutMenu->SetEnabled(true);
+				}
+				else if(alertReturn == 1) // No
+				{
+					this->fullView->titleText->SetText("");
 				}
 			}
+			else
+			{
+				this->SetTitle(this->fullView->titleText->Text());
+				if(!this->fullView->IsHidden()) this->fullView->Hide();
+				if(!this->openView->IsHidden()) this->openView->Hide();
+				if(this->sumView->IsHidden()) this->sumView->Show();
+				this->mpMenuBar->contentMenu->SetEnabled(true);
+				this->mpMenuBar->layoutMenu->SetEnabled(true);
+			}
 			// do something here...
-			// 1. Also need to create a folder in the file system, or simply an entry in the DB.
-			// 2. Also need to show the correct tabset of views...
 			this->fullView->titleText->SetText("");
 			break;
 		
-		case CANCEL_NEW_COURSE:
-			this->fullView->Hide();
+		case CANCEL_NEW_COURSE:		
+			if(!this->fullView->IsHidden()) this->fullView->Hide();
 			this->fullView->titleText->SetText("");
 			// do soemthing here...
 			break;
