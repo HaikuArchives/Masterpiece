@@ -23,6 +23,8 @@ MenuBar::MenuBar(BRect r)
 	AddItem(fileMenu);
 	AddItem(contentMenu);
 	AddItem(layoutMenu);
+	contentMenu->SetEnabled(false);
+	layoutMenu->SetEnabled(false);
 		
 }
 

@@ -18,8 +18,9 @@ MainWindow::MainWindow(void)
 	AddChild(openView);
 	openView->SetViewColor(myColor);
 	openView->Hide();
-	
-	sumView = new SummaryView();
+	BRect sumRect(Bounds());
+	sumRect.top = 20;
+	sumView = new SummaryView(sumRect);
 	AddChild(sumView);
 	sumView->SetViewColor(myColor);
 	sumView->Hide();
@@ -57,7 +58,6 @@ MainWindow::MessageReceived(BMessage *msg)
 		case MENU_NEW_MSG:
 			// do something here...
 			// 1.  need to center the modal window on the parent...
-			//this->contentTabView->Hide();
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->openView->IsHidden()) this->openView->Hide();
 			if(this->fullView->IsHidden() == true) this->fullView->Show();
@@ -65,7 +65,6 @@ MainWindow::MessageReceived(BMessage *msg)
 		
 		case MENU_OPN_MSG:
 			// do something here...
-			//this->contentTabView->Hide();
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->fullView->IsHidden()) this->fullView->Hide();
 			this->openView->openListView->MakeEmpty();
@@ -113,8 +112,6 @@ MainWindow::MessageReceived(BMessage *msg)
 					{
 						this->SetTitle(this->fullView->titleText->Text());
 						if(!this->fullView->IsHidden()) this->fullView->Hide();
-						//this->manageMenu->SetEnabled(true);
-						//this->contentTabView->Show();
 					}
 					else if(alertReturn == 1) // No
 					{
@@ -125,8 +122,8 @@ MainWindow::MessageReceived(BMessage *msg)
 				{
 					this->SetTitle(this->fullView->titleText->Text()); // move into proper if statement
 					if(!this->fullView->IsHidden()) this->fullView->Hide();
-					//this->manageMenu->SetEnabled(true);
-					//this->contentTabView->Show();
+					this->mpMenuBar->contentMenu->SetEnabled(true);
+					this->mpMenuBar->layoutMenu->SetEnabled(true);
 				}
 			}
 			// do something here...
@@ -143,12 +140,10 @@ MainWindow::MessageReceived(BMessage *msg)
 			
 		case MENU_THT_MSG:
 			if(this->sumView->IsHidden()) this->sumView->Show();
-			//this->contentTabView->Show();
 			// do something here...
 			break;
 			
 		case MNG_LAYOUT_MSG:
-			//this->contentTabView->Hide();
 			// do something here...
 			break;
 		case CANCEL_OPEN_COURSE:

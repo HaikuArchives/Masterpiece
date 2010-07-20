@@ -6,7 +6,7 @@
 class SummaryView : public BView
 {
 public:
-				SummaryView(void);
+				SummaryView(BRect r);
 				~SummaryView(void);
 				
 				
