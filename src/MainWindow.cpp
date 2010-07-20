@@ -50,6 +50,10 @@ MainWindow::MainWindow(void)
 	{
 		// create MasterPiece directory...
 	}
+	else
+	{
+		homeDir = new BDirectory("/boot/home/MasterPiece");
+	}
 }
 
 
@@ -86,8 +90,6 @@ MainWindow::MessageReceived(BMessage *msg)
 		
 		case ADD_NEW_COURSE:
 		
-			homeDir = new BDirectory("/boot/home/MasterPiece");
-			
 			returnValue = homeDir->CreateDirectory(this->fullView->titleText->Text(), homeDir);
 			if(returnValue == B_FILE_EXISTS)
 			{
