@@ -155,7 +155,11 @@ MainWindow::MessageReceived(BMessage *msg)
 			if(item)
 			{
 				this->SetTitle(item->Text());
-				this->openView->Hide();
+				if(!this->openView->IsHidden()) this->openView->Hide();
+				if(!this->fullView->IsHidden()) this->fullView->Hide();
+				if(this->sumView->IsHidden()) this->sumView->Show();
+				this->mpMenuBar->contentMenu->SetEnabled(true);
+				this->mpMenuBar->layoutMenu->SetEnabled(true);
 			}
 			break;
 		default:
