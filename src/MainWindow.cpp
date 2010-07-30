@@ -26,7 +26,7 @@ MainWindow::MainWindow(void)
 	sumView->Hide();
 	sqlErrMsg = 0;
 	sqlValue = sqlite3_open("./MasterPiece.db", &mpdb);
-	fprintf(stderr, "open: %s", sqlite3_errmsg(mpdb));
+	fprintf(stdout, "open: %s", sqlite3_errmsg(mpdb));
 
 	/*
 	* NEED TO ABSTRACT THE THOUGHT STUFF TO A TAB
@@ -92,11 +92,11 @@ MainWindow::MessageReceived(BMessage *msg)
 			break;
 		
 		case ADD_NEW_COURSE:
-			tmpString = "insert into mptable (masterpieceName) values(";
+			tmpString = "insert into mptable (masterpieceName) values('";
 			tmpString += this->fullView->titleText->Text();
-			tmpString += ");";
+			tmpString += "');";
 			sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
-			fprintf(stderr, "insert: %s", sqlErrMsg);
+			fprintf(stdout, "insert: %s", sqlErrMsg);
 			// possibly check result before doing the following:
 			this->SetTitle(this->fullView->titleText->Text());
 			if(!this->fullView->IsHidden()) this->fullView->Hide();
