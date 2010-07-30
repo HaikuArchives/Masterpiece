@@ -24,6 +24,9 @@ MainWindow::MainWindow(void)
 	AddChild(sumView);
 	sumView->SetViewColor(myColor);
 	sumView->Hide();
+	sqlErrMsg = 0;
+	sqlValue = sqlite3_open("./MasterPiece.db", &mpdb);
+	fprintf(stderr, "open: %s", sqlite3_errmsg(mpdb));
 
 	/*
 	* NEED TO ABSTRACT THE THOUGHT STUFF TO A TAB
@@ -89,7 +92,20 @@ MainWindow::MessageReceived(BMessage *msg)
 			break;
 		
 		case ADD_NEW_COURSE:
-		
+			tmpString = "insert into mptable (masterpieceName) values(";
+			tmpString += this->fullView->titleText->Text();
+			tmpString += ");";
+			sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
+			fprintf(stderr, "insert: %s", sqlErrMsg);
+			// possibly check result before doing the following:
+			this->SetTitle(this->fullView->titleText->Text());
+			if(!this->fullView->IsHidden()) this->fullView->Hide();
+			if(!this->openView->IsHidden()) this->openView->Hide();
+			if(this->sumView->IsHidden()) this->sumView->Show();
+			this->mpMenuBar->contentMenu->SetEnabled(true);
+			this->mpMenuBar->layoutMenu->SetEnabled(true);			
+			
+			/*
 			returnValue = homeDir->CreateDirectory(this->fullView->titleText->Text(), homeDir);
 			if(returnValue == B_FILE_EXISTS)
 			{
@@ -123,6 +139,7 @@ MainWindow::MessageReceived(BMessage *msg)
 				this->mpMenuBar->layoutMenu->SetEnabled(true);
 			}
 			// do something here...
+			*/
 			this->fullView->titleText->SetText("");
 			break;
 		
@@ -176,6 +193,9 @@ MainWindow::MessageReceived(BMessage *msg)
 bool
 MainWindow::QuitRequested(void)
 {
+	sqlite3_free(sqlErrMsg);
+	sqlite3_close(mpdb);
+	
 	be_app->PostMessage(B_QUIT_REQUESTED);
 	return true;
 }

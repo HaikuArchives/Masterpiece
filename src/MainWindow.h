@@ -11,6 +11,8 @@
 #include <Directory.h>
 #include <Alert.h>
 #include <Application.h>
+#include <sqlite3.h>
+#include <stdio.h>
 
 #include "MenuBar.h"
 #include "NewMasterView.h"
@@ -47,6 +49,9 @@ private:
 			SummaryView		*sumView;
 			BString			tmpString;
 			int				returnValue;
+			sqlite3			*mpdb;
+			int				sqlValue;
+			char			*sqlErrMsg;
 };
 
 #endif
