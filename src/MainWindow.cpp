@@ -59,11 +59,31 @@ MainWindow::MainWindow(void)
 	}
 }
 
-
-void
-MainWindow::MessageReceived(BMessage *msg)
+/*
+int MainWindow::ReturnCount(void *NotUsed, int resultCount, char **colResults, char **colName)
 {
+	sqlCheck = (int)colResults[0];
+	int i;
+	for(i=0;i<resultCount;i++)
+	{
+		fprintf(stdout, "count: %d, %s = %s\n", resultCount, colName[i], colResults[i]);
+	}
+	return 0;
+}
+*/
+static int ReturnCount(void *NotUsed, int resultCount, char **colResults, char **colName)
+{
+	int i;
+	for(i=0;i<resultCount;i++)
+	{
+		fprintf(stdout, "count: %d, %s = %s\n", resultCount, colName[i], colResults[i]);
+	}
+	return 0;
+} 
 
+void MainWindow::MessageReceived(BMessage *msg)
+{
+	
 	switch (msg->what)
 	{
 		case MENU_NEW_MSG:
@@ -100,9 +120,10 @@ MainWindow::MessageReceived(BMessage *msg)
 			tmpString += this->fullView->titleText->Text();
 			tmpString += "');";
 			*/
-			sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
+			sqlValue = sqlite3_exec(mpdb, tmpString, ReturnCount, NULL, &sqlErrMsg);
+			fprintf(stdout, "did i carry the value over: %d\n", sqlValue);
 			fprintf(stdout, "count check errors: %s\n", sqlErrMsg);
-			frpintf(stdout, "count value check: %d\n", 
+			// frpintf(stdout, "count value check: %d\n", 
 			// fprintf(stdout, "insert: %s", sqlErrMsg);
 			// possibly check result before doing the following:
 			this->SetTitle(this->fullView->titleText->Text());

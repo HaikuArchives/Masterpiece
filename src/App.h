@@ -8,7 +8,7 @@
 class App : public BApplication
 {
 public:
-	App(void);
+			App(void);
 };
 
 #endif

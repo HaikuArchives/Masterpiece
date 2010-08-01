@@ -28,7 +28,7 @@ public:
 							MainWindow(void);
 			void			MessageReceived(BMessage *msg);
 			bool			QuitRequested(void);
-			
+			//int				ReturnCount(void *NotUsed, int resultCount, char **colResults, char **colName);		
 private:
 			MenuBar			*mpMenuBar;
 			BBitmap			*testImage;
