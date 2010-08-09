@@ -59,18 +59,6 @@ MainWindow::MainWindow(void)
 	}
 }
 
-/*
-int MainWindow::ReturnCount(void *NotUsed, int resultCount, char **colResults, char **colName)
-{
-	sqlCheck = (int)colResults[0];
-	int i;
-	for(i=0;i<resultCount;i++)
-	{
-		fprintf(stdout, "count: %d, %s = %s\n", resultCount, colName[i], colResults[i]);
-	}
-	return 0;
-}
-*/
 static int ReturnCount(void *NotUsed, int resultCount, char **colResults, char **colName)
 {
 	int i;
@@ -112,7 +100,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			break;
 		
 		case ADD_NEW_COURSE:
-			tmpString = "select count(masterpieceID) from mptable where masterpieceName = '";
+			tmpString = "select masterPieceName from mptable where masterpieceName = '";
 			tmpString += this->fullView->titleText->Text();
 			tmpString += "';";
 			/*
@@ -120,8 +108,15 @@ void MainWindow::MessageReceived(BMessage *msg)
 			tmpString += this->fullView->titleText->Text();
 			tmpString += "');";
 			*/
-			sqlValue = sqlite3_exec(mpdb, tmpString, ReturnCount, NULL, &sqlErrMsg);
-			fprintf(stdout, "did i carry the value over: %d\n", sqlValue);
+			//sqlValue = sqlite3_exec(mpdb, tmpString, ReturnCount, NULL, &sqlErrMsg);
+			sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
+			if(sqlValue == SQLITE_OK)
+			{
+				if(nrow >= 1)
+				{
+					fprintf(stdout, "count: %d, %s = %s\n", nrow, selectResult[0], selectResult[1]);
+				}
+			}
 			fprintf(stdout, "count check errors: %s\n", sqlErrMsg);
 			// frpintf(stdout, "count value check: %d\n", 
 			// fprintf(stdout, "insert: %s", sqlErrMsg);
