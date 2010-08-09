@@ -59,6 +59,7 @@ MainWindow::MainWindow(void)
 	}
 }
 
+/*
 static int ReturnCount(void *NotUsed, int resultCount, char **colResults, char **colName)
 {
 	int i;
@@ -68,6 +69,7 @@ static int ReturnCount(void *NotUsed, int resultCount, char **colResults, char *
 	}
 	return 0;
 } 
+*/
 
 void MainWindow::MessageReceived(BMessage *msg)
 {
@@ -103,18 +105,40 @@ void MainWindow::MessageReceived(BMessage *msg)
 			tmpString = "select masterPieceName from mptable where masterpieceName = '";
 			tmpString += this->fullView->titleText->Text();
 			tmpString += "';";
-			/*
-			tmpString = "insert into mptable (masterpieceName) values('";
-			tmpString += this->fullView->titleText->Text();
-			tmpString += "');";
-			*/
-			//sqlValue = sqlite3_exec(mpdb, tmpString, ReturnCount, NULL, &sqlErrMsg);
 			sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 			if(sqlValue == SQLITE_OK)
 			{
 				if(nrow >= 1)
 				{
 					fprintf(stdout, "count: %d, %s = %s\n", nrow, selectResult[0], selectResult[1]);
+					sqlite3_free_table(selectResult);
+					tmpString = "The MasterPiece: \"";
+					tmpString += this->fullView->titleText->Text();
+					tmpString += "\" already exists.  Do you want to Open the existing, Create a new one or cancel?";
+					userAlert = new BAlert("MasterPiece Exists", tmpString, "Open", "Create", "Cancel", B_WIDTH_AS_USUAL, B_INFO_ALERT);
+					userAlert->MoveTo(350, 250);
+					userAlert->SetShortcut(2, B_ESCAPE);
+					int alertReturn = userAlert->Go();
+					if(alertReturn == 0) // Open
+					{
+						fprintf(stdout, "open course\n");
+					}
+					else if(alertReturn == 1) // Create
+					{
+						fprintf(stdout, "create course\n");
+					}
+					else if(alertReturn == 2) // Cancel
+					{
+						fprintf(stdout, "cancel course\n");
+					}
+			/*
+					need to call insert statement if the user want's to create it based off of
+					the alert dialog
+					tmpString = "insert into mptable (masterpieceName) values('";
+					tmpString += this->fullView->titleText->Text();
+					tmpString += "');";
+			*/
+					//sqlValue = sqlite3_exec(mpdb, tmpString, ReturnCount, NULL, &sqlErrMsg);
 				}
 			}
 			fprintf(stdout, "count check errors: %s\n", sqlErrMsg);

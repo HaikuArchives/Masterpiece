@@ -43,6 +43,7 @@ private:
 			BPath			tmpPath;
 			BDirectory 		*homeDir;
 			BAlert			*debugAlert;
+			BAlert			*userAlert;
 			BListView		*openListView;
 			OpenMasterView	*openView;
 			SummaryView		*sumView;
