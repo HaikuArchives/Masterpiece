@@ -110,6 +110,12 @@ void MainWindow::MessageReceived(BMessage *msg)
 					if(alertReturn == 0) // Open
 					{
 						fprintf(stdout, "open course\n");
+						this->SetTitle(this->fullView->titleText->Text());
+						if(!this->fullView->IsHidden()) this->fullView->Hide();
+						if(!this->openView->IsHidden()) this->openView->Hide();
+						if(this->sumView->IsHidden()) this->sumView->Show();
+						this->mpMenuBar->contentMenu->SetEnabled(true);
+						this->mpMenuBar->layoutMenu->SetEnabled(true);			
 					}
 					else if(alertReturn == 1) // Create
 					{
@@ -117,7 +123,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 						tmpString = "insert into mptable (masterpieceName) values('";
 						tmpString += this->fullView->titleText->Text();
 						tmpString += "');";
-						sqlValue = sqlite3_exec(mpdb, tmpString, ReturnCount, NULL, &sqlErrMsg);
+						sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
 						this->SetTitle(this->fullView->titleText->Text());
 						if(!this->fullView->IsHidden()) this->fullView->Hide();
 						if(!this->openView->IsHidden()) this->openView->Hide();
