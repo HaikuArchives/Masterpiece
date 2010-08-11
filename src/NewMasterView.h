@@ -9,8 +9,8 @@
 #include <Button.h>
 #include <TextView.h>
 
-#define ADD_NEW_COURSE		'add'
-#define CANCEL_NEW_COURSE	'cnc'
+#define ADD_NEW_COURSE		'add'	// add new mp button message
+#define CANCEL_NEW_COURSE	'cnc'	// cancel message
 #define TEXT_INSET 3.0
 
 class NewMasterView : public BView
@@ -21,10 +21,10 @@ public:
 						
 		void			Draw(BRect rect);
 		
-		BTextView		*titleText;
-		BStringView		*titleString;
-		BButton			*newButton;
-		BButton			*cancelButton;
+		BTextView		*titleText;		// New MasterPiece InputTextBox
+		BStringView		*titleString;	// Label
+		BButton			*newButton;		// Add Button
+		BButton			*cancelButton;	// Cancel Button
 		
 private:
 

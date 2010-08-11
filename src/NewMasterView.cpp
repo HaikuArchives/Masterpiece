@@ -24,6 +24,7 @@ NewMasterView::~NewMasterView(void)
 {
 }
 
+// set view and widgets background and foreground colors.
 void NewMasterView::Draw(BRect rect)
 {
 	rgb_color backColor = {215, 215, 215, 255};
