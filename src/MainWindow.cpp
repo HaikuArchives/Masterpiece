@@ -26,7 +26,11 @@ MainWindow::MainWindow(void)
 	sumView->Hide();
 	sqlErrMsg = 0;
 	sqlValue = sqlite3_open("./MasterPiece.db", &mpdb); // open masterpiece.db
-	fprintf(stdout, "open: %s\n", sqlite3_errmsg(mpdb)); // return errors to stdout
+	if(sqlite3_errcode(mpdb) != 0) // if error is not ok, then display error in alert.
+	{
+		errorAlert = new ErrorAlert(sqlite3_errmsg(mpdb));
+		errorAlert->Launch();
+	}
 }
 
 void MainWindow::MessageReceived(BMessage *msg)
@@ -37,16 +41,12 @@ void MainWindow::MessageReceived(BMessage *msg)
 		case MENU_NEW_MSG:
 			// 1.  need to center the modal window on the parent...
 			// 2.  check to see if course is currently open
-			errorAlert = new ErrorAlert("Test Text");
-			errorAlert->Launch();
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->openView->IsHidden()) this->openView->Hide();
 			if(this->fullView->IsHidden()) this->fullView->Show();
 			break;
 		
 		case MENU_OPN_MSG:
-			errorAlert = new ErrorAlert("test open");
-			errorAlert->Launch();
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->fullView->IsHidden()) this->fullView->Hide();
 			this->openView->openListView->MakeEmpty();
