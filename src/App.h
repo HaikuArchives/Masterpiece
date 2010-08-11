@@ -5,6 +5,8 @@
 
 #include "MainWindow.h"
 
+// initialize the application
+
 class App : public BApplication
 {
 public:
