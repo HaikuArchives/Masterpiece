@@ -67,13 +67,13 @@ void MainWindow::MessageReceived(BMessage *msg)
 			break;
 		
 		case ADD_NEW_COURSE:
-			tmpString = "select masterPieceName from mptable where masterpieceName = '";
+			tmpString = "select masterpieceName from mptable where masterpieceName = '";
 			tmpString += this->fullView->titleText->Text();
 			tmpString += "';";
 			sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 			if(sqlValue == SQLITE_OK) // if sql was successful
 			{
-				if(nrow >= 1)
+				if(nrow >= 1) // course already exists
 				{
 					fprintf(stdout, "count: %d, %s = %s\n", nrow, selectResult[0], selectResult[1]);
 					sqlite3_free_table(selectResult);
@@ -92,7 +92,8 @@ void MainWindow::MessageReceived(BMessage *msg)
 						if(!this->openView->IsHidden()) this->openView->Hide();
 						if(this->sumView->IsHidden()) this->sumView->Show();
 						this->mpMenuBar->contentMenu->SetEnabled(true);
-						this->mpMenuBar->layoutMenu->SetEnabled(true);			
+						this->mpMenuBar->layoutMenu->SetEnabled(true);
+						// 1. need to load summary view with the existing course information
 					}
 					else if(alertReturn == 1) // Create
 					{
@@ -101,12 +102,21 @@ void MainWindow::MessageReceived(BMessage *msg)
 						tmpString += this->fullView->titleText->Text();
 						tmpString += "');";
 						sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
-						this->SetTitle(this->fullView->titleText->Text());
-						if(!this->fullView->IsHidden()) this->fullView->Hide();
-						if(!this->openView->IsHidden()) this->openView->Hide();
-						if(this->sumView->IsHidden()) this->sumView->Show();
-						this->mpMenuBar->contentMenu->SetEnabled(true);
-						this->mpMenuBar->layoutMenu->SetEnabled(true);			
+						if(sqlValue == SQLITE_OK) // insert was successful
+						{
+							this->SetTitle(this->fullView->titleText->Text());
+							if(!this->fullView->IsHidden()) this->fullView->Hide();
+							if(!this->openView->IsHidden()) this->openView->Hide();
+							if(this->sumView->IsHidden()) this->sumView->Show();
+							this->mpMenuBar->contentMenu->SetEnabled(true);
+							this->mpMenuBar->layoutMenu->SetEnabled(true);
+							// load empty summary view information for this new course
+						}
+						else
+						{
+							errorAlert = new ErrorAlert("Error 1. Course was not created successfully. Please Try Again.");
+							errorAlert->Launch();
+						}
 					}
 					else if(alertReturn == 2) // Cancel
 					{
@@ -120,7 +130,6 @@ void MainWindow::MessageReceived(BMessage *msg)
 				errorAlert->Launch();
 			}
 			this->fullView->titleText->SetText(""); // reset new course title to blank when done
-			fprintf(stdout, "count check errors: %s\n", sqlErrMsg);
 			break;
 		
 		case CANCEL_NEW_COURSE:		
