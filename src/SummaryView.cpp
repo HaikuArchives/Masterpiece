@@ -12,10 +12,10 @@ SummaryView::~SummaryView(void)
 void SummaryView::Draw(BRect rect)
 {
 	
-	SetDrawingMode(B_OP_ALPHA);
-	SetHighColor(215, 215, 215);
-	FillRect(Bounds());
-	SetHighColor(0, 0, 0);
-	StrokeRect(Bounds());
+	SetDrawingMode(B_OP_ALPHA);	// 
+	SetHighColor(215, 215, 215);	// background gray app color
+	FillRect(Bounds());	// fill view with high color above
+	SetHighColor(0, 0, 0); // set color to black
+	StrokeRect(Bounds());	// set black rectangle around view
 }
 
