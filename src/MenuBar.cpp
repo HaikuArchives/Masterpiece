@@ -3,6 +3,7 @@
 MenuBar::MenuBar(BRect r)
 	:	BMenuBar(r, "menubar")
 {
+	// initialize menu's and menuitems
 	fileMenu = new BMenu("File");
 	contentMenu = new BMenu("Content");
 	layoutMenu = new BMenu("Layout");
@@ -12,17 +13,19 @@ MenuBar::MenuBar(BRect r)
 	thoughtsMenuItem = new BMenuItem("Thoughts", new BMessage(MENU_THT_MSG));
 	imagesMenuItem = new BMenuItem("Images", new BMessage(MENU_IMG_MSG));	
 	
+	// layout FileMenu
 	fileMenu->AddItem(newFileMenuItem);
 	fileMenu->AddItem(openFileMenuItem);
 	fileMenu->AddSeparatorItem();
 	fileMenu->AddItem(quitMenuItem);
-	
+	// Layout ContentMenu
 	contentMenu->AddItem(thoughtsMenuItem);
 	contentMenu->AddItem(imagesMenuItem);
-	
+	// Layout MainMenuBar
 	AddItem(fileMenu);
 	AddItem(contentMenu);
 	AddItem(layoutMenu);
+	// Set Enabled/Disabled Triggers at Initialization
 	contentMenu->SetEnabled(false);
 	layoutMenu->SetEnabled(false);
 		
