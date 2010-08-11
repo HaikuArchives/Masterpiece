@@ -25,38 +25,8 @@ MainWindow::MainWindow(void)
 	sumView->SetViewColor(myColor);
 	sumView->Hide();
 	sqlErrMsg = 0;
-	sqlValue = sqlite3_open("./MasterPiece.db", &mpdb);
-	fprintf(stdout, "open: %s\n", sqlite3_errmsg(mpdb));
-
-	/*
-	* NEED TO ABSTRACT THE THOUGHT STUFF TO A TAB
-	BRect tr = Bounds();
-	tr.top = 20;
-	contentTabView = new BTabView(tr, "tab_view");
-	contentTabView->SetViewColor(myColor);
-	tr = contentTabView->Bounds();
-	tr.InsetBy(5,5);
-	tr.bottom -= contentTabView->TabHeight();
-	tmpTab = new BTab();
-	contentTabView->AddTab(new BView(tr, 0, B_FOLLOW_ALL, B_WILL_DRAW), tmpTab);
-	tmpTab->SetLabel("Thoughts");
-	tmpTab = new BTab();
-	contentTabView->AddTab(new BView(tr, 0, B_FOLLOW_ALL, B_WILL_DRAW), tmpTab);
-	tmpTab->SetLabel("Images");
-	AddChild(contentTabView);
-	contentTabView->Hide();
-	*/
-	// Check that the MasterPiece directory exists and create it if it doesn't
-	// possibly check if user want's to create it or select a new one...
-	homeEntry = BEntry("/boot/home/MasterPiece", false);
-	if(!homeEntry.Exists()) // does not exist
-	{
-		// create MasterPiece directory...
-	}
-	else
-	{
-		homeDir = new BDirectory("/boot/home/MasterPiece");
-	}
+	sqlValue = sqlite3_open("./MasterPiece.db", &mpdb); // open masterpiece.db
+	fprintf(stdout, "open: %s\n", sqlite3_errmsg(mpdb)); // return errors to stdout
 }
 
 void MainWindow::MessageReceived(BMessage *msg)
@@ -66,6 +36,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 	{
 		case MENU_NEW_MSG:
 			// 1.  need to center the modal window on the parent...
+			// 2.  check to see if course is currently open
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->openView->IsHidden()) this->openView->Hide();
 			if(this->fullView->IsHidden()) this->fullView->Show();
