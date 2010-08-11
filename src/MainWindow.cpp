@@ -45,11 +45,11 @@ void MainWindow::MessageReceived(BMessage *msg)
 			break;
 		
 		case MENU_OPN_MSG:
+			errorAlert = new ErrorAlert("test open");
+			errorAlert->Launch();
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->fullView->IsHidden()) this->fullView->Hide();
 			this->openView->openListView->MakeEmpty();
-			//errorAlert = new ErrorAlert("Test Open");
-			errorAlert->Launch();
 			/*
 			homeDir->Rewind();
 			while(homeDir->GetNextEntry(&entry) == B_OK)

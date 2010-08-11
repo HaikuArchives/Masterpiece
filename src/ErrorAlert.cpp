@@ -14,5 +14,5 @@ ErrorAlert::~ErrorAlert(void)
 
 int ErrorAlert::Launch(void)
 {
-	return tmpAlert->Go();
+	return tmpAlert->Go(NULL);
 }
