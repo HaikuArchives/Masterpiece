@@ -71,7 +71,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			tmpString += this->fullView->titleText->Text();
 			tmpString += "';";
 			sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
-			if(sqlValue == SQLITE_OK)
+			if(sqlValue == SQLITE_OK) // if sql was successful
 			{
 				if(nrow >= 1)
 				{
@@ -113,6 +113,11 @@ void MainWindow::MessageReceived(BMessage *msg)
 						fprintf(stdout, "cancel course\n");
 					}
 				}
+			}
+			else // sql not succesful, display error
+			{
+				errorAlert = new ErrorAlert(sqlErrMsg);
+				errorAlert->Launch();
 			}
 			this->fullView->titleText->SetText(""); // reset new course title to blank when done
 			fprintf(stdout, "count check errors: %s\n", sqlErrMsg);
