@@ -37,6 +37,8 @@ void MainWindow::MessageReceived(BMessage *msg)
 		case MENU_NEW_MSG:
 			// 1.  need to center the modal window on the parent...
 			// 2.  check to see if course is currently open
+			errorAlert = new ErrorAlert("Test Text");
+			errorAlert->Launch();
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->openView->IsHidden()) this->openView->Hide();
 			if(this->fullView->IsHidden()) this->fullView->Show();
@@ -46,6 +48,9 @@ void MainWindow::MessageReceived(BMessage *msg)
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->fullView->IsHidden()) this->fullView->Hide();
 			this->openView->openListView->MakeEmpty();
+			//errorAlert = new ErrorAlert("Test Open");
+			errorAlert->Launch();
+			/*
 			homeDir->Rewind();
 			while(homeDir->GetNextEntry(&entry) == B_OK)
 			{
@@ -56,6 +61,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 					this->openView->openListView->AddItem(new BStringItem(name));
 				}
 			}
+			*/
 			if(this->openView->IsHidden()) this->openView->Show();
 			
 			break;

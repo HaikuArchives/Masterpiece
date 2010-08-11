@@ -18,6 +18,7 @@
 #include "NewMasterView.h"
 #include "OpenMasterView.h"
 #include "SummaryView.h"
+#include "ErrorAlert.h"
 
 #define MNG_CONTENT_MSG		'mcm'
 #define MNG_LAYOUT_MSG		'mlm'
@@ -54,6 +55,7 @@ private:
 			char			*sqlErrMsg;
 			char			**selectResult;
 			int				nrow, ncol;
+			ErrorAlert		*errorAlert;
 };
 
 #endif

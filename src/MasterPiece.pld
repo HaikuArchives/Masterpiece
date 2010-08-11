@@ -11,6 +11,7 @@ DEPENDENCY=/boot/home/projects/masterpiece/App.cpp|/boot/home/projects/masterpie
 SOURCEFILE=MainWindow.cpp
 DEPENDENCY=/boot/home/projects/masterpiece/MainWindow.cpp|/boot/home/projects/masterpiece/MainWindow.h|/boot/home/projects/masterpiece/MenuBar.h|/boot/home/projects/masterpiece/NewMasterView.h|/boot/home/projects/masterpiece/OpenMasterView.h|/boot/home/projects/masterpiece/SummaryView.
 SOURCEFILE=ErrorAlert.cpp
+DEPENDENCY=/HaikuData/Projects/masterpiece/ErrorAlert.cpp|/HaikuData/Projects/masterpiece/ErrorAlert.
 SOURCEFILE=SummaryView.cpp
 DEPENDENCY=/boot/home/projects/masterpiece/SummaryView.cpp|/boot/home/projects/masterpiece/SummaryView.
 SOURCEFILE=MenuBar.cpp
