@@ -28,9 +28,7 @@ MainWindow::MainWindow(void)
 	sqlValue = sqlite3_open_v2("./MasterPiece.db", &mpdb, SQLITE_OPEN_READWRITE, NULL); // open masterpiece.db
 	if(sqlite3_errcode(mpdb) != 0) // if error is not ok, then display error in alert.
 	{
-		tmpString = "1.1 Sql Error: ";
-		tmpString += sqlite3_errmsg(mpdb);
-		errorAlert = new ErrorAlert(tmpString);
+		errorAlert = new ErrorAlert("1.1 Sql Error: ", sqlite3_errmsg(mpdb));
 		errorAlert->Launch();
 		this->mpMenuBar->fileMenu->SetEnabled(false);
 		
@@ -118,7 +116,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 						}
 						else
 						{
-							errorAlert = new ErrorAlert("Error 1. Course was not created successfully. Please Try Again.");
+							errorAlert = new ErrorAlert("Error 2.1 MasterPiece was not created successfully. Please Try Again.");
 							errorAlert->Launch();
 						}
 					}
@@ -130,7 +128,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			}
 			else // sql not succesful, display error
 			{
-				errorAlert = new ErrorAlert(sqlErrMsg);
+				errorAlert = new ErrorAlert("1.2 Sql Error: ", sqlErrMsg);
 				errorAlert->Launch();
 			}
 			this->fullView->titleText->SetText(""); // reset new course title to blank when done
