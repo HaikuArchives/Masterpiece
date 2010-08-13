@@ -30,16 +30,21 @@ MainWindow::MainWindow(void)
 	be_app->GetAppInfo(&info);
 	BPath path(&info.ref);
 	path.GetParent(&path);
-	fprintf(stdout, path.Path());
 	tmpString = path.Path();
 	tmpString += "/MasterPiece.db";
 	sqlValue = sqlite3_open_v2(tmpString, &mpdb, SQLITE_OPEN_READWRITE, NULL); // open masterpiece.db
-	if(sqlite3_errcode(mpdb) != 0) // if error is not ok, then display error in alert.
+	if(sqlite3_errcode(mpdb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure.
+	{
+		// create db with structure here
+	}
+	else if(sqlite3_errcode(mpdb) == 0) // SQLITE_OK, it exists
+	{
+	}
+	else // if error is not ok or not existing, then display error in alert.
 	{
 		errorAlert = new ErrorAlert("1.1 Sql Error: ", sqlite3_errmsg(mpdb));
 		errorAlert->Launch();
 		this->mpMenuBar->fileMenu->SetEnabled(false);
-		
 	}
 }
 
