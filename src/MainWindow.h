@@ -13,6 +13,8 @@
 #include <Application.h>
 #include <sqlite3.h>
 #include <stdio.h>
+#include <Roster.h>
+#include <String.h>
 
 #include "MenuBar.h"
 #include "NewMasterView.h"

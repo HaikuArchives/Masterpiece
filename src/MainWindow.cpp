@@ -25,7 +25,15 @@ MainWindow::MainWindow(void)
 	sumView->SetViewColor(myColor);
 	sumView->Hide();
 	sqlErrMsg = 0;
-	sqlValue = sqlite3_open_v2("./MasterPiece.db", &mpdb, SQLITE_OPEN_READWRITE, NULL); // open masterpiece.db
+	
+	app_info info;
+	be_app->GetAppInfo(&info);
+	BPath path(&info.ref);
+	path.GetParent(&path);
+	fprintf(stdout, path.Path());
+	tmpString = path.Path();
+	tmpString += "/MasterPiece.db";
+	sqlValue = sqlite3_open_v2(tmpString, &mpdb, SQLITE_OPEN_READWRITE, NULL); // open masterpiece.db
 	if(sqlite3_errcode(mpdb) != 0) // if error is not ok, then display error in alert.
 	{
 		errorAlert = new ErrorAlert("1.1 Sql Error: ", sqlite3_errmsg(mpdb));
