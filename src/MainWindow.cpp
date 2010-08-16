@@ -46,6 +46,7 @@ MainWindow::MainWindow(void)
 	BString tmpPath = path.Path();
 	tmpPath += "/MasterPiece.db";
 	sqlValue = sqlite3_open_v2(tmpPath, &mpdb, SQLITE_OPEN_READWRITE, NULL); // open masterpiece.db
+//	sqlValue = sqlite3_open(tmpPath, &mpdb); // open masterpiece.db
 	if(sqlite3_errcode(mpdb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure.
 	{
 		// create db with structure here
