@@ -16,7 +16,7 @@
 #include <Roster.h>
 #include <String.h>
 
-#include "MenuBar.h"
+#include "MPMenuBar.h"
 #include "NewMasterView.h"
 #include "OpenMasterView.h"
 #include "SummaryView.h"
@@ -32,7 +32,7 @@ public:
 			void			MessageReceived(BMessage *msg);
 			bool			QuitRequested(void);
 private:
-			MenuBar			*mpMenuBar;
+			MPMenuBar			*mpMenuBar;
 			BBitmap			*testImage;
 			BView			*toolbarView;
 			BPicture		*onImage;

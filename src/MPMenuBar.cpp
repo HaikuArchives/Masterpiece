@@ -1,6 +1,6 @@
-#include "MenuBar.h"
+#include "MPMenuBar.h"
 
-MenuBar::MenuBar(BRect r)
+MPMenuBar::MPMenuBar(BRect r)
 	:	BMenuBar(r, "menubar")
 {
 	// initialize menu's and menuitems

@@ -18,7 +18,7 @@ MainWindow::MainWindow(void)
 {
 	BRect r(Bounds());
 	r.bottom = 20;
-	mpMenuBar = new MenuBar(r);
+	mpMenuBar = new MPMenuBar(r);
 	AddChild(mpMenuBar);
 	rgb_color myColor = {215, 215, 215, 255};
 	
