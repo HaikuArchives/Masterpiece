@@ -14,7 +14,7 @@
 #include "MainWindow.h"
 
 MainWindow::MainWindow(void)
-	:	BWindow(BRect(100,100,900,700),"MasterPiece",B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
+	:	BWindow(BRect(100,100,900,700),"MasterPiece",B_DOCUMENT_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
 {
 	BRect r(Bounds());
 	BView *mainView = new BView(Bounds(), "mainview", B_FOLLOW_ALL, B_WILL_DRAW);
@@ -68,7 +68,7 @@ MainWindow::MainWindow(void)
 
 void MainWindow::Draw(BRect rect)
 {
-	rgb_color backColor = {215, 215, 215, 255};
+	//rgb_color backColor = {215, 215, 215, 255};
 }
 
 void MainWindow::MessageReceived(BMessage *msg)
@@ -281,6 +281,10 @@ void MainWindow::MessageReceived(BMessage *msg)
 				errorAlert->Launch();
 			}
 			break;
+			
+		case B_WINDOW_RESIZED:
+			fprintf(stdout, "resized window");
+			this->openView->Invalidate();
 		default:
 		{
 			BWindow::MessageReceived(msg);
