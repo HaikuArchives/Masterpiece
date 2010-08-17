@@ -16,7 +16,8 @@ public:
 		void	Draw(BRect rect);		// set view draw here
 		
 		BStringView	*sumViewTitleString;
-		BString title;
+		BStringView *thoughtTitleString;
+		BStringView *orderedTitleString;
 		
 private:
 protected:
