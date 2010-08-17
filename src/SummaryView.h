@@ -18,6 +18,8 @@ public:
 		BStringView	*sumViewTitleString;
 		BStringView *thoughtTitleString;
 		BStringView *orderedTitleString;
+		BStringView *thoughtCountString;
+		BStringView *orderedCountString;
 		
 private:
 protected:
