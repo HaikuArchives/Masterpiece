@@ -27,19 +27,8 @@ void OpenMasterView::AttachedToWindow()
 void OpenMasterView::Draw(BRect rect)
 {
 	/*
-	rgb_color backColor = {215, 215, 215, 255};
-
-	SetDrawingMode(B_OP_ALPHA);
-	SetHighColor(215, 215, 215);
-	openTitleString->SetViewColor(backColor); // group of commands set's the color back to gray like the view.
-	openTitleString->SetHighColor(backColor);
-	openTitleString->FillRect(openTitleString->Bounds());
-	openTitleString->SetHighColor(0, 0, 0);
-	openTitleString->SetText("Select a MasterPiece:");
-	openButton->SetLowColor(backColor);
-	cancelButton->SetLowColor(backColor);
-	FillRect(Bounds());
+	 * need to figure out how to draw better on resize
+	*/
 	SetHighColor(0, 0, 0);
 	StrokeRect(Bounds());
-	*/
 }
