@@ -148,6 +148,9 @@ void MainWindow::MessageReceived(BMessage *msg)
 							if(sqlValue == SQLITE_OK) // insert was successful
 							{
 								this->SetTitle(this->fullView->titleText->Text());
+								tmpString = this->fullView->titleText->Text();
+								tmpString += " Summary";
+								this->sumView->sumViewTitleString->SetText(tmpString);						
 								if(!this->fullView->IsHidden()) this->fullView->Hide();
 								if(!this->openView->IsHidden()) this->openView->Hide();
 								if(this->sumView->IsHidden()) this->sumView->Show();
@@ -174,6 +177,9 @@ void MainWindow::MessageReceived(BMessage *msg)
 						if(sqlValue == SQLITE_OK) // insert was successful
 						{
 							this->SetTitle(this->fullView->titleText->Text());
+							tmpString = this->fullView->titleText->Text();
+							tmpString += " Summary";
+							this->sumView->sumViewTitleString->SetText(tmpString);						
 							if(!this->fullView->IsHidden()) this->fullView->Hide();
 							if(!this->openView->IsHidden()) this->openView->Hide();
 							if(this->sumView->IsHidden()) this->sumView->Show();
@@ -238,12 +244,16 @@ void MainWindow::MessageReceived(BMessage *msg)
 					if(nrow == 1) // 1 id was returned.
 					{
 						this->SetTitle(selectResult[1]);
+						tmpString = selectResult[1];
+						tmpString += " Summary";
+						this->sumView->sumViewTitleString->SetText(tmpString);						
 						sqlite3_free_table(selectResult);
 						if(!this->openView->IsHidden()) this->openView->Hide();
 						if(!this->fullView->IsHidden()) this->fullView->Hide();
 						if(this->sumView->IsHidden()) this->sumView->Show();
 						this->mpMenuBar->contentMenu->SetEnabled(true);
 						this->mpMenuBar->layoutMenu->SetEnabled(true);
+						
 					}
 					else // wrong resultset was returned...
 					{

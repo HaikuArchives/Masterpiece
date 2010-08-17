@@ -32,7 +32,7 @@ public:
 			void			MessageReceived(BMessage *msg);
 			bool			QuitRequested(void);
 private:
-			MPMenuBar			*mpMenuBar;
+			MPMenuBar		*mpMenuBar;
 			BBitmap			*testImage;
 			BView			*toolbarView;
 			BPicture		*onImage;
