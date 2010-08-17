@@ -30,6 +30,7 @@ class MainWindow : public BWindow
 public:
 							MainWindow(void);
 			void			MessageReceived(BMessage *msg);
+			void			Draw(BRect rect);
 			bool			QuitRequested(void);
 private:
 			MPMenuBar		*mpMenuBar;

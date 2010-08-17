@@ -17,8 +17,16 @@ OpenMasterView::~OpenMasterView(void)
 {
 }
 
+void OpenMasterView::AttachedToWindow()
+{
+	if(Parent())
+		SetViewColor(Parent()->ViewColor());
+	BView::AttachedToWindow();
+}
+
 void OpenMasterView::Draw(BRect rect)
 {
+	/*
 	rgb_color backColor = {215, 215, 215, 255};
 
 	SetDrawingMode(B_OP_ALPHA);
@@ -33,4 +41,5 @@ void OpenMasterView::Draw(BRect rect)
 	FillRect(Bounds());
 	SetHighColor(0, 0, 0);
 	StrokeRect(Bounds());
+	*/
 }

@@ -21,6 +21,7 @@ public:
 						~OpenMasterView(void);
 						
 		void			Draw(BRect rect);
+		void			AttachedToWindow();
 
 		BListView		*openListView;
 		BStringView		*openTitleString;

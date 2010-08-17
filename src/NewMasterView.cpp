@@ -24,9 +24,17 @@ NewMasterView::~NewMasterView(void)
 {
 }
 
+void NewMasterView::AttachedToWindow()
+{
+	if(Parent())
+		SetViewColor(Parent()->ViewColor());
+	BView::AttachedToWindow();
+}
+
 // set view and widgets background and foreground colors.
 void NewMasterView::Draw(BRect rect)
 {
+	/*
 	rgb_color backColor = {215, 215, 215, 255};
 
 	SetDrawingMode(B_OP_ALPHA);
@@ -41,4 +49,5 @@ void NewMasterView::Draw(BRect rect)
 	FillRect(Bounds());
 	SetHighColor(0, 0, 0);
 	StrokeRect(Bounds());
+	*/
 }

@@ -17,24 +17,27 @@ MainWindow::MainWindow(void)
 	:	BWindow(BRect(100,100,900,700),"MasterPiece",B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
 {
 	BRect r(Bounds());
+	BView *mainView = new BView(Bounds(), "mainview", B_FOLLOW_ALL, B_WILL_DRAW);
+	AddChild(mainView);
+	rgb_color myColor = {215, 215, 215, 255};
+	mainView->SetViewColor(myColor);
 	r.bottom = 20;
 	mpMenuBar = new MPMenuBar(r);
-	AddChild(mpMenuBar);
-	rgb_color myColor = {215, 215, 215, 255};
-	
+	mainView->AddChild(mpMenuBar);
+
 	fullView = new NewMasterView();
-	AddChild(fullView);
+	mainView->AddChild(fullView);
 	fullView->SetViewColor(myColor);
 	fullView->Hide();
 	
 	openView = new OpenMasterView();
-	AddChild(openView);
+	mainView->AddChild(openView);
 	openView->SetViewColor(myColor);
 	openView->Hide();
 	BRect sumRect(Bounds());
 	sumRect.top = 20;
 	sumView = new SummaryView(sumRect);
-	AddChild(sumView);
+	mainView->AddChild(sumView);
 	sumView->SetViewColor(myColor);
 	sumView->Hide();
 	sqlErrMsg = 0;
@@ -61,6 +64,11 @@ MainWindow::MainWindow(void)
 		errorAlert->Launch();
 		this->mpMenuBar->fileMenu->SetEnabled(false);
 	}
+}
+
+void MainWindow::Draw(BRect rect)
+{
+	rgb_color backColor = {215, 215, 215, 255};
 }
 
 void MainWindow::MessageReceived(BMessage *msg)

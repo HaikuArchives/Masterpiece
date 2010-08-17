@@ -19,6 +19,7 @@ public:
 						~NewMasterView(void);
 						
 		void			Draw(BRect rect);
+		void			AttachedToWindow();
 		
 		BTextView		*titleText;		// New MasterPiece InputTextBox
 		BStringView		*titleString;	// Label
