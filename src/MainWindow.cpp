@@ -305,3 +305,8 @@ MainWindow::QuitRequested(void)
 	be_app->PostMessage(B_QUIT_REQUESTED);
 	return true;
 }
+
+void MainWindow::PopulateSummaryView(int mpID)
+{
+	// place code here to populate summary view based on input id...
+}

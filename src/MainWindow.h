@@ -33,6 +33,7 @@ public:
 			void			Draw(BRect rect);
 			bool			QuitRequested(void);
 			void			FrameResized(float width, float height);
+			void			PopulateSummaryView(int mpID);
 private:
 			MPMenuBar		*mpMenuBar;
 			BBitmap			*testImage;
