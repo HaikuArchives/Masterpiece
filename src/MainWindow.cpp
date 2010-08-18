@@ -282,9 +282,6 @@ void MainWindow::MessageReceived(BMessage *msg)
 			}
 			break;
 			
-		case B_WINDOW_RESIZED:
-			fprintf(stdout, "resized window");
-			this->openView->Invalidate();
 		default:
 		{
 			BWindow::MessageReceived(msg);
@@ -293,6 +290,11 @@ void MainWindow::MessageReceived(BMessage *msg)
 	}
 }
 
+void MainWindow::FrameResized(float width, float height)
+{
+	this->fullView->Invalidate();
+	this->openView->Invalidate();
+}
 
 bool
 MainWindow::QuitRequested(void)

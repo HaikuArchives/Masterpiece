@@ -32,6 +32,7 @@ public:
 			void			MessageReceived(BMessage *msg);
 			void			Draw(BRect rect);
 			bool			QuitRequested(void);
+			void			FrameResized(float width, float height);
 private:
 			MPMenuBar		*mpMenuBar;
 			BBitmap			*testImage;

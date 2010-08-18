@@ -34,20 +34,6 @@ void NewMasterView::AttachedToWindow()
 // set view and widgets background and foreground colors.
 void NewMasterView::Draw(BRect rect)
 {
-	/*
-	rgb_color backColor = {215, 215, 215, 255};
-
-	SetDrawingMode(B_OP_ALPHA);
-	SetHighColor(215, 215, 215);
-	titleString->SetViewColor(backColor);
-	titleString->SetHighColor(backColor);
-	titleString->FillRect(titleString->Bounds());
-	titleString->SetHighColor(0, 0, 0);
-	titleString->SetText("Enter Title:");
-	newButton->SetLowColor(backColor);
-	cancelButton->SetLowColor(backColor);
-	FillRect(Bounds());
 	SetHighColor(0, 0, 0);
 	StrokeRect(Bounds());
-	*/
 }
