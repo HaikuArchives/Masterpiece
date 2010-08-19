@@ -49,7 +49,6 @@ MainWindow::MainWindow(void)
 	BString tmpPath = path.Path();
 	tmpPath += "/MasterPiece.db";
 	sqlValue = sqlite3_open_v2(tmpPath, &mpdb, SQLITE_OPEN_READWRITE, NULL); // open masterpiece.db
-//	sqlValue = sqlite3_open(tmpPath, &mpdb); // open masterpiece.db
 	if(sqlite3_errcode(mpdb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure.
 	{
 		// create db with structure here
@@ -88,7 +87,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->fullView->IsHidden()) this->fullView->Hide();
 			this->openView->openListView->MakeEmpty();
-			tmpString = "select masterpieceID, masterpieceName from mptable";
+			tmpString = "select mpID, mpName from mptable";
 			sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 			if(sqlValue == SQLITE_OK) // if sql was successful
 			{
@@ -118,7 +117,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			}
 			else // mp title has length
 			{
-				tmpString = "select masterpieceName from mptable where masterpieceName = '";
+				tmpString = "select mpName from mptable where mpName = '";
 				tmpString += this->fullView->titleText->Text();
 				tmpString += "';";
 				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
@@ -149,7 +148,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 						}
 						else if(alertReturn == 1) // Create
 						{
-							tmpString = "insert into mptable (masterpieceName) values('";
+							tmpString = "insert into mptable (mpName) values('";
 							tmpString += this->fullView->titleText->Text();
 							tmpString += "');";
 							sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
@@ -178,7 +177,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 					}
 					else // course does not exist, add course
 					{
-						tmpString = "insert into mptable (masterpieceName) values('";
+						tmpString = "insert into mptable (mpName) values('";
 						tmpString += this->fullView->titleText->Text();
 						tmpString += "');";
 						sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
@@ -244,7 +243,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			item = dynamic_cast<BStringItem*>(this->openView->openListView->ItemAt(selected - 1));
 			if(item)
 			{
-				tmpString = "select masterpieceName from mptable where masterpieceID = ";
+				tmpString = "select mpName from mptable where mpID = ";
 				tmpString << selected;
 				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 				if(sqlValue == SQLITE_OK) // if sql was successful
