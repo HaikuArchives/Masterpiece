@@ -1,6 +1,5 @@
 NAME=MasterPiece
 TARGETNAME=MasterPiece
-PLATFORM=Haiku
 GROUP=Source Files
 EXPANDGROUP=yes
 SOURCEFILE=NewMasterView.cpp
