@@ -21,6 +21,7 @@
 #include "NewMasterView.h"
 #include "OpenMasterView.h"
 #include "SummaryView.h"
+#include "ThoughtView.h"
 #include "ErrorAlert.h"
 
 #define MNG_CONTENT_MSG		'mcm'
@@ -54,6 +55,7 @@ private:
 			BListView		*openListView;
 			OpenMasterView	*openView;
 			SummaryView		*sumView;
+			ThoughtView		*thoughtView;
 			BString			tmpString;
 			int				returnValue;
 			sqlite3			*mpdb;

@@ -40,6 +40,12 @@ MainWindow::MainWindow(void)
 	mainView->AddChild(sumView);
 	sumView->SetViewColor(myColor);
 	sumView->Hide();
+	
+	thoughtView = new ThoughtView(sumRect);
+	mainView->AddChild(thoughtView);
+	thoughtView->SetViewColor(myColor);
+	thoughtView->Hide();
+	
 	sqlErrMsg = 0;
 	
 	app_info info;
@@ -250,7 +256,8 @@ void MainWindow::MessageReceived(BMessage *msg)
 			break;
 			
 		case MENU_THT_MSG:
-			if(this->sumView->IsHidden()) this->sumView->Show();
+			if(!this->sumView->IsHidden()) this->sumView->Hide();
+			if(this->thoughtView->IsHidden()) this->thoughtView->Show();
 			// do something here...
 			break;
 			
