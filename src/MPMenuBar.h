@@ -6,6 +6,7 @@
 
 #define MENU_NEW_MSG		'new'					// new menu message
 #define MENU_OPN_MSG		'open'					// open menu message
+#define MENU_CLS_MSG		'cls'					// close menu message
 #define MENU_THT_MSG		'mtm'					// thought menu message
 #define MENU_IMG_MSG		'mim'					// image menu message
 
@@ -18,6 +19,7 @@ public:
 			BMenu			*layoutMenu;			// Layout Menu
 			BMenuItem		*newFileMenuItem;		// New Masterpiece MenuItem
 			BMenuItem		*openFileMenuItem;		// Open Masterpiece MenuItem
+			BMenuItem		*closeFileMenuItem;		// Close MasterPiece MenuItem
 			BMenuItem		*quitMenuItem;			// Quit Application MenuItem
 			BMenuItem		*thoughtsMenuItem;		// Thoughts View MenuItem
 			BMenuItem		*imagesMenuItem;		// Images View MenuItem

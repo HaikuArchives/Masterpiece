@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <Roster.h>
 #include <String.h>
+#include <File.h>
 
 #include "MPMenuBar.h"
 #include "NewMasterView.h"

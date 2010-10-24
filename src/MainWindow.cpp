@@ -51,7 +51,28 @@ MainWindow::MainWindow(void)
 	sqlValue = sqlite3_open_v2(tmpPath, &mpdb, SQLITE_OPEN_READWRITE, NULL); // open masterpiece.db
 	if(sqlite3_errcode(mpdb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure.
 	{
-		// create db with structure here
+		sqlValue = sqlite3_open_v2(tmpPath, &mpdb, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL); // create masterpiece.db
+		if(sqlite3_errcode(mpdb) == 0) // sqlite_ok
+		{
+			tmpString = "create table mptable(mpid integer primary key autoincrement, mpname text);";
+			tmpString += " create table ideatable(ideaid integer primary key autoincrement, ideadata blob, ideatype integer, mpid integer, ordernumber integer);";
+			tmpString += " create table itypetable(itypeid integer primary key autoincrement, itypename text, itypedescription text);";
+			sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
+			if(sqlValue == SQLITE_OK) // if sql was successful
+			{
+				// ladida...
+			}
+			else // sql not successful
+			{
+				errorAlert = new ErrorAlert("1.1 SQL Error: ", sqlErrMsg);
+				errorAlert->Launch();
+			}
+		}
+		else // some kind of failure...
+		{
+			errorAlert = new ErrorAlert("1.0 Sql Error: ", sqlite3_errmsg(mpdb));
+			errorAlert->Launch();
+		}
 	}
 	else if(sqlite3_errcode(mpdb) == 0) // SQLITE_OK, it exists
 	{
@@ -59,7 +80,7 @@ MainWindow::MainWindow(void)
 	}
 	else // if error is not ok or not existing, then display error in alert.
 	{
-		errorAlert = new ErrorAlert("1.1 Sql Error: ", sqlite3_errmsg(mpdb));
+		errorAlert = new ErrorAlert("1.2 Sql Error: ", sqlite3_errmsg(mpdb));
 		errorAlert->Launch();
 		this->mpMenuBar->fileMenu->SetEnabled(false);
 	}
@@ -87,7 +108,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->fullView->IsHidden()) this->fullView->Hide();
 			this->openView->openListView->MakeEmpty();
-			tmpString = "select mpID, mpName from mptable";
+			tmpString = "select mpid, mpname from mptable";
 			sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 			if(sqlValue == SQLITE_OK) // if sql was successful
 			{
@@ -98,17 +119,25 @@ void MainWindow::MessageReceived(BMessage *msg)
 					tmpString += selectResult[(i*ncol)+3];
 					this->openView->openListView->AddItem(new BStringItem(tmpString));
 				}
+				if(this->openView->IsHidden()) this->openView->Show();
 			}
 			else // sql select was not successful.
 			{
-				errorAlert = new ErrorAlert("1.3 SQL Error: ", sqlErrMsg);
+				errorAlert = new ErrorAlert("No MasterPieces Exist. Please Create One First.\r\n1.4 SQL Error: ", sqlErrMsg);
 				errorAlert->Launch();
 			}
 			sqlite3_free_table(selectResult); // free table either way
-			if(this->openView->IsHidden()) this->openView->Show();
 			
 			break;
-		
+			
+		case MENU_CLS_MSG:
+			// 1.  close course - simply clear values and hide views.
+			if(!this->sumView->IsHidden()) this->sumView->Hide();
+			this->SetTitle("MasterPiece");
+			this->mpMenuBar->closeFileMenuItem->SetEnabled(false);
+			
+			break;
+
 		case ADD_NEW_COURSE:
 			if(strlen(this->fullView->titleText->Text()) == 0) // mp title is empty
 			{
@@ -117,7 +146,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			}
 			else // mp title has length
 			{
-				tmpString = "select mpName from mptable where mpName = '";
+				tmpString = "select mpname from mptable where mpname = '";
 				tmpString += this->fullView->titleText->Text();
 				tmpString += "';";
 				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
@@ -144,11 +173,12 @@ void MainWindow::MessageReceived(BMessage *msg)
 							if(this->sumView->IsHidden()) this->sumView->Show();
 							this->mpMenuBar->contentMenu->SetEnabled(true);
 							this->mpMenuBar->layoutMenu->SetEnabled(true);
+							this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
 							// 1. need to load summary view with the existing course information
 						}
 						else if(alertReturn == 1) // Create
 						{
-							tmpString = "insert into mptable (mpName) values('";
+							tmpString = "insert into mptable (mpname) values('";
 							tmpString += this->fullView->titleText->Text();
 							tmpString += "');";
 							sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
@@ -163,6 +193,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 								if(this->sumView->IsHidden()) this->sumView->Show();
 								this->mpMenuBar->contentMenu->SetEnabled(true);
 								this->mpMenuBar->layoutMenu->SetEnabled(true);
+								this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
 								// load empty summary view information for this new course
 							}
 							else // insert failed
@@ -177,7 +208,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 					}
 					else // course does not exist, add course
 					{
-						tmpString = "insert into mptable (mpName) values('";
+						tmpString = "insert into mptable (mpname) values('";
 						tmpString += this->fullView->titleText->Text();
 						tmpString += "');";
 						sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
@@ -192,6 +223,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 							if(this->sumView->IsHidden()) this->sumView->Show();
 							this->mpMenuBar->contentMenu->SetEnabled(true);
 							this->mpMenuBar->layoutMenu->SetEnabled(true);
+							this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
 							// load empty summary view information for this new course
 						}
 						else // insert failed
@@ -203,7 +235,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 				}
 				else // sql not succesful, display error
 				{
-					errorAlert = new ErrorAlert("1.2 Sql Error: ", sqlErrMsg);
+					errorAlert = new ErrorAlert("1.3 Sql Error: ", sqlErrMsg);
 					errorAlert->Launch();
 				}
 				this->fullView->titleText->SetText(""); // reset new course title to blank when done regardless of operation
@@ -243,7 +275,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			item = dynamic_cast<BStringItem*>(this->openView->openListView->ItemAt(selected - 1));
 			if(item)
 			{
-				tmpString = "select mpName from mptable where mpID = ";
+				tmpString = "select mpname from mptable where mpid = ";
 				tmpString << selected;
 				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 				if(sqlValue == SQLITE_OK) // if sql was successful
@@ -260,6 +292,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 						if(this->sumView->IsHidden()) this->sumView->Show();
 						this->mpMenuBar->contentMenu->SetEnabled(true);
 						this->mpMenuBar->layoutMenu->SetEnabled(true);
+						this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
 						
 					}
 					else // wrong resultset was returned...
@@ -270,7 +303,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 				}
 				else // sql wasn't successful
 				{
-					errorAlert = new ErrorAlert("1.4 Sql Error: ", sqlErrMsg);
+					errorAlert = new ErrorAlert("1.5 Sql Error: ", sqlErrMsg);
 					errorAlert->Launch();
 				}
 			}
@@ -307,5 +340,6 @@ MainWindow::QuitRequested(void)
 
 void MainWindow::PopulateSummaryView(int mpID)
 {
+	//tmpString = "select thoughtID, thoughtData from ttable wher
 	// place code here to populate summary view based on input id...
 }

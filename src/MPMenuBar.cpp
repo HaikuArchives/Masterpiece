@@ -9,6 +9,7 @@ MPMenuBar::MPMenuBar(BRect r)
 	layoutMenu = new BMenu("Layout");
 	newFileMenuItem = new BMenuItem("New MasterPiece", new BMessage(MENU_NEW_MSG));
 	openFileMenuItem = new BMenuItem("Open Existing", new BMessage(MENU_OPN_MSG));
+	closeFileMenuItem = new BMenuItem("Close Current", new BMessage(MENU_CLS_MSG));
 	quitMenuItem = new BMenuItem("Quit", new BMessage(B_QUIT_REQUESTED));
 	thoughtsMenuItem = new BMenuItem("Thoughts", new BMessage(MENU_THT_MSG));
 	imagesMenuItem = new BMenuItem("Images", new BMessage(MENU_IMG_MSG));	
@@ -16,6 +17,7 @@ MPMenuBar::MPMenuBar(BRect r)
 	// layout FileMenu
 	fileMenu->AddItem(newFileMenuItem);
 	fileMenu->AddItem(openFileMenuItem);
+	fileMenu->AddItem(closeFileMenuItem);
 	fileMenu->AddSeparatorItem();
 	fileMenu->AddItem(quitMenuItem);
 	// Layout ContentMenu
@@ -28,6 +30,7 @@ MPMenuBar::MPMenuBar(BRect r)
 	// Set Enabled/Disabled Triggers at Initialization
 	contentMenu->SetEnabled(false);
 	layoutMenu->SetEnabled(false);
+	closeFileMenuItem->SetEnabled(false);
 		
 }
 
