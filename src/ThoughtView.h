@@ -6,6 +6,8 @@
 #include <StringView.h>
 #include <stdio.h>
 
+#include "MultiLineTextControl.h"
+
 class ThoughtView : public BView
 {
 public:
@@ -17,6 +19,7 @@ public:
 		void	AttachedToWindow();		// set view to get background properties here
 		
 		BStringView	*sumViewTitleString;
+		MultiLineTextControl	*thoughtEntry;
 		
 private:
 protected:
