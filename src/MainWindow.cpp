@@ -274,12 +274,6 @@ void MainWindow::MessageReceived(BMessage *msg)
 			// do something here...
 			break;
 			
-		case CLOSE_TMP:
-			// do something
-			//tmper->Hide();
-			//tmper->Quit();
-			//tmper->Close();
-			break;
 		case MNG_LAYOUT_MSG:
 			// do something here...
 			break;

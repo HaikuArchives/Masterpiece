@@ -11,3 +11,18 @@ TmpWindow::TmpWindow(void)
 	tmpButton = new BButton(BRect(10, 10, 90, 35), NULL, "Close", new BMessage(CLOSE_TMP), B_FOLLOW_NONE, B_WILL_DRAW);
 	tmpView->AddChild(tmpButton);
 }
+
+void TmpWindow::MessageReceived(BMessage *msg)
+{
+	switch (msg->what)
+	{
+		case CLOSE_TMP:
+		// do soemthing
+		this->Close();
+		break;
+		
+		default:
+		BWindow::MessageReceived(msg);
+		break;
+	}
+}
