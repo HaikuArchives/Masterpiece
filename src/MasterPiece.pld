@@ -47,6 +47,7 @@ SYSTEMINCLUDE=/boot/home/config/include
 LIBRARY=/boot/develop/lib/x86/libroot.so
 LIBRARY=/boot/develop/lib/x86/libbe.so
 LIBRARY=/boot/common/lib/libsqlite3.so
+LIBRARY=/boot/common/lib/liblayout.so
 RUNARGS=
 CCDEBUG=yes
 CCPROFILE=no

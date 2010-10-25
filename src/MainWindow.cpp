@@ -17,13 +17,21 @@ MainWindow::MainWindow(void)
 	:	BWindow(BRect(100,100,900,700),"MasterPiece",B_DOCUMENT_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
 {
 	BRect r(Bounds());
+	/* begin comment out group when not testing layout code */
+	BGroupLayout* mainGroup = new BGroupLayout(B_VERTICAL);
+	BGridLayout* mainGrid = new BGridLayout();
+	SetLayout(mainGroup);
+	/* end comment out group when not testing layout code */
 	BView *mainView = new BView(Bounds(), "mainview", B_FOLLOW_ALL, B_WILL_DRAW);
-	AddChild(mainView);
+	//AddChild(mainView);  // comment out when testing layout code
 	rgb_color myColor = {215, 215, 215, 255};
 	mainView->SetViewColor(myColor);
-	r.bottom = 20;
+	//r.bottom = 20;
 	mpMenuBar = new MPMenuBar(r);
-	mainView->AddChild(mpMenuBar);
+	//mainView->AddChild(mpMenuBar); // uncomment when not using layout code
+	mainGroup->AddView(0, mpMenuBar); // comment out when not testing layout code
+	mainGroup->SetInsets(0, 0, 0, 0);
+	mainGroup->AddItem(mainGrid);
 
 	fullView = new NewMasterView();
 	mainView->AddChild(fullView);
