@@ -8,4 +8,6 @@ TmpWindow::TmpWindow(void)
 	rgb_color tmpColor = {215, 215, 215, 255};
 	tmpView->SetViewColor(tmpColor);
 	AddChild(tmpView);
+	tmpButton = new BButton(BRect(10, 10, 90, 35), NULL, "Close", new BMessage(CLOSE_TMP), B_FOLLOW_NONE, B_WILL_DRAW);
+	tmpView->AddChild(tmpButton);
 }
