@@ -34,9 +34,10 @@ MainWindow::MainWindow(void)
 	mainGroup->AddItem(mainGrid);
 
 	fullView = new NewMasterView();
-	mainView->AddChild(fullView);
+	//mainView->AddChild(fullView); // uncomment when not using layout...
 	fullView->SetViewColor(myColor);
 	fullView->Hide();
+	mainGrid->AddView(fullView, 0, 0);
 	
 	openView = new OpenMasterView();
 	mainView->AddChild(openView);
