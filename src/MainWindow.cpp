@@ -54,6 +54,10 @@ MainWindow::MainWindow(void)
 	mainView->AddChild(thoughtView);
 	thoughtView->SetViewColor(myColor);
 	thoughtView->Hide();
+	// code snippet creating tmp window and showing it without crashing app.  can move all current views to windows as well as new layouts for each...
+	tmper = new TmpWindow();
+	tmper->Show();
+	// end code snippet
 	
 	sqlErrMsg = 0;
 	
