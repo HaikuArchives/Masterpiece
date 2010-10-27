@@ -23,6 +23,7 @@ NewWindow::NewWindow(float mainX, float mainY)
 	mainGrid->AddView(newButton, 1, 1);
 	viewFrame.InsetBy(-2.0, -2.0);
 	MoveTo(mainX, mainY);
+	titleText->StrokeRect(textFrame);
 }
 void NewWindow::MessageReceived(BMessage *msg)
 {
