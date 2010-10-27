@@ -9,7 +9,6 @@ App::App(void)
 	mainwin->Show(); // show the main app window
 }
 
-
 int
 main(void)
 {

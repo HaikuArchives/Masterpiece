@@ -25,7 +25,7 @@
 #include "SummaryView.h"
 #include "ThoughtView.h"
 #include "ErrorAlert.h"
-#include "TmpWindow.h"
+#include "NewWindow.h"
 
 #define MNG_CONTENT_MSG		'mcm'
 #define MNG_LAYOUT_MSG		'mlm'
@@ -67,7 +67,7 @@ private:
 			char			**selectResult;
 			int				nrow, ncol;
 			ErrorAlert		*errorAlert;
-			TmpWindow		*tmper;
+			NewWindow		*newWin;
 };
 
 #endif

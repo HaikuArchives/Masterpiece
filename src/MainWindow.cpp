@@ -54,10 +54,6 @@ MainWindow::MainWindow(void)
 	mainView->AddChild(thoughtView);
 	thoughtView->SetViewColor(myColor);
 	thoughtView->Hide();
-	// code snippet creating tmp window and showing it without crashing app.  can move all current views to windows as well as new layouts for each...
-	tmper = new TmpWindow();
-	tmper->Show();
-	// end code snippet
 	
 	sqlErrMsg = 0;
 	
@@ -120,7 +116,9 @@ void MainWindow::MessageReceived(BMessage *msg)
 			// 2.  check to see if course is currently open
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->openView->IsHidden()) this->openView->Hide();
-			if(this->fullView->IsHidden()) this->fullView->Show();
+			//if(this->fullView->IsHidden()) this->fullView->Show();
+			newWin = new NewWindow();
+			newWin->Show();
 			break;
 		
 		case MENU_OPN_MSG:
@@ -273,7 +271,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			if(this->thoughtView->IsHidden()) this->thoughtView->Show();
 			// do something here...
 			break;
-			
+		
 		case MNG_LAYOUT_MSG:
 			// do something here...
 			break;
