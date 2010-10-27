@@ -68,6 +68,8 @@ private:
 			int				nrow, ncol;
 			ErrorAlert		*errorAlert;
 			NewWindow		*newWin;
+			float			xPos;
+			float			yPos;
 };
 
 #endif

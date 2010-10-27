@@ -108,7 +108,7 @@ void MainWindow::Draw(BRect rect)
 
 void MainWindow::MessageReceived(BMessage *msg)
 {
-	
+	BRect r(Bounds());	
 	switch (msg->what)
 	{
 		case MENU_NEW_MSG:
@@ -117,7 +117,9 @@ void MainWindow::MessageReceived(BMessage *msg)
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->openView->IsHidden()) this->openView->Hide();
 			//if(this->fullView->IsHidden()) this->fullView->Show();
-			newWin = new NewWindow();
+			xPos = (r.right - r.left) / 2;
+			yPos = (r.bottom - r.top) / 2;
+			newWin = new NewWindow(xPos, yPos);
 			newWin->Show();
 			break;
 		

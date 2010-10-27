@@ -15,8 +15,9 @@
 class NewWindow : public BWindow
 {
 public:
-				NewWindow(void);
+				NewWindow(float mainX, float mainY);
 		void	MessageReceived(BMessage *msg);
+		void	Draw(BRect rect);
 private:
 		BTextView	*titleText;
 		BStringView *titleString;
