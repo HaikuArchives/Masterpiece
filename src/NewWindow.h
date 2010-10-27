@@ -7,8 +7,10 @@
 #include <GridLayout.h>
 #include <StringView.h>
 #include <TextView.h>
+#include <sqlite3.h>
 
 #include "DeepBevelView.h"
+#include "ErrorAlert.h"
 
 #define ADD_NEW_MP		'add' // add new mp button
 #define CANCEL_NEW_MP	'can' // cancel message
@@ -26,6 +28,13 @@ private:
 		BButton		*newButton;
 		BButton		*cancelButton;
 		DeepBevelView *bevelView;
+		ErrorAlert	*eAlert;
+		int			returnValue;
+		sqlite3		*mpdb;
+		int			sqlValue;
+		char		*sqlErrMsg;
+		char		**selectResult;
+		int			nrow, ncol;
 };
 
 
