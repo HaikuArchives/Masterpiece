@@ -8,6 +8,10 @@
 #include <StringView.h>
 #include <TextView.h>
 #include <sqlite3.h>
+#include <Alert.h>
+#include <Application.h>
+#include <Path.h>
+#include <Roster.h>
 
 #include "DeepBevelView.h"
 #include "ErrorAlert.h"
@@ -35,6 +39,8 @@ private:
 		char		*sqlErrMsg;
 		char		**selectResult;
 		int			nrow, ncol;
+		BString		tmpString;
+		BAlert		*userAlert;
 };
 
 

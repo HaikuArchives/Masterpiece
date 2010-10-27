@@ -29,6 +29,50 @@ NewWindow::NewWindow(float mainX, float mainY)
 	mainGrid->AddView(newButton, 1, 1);
 	//viewFrame.InsetBy(-2.0, -2.0);
 	MoveTo(mainX, mainY);
+	sqlErrMsg = 0;
+	
+	app_info info;
+	be_app->GetAppInfo(&info);
+	BPath path(&info.ref);
+	path.GetParent(&path);
+	BString tmpPath = path.Path();
+	tmpPath += "/MasterPiece.db";
+	sqlValue = sqlite3_open_v2(tmpPath, &mpdb, SQLITE_OPEN_READWRITE, NULL); // open masterpiece.db
+	if(sqlite3_errcode(mpdb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure.
+	{
+		sqlValue = sqlite3_open_v2(tmpPath, &mpdb, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL); // create masterpiece.db
+		if(sqlite3_errcode(mpdb) == 0) // sqlite_ok
+		{
+			tmpString = "create table mptable(mpid integer primary key autoincrement, mpname text);";
+			tmpString += " create table ideatable(ideaid integer primary key autoincrement, ideadata blob, ideatype integer, mpid integer, ordernumber integer);";
+			tmpString += " create table itypetable(itypeid integer primary key autoincrement, itypename text, itypedescription text);";
+			sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
+			if(sqlValue == SQLITE_OK) // if sql was successful
+			{
+				// ladida...
+			}
+			else // sql not successful
+			{
+				eAlert = new ErrorAlert("1.1 SQL Error: ", sqlErrMsg);
+				eAlert->Launch();
+			}
+		}
+		else // some kind of failure...
+		{
+			eAlert = new ErrorAlert("1.0 Sql Error: ", sqlite3_errmsg(mpdb));
+			eAlert->Launch();
+		}
+	}
+	else if(sqlite3_errcode(mpdb) == 0) // SQLITE_OK, it exists
+	{
+		// ladida
+	}
+	else // if error is not ok or not existing, then display error in alert.
+	{
+		eAlert = new ErrorAlert("1.2 Sql Error: ", sqlite3_errmsg(mpdb));
+		eAlert->Launch();
+		//this->mpMenuBar->fileMenu->SetEnabled(false);
+	}
 }
 void NewWindow::MessageReceived(BMessage *msg)
 {
@@ -50,6 +94,67 @@ void NewWindow::MessageReceived(BMessage *msg)
 			}
 			else // mp title has length
 			{
+				tmpString = "select mpname from mptable where mpname = '";
+				tmpString += this->titleText->Text();
+				tmpString += "';";
+				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
+				if(sqlValue == SQLITE_OK) // if sql was successful
+				{
+					if(nrow >= 1) // course already exists
+					{
+						sqlite3_free_table(selectResult);
+						tmpString = "The MasterPiece: \"";
+						tmpString += this->titleText->Text();
+						tmpString += "\" already exists. Do you want to Open the existing, Create a new one or Cancel?";
+						userAlert = new BAlert("MasterPiece Exists", tmpString, "Open", "Create", "Cancel", B_WIDTH_AS_USUAL, B_INFO_ALERT);
+						userAlert->MoveTo(350, 250);
+						userAlert->SetShortcut(2, B_ESCAPE);
+						int alertReturn = userAlert->Go();
+						if(alertReturn == 0) // Open
+						{
+						}
+						else if(alertReturn == 1) // Create
+						{
+						}
+						else if(alertReturn == 2) // Cancel
+						{
+						}
+					}
+					else // course does not exist, add course
+					{
+						tmpString = "insert into mptable (mpname) values('";
+						tmpString += this->titleText->Text();
+						tmpString += "');";
+						sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
+						if(sqlValue == SQLITE_OK) // insert was successful
+						{
+							// 1.  need to translate this value to the title of the mainwindow
+							
+							//this->SetTitle(this->titleText->Text());
+							//tmpString = this->titleText->Text();
+							//tmpString += " Summary";
+							//this->sumView->sumViewTitleString->SetText(tmpString);						
+							//if(!this->fullView->IsHidden()) this->fullView->Hide();
+							//if(!this->openView->IsHidden()) this->openView->Hide();
+							//if(this->sumView->IsHidden()) this->sumView->Show();
+							//this->mpMenuBar->contentMenu->SetEnabled(true);
+							//this->mpMenuBar->layoutMenu->SetEnabled(true);
+							//this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
+							// load empty summary view information for this new course
+						}
+						else // insert failed
+						{
+							eAlert = new ErrorAlert("Error 2.1 MasterPiece was not created successfully. Please Try Again.");
+							eAlert->Launch();
+						}					
+					}
+				}
+				else // sql not successful
+				{
+					eAlert = new ErrorAlert("1.3 Sql Error: ", sqlErrMsg);
+					eAlert->Launch();
+				}
+				this->titleText->SetText(""); // reset new course title to blank when done regardless of operation
 			}
 			break;
 			
