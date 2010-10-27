@@ -8,6 +8,8 @@
 #include <StringView.h>
 #include <TextView.h>
 
+#include "DeepBevelView.h"
+
 #define ADD_NEW_MP		'add' // add new mp button
 #define CANCEL_NEW_MP	'can' // cancel message
 #define TEXT_INSET 3.0
@@ -23,6 +25,7 @@ private:
 		BStringView *titleString;
 		BButton		*newButton;
 		BButton		*cancelButton;
+		DeepBevelView *bevelView;
 };
 
 
