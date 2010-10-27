@@ -7,18 +7,10 @@ NewWindow::NewWindow(float mainX, float mainY)
 	BRect viewFrame(3, 3, 153, 28);
 	BRect viewFrame2(3, 3, 140, 20);
 	BRect textFrame(3, 3, 137, 17);
-	/*
-	textFrame.left = TEXT_INSET;
-	textFrame.right = viewFrame.right - viewFrame.left - TEXT_INSET;
-	textFrame.top = TEXT_INSET;
-	textFrame.bottom = viewFrame.bottom - viewFrame.top - TEXT_INSET;
-	textFrame = viewFrame;
-	*/
 	titleText = new BTextView(viewFrame2, "textTitle", textFrame, false, B_WILL_DRAW);
 	titleText->SetWordWrap(false);
 	bevelView = new DeepBevelView(viewFrame, "bevel", B_FOLLOW_NONE, B_WILL_DRAW);
 	bevelView->AddChild(titleText);
-	//titleText->SetViewColor(myColor);
 	newButton = new BButton(BRect(190, 50, 270, 75), NULL, "Add", new BMessage(ADD_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	cancelButton = new BButton(BRect(100, 50, 180, 75), NULL, "Cancel", new BMessage(CANCEL_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	BGridLayout* mainGrid = new BGridLayout();
@@ -27,7 +19,6 @@ NewWindow::NewWindow(float mainX, float mainY)
 	mainGrid->AddView(bevelView, 0, 0, 2, 1);
 	mainGrid->AddView(cancelButton, 0, 1);
 	mainGrid->AddView(newButton, 1, 1);
-	//viewFrame.InsetBy(-2.0, -2.0);
 	MoveTo(mainX, mainY);
 	sqlErrMsg = 0;
 	
@@ -71,7 +62,6 @@ NewWindow::NewWindow(float mainX, float mainY)
 	{
 		eAlert = new ErrorAlert("1.2 Sql Error: ", sqlite3_errmsg(mpdb));
 		eAlert->Launch();
-		//this->mpMenuBar->fileMenu->SetEnabled(false);
 	}
 }
 void NewWindow::MessageReceived(BMessage *msg)
@@ -128,19 +118,6 @@ void NewWindow::MessageReceived(BMessage *msg)
 						sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
 						if(sqlValue == SQLITE_OK) // insert was successful
 						{
-							// 1.  need to translate this value to the title of the mainwindow
-							
-							//this->SetTitle(this->titleText->Text());
-							//tmpString = this->titleText->Text();
-							//tmpString += " Summary";
-							//this->sumView->sumViewTitleString->SetText(tmpString);						
-							//if(!this->fullView->IsHidden()) this->fullView->Hide();
-							//if(!this->openView->IsHidden()) this->openView->Hide();
-							//if(this->sumView->IsHidden()) this->sumView->Show();
-							//this->mpMenuBar->contentMenu->SetEnabled(true);
-							//this->mpMenuBar->layoutMenu->SetEnabled(true);
-							//this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
-							// load empty summary view information for this new course
 						}
 						else // insert failed
 						{
@@ -155,6 +132,7 @@ void NewWindow::MessageReceived(BMessage *msg)
 					eAlert->Launch();
 				}
 				this->titleText->SetText(""); // reset new course title to blank when done regardless of operation
+				this->Close();
 			}
 			break;
 			

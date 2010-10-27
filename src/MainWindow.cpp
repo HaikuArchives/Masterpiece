@@ -121,6 +121,12 @@ void MainWindow::MessageReceived(BMessage *msg)
 			yPos = (r.bottom - r.top) / 2;
 			newWin = new NewWindow(xPos, yPos);
 			newWin->Show();
+			// check the sql and get the title somehow, maybe provide a return value from newWin
+			if(newWin->IsHidden())
+			{
+			errorAlert = new ErrorAlert("Get Title from Somewhere.");
+			errorAlert->Launch();
+			}
 			break;
 		
 		case MENU_OPN_MSG:
