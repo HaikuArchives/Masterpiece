@@ -121,7 +121,7 @@ void NewWindow::MessageReceived(BMessage *msg)
 							mpMessage.MakeEmpty();
 							mpMessage.AddString("mptitle", this->titleText->Text());
 							// 1. need to try and get the id of last entry somehow...
-							mpMessage.AddInt64("mpid", sqlite3_last_insert_rowid(mpdb);
+							mpMessage.AddInt64("mpid", sqlite3_last_insert_rowid(mpdb));
 							mpMessenger.SendMessage(&mpMessage);
 						}
 						else // insert failed

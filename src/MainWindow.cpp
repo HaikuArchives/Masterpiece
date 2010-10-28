@@ -37,7 +37,7 @@ MainWindow::MainWindow(void)
 	//mainView->AddChild(fullView); // uncomment when not using layout...
 	fullView->SetViewColor(myColor);
 	fullView->Hide();
-	mainGrid->AddView(fullView, 0, 0);
+	//mainGrid->AddView(fullView, 0, 0);
 	
 	openView = new OpenMasterView();
 	mainView->AddChild(openView);
@@ -46,7 +46,8 @@ MainWindow::MainWindow(void)
 	BRect sumRect(Bounds());
 	sumRect.top = 20;
 	sumView = new SummaryView(sumRect);
-	mainView->AddChild(sumView);
+	//mainView->AddChild(sumView);
+	mainGrid->AddView(sumView, 0, 0);
 	sumView->SetViewColor(myColor);
 	sumView->Hide();
 	
@@ -121,15 +122,24 @@ void MainWindow::MessageReceived(BMessage *msg)
 			yPos = (r.bottom - r.top) / 2;
 			newWin = new NewWindow(BMessage(UPDATE_NEW_MP), BMessenger(this), xPos, yPos);
 			newWin->Show();
-			// check the sql and get the title somehow, maybe provide a return value from newWin
-			if(newWin->IsHidden())
-			{
-			errorAlert = new ErrorAlert("Get Title from Somewhere.");
-			errorAlert->Launch();
-			}
 			break;
 		
 		case UPDATE_NEW_MP:
+			if(msg->FindString("mptitle", &mptitle) == B_OK && msg->FindInt64("mpid", &mpid) == B_OK)
+			{
+				this->SetTitle(mptitle);
+				// 1.  need to figure out how to open the summaryview using the mpid
+				tmpString = mptitle;
+				tmpString += " Summary";
+				this->sumView->sumViewTitleString->SetText(tmpString);
+				//if(!this->fullView->IsHidden()) this->fullView->Hide();
+				//if(!this->openView->IsHidden()) this->openView->Hide();
+				if(this->sumView->IsHidden()) this->sumView->Show();
+				this->mpMenuBar->contentMenu->SetEnabled(true);
+				this->mpMenuBar->layoutMenu->SetEnabled(true);
+				this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
+				// 1.  call the function to populate summaryview passing the (mpid)
+			}
 			break;
 		
 		case MENU_OPN_MSG:
@@ -166,6 +176,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			
 			break;
 
+		/*
 		case ADD_NEW_COURSE:
 			if(strlen(this->fullView->titleText->Text()) == 0) // mp title is empty
 			{
@@ -276,6 +287,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			this->fullView->titleText->SetText("");
 			// do soemthing here...
 			break;
+		*/
 			
 		case MENU_THT_MSG:
 			if(!this->sumView->IsHidden()) this->sumView->Hide();

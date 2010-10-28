@@ -29,6 +29,7 @@
 
 #define MNG_CONTENT_MSG		'mcm'
 #define MNG_LAYOUT_MSG		'mlm'
+#define UPDATE_NEW_MP		'unmp'
 
 class MainWindow : public BWindow
 {
@@ -70,6 +71,8 @@ private:
 			NewWindow		*newWin;
 			float			xPos;
 			float			yPos;
+			BString			mptitle;
+			int64			mpid;
 };
 
 #endif
