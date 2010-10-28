@@ -12,6 +12,8 @@
 #include <Application.h>
 #include <Path.h>
 #include <Roster.h>
+#include <Messenger.h>
+#include <Message.h>
 
 #include "DeepBevelView.h"
 #include "ErrorAlert.h"
@@ -23,7 +25,7 @@
 class NewWindow : public BWindow
 {
 public:
-				NewWindow(float mainX, float mainY);
+				NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY);
 		void	MessageReceived(BMessage *msg);
 		void	Draw(BRect rect);
 private:
@@ -41,6 +43,8 @@ private:
 		int			nrow, ncol;
 		BString		tmpString;
 		BAlert		*userAlert;
+		BMessage	mpMessage;
+		BMessenger	mpMessenger;
 };
 
 

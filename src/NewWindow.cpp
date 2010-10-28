@@ -1,7 +1,7 @@
 #include "NewWindow.h"
 
-NewWindow::NewWindow(float mainX, float mainY)
-	:	BWindow(BRect(20, 20, 200, 85), "Enter Title", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
+NewWindow::NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY)
+	:	BWindow(BRect(20, 20, 200, 85), "Enter Title", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
 	rgb_color myColor = {215, 215, 215, 255};
 	BRect viewFrame(3, 3, 153, 28);
@@ -118,6 +118,11 @@ void NewWindow::MessageReceived(BMessage *msg)
 						sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
 						if(sqlValue == SQLITE_OK) // insert was successful
 						{
+							mpMessage.MakeEmpty();
+							mpMessage.AddString("mptitle", this->titleText->Text());
+							// 1. need to try and get the id of last entry somehow...
+							mpMessage.AddInt64("mpid", sqlite3_last_insert_rowid(mpdb);
+							mpMessenger.SendMessage(&mpMessage);
 						}
 						else // insert failed
 						{

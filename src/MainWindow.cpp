@@ -119,7 +119,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			//if(this->fullView->IsHidden()) this->fullView->Show();
 			xPos = (r.right - r.left) / 2;
 			yPos = (r.bottom - r.top) / 2;
-			newWin = new NewWindow(xPos, yPos);
+			newWin = new NewWindow(BMessage(UPDATE_NEW_MP), BMessenger(this), xPos, yPos);
 			newWin->Show();
 			// check the sql and get the title somehow, maybe provide a return value from newWin
 			if(newWin->IsHidden())
@@ -127,6 +127,9 @@ void MainWindow::MessageReceived(BMessage *msg)
 			errorAlert = new ErrorAlert("Get Title from Somewhere.");
 			errorAlert->Launch();
 			}
+			break;
+		
+		case UPDATE_NEW_MP:
 			break;
 		
 		case MENU_OPN_MSG:
