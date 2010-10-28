@@ -10,6 +10,7 @@
 
 // 1.  Need to check and see if an mp is already open, prior to creating a new one,
 // 	   so i can reload what was there and what view was there...
+// 2.  Need to replace openview with OpenWindow
 
 #include "MainWindow.h"
 
@@ -33,12 +34,6 @@ MainWindow::MainWindow(void)
 	mainGroup->SetInsets(0, 0, 0, 0);
 	mainGroup->AddItem(mainGrid);
 
-	fullView = new NewMasterView();
-	//mainView->AddChild(fullView); // uncomment when not using layout...
-	fullView->SetViewColor(myColor);
-	fullView->Hide();
-	//mainGrid->AddView(fullView, 0, 0);
-	
 	openView = new OpenMasterView();
 	mainView->AddChild(openView);
 	openView->SetViewColor(myColor);
@@ -46,7 +41,7 @@ MainWindow::MainWindow(void)
 	BRect sumRect(Bounds());
 	sumRect.top = 20;
 	sumView = new SummaryView(sumRect);
-	//mainView->AddChild(sumView);
+	//mainView->AddChild(sumView); // uncomment when not using grid layout
 	mainGrid->AddView(sumView, 0, 0);
 	sumView->SetViewColor(myColor);
 	sumView->Hide();
@@ -117,7 +112,6 @@ void MainWindow::MessageReceived(BMessage *msg)
 			// 2.  check to see if course is currently open
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(!this->openView->IsHidden()) this->openView->Hide();
-			//if(this->fullView->IsHidden()) this->fullView->Show();
 			xPos = (r.right - r.left) / 2;
 			yPos = (r.bottom - r.top) / 2;
 			newWin = new NewWindow(BMessage(UPDATE_NEW_MP), BMessenger(this), xPos, yPos);
@@ -132,8 +126,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 				tmpString = mptitle;
 				tmpString += " Summary";
 				this->sumView->sumViewTitleString->SetText(tmpString);
-				//if(!this->fullView->IsHidden()) this->fullView->Hide();
-				//if(!this->openView->IsHidden()) this->openView->Hide();
+//				//if(!this->openView->IsHidden()) this->openView->Hide(); TBD
 				if(this->sumView->IsHidden()) this->sumView->Show();
 				this->mpMenuBar->contentMenu->SetEnabled(true);
 				this->mpMenuBar->layoutMenu->SetEnabled(true);
@@ -144,7 +137,6 @@ void MainWindow::MessageReceived(BMessage *msg)
 		
 		case MENU_OPN_MSG:
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
-			if(!this->fullView->IsHidden()) this->fullView->Hide();
 			this->openView->openListView->MakeEmpty();
 			tmpString = "select mpid, mpname from mptable";
 			sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
@@ -176,119 +168,6 @@ void MainWindow::MessageReceived(BMessage *msg)
 			
 			break;
 
-		/*
-		case ADD_NEW_COURSE:
-			if(strlen(this->fullView->titleText->Text()) == 0) // mp title is empty
-			{
-				errorAlert = new ErrorAlert("2.2 MasterPiece Name Cannot Be Blank.  Please Try Again.");
-				errorAlert->Launch();
-			}
-			else // mp title has length
-			{
-				tmpString = "select mpname from mptable where mpname = '";
-				tmpString += this->fullView->titleText->Text();
-				tmpString += "';";
-				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
-				if(sqlValue == SQLITE_OK) // if sql was successful
-				{
-					if(nrow >= 1) // course already exists
-					{
-						sqlite3_free_table(selectResult);
-						tmpString = "The MasterPiece: \"";
-						tmpString += this->fullView->titleText->Text();
-						tmpString += "\" already exists.  Do you want to Open the existing, Create a new one or cancel?";
-						userAlert = new BAlert("MasterPiece Exists", tmpString, "Open", "Create", "Cancel", B_WIDTH_AS_USUAL, B_INFO_ALERT);
-						userAlert->MoveTo(350, 250);
-						userAlert->SetShortcut(2, B_ESCAPE);
-						int alertReturn = userAlert->Go();
-						if(alertReturn == 0) // Open
-						{
-							tmpString = this->fullView->titleText->Text();
-							tmpString += " Summary";
-							this->sumView->sumViewTitleString->SetText(tmpString);
-							this->SetTitle(this->fullView->titleText->Text());
-							if(!this->fullView->IsHidden()) this->fullView->Hide();
-							if(!this->openView->IsHidden()) this->openView->Hide();
-							if(this->sumView->IsHidden()) this->sumView->Show();
-							this->mpMenuBar->contentMenu->SetEnabled(true);
-							this->mpMenuBar->layoutMenu->SetEnabled(true);
-							this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
-							// 1. need to load summary view with the existing course information
-						}
-						else if(alertReturn == 1) // Create
-						{
-							tmpString = "insert into mptable (mpname) values('";
-							tmpString += this->fullView->titleText->Text();
-							tmpString += "');";
-							sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
-							if(sqlValue == SQLITE_OK) // insert was successful
-							{
-								this->SetTitle(this->fullView->titleText->Text());
-								tmpString = this->fullView->titleText->Text();
-								tmpString += " Summary";
-								this->sumView->sumViewTitleString->SetText(tmpString);						
-								if(!this->fullView->IsHidden()) this->fullView->Hide();
-								if(!this->openView->IsHidden()) this->openView->Hide();
-								if(this->sumView->IsHidden()) this->sumView->Show();
-								this->mpMenuBar->contentMenu->SetEnabled(true);
-								this->mpMenuBar->layoutMenu->SetEnabled(true);
-								this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
-								// load empty summary view information for this new course
-							}
-							else // insert failed
-							{
-								errorAlert = new ErrorAlert("Error 2.1 MasterPiece was not created successfully. Please Try Again.");
-								errorAlert->Launch();
-							}
-						}
-						else if(alertReturn == 2) // Cancel
-						{
-						}
-					}
-					else // course does not exist, add course
-					{
-						tmpString = "insert into mptable (mpname) values('";
-						tmpString += this->fullView->titleText->Text();
-						tmpString += "');";
-						sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
-						if(sqlValue == SQLITE_OK) // insert was successful
-						{
-							this->SetTitle(this->fullView->titleText->Text());
-							tmpString = this->fullView->titleText->Text();
-							tmpString += " Summary";
-							this->sumView->sumViewTitleString->SetText(tmpString);						
-							if(!this->fullView->IsHidden()) this->fullView->Hide();
-							if(!this->openView->IsHidden()) this->openView->Hide();
-							if(this->sumView->IsHidden()) this->sumView->Show();
-							this->mpMenuBar->contentMenu->SetEnabled(true);
-							this->mpMenuBar->layoutMenu->SetEnabled(true);
-							this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
-							// load empty summary view information for this new course
-						}
-						else // insert failed
-						{
-							errorAlert = new ErrorAlert("Error 2.1 MasterPiece was not created successfully. Please Try Again.");
-							errorAlert->Launch();
-						}
-					}
-				}
-				else // sql not succesful, display error
-				{
-					errorAlert = new ErrorAlert("1.3 Sql Error: ", sqlErrMsg);
-					errorAlert->Launch();
-				}
-				this->fullView->titleText->SetText(""); // reset new course title to blank when done regardless of operation
-			}
-
-			break;
-		
-		case CANCEL_NEW_COURSE:		
-			if(!this->fullView->IsHidden()) this->fullView->Hide();
-			this->fullView->titleText->SetText("");
-			// do soemthing here...
-			break;
-		*/
-			
 		case MENU_THT_MSG:
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			if(this->thoughtView->IsHidden()) this->thoughtView->Show();
@@ -298,10 +177,12 @@ void MainWindow::MessageReceived(BMessage *msg)
 		case MNG_LAYOUT_MSG:
 			// do something here...
 			break;
+			
 		case CANCEL_OPEN_COURSE:
 			if(!this->openView->IsHidden())this->openView->Hide();
 			// do something here...
 			break;
+			
 		case OPEN_EXISTING_COURSE:
 			// do something here...
 			int selected;
@@ -329,7 +210,6 @@ void MainWindow::MessageReceived(BMessage *msg)
 						this->sumView->sumViewTitleString->SetText(tmpString);						
 						sqlite3_free_table(selectResult);
 						if(!this->openView->IsHidden()) this->openView->Hide();
-						if(!this->fullView->IsHidden()) this->fullView->Hide();
 						if(this->sumView->IsHidden()) this->sumView->Show();
 						this->mpMenuBar->contentMenu->SetEnabled(true);
 						this->mpMenuBar->layoutMenu->SetEnabled(true);
@@ -365,7 +245,6 @@ void MainWindow::MessageReceived(BMessage *msg)
 
 void MainWindow::FrameResized(float width, float height)
 {
-	this->fullView->Invalidate();
 	this->openView->Invalidate();
 }
 

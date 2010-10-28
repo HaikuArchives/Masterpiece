@@ -20,7 +20,6 @@
 #include <GridLayout.h>
 
 #include "MPMenuBar.h"
-#include "NewMasterView.h"
 #include "OpenMasterView.h"
 #include "SummaryView.h"
 #include "ThoughtView.h"
@@ -46,7 +45,7 @@ private:
 			BView			*toolbarView;
 			BPicture		*onImage;
 			BPictureButton 	*newButton;
-			NewMasterView	*fullView;
+//			NewMasterView	*fullView; TBD
 			BTabView		*contentTabView;
 			BTab			*tmpTab;
 			BEntry			homeEntry;

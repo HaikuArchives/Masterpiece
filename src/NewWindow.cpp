@@ -3,7 +3,7 @@
 NewWindow::NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY)
 	:	BWindow(BRect(20, 20, 200, 85), "Enter Title", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
-	rgb_color myColor = {215, 215, 215, 255};
+	// rgb_color myColor = {215, 215, 215, 255};
 	BRect viewFrame(3, 3, 153, 28);
 	BRect viewFrame2(3, 3, 140, 20);
 	BRect textFrame(3, 3, 137, 17);
@@ -84,7 +84,7 @@ void NewWindow::MessageReceived(BMessage *msg)
 			}
 			else // mp title has length
 			{
-				tmpString = "select mpname from mptable where mpname = '";
+				tmpString = "select mpid from mptable where mpname = '";
 				tmpString += this->titleText->Text();
 				tmpString += "';";
 				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
@@ -102,12 +102,52 @@ void NewWindow::MessageReceived(BMessage *msg)
 						int alertReturn = userAlert->Go();
 						if(alertReturn == 0) // Open
 						{
+							if(nrow == 1) // only 1 exists so send message to open that one
+							{
+								mpMessage.MakeEmpty();
+								mpMessage.AddString("mptitle", this->titleText->Text());
+								mpMessage.AddInt64("mpid", (int)selectResult[2]);
+								mpMessenger.SendMessage(&mpMessage);
+								this->titleText->SetText("");
+								this->Close();
+							}
+							else if(nrow > 1) // multiple mp's exist, send message to open the open window with these values only
+							{
+								// close this window
+							}
+							else // something went horribly wrong and need to fix immediately
+							{
+							}
 						}
 						else if(alertReturn == 1) // Create
 						{
+							tmpString = "insert into mptable (mpname) values('";
+							tmpString += this->titleText->Text();
+							tmpString += "');";
+							sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
+							if(sqlValue == SQLITE_OK) // insert was successful
+							{
+								mpMessage.MakeEmpty();
+								mpMessage.AddString("mptitle", this->titleText->Text());
+								// 1. need to try and get the id of last entry somehow...
+								mpMessage.AddInt64("mpid", sqlite3_last_insert_rowid(mpdb));
+								mpMessenger.SendMessage(&mpMessage);
+								this->titleText->SetText(""); // reset new course title to blank when done
+								this->Close();
+							}
+							else // insert failed
+							{
+								eAlert = new ErrorAlert("Error 2.1 MasterPiece was not created successfully. Please Try Again.");
+								eAlert->Launch();
+							}					
 						}
 						else if(alertReturn == 2) // Cancel
 						{
+						}
+						else // Major Error - this feature should never occur
+						{
+							eAlert = new ErrorAlert("Error 2.3 Illegal Option Selected.  Please Stop Using Program and Report to the Developer!");
+							eAlert->Launch();
 						}
 					}
 					else // course does not exist, add course
@@ -123,6 +163,8 @@ void NewWindow::MessageReceived(BMessage *msg)
 							// 1. need to try and get the id of last entry somehow...
 							mpMessage.AddInt64("mpid", sqlite3_last_insert_rowid(mpdb));
 							mpMessenger.SendMessage(&mpMessage);
+							this->titleText->SetText(""); // reset new course title to blank when done
+							this->Close();
 						}
 						else // insert failed
 						{
@@ -136,8 +178,6 @@ void NewWindow::MessageReceived(BMessage *msg)
 					eAlert = new ErrorAlert("1.3 Sql Error: ", sqlErrMsg);
 					eAlert->Launch();
 				}
-				this->titleText->SetText(""); // reset new course title to blank when done regardless of operation
-				this->Close();
 			}
 			break;
 			
@@ -151,3 +191,118 @@ void NewWindow::MessageReceived(BMessage *msg)
 void NewWindow::Draw(BRect rect)
 {
 }
+
+		/* ORIGINAL ADD NEW COURSE REFERENCE 
+		 *
+		case ADD_NEW_COURSE:
+			if(strlen(this->fullView->titleText->Text()) == 0) // mp title is empty
+			{
+				errorAlert = new ErrorAlert("2.2 MasterPiece Name Cannot Be Blank.  Please Try Again.");
+				errorAlert->Launch();
+			}
+			else // mp title has length
+			{
+				tmpString = "select mpname from mptable where mpname = '";
+				tmpString += this->fullView->titleText->Text();
+				tmpString += "';";
+				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
+				if(sqlValue == SQLITE_OK) // if sql was successful
+				{
+					if(nrow >= 1) // course already exists
+					{
+						sqlite3_free_table(selectResult);
+						tmpString = "The MasterPiece: \"";
+						tmpString += this->fullView->titleText->Text();
+						tmpString += "\" already exists.  Do you want to Open the existing, Create a new one or cancel?";
+						userAlert = new BAlert("MasterPiece Exists", tmpString, "Open", "Create", "Cancel", B_WIDTH_AS_USUAL, B_INFO_ALERT);
+						userAlert->MoveTo(350, 250);
+						userAlert->SetShortcut(2, B_ESCAPE);
+						int alertReturn = userAlert->Go();
+						if(alertReturn == 0) // Open
+						{
+							tmpString = this->fullView->titleText->Text();
+							tmpString += " Summary";
+							this->sumView->sumViewTitleString->SetText(tmpString);
+							this->SetTitle(this->fullView->titleText->Text());
+							if(!this->fullView->IsHidden()) this->fullView->Hide();
+							if(!this->openView->IsHidden()) this->openView->Hide();
+							if(this->sumView->IsHidden()) this->sumView->Show();
+							this->mpMenuBar->contentMenu->SetEnabled(true);
+							this->mpMenuBar->layoutMenu->SetEnabled(true);
+							this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
+							// 1. need to load summary view with the existing course information
+						}
+						else if(alertReturn == 1) // Create
+						{
+							tmpString = "insert into mptable (mpname) values('";
+							tmpString += this->fullView->titleText->Text();
+							tmpString += "');";
+							sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
+							if(sqlValue == SQLITE_OK) // insert was successful
+							{
+								this->SetTitle(this->fullView->titleText->Text());
+								tmpString = this->fullView->titleText->Text();
+								tmpString += " Summary";
+								this->sumView->sumViewTitleString->SetText(tmpString);						
+								if(!this->fullView->IsHidden()) this->fullView->Hide();
+								if(!this->openView->IsHidden()) this->openView->Hide();
+								if(this->sumView->IsHidden()) this->sumView->Show();
+								this->mpMenuBar->contentMenu->SetEnabled(true);
+								this->mpMenuBar->layoutMenu->SetEnabled(true);
+								this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
+								// load empty summary view information for this new course
+							}
+							else // insert failed
+							{
+								errorAlert = new ErrorAlert("Error 2.1 MasterPiece was not created successfully. Please Try Again.");
+								errorAlert->Launch();
+							}
+						}
+						else if(alertReturn == 2) // Cancel
+						{
+						}
+					}
+					else // course does not exist, add course
+					{
+						tmpString = "insert into mptable (mpname) values('";
+						tmpString += this->fullView->titleText->Text();
+						tmpString += "');";
+						sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
+						if(sqlValue == SQLITE_OK) // insert was successful
+						{
+							this->SetTitle(this->fullView->titleText->Text());
+							tmpString = this->fullView->titleText->Text();
+							tmpString += " Summary";
+							this->sumView->sumViewTitleString->SetText(tmpString);						
+							if(!this->fullView->IsHidden()) this->fullView->Hide();
+							if(!this->openView->IsHidden()) this->openView->Hide();
+							if(this->sumView->IsHidden()) this->sumView->Show();
+							this->mpMenuBar->contentMenu->SetEnabled(true);
+							this->mpMenuBar->layoutMenu->SetEnabled(true);
+							this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
+							// load empty summary view information for this new course
+						}
+						else // insert failed
+						{
+							errorAlert = new ErrorAlert("Error 2.1 MasterPiece was not created successfully. Please Try Again.");
+							errorAlert->Launch();
+						}
+					}
+				}
+				else // sql not succesful, display error
+				{
+					errorAlert = new ErrorAlert("1.3 Sql Error: ", sqlErrMsg);
+					errorAlert->Launch();
+				}
+				this->fullView->titleText->SetText(""); // reset new course title to blank when done regardless of operation
+			}
+
+			break;
+		
+		case CANCEL_NEW_COURSE:		
+			if(!this->fullView->IsHidden()) this->fullView->Hide();
+			this->fullView->titleText->SetText("");
+			// do soemthing here...
+			break;
+		*/
+
