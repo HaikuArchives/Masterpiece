@@ -6,6 +6,7 @@ EXPANDGROUP=yes
 SOURCEFILE=OpenMasterView.cpp
 DEPENDENCY=	/HaikuData/Projects/masterpiece/OpenMasterView.h
 SOURCEFILE=OpenWindow.cpp
+DEPENDENCY=	/HaikuData/Projects/masterpiece/OpenWindow.h|/HaikuData/Projects/masterpiece/ErrorAlert.h
 SOURCEFILE=NewStrings.cpp
 DEPENDENCY=	/boot/develop/headers/posix/string.h|/boot/develop/headers/posix/sys/types.h|/boot/develop/headers/os/BeBuild.h|/boot/develop/headers/posix/null.h|/boot/develop/headers/posix/size_t.h|/boot/develop/headers/posix/time.h|/HaikuData/Projects/masterpiece/NewStrings.h
 SOURCEFILE=NewWindow.cpp

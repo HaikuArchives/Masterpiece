@@ -136,6 +136,11 @@ void MainWindow::MessageReceived(BMessage *msg)
 			break;
 		
 		case MENU_OPN_MSG:
+			xPos = (r.right - r.left) / 2;
+			yPos = (r.bottom - r.top) / 2;
+			openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos);
+			openWin->Show();
+			/*
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
 			this->openView->openListView->MakeEmpty();
 			tmpString = "select mpid, mpname from mptable";
@@ -157,7 +162,10 @@ void MainWindow::MessageReceived(BMessage *msg)
 				errorAlert->Launch();
 			}
 			sqlite3_free_table(selectResult); // free table either way
-			
+			*/
+			break;
+		
+		case UPDATE_OPEN_MP:
 			break;
 			
 		case MENU_CLS_MSG:

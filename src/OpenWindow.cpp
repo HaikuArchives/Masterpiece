@@ -17,6 +17,21 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 }
 void OpenWindow::MessageReceived(BMessage *msg)
 {
+	switch(msg->what)
+	{
+		case CANCEL_OPEN_MP:
+			if(!this->IsHidden())
+			{
+				this->Hide();
+			}
+			break;
+			
+		default:
+		{
+			BWindow::MessageReceived(msg);
+			break;
+		}
+	}
 }
 /* openmasterview code reference
 *

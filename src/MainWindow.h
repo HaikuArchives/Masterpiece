@@ -25,10 +25,12 @@
 #include "ThoughtView.h"
 #include "ErrorAlert.h"
 #include "NewWindow.h"
+#include "OpenWindow.h"
 
 #define MNG_CONTENT_MSG		'mcm'
 #define MNG_LAYOUT_MSG		'mlm'
 #define UPDATE_NEW_MP		'unmp'
+#define UPDATE_OPEN_MP		'uomp'
 
 class MainWindow : public BWindow
 {
@@ -68,6 +70,7 @@ private:
 			int				nrow, ncol;
 			ErrorAlert		*errorAlert;
 			NewWindow		*newWin;
+			OpenWindow		*openWin;
 			float			xPos;
 			float			yPos;
 			BString			mptitle;
