@@ -1,8 +1,19 @@
 #include "OpenWindow.h"
 
 OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY)
-	:	BWindow(BRect(20, 20, 200, 85), "Open Existing", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
+	:	BWindow(BRect(30, 100, 730, 500), "Open Existing MasterPiece", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
+	openListView = new BListView(BRect(180, 10, 660, 360), "mpList", B_SINGLE_SELECTION_LIST, B_FOLLOW_NONE, B_WILL_DRAW);
+	openButton = new BButton(BRect(600, 370, 680, 395), NULL, "Open", new BMessage(OPEN_EXISTING_MP), B_FOLLOW_NONE, B_WILL_DRAW);
+	cancelButton = new BButton(BRect(510, 370, 590, 395), NULL, "Cancel", new BMessage(CANCEL_OPEN_MP), B_FOLLOW_NONE, B_WILL_DRAW);
+	BGridLayout* mainGrid = new BGridLayout();
+	SetLayout(mainGrid);
+	mainGrid->SetInsets(2, 2, 2, 2);
+	mainGrid->AddView(new BScrollView("scroll_mplist", openListView, B_FOLLOW_NONE, 0, false, true, B_FANCY_BORDER), 0, 0, 2, 1);
+	mainGrid->AddView(cancelButton, 0, 1);
+	mainGrid->AddView(openButton, 1, 1);
+	MoveTo(mainX, mainY);
+	sqlErrMsg = 0;
 }
 void OpenWindow::MessageReceived(BMessage *msg)
 {
