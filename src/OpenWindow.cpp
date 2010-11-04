@@ -1,6 +1,6 @@
 #include "OpenWindow.h"
 
-OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY)
+OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, string commonName)
 	:	BWindow(BRect(30, 100, 285, 300), "Open Existing MasterPiece", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
 	openListView = new BListView(BRect(10, 10, 400, 280), "mpList", B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
@@ -48,7 +48,25 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	}
 	else if(sqlite3_errcode(mpdb) == 0) // SQLITE_OK, it exists
 	{
-		// ladida
+		this->openListView->MakeEmpty();
+		tmpString = "select mpid, mpname from mptable";
+		sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
+		if(sqlValue == SQLITE_OK) // if sql query was successful
+		{
+			for(int i = 0; i < nrow; i++)
+			{
+				tmpString = selectResult[(i*ncol) + 2];
+				tmpString += ". ";
+				tmpString += selectResult[(i*ncol)+3];
+				this->openListView->AddItem(new BStringItem(tmpString));
+			}
+		}
+		else // sql select failed
+		{
+			eAlert = new ErrorAlert("No Masterpiece Exist.  Please Create One First.\r\n1.4 SQL Error: ", sqlErrMsg);
+			eAlert->Launch();
+		}
+		sqlite3_free_table(selectResult); // free table either way		
 	}
 	else // if error is not ok or not existing, then display error in alert.
 	{
@@ -71,7 +89,45 @@ void OpenWindow::MessageReceived(BMessage *msg)
 			selected = this->openListView->CurrentSelection() + 1; // list item value + 1
 			if(selected < 0)
 			{
-				
+				eAlert = new ErrorAlert("3.1 No Existing Masterpiece was found.  Please Try Again");
+				eAlert->Launch();
+			}
+			BStringItem *item;
+			item = dynamic_cast<BStringItem*>(this->openListView->ItemAt(selected - 1));
+			if(item)
+			{
+				tmpString = "select mpname from mptable where mpid = ";
+				tmpString << selected;
+				if(sqlValue == SQLITE_OK) // sql was successful
+				{
+					if(nrow == 1) // 1 id was returned.
+					{
+						// commit message sending information to mainwindow where it can update_open_mp...
+						/*
+						this->SetTitle(selectResult[1]);
+						tmpString = selectResult[1];
+						tmpString += " Summary";
+						this->sumView->sumViewTitleString->SetText(tmpString);						
+						sqlite3_free_table(selectResult);
+						if(!this->openView->IsHidden()) this->openView->Hide();
+						if(this->sumView->IsHidden()) this->sumView->Show();
+						this->mpMenuBar->contentMenu->SetEnabled(true);
+						this->mpMenuBar->layoutMenu->SetEnabled(true);
+						this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
+						*/
+						
+					}
+					else // wrong resultset was returned...
+					{
+						errorAlert = new ErrorAlert("3.2 MasterPiece could not be opened.  Please Try Again");
+						errorAlert->Launch();
+					}
+				}
+				else // sql wasn't successful
+				{
+					errorAlert = new ErrorAlert("1.5 Sql Error: ", sqlErrMsg);
+					errorAlert->Launch();
+				}
 			}
 			break;
 		default:

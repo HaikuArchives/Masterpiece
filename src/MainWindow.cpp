@@ -185,7 +185,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 		case MNG_LAYOUT_MSG:
 			// do something here...
 			break;
-			
+/*			
 		case CANCEL_OPEN_COURSE:
 			if(!this->openView->IsHidden())this->openView->Hide();
 			// do something here...
@@ -242,7 +242,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 				errorAlert->Launch();
 			}
 			break;
-			
+*/			
 		default:
 		{
 			BWindow::MessageReceived(msg);

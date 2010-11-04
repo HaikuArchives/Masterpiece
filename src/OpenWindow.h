@@ -25,7 +25,7 @@
 class OpenWindow : public BWindow
 {
 	public:
-						OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY);
+						OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, BString commonName);
 			void		MessageReceived(BMessage *msg);
 			
 	private:
