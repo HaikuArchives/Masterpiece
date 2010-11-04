@@ -44,6 +44,7 @@ private:
 			MPMenuBar		*mpMenuBar;
 			BBitmap			*testImage;
 			BView			*toolbarView;
+			BView			*tmpView;
 			BPicture		*onImage;
 			BPictureButton 	*newButton;
 			BTabView		*contentTabView;

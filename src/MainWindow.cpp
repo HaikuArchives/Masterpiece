@@ -168,9 +168,21 @@ void MainWindow::MessageReceived(BMessage *msg)
 			break;
 
 		case MENU_THT_MSG:
+			tmpView = mainGrid->TargetView();
 			//if(!this->sumView->IsHidden()) this->sumView->Hide();
 			//if(this->thoughtView->IsHidden()) this->thoughtView->Show();
-			if(!this->sumView->IsHidden()) mainGrid->RemoveView(sumView);
+			//if(!this->sumView->IsHidden()) mainGrid->RemoveView(sumView);
+			if(tmpView == this->sumView)
+			{
+				mainGrid->RemoveView(sumView);
+				errorAlert = new ErrorAlert("remove view");
+				errorAlert->Launch();
+			}
+			else
+			{
+				errorAlert = new ErrorAlert("don't remove view");
+				errorAlert->Launch();
+			}
 			mainGrid->AddView(thoughtView);
 			// when in a view, might want to invalidate the menu option so it can't be redone and screwed up for now
 			// do something here...
