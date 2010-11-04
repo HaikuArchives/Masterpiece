@@ -121,7 +121,6 @@ void MainWindow::MessageReceived(BMessage *msg)
 				tmpString = mptitle;
 				tmpString += " Summary";
 				this->sumView->sumViewTitleString->SetText(tmpString);
-//				//if(!this->openView->IsHidden()) this->openView->Hide(); TBD
 				if(this->sumView->IsHidden()) this->sumView->Show();
 				this->mpMenuBar->contentMenu->SetEnabled(true);
 				this->mpMenuBar->layoutMenu->SetEnabled(true);
@@ -169,64 +168,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 		case MNG_LAYOUT_MSG:
 			// do something here...
 			break;
-/*			
-		case CANCEL_OPEN_COURSE:
-			if(!this->openView->IsHidden())this->openView->Hide();
-			// do something here...
-			break;
-			
-		case OPEN_EXISTING_COURSE:
-			// do something here...
-			int selected;
-			selected = this->openView->openListView->CurrentSelection() + 1; // list item value + 1
-			if(selected < 0)
-			{
-				errorAlert = new ErrorAlert("3.1  MasterPiece was not found.  Please Try Again");
-				errorAlert->Launch();
-				// ensure the program stays on the open view, if you select nothing to try again...
-			}
-			BStringItem *item;
-			item = dynamic_cast<BStringItem*>(this->openView->openListView->ItemAt(selected - 1));
-			if(item)
-			{
-				tmpString = "select mpname from mptable where mpid = ";
-				tmpString << selected;
-				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
-				if(sqlValue == SQLITE_OK) // if sql was successful
-				{
-					if(nrow == 1) // 1 id was returned.
-					{
-						this->SetTitle(selectResult[1]);
-						tmpString = selectResult[1];
-						tmpString += " Summary";
-						this->sumView->sumViewTitleString->SetText(tmpString);						
-						sqlite3_free_table(selectResult);
-						if(!this->openView->IsHidden()) this->openView->Hide();
-						if(this->sumView->IsHidden()) this->sumView->Show();
-						this->mpMenuBar->contentMenu->SetEnabled(true);
-						this->mpMenuBar->layoutMenu->SetEnabled(true);
-						this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
-						
-					}
-					else // wrong resultset was returned...
-					{
-						errorAlert = new ErrorAlert("3.2 MasterPiece could not be opened.  Please Try Again");
-						errorAlert->Launch();
-					}
-				}
-				else // sql wasn't successful
-				{
-					errorAlert = new ErrorAlert("1.5 Sql Error: ", sqlErrMsg);
-					errorAlert->Launch();
-				}
-			}
-			else // selected wasn't an item
-			{
-				errorAlert = new ErrorAlert("3.3 MasterPiece does not exist.  Please Try Again");
-				errorAlert->Launch();
-			}
-			break;
-*/			
+
 		default:
 		{
 			BWindow::MessageReceived(msg);

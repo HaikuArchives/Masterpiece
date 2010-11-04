@@ -46,7 +46,6 @@ private:
 			BView			*toolbarView;
 			BPicture		*onImage;
 			BPictureButton 	*newButton;
-//			NewMasterView	*fullView; TBD
 			BTabView		*contentTabView;
 			BTab			*tmpTab;
 			BEntry			homeEntry;
