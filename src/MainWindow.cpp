@@ -34,10 +34,6 @@ MainWindow::MainWindow(void)
 	mainGroup->SetInsets(0, 0, 0, 0);
 	mainGroup->AddItem(mainGrid);
 
-	openView = new OpenMasterView();
-	mainView->AddChild(openView);
-	openView->SetViewColor(myColor);
-	openView->Hide();
 	BRect sumRect(Bounds());
 	sumRect.top = 20;
 	sumView = new SummaryView(sumRect);
@@ -111,7 +107,6 @@ void MainWindow::MessageReceived(BMessage *msg)
 			// 1.  need to center the modal window on the parent...
 			// 2.  check to see if course is currently open
 			if(!this->sumView->IsHidden()) this->sumView->Hide();
-			if(!this->openView->IsHidden()) this->openView->Hide();
 			xPos = (r.right - r.left) / 2;
 			yPos = (r.bottom - r.top) / 2;
 			newWin = new NewWindow(BMessage(UPDATE_NEW_MP), BMessenger(this), xPos, yPos);
@@ -242,7 +237,6 @@ void MainWindow::MessageReceived(BMessage *msg)
 
 void MainWindow::FrameResized(float width, float height)
 {
-	this->openView->Invalidate();
 }
 
 bool

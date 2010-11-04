@@ -20,7 +20,6 @@
 #include <GridLayout.h>
 
 #include "MPMenuBar.h"
-#include "OpenMasterView.h"
 #include "SummaryView.h"
 #include "ThoughtView.h"
 #include "ErrorAlert.h"
@@ -58,7 +57,6 @@ private:
 			BAlert			*debugAlert;
 			BAlert			*userAlert;
 			BListView		*openListView;
-			OpenMasterView	*openView;
 			SummaryView		*sumView;
 			ThoughtView		*thoughtView;
 			BString			tmpString;
