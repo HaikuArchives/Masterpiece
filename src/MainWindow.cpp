@@ -20,32 +20,34 @@ MainWindow::MainWindow(void)
 	BRect r(Bounds());
 	/* begin comment out group when not testing layout code */
 	BGroupLayout* mainGroup = new BGroupLayout(B_VERTICAL);
-	BGridLayout* mainGrid = new BGridLayout();
+	mainGrid = new BGridLayout();
 	SetLayout(mainGroup);
 	/* end comment out group when not testing layout code */
-	BView *mainView = new BView(Bounds(), "mainview", B_FOLLOW_ALL, B_WILL_DRAW);
+	//BView *mainView = new BView(Bounds(), "mainview", B_FOLLOW_ALL, B_WILL_DRAW);
 	//AddChild(mainView);  // comment out when testing layout code
 	rgb_color myColor = {215, 215, 215, 255};
-	mainView->SetViewColor(myColor);
+	//mainView->SetViewColor(myColor);
 	//r.bottom = 20;
 	mpMenuBar = new MPMenuBar(r);
 	//mainView->AddChild(mpMenuBar); // uncomment when not using layout code
 	mainGroup->AddView(0, mpMenuBar); // comment out when not testing layout code
 	mainGroup->SetInsets(0, 0, 0, 0);
+	mainGrid->SetInsets(0, 0, 0, 0);
 	mainGroup->AddItem(mainGrid);
 
 	BRect sumRect(Bounds());
-	sumRect.top = 20;
+	sumRect.top = 0;
 	sumView = new SummaryView(sumRect);
 	//mainView->AddChild(sumView); // uncomment when not using grid layout
-	mainGrid->AddView(sumView, 0, 0);
+	//mainGrid->AddView(sumView, 0, 0);
 	sumView->SetViewColor(myColor);
-	sumView->Hide();
+	//sumView->Hide();
 	
 	thoughtView = new ThoughtView(sumRect);
-	mainView->AddChild(thoughtView);
+	//mainView->AddChild(thoughtView);
+	//mainGrid->AddView(thoughtView, 0, 0);
 	thoughtView->SetViewColor(myColor);
-	thoughtView->Hide();
+	//thoughtView->Hide();
 	
 	sqlErrMsg = 0;
 	
@@ -121,7 +123,8 @@ void MainWindow::MessageReceived(BMessage *msg)
 				tmpString = mptitle;
 				tmpString += " Summary";
 				this->sumView->sumViewTitleString->SetText(tmpString);
-				if(this->sumView->IsHidden()) this->sumView->Show();
+				//if(this->sumView->IsHidden()) this->sumView->Show();
+				mainGrid->AddView(sumView, 0, 0);
 				this->mpMenuBar->contentMenu->SetEnabled(true);
 				this->mpMenuBar->layoutMenu->SetEnabled(true);
 				this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
@@ -143,7 +146,9 @@ void MainWindow::MessageReceived(BMessage *msg)
 				tmpString = mptitle;
 				tmpString += " Summary";
 				this->sumView->sumViewTitleString->SetText(tmpString);
-				if(this->sumView->IsHidden()) this->sumView->Show();
+				mainGrid->AddView(sumView, 0, 0);
+				
+				//if(this->sumView->IsHidden()) this->sumView->Show();
 				this->mpMenuBar->contentMenu->SetEnabled(true);
 				this->mpMenuBar->layoutMenu->SetEnabled(true);
 				this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
@@ -153,15 +158,18 @@ void MainWindow::MessageReceived(BMessage *msg)
 			
 		case MENU_CLS_MSG:
 			// 1.  close course - simply clear values and hide views.
-			if(!this->sumView->IsHidden()) this->sumView->Hide();
+			//if(!this->sumView->IsHidden()) this->sumView->Hide();
+			mainGrid->RemoveView(sumView);
 			this->SetTitle("MasterPiece");
 			this->mpMenuBar->closeFileMenuItem->SetEnabled(false);
 			
 			break;
 
 		case MENU_THT_MSG:
-			if(!this->sumView->IsHidden()) this->sumView->Hide();
-			if(this->thoughtView->IsHidden()) this->thoughtView->Show();
+			//if(!this->sumView->IsHidden()) this->sumView->Hide();
+			//if(this->thoughtView->IsHidden()) this->thoughtView->Show();
+			mainGrid->RemoveView(sumView);
+			mainGrid->AddView(thoughtView);
 			// do something here...
 			break;
 		

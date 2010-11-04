@@ -18,7 +18,7 @@ public:
 		void	Draw(BRect rect);		// set view draw here
 		void	AttachedToWindow();		// set view to get background properties here
 		
-		BStringView	*sumViewTitleString;
+		BStringView				*sumViewTitleString;
 		MultiLineTextControl	*thoughtEntry;
 		
 private:
