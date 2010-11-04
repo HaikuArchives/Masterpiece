@@ -162,6 +162,8 @@ void MainWindow::MessageReceived(BMessage *msg)
 			mainGrid->RemoveView(sumView);
 			this->SetTitle("MasterPiece");
 			this->mpMenuBar->closeFileMenuItem->SetEnabled(false);
+			this->mpMenuBar->contentMenu->SetEnabled(false);
+			this->mpMenuBar->layoutMenu->SetEnabled(false);
 			
 			break;
 
