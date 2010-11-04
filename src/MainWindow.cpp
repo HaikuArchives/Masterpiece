@@ -138,7 +138,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 		case MENU_OPN_MSG:
 			xPos = (r.right - r.left) / 2;
 			yPos = (r.bottom - r.top) / 2;
-			openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos);
+			openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos, "");
 			openWin->Show();
 			/*
 			if(!this->sumView->IsHidden()) this->sumView->Hide();

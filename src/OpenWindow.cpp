@@ -1,6 +1,6 @@
 #include "OpenWindow.h"
 
-OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, string commonName)
+OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, const BString commonName)
 	:	BWindow(BRect(30, 100, 285, 300), "Open Existing MasterPiece", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
 	openListView = new BListView(BRect(10, 10, 400, 280), "mpList", B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
@@ -119,14 +119,14 @@ void OpenWindow::MessageReceived(BMessage *msg)
 					}
 					else // wrong resultset was returned...
 					{
-						errorAlert = new ErrorAlert("3.2 MasterPiece could not be opened.  Please Try Again");
-						errorAlert->Launch();
+						eAlert = new ErrorAlert("3.2 MasterPiece could not be opened.  Please Try Again");
+						eAlert->Launch();
 					}
 				}
 				else // sql wasn't successful
 				{
-					errorAlert = new ErrorAlert("1.5 Sql Error: ", sqlErrMsg);
-					errorAlert->Launch();
+					eAlert = new ErrorAlert("1.5 Sql Error: ", sqlErrMsg);
+					eAlert->Launch();
 				}
 			}
 			break;
