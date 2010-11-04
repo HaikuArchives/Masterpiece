@@ -17,6 +17,7 @@
 
 #include "DeepBevelView.h"
 #include "ErrorAlert.h"
+#include "OpenWindow.h"
 
 #define ADD_NEW_MP		'add' // add new mp button
 #define CANCEL_NEW_MP	'can' // cancel message
@@ -45,6 +46,7 @@ private:
 		BAlert		*userAlert;
 		BMessage	mpMessage;
 		BMessenger	mpMessenger;
+		OpenWindow	*openWin;
 };
 
 

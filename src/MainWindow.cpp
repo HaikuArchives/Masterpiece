@@ -140,29 +140,6 @@ void MainWindow::MessageReceived(BMessage *msg)
 			yPos = (r.bottom - r.top) / 2;
 			openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos, "");
 			openWin->Show();
-			/*
-			if(!this->sumView->IsHidden()) this->sumView->Hide();
-			this->openView->openListView->MakeEmpty();
-			tmpString = "select mpid, mpname from mptable";
-			sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
-			if(sqlValue == SQLITE_OK) // if sql was successful
-			{
-				for(int i = 0; i < nrow; i++)
-				{
-					tmpString = selectResult[(i*ncol)+2];
-					tmpString += ".  ";
-					tmpString += selectResult[(i*ncol)+3];
-					this->openView->openListView->AddItem(new BStringItem(tmpString));
-				}
-				if(this->openView->IsHidden()) this->openView->Show();
-			}
-			else // sql select was not successful.
-			{
-				errorAlert = new ErrorAlert("No MasterPieces Exist. Please Create One First.\r\n1.4 SQL Error: ", sqlErrMsg);
-				errorAlert->Launch();
-			}
-			sqlite3_free_table(selectResult); // free table either way
-			*/
 			break;
 		
 		case UPDATE_OPEN_MP:
