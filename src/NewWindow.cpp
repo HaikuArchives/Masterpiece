@@ -113,13 +113,13 @@ void NewWindow::MessageReceived(BMessage *msg)
 							}
 							else if(nrow > 1) // multiple mp's exist, send message to open the open window with these values only
 							{
-								BRect r(Bounds());
-								xPos = r.left;
-								yPos = r.top;
+								BRect r(this->Bounds());
+								xPos = (r.right - r.left) / 2;
+								yPos = (r.bottom - r.top) / 2;
 								openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos, this->titleText->Text());
+								openWin->Show();
 								this->titleText->SetText("");
 								this->Close();
-								openWin->Show();
 							}
 							else // something went horribly wrong and need to fix immediately
 							{

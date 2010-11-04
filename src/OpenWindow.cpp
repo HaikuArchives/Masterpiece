@@ -3,7 +3,7 @@
 OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, const BString commonName)
 	:	BWindow(BRect(30, 100, 285, 300), "Open Existing MasterPiece", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
-	openListView = new BListView(BRect(10, 10, 400, 280), "mpList", B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
+	openListView = new BListView(BRect(10, 10, 400, 150), "mpList", B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
 	openButton = new BButton(BRect(10, 370, 90, 395), NULL, "Open", new BMessage(OPEN_EXISTING_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	cancelButton = new BButton(BRect(10, 370, 90, 395), NULL, "Cancel", new BMessage(CANCEL_OPEN_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	BGridLayout* mainGrid = new BGridLayout();
@@ -55,8 +55,9 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 		}
 		else
 		{
-			tmpString = "select mpid, mpname from mptable where mpname = ";
+			tmpString = "select mpid, mpname from mptable where mpname = '";
 			tmpString += commonName;
+			tmpString += "'";
 		}
 		sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 		if(sqlValue == SQLITE_OK) // if sql query was successful
