@@ -14,64 +14,6 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	mainGrid->AddView(openButton, 2, 1);
 	MoveTo(mainX, mainY);
 	sqlErrMsg = 0;
-}
-void OpenWindow::MessageReceived(BMessage *msg)
-{
-	switch(msg->what)
-	{
-		case CANCEL_OPEN_MP:
-			if(!this->IsHidden())
-			{
-				this->Hide();
-			}
-			break;
-			
-		default:
-		{
-			BWindow::MessageReceived(msg);
-			break;
-		}
-	}
-}
-/* openmasterview code reference
-*
-	openTitleString = new BStringView(BRect(10, 10, 175, 20), NULL, "Select a MasterPiece:");
-	openListView = new BListView(BRect(180, 10, 660, 360), "mpList", B_SINGLE_SELECTION_LIST, B_FOLLOW_NONE, B_WILL_DRAW);
-	openButton = new BButton(BRect(600, 370, 680, 395), NULL, "Open", new BMessage(OPEN_EXISTING_COURSE), B_FOLLOW_NONE, B_WILL_DRAW);
-	cancelButton = new BButton(BRect(510, 370, 590, 395), NULL, "Cancel", new BMessage(CANCEL_OPEN_COURSE), B_FOLLOW_NONE, B_WILL_DRAW);
-	AddChild(openTitleString);
-	AddChild(new BScrollView("scroll_mpList", openListView, B_FOLLOW_NONE, 0, false, true, B_FANCY_BORDER));
-	AddChild(openButton);
-	AddChild(cancelButton);
-*
-*/
-
-/* New Window Code Reference
-*
-#include "NewWindow.h"
-
-NewWindow::NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY)
-	:	BWindow(BRect(20, 20, 200, 85), "Enter Title", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
-{
-	// rgb_color myColor = {215, 215, 215, 255};
-	BRect viewFrame(3, 3, 153, 28);
-	BRect viewFrame2(3, 3, 140, 20);
-	BRect textFrame(3, 3, 137, 17);
-	titleText = new BTextView(viewFrame2, "textTitle", textFrame, false, B_WILL_DRAW);
-	titleText->SetWordWrap(false);
-	bevelView = new DeepBevelView(viewFrame, "bevel", B_FOLLOW_NONE, B_WILL_DRAW);
-	bevelView->AddChild(titleText);
-	newButton = new BButton(BRect(190, 50, 270, 75), NULL, "Add", new BMessage(ADD_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
-	cancelButton = new BButton(BRect(100, 50, 180, 75), NULL, "Cancel", new BMessage(CANCEL_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
-	BGridLayout* mainGrid = new BGridLayout();
-	SetLayout(mainGrid);
-	mainGrid->SetInsets(2, 2, 2, 2);
-	mainGrid->AddView(bevelView, 0, 0, 2, 1);
-	mainGrid->AddView(cancelButton, 0, 1);
-	mainGrid->AddView(newButton, 1, 1);
-	MoveTo(mainX, mainY);
-	sqlErrMsg = 0;
-	
 	app_info info;
 	be_app->GetAppInfo(&info);
 	BPath path(&info.ref);
@@ -114,17 +56,88 @@ NewWindow::NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, f
 		eAlert->Launch();
 	}
 }
-void NewWindow::MessageReceived(BMessage *msg)
+void OpenWindow::MessageReceived(BMessage *msg)
 {
-	switch (msg->what)
+	switch(msg->what)
 	{
-		case CANCEL_NEW_MP:
+		case CANCEL_OPEN_MP:
 			if(!this->IsHidden())
 			{
-				this->titleText->SetText("");
 				this->Hide();
 			}
 			break;
+		case OPEN_EXISTING_MP:
+			int selected;
+			selected = this->openListView->CurrentSelection() + 1; // list item value + 1
+			if(selected < 0)
+			{
+				
+			}
+			break;
+		default:
+		{
+			BWindow::MessageReceived(msg);
+			break;
+		}
+	}
+}
+/* Main Window Code Reference
+*
+			// do something here...
+			int selected;
+			selected = this->openView->openListView->CurrentSelection() + 1; // list item value + 1
+			if(selected < 0)
+			{
+				errorAlert = new ErrorAlert("3.1  MasterPiece was not found.  Please Try Again");
+				errorAlert->Launch();
+				// ensure the program stays on the open view, if you select nothing to try again...
+			}
+			BStringItem *item;
+			item = dynamic_cast<BStringItem*>(this->openView->openListView->ItemAt(selected - 1));
+			if(item)
+			{
+				tmpString = "select mpname from mptable where mpid = ";
+				tmpString << selected;
+				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
+				if(sqlValue == SQLITE_OK) // if sql was successful
+				{
+					if(nrow == 1) // 1 id was returned.
+					{
+						this->SetTitle(selectResult[1]);
+						tmpString = selectResult[1];
+						tmpString += " Summary";
+						this->sumView->sumViewTitleString->SetText(tmpString);						
+						sqlite3_free_table(selectResult);
+						if(!this->openView->IsHidden()) this->openView->Hide();
+						if(this->sumView->IsHidden()) this->sumView->Show();
+						this->mpMenuBar->contentMenu->SetEnabled(true);
+						this->mpMenuBar->layoutMenu->SetEnabled(true);
+						this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
+						
+					}
+					else // wrong resultset was returned...
+					{
+						errorAlert = new ErrorAlert("3.2 MasterPiece could not be opened.  Please Try Again");
+						errorAlert->Launch();
+					}
+				}
+				else // sql wasn't successful
+				{
+					errorAlert = new ErrorAlert("1.5 Sql Error: ", sqlErrMsg);
+					errorAlert->Launch();
+				}
+			}
+			else // selected wasn't an item
+			{
+				errorAlert = new ErrorAlert("3.3 MasterPiece does not exist.  Please Try Again");
+				errorAlert->Launch();
+			}
+
+*/
+/* New Window Code Reference
+*
+void NewWindow::MessageReceived(BMessage *msg)
+{
 		
 		case ADD_NEW_MP:
 			if(strlen(this->titleText->Text()) == 0) // mp title is empty
