@@ -143,6 +143,18 @@ void MainWindow::MessageReceived(BMessage *msg)
 			break;
 		
 		case UPDATE_OPEN_MP:
+			if(msg->FindString("opentitle", &mptitle) == B_OK && msg->FindInt64("openid", &mpid) == B_OK)
+			{
+				this->SetTitle(mptitle);
+				tmpString = mptitle;
+				tmpString += " Summary";
+				this->sumView->sumViewTitleString->SetText(tmpString);
+				if(this->sumView->IsHidden()) this->sumView->Show();
+				this->mpMenuBar->contentMenu->SetEnabled(true);
+				this->mpMenuBar->layoutMenu->SetEnabled(true);
+				this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
+			}
+			
 			break;
 			
 		case MENU_CLS_MSG:

@@ -90,7 +90,7 @@ void OpenWindow::MessageReceived(BMessage *msg)
 		case CANCEL_OPEN_MP:
 			if(!this->IsHidden())
 			{
-				this->Hide();
+				this->Close();
 			}
 			break;
 		case OPEN_EXISTING_MP:
@@ -112,8 +112,20 @@ void OpenWindow::MessageReceived(BMessage *msg)
 				{
 					if(nrow == 1) // 1 id was returned.
 					{
+						mpMessage.MakeEmpty();
+						mpMessage.AddString("opentitle", selectResult[1]);
+						mpMessage.AddInt64("openid", selected);
+						mpMessenger.SendMessage(&mpMessage);
+						this->Close();
 						// commit message sending information to mainwindow where it can update_open_mp...
 						/*
+						mpMessage.MakeEmpty();
+						mpMessage.AddString("mptitle", this->titleText->Text());
+						mpMessage.AddInt64("mpid", (int)selectResult[2]);
+						mpMessenger.SendMessage(&mpMessage);
+						this->titleText->SetText("");
+						this->Close();
+
 						this->SetTitle(selectResult[1]);
 						tmpString = selectResult[1];
 						tmpString += " Summary";
