@@ -9,7 +9,7 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	BGridLayout* mainGrid = new BGridLayout();
 	SetLayout(mainGrid);
 	mainGrid->SetInsets(2, 2, 2, 2);
-	mainGrid->AddView(new BScrollView("scroll_mplist", openListView, B_FOLLOW_NONE, 0, false, true, B_FANCY_BORDER), 0, 0, 3, 1);
+	mainGrid->AddView(new BScrollView("scroll_mplist", openListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 0, 3, 1);
 	mainGrid->AddView(cancelButton, 1, 1);
 	mainGrid->AddView(openButton, 2, 1);
 	MoveTo(mainX, mainY);
@@ -49,7 +49,15 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	else if(sqlite3_errcode(mpdb) == 0) // SQLITE_OK, it exists
 	{
 		this->openListView->MakeEmpty();
-		tmpString = "select mpid, mpname from mptable";
+		if(commonName == "")
+		{
+			tmpString = "select mpid, mpname from mptable";
+		}
+		else
+		{
+			tmpString = "select mpid, mpname from mptable where mpname = ";
+			tmpString += commonName;
+		}
 		sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 		if(sqlValue == SQLITE_OK) // if sql query was successful
 		{
@@ -66,7 +74,7 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 			eAlert = new ErrorAlert("No Masterpiece Exist.  Please Create One First.\r\n1.4 SQL Error: ", sqlErrMsg);
 			eAlert->Launch();
 		}
-		sqlite3_free_table(selectResult); // free table either way		
+		sqlite3_free_table(selectResult); // free table either way
 	}
 	else // if error is not ok or not existing, then display error in alert.
 	{
@@ -98,6 +106,7 @@ void OpenWindow::MessageReceived(BMessage *msg)
 			{
 				tmpString = "select mpname from mptable where mpid = ";
 				tmpString << selected;
+				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 				if(sqlValue == SQLITE_OK) // sql was successful
 				{
 					if(nrow == 1) // 1 id was returned.
@@ -128,6 +137,7 @@ void OpenWindow::MessageReceived(BMessage *msg)
 					eAlert = new ErrorAlert("1.5 Sql Error: ", sqlErrMsg);
 					eAlert->Launch();
 				}
+				sqlite3_free_table(selectResult);
 			}
 			break;
 		default:

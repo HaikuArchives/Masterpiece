@@ -21,6 +21,7 @@
 
 #define ADD_NEW_MP		'add' // add new mp button
 #define CANCEL_NEW_MP	'can' // cancel message
+#define UPDATE_OPEN_MP		'uomp'
 #define TEXT_INSET 3.0
 
 class NewWindow : public BWindow
@@ -47,6 +48,8 @@ private:
 		BMessage	mpMessage;
 		BMessenger	mpMessenger;
 		OpenWindow	*openWin;
+		float		xPos;
+		float		yPos;
 };
 
 

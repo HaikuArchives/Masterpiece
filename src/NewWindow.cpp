@@ -113,15 +113,13 @@ void NewWindow::MessageReceived(BMessage *msg)
 							}
 							else if(nrow > 1) // multiple mp's exist, send message to open the open window with these values only
 							{
-								mpMessage.MakeEmpty();
-								//mpMessage.AddString("newopenmptitle", this->titleText->Text());
-								//mpMessage.AddInt64("newopenmpid", (int)selectResult[2]);
-								//mpMessenger.SendMessage(&mpMessage);
+								BRect r(Bounds());
+								xPos = r.left;
+								yPos = r.top;
+								openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos, this->titleText->Text());
 								this->titleText->SetText("");
 								this->Close();
-								openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos, "");
 								openWin->Show();
-								// close this window
 							}
 							else // something went horribly wrong and need to fix immediately
 							{
