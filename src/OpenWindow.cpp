@@ -1,9 +1,17 @@
 #include "OpenWindow.h"
 
+class DoubleClickListView : public BListView
+{
+	public:
+				DoubleClickListView();
+		void	MouseDown(BPoint point);
+};
+
 OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, const BString commonName)
 	:	BWindow(BRect(30, 100, 285, 300), "Open Existing MasterPiece", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
-	openListView = new BListView(BRect(10, 10, 400, 150), "mpList", B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
+	openListView = new DoubleClickListView();
+	//openListView = new BListView(BRect(10, 10, 400, 150), "mpList", B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
 	openButton = new BButton(BRect(10, 370, 90, 395), NULL, "Open", new BMessage(OPEN_EXISTING_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	cancelButton = new BButton(BRect(10, 370, 90, 395), NULL, "Cancel", new BMessage(CANCEL_OPEN_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	BGridLayout* mainGrid = new BGridLayout();
@@ -13,6 +21,7 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	mainGrid->AddView(cancelButton, 1, 1);
 	mainGrid->AddView(openButton, 2, 1);
 	MoveTo(mainX, mainY);
+	openListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
 	sqlErrMsg = 0;
 	app_info info;
 	be_app->GetAppInfo(&info);
@@ -132,15 +141,7 @@ void OpenWindow::MessageReceived(BMessage *msg)
 				sqlite3_free_table(selectResult);
 			}
 			break;
-		case B_MOUSE_DOWN:
-			/*
-			if(clicks == 2)
-			{
-				eAlert = new ErrorAlert("double click");
-				eAlert->Launch();
-			}
-			*/
-			break;
+			
 		default:
 		{
 			BWindow::MessageReceived(msg);
@@ -148,11 +149,19 @@ void OpenWindow::MessageReceived(BMessage *msg)
 		}
 	}
 }
-void OpenWindow::MouseDown(BPoint point, int clicks)
+
+DoubleClickListView::DoubleClickListView()
+	:	BListView(BRect(10, 10, 400, 150), "mpList", B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW)
 {
-	if(clicks == 2)
+}
+
+void DoubleClickListView::MouseDown(BPoint point)
+{
+	BMessage *msg = Window()->CurrentMessage();
+	int32 clicks;
+	msg->FindInt32("clicks", &clicks);
+	if(clicks > 1)
 	{
-		eAlert = new ErrorAlert("double click");
-		eAlert->Launch();
 	}
+	BListView::MouseDown(point);
 }
