@@ -9,6 +9,7 @@
 #define MENU_CLS_MSG		'cls'					// close menu message
 #define MENU_THT_MSG		'mtm'					// thought menu message
 #define MENU_IMG_MSG		'mim'					// image menu message
+#define MENU_SUM_MSG		'msm'					// summary menu message
 
 class MPMenuBar : public BMenuBar
 {
@@ -23,6 +24,7 @@ public:
 			BMenuItem		*quitMenuItem;			// Quit Application MenuItem
 			BMenuItem		*thoughtsMenuItem;		// Thoughts View MenuItem
 			BMenuItem		*imagesMenuItem;		// Images View MenuItem
+			BMenuItem		*summaryMenuItem;		// Summary View MenuItem
 private:
 
 };

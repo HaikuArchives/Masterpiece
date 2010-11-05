@@ -11,6 +11,7 @@ MPMenuBar::MPMenuBar(BRect r)
 	openFileMenuItem = new BMenuItem("Open Existing", new BMessage(MENU_OPN_MSG));
 	closeFileMenuItem = new BMenuItem("Close Current", new BMessage(MENU_CLS_MSG));
 	quitMenuItem = new BMenuItem("Quit", new BMessage(B_QUIT_REQUESTED));
+	summaryMenuItem = new BMenuItem("Summary", new BMessage(MENU_SUM_MSG));
 	thoughtsMenuItem = new BMenuItem("Thoughts", new BMessage(MENU_THT_MSG));
 	imagesMenuItem = new BMenuItem("Images", new BMessage(MENU_IMG_MSG));	
 	
@@ -21,6 +22,8 @@ MPMenuBar::MPMenuBar(BRect r)
 	fileMenu->AddSeparatorItem();
 	fileMenu->AddItem(quitMenuItem);
 	// Layout ContentMenu
+	contentMenu->AddItem(summaryMenuItem);
+	contentMenu->AddSeparatorItem();
 	contentMenu->AddItem(thoughtsMenuItem);
 	contentMenu->AddItem(imagesMenuItem);
 	// Layout MainMenuBar

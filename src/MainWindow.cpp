@@ -193,6 +193,14 @@ void MainWindow::MessageReceived(BMessage *msg)
 		case MNG_LAYOUT_MSG:
 			// do something here...
 			break;
+			
+		case MENU_SUM_MSG:
+			mainGrid->RemoveView(thoughtView);
+			mainGrid->AddView(sumView);
+			this->mpMenuBar->summaryMenuItem->SetEnabled(false);
+			this->mpMenuBar->thoughtsMenuItem->SetEnabled(true);
+			// do something here...
+			break;
 
 		default:
 		{
