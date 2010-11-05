@@ -132,6 +132,15 @@ void OpenWindow::MessageReceived(BMessage *msg)
 				sqlite3_free_table(selectResult);
 			}
 			break;
+		case B_MOUSE_DOWN:
+			/*
+			if(clicks == 2)
+			{
+				eAlert = new ErrorAlert("double click");
+				eAlert->Launch();
+			}
+			*/
+			break;
 		default:
 		{
 			BWindow::MessageReceived(msg);
@@ -139,13 +148,11 @@ void OpenWindow::MessageReceived(BMessage *msg)
 		}
 	}
 }
-void OpenWindow::MouseDown(BPoint point)
+void OpenWindow::MouseDown(BPoint point, int clicks)
 {
-	/*
 	if(clicks == 2)
 	{
 		eAlert = new ErrorAlert("double click");
 		eAlert->Launch();
 	}
-	*/
 }

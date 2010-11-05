@@ -27,7 +27,7 @@ class OpenWindow : public BWindow
 	public:
 						OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, const BString commonName);
 			void		MessageReceived(BMessage *msg);
-			void		MouseDown(BPoint point);
+			void		MouseDown(BPoint point, int clicks);
 			
 	private:
 			BListView	*openListView;
