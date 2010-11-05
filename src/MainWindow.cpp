@@ -172,6 +172,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			//if(!this->sumView->IsHidden()) this->sumView->Hide();
 			//if(this->thoughtView->IsHidden()) this->thoughtView->Show();
 			//if(!this->sumView->IsHidden()) mainGrid->RemoveView(sumView);
+			mainGrid->RemoveView(sumView);
 			if(tmpView == this->sumView)
 			{
 				mainGrid->RemoveView(sumView);
@@ -184,6 +185,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 				errorAlert->Launch();
 			}
 			mainGrid->AddView(thoughtView);
+			this->mpMenuBar->thoughtsMenuItem->SetEnabled(false);
 			// when in a view, might want to invalidate the menu option so it can't be redone and screwed up for now
 			// do something here...
 			break;
