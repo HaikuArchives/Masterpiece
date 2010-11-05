@@ -139,3 +139,13 @@ void OpenWindow::MessageReceived(BMessage *msg)
 		}
 	}
 }
+void OpenWindow::MouseDown(BPoint point)
+{
+	/*
+	if(clicks == 2)
+	{
+		eAlert = new ErrorAlert("double click");
+		eAlert->Launch();
+	}
+	*/
+}
