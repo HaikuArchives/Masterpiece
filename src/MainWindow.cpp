@@ -21,6 +21,7 @@ MainWindow::MainWindow(void)
 	/* begin comment out group when not testing layout code */
 	BGroupLayout* mainGroup = new BGroupLayout(B_VERTICAL);
 	mainGrid = new BGridLayout();
+	mainCard = new BCardLayout();
 	SetLayout(mainGroup);
 	/* end comment out group when not testing layout code */
 	//BView *mainView = new BView(Bounds(), "mainview", B_FOLLOW_ALL, B_WILL_DRAW);

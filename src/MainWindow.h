@@ -18,6 +18,7 @@
 #include <File.h>
 #include <GroupLayout.h>
 #include <GridLayout.h>
+#include <CardLayout.h>
 
 #include "MPMenuBar.h"
 #include "SummaryView.h"
@@ -74,6 +75,7 @@ private:
 			BString			mptitle;
 			int64			mpid;
 			BGridLayout*	mainGrid;
+			BCardLayout*	mainCard;
 };
 
 #endif
