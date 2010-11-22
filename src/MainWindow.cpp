@@ -34,19 +34,22 @@ MainWindow::MainWindow(void)
 	mainGroup->AddView(0, mpMenuBar); // comment out when not testing layout code
 	mainGroup->SetInsets(0, 0, 0, 0);
 	mainGrid->SetInsets(0, 0, 0, 0);
-	mainGroup->AddItem(mainGrid);
+	//mainGroup->AddItem(mainGrid); // uncomment when finished with cardlayout test
+	mainGroup->AddItem(mainCard); // uncomment when running cardlayout test
 
 	BRect sumRect(Bounds());
 	sumRect.top = 0;
 	sumView = new SummaryView(sumRect);
 	//mainView->AddChild(sumView); // uncomment when not using grid layout
 	//mainGrid->AddView(sumView, 0, 0);
+	mainCard->AddView(sumView); // item 0
 	sumView->SetViewColor(myColor);
 	//sumView->Hide();
 	
 	thoughtView = new ThoughtView(sumRect);
 	//mainView->AddChild(thoughtView);
 	//mainGrid->AddView(thoughtView, 0, 0);
+	mainCard->AddView(thoughtView); // item 1
 	thoughtView->SetViewColor(myColor);
 	//thoughtView->Hide();
 	
@@ -109,7 +112,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 		case MENU_NEW_MSG:
 			// 1.  need to center the modal window on the parent...
 			// 2.  check to see if course is currently open
-			if(!this->sumView->IsHidden()) this->sumView->Hide();
+			//if(!this->sumView->IsHidden()) this->sumView->Hide();
 			xPos = (r.right - r.left) / 2;
 			yPos = (r.bottom - r.top) / 2;
 			newWin = new NewWindow(BMessage(UPDATE_NEW_MP), BMessenger(this), xPos, yPos);
@@ -124,8 +127,9 @@ void MainWindow::MessageReceived(BMessage *msg)
 				tmpString = mptitle;
 				tmpString += " Summary";
 				this->sumView->sumViewTitleString->SetText(tmpString);
+				//this->mainCard->SetVisibleItem(0);
 				//if(this->sumView->IsHidden()) this->sumView->Show();
-				mainGrid->AddView(sumView, 0, 0);
+				//mainGrid->AddView(sumView, 0, 0);
 				this->mpMenuBar->contentMenu->SetEnabled(true);
 				this->mpMenuBar->layoutMenu->SetEnabled(true);
 				this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
@@ -147,7 +151,8 @@ void MainWindow::MessageReceived(BMessage *msg)
 				tmpString = mptitle;
 				tmpString += " Summary";
 				this->sumView->sumViewTitleString->SetText(tmpString);
-				mainGrid->AddView(sumView, 0, 0);
+				//mainGrid->AddView(sumView, 0, 0);
+				this->mainCard->SetVisibleItem((long)0);
 				
 				//if(this->sumView->IsHidden()) this->sumView->Show();
 				this->mpMenuBar->contentMenu->SetEnabled(true);
@@ -160,7 +165,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 		case MENU_CLS_MSG:
 			// 1.  close course - simply clear values and hide views.
 			//if(!this->sumView->IsHidden()) this->sumView->Hide();
-			mainGrid->RemoveView(sumView);
+			//mainGrid->RemoveView(sumView);
 			this->SetTitle("MasterPiece");
 			this->mpMenuBar->closeFileMenuItem->SetEnabled(false);
 			this->mpMenuBar->contentMenu->SetEnabled(false);
@@ -169,11 +174,13 @@ void MainWindow::MessageReceived(BMessage *msg)
 			break;
 
 		case MENU_THT_MSG:
-			tmpView = mainGrid->TargetView();
+			this->mainCard->SetVisibleItem((long)1);
+			//tmpView = mainGrid->TargetView();
 			//if(!this->sumView->IsHidden()) this->sumView->Hide();
 			//if(this->thoughtView->IsHidden()) this->thoughtView->Show();
 			//if(!this->sumView->IsHidden()) mainGrid->RemoveView(sumView);
-			mainGrid->RemoveView(sumView);
+			//mainGrid->RemoveView(sumView);
+			/*
 			if(tmpView == this->sumView)
 			{
 				mainGrid->RemoveView(sumView);
@@ -186,7 +193,9 @@ void MainWindow::MessageReceived(BMessage *msg)
 				errorAlert->Launch();
 			}
 			mainGrid->AddView(thoughtView);
+			*/
 			this->mpMenuBar->thoughtsMenuItem->SetEnabled(false);
+			this->mpMenuBar->summaryMenuItem->SetEnabled(true);
 			// when in a view, might want to invalidate the menu option so it can't be redone and screwed up for now
 			// do something here...
 			break;
@@ -196,8 +205,9 @@ void MainWindow::MessageReceived(BMessage *msg)
 			break;
 			
 		case MENU_SUM_MSG:
-			mainGrid->RemoveView(thoughtView);
-			mainGrid->AddView(sumView);
+			//mainGrid->RemoveView(thoughtView);
+			//mainGrid->AddView(sumView);
+			this->mainCard->SetVisibleItem((long)0);
 			this->mpMenuBar->summaryMenuItem->SetEnabled(false);
 			this->mpMenuBar->thoughtsMenuItem->SetEnabled(true);
 			// do something here...
