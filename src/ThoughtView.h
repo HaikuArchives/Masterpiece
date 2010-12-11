@@ -3,7 +3,6 @@
 
 #include <View.h>
 #include <String.h>
-#include <StringView.h>
 #include <stdio.h>
 #include <Box.h>
 
@@ -19,7 +18,6 @@ public:
 		void	Draw(BRect rect);		// set view draw here
 		void	AttachedToWindow();		// set view to get background properties here
 		
-		BStringView				*sumViewTitleString;
 		MultiLineTextControl	*thoughtEntry;
 		BBox					*thoughtBox;
 		

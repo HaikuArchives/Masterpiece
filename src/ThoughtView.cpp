@@ -6,11 +6,9 @@ ThoughtView::ThoughtView(BRect r)
 {
 	thoughtBox = new BBox(r, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW, B_FANCY_BORDER);
 	thoughtBox->SetLabel("Thought View");
-	sumViewTitleString = new BStringView(BRect(10, 10, 200, 30), NULL, "Thought View");
 	thoughtEntry = new MultiLineTextControl(BRect(10, 50, 400, 250), NULL, NULL, false, "", NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
-	AddChild(thoughtBox);
-	AddChild(sumViewTitleString);
 	AddChild(thoughtEntry);
+	AddChild(thoughtBox);
 }
 
 ThoughtView::~ThoughtView(void)
@@ -20,7 +18,7 @@ ThoughtView::~ThoughtView(void)
 void ThoughtView::AttachedToWindow()
 {
 	if(Parent())
-		//SetViewColor(Parent()->ViewColor());
+		SetViewColor(Parent()->ViewColor());
 	BView::AttachedToWindow();
 }
 
