@@ -5,6 +5,7 @@
 #include <String.h>
 #include <StringView.h>
 #include <stdio.h>
+#include <Box.h>
 
 #include "MultiLineTextControl.h"
 
@@ -20,6 +21,7 @@ public:
 		
 		BStringView				*sumViewTitleString;
 		MultiLineTextControl	*thoughtEntry;
+		BBox					*thoughtBox;
 		
 private:
 protected:

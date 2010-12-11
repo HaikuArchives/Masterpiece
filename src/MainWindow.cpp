@@ -24,7 +24,7 @@ MainWindow::MainWindow(void)
 	SetLayout(mainGroup);
 	rgb_color myColor = {215, 215, 215, 255};
 	//mainView->SetViewColor(myColor);
-	//r.bottom = 20;
+	r.bottom = 20;
 	mpMenuBar = new MPMenuBar(r);
 	mainGroup->AddView(0, mpMenuBar);
 	mainGroup->SetInsets(0, 0, 0, 0);
