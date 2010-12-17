@@ -5,6 +5,7 @@
 #include <String.h>
 #include <stdio.h>
 #include <Box.h>
+#include <GridLayout.h>
 
 #include "MultiLineTextControl.h"
 

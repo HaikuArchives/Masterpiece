@@ -4,11 +4,11 @@
 ThoughtView::ThoughtView(BRect r)
 	:	BView(r, "thoughtview", B_FOLLOW_ALL, B_WILL_DRAW)
 {
-	thoughtBox = new BBox(r, NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW, B_FANCY_BORDER);
-	thoughtBox->SetLabel("Thought View");
-	thoughtEntry = new MultiLineTextControl(BRect(10, 50, 400, 250), NULL, NULL, false, "", NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
-	AddChild(thoughtEntry);
-	AddChild(thoughtBox);
+	thoughtEntry = new MultiLineTextControl(BRect(0, 0, 400, 250), NULL, NULL, false, "", NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
+	BGridLayout* thoughtGrid = new BGridLayout();
+	SetLayout(thoughtGrid);
+	thoughtGrid->SetInsets(0, 0, 0, 0);
+	thoughtGrid->AddView(thoughtEntry, 0, 0);
 }
 
 ThoughtView::~ThoughtView(void)

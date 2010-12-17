@@ -10,7 +10,6 @@
 
 // 1.  Need to check and see if an mp is already open, prior to creating a new one,
 // 	   so i can reload what was there and what view was there...
-// 2.  Need to replace openview with OpenWindow
 
 #include "MainWindow.h"
 
@@ -19,16 +18,14 @@ MainWindow::MainWindow(void)
 {
 	BRect r(Bounds());
 	BGroupLayout* mainGroup = new BGroupLayout(B_VERTICAL);
-	mainGrid = new BGridLayout();
 	mainCard = new BCardLayout();
 	SetLayout(mainGroup);
 	rgb_color myColor = {215, 215, 215, 255};
 	//mainView->SetViewColor(myColor);
 	r.bottom = 20;
-	mpMenuBar = new MPMenuBar(r);
-	mainGroup->AddView(0, mpMenuBar);
+	mpMenuBar = new MPMenuBar(BRect(0, 0, 0, 0));
 	mainGroup->SetInsets(0, 0, 0, 0);
-	mainGrid->SetInsets(0, 0, 0, 0);
+	mainGroup->AddView(mpMenuBar);
 	mainGroup->AddItem(mainCard);
 
 	BRect sumRect(Bounds());
@@ -148,6 +145,7 @@ void MainWindow::MessageReceived(BMessage *msg)
 			
 		case MENU_CLS_MSG:
 			// 1.  close course - simply clear values and hide views.
+			this->mainCard->SetVisibleItem((long)-1);
 			this->SetTitle("MasterPiece");
 			this->mpMenuBar->closeFileMenuItem->SetEnabled(false);
 			this->mpMenuBar->contentMenu->SetEnabled(false);

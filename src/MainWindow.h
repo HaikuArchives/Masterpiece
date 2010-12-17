@@ -74,7 +74,6 @@ private:
 			float			yPos;
 			BString			mptitle;
 			int64			mpid;
-			BGridLayout*	mainGrid;
 			BCardLayout*	mainCard;
 };
 
