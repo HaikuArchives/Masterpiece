@@ -8,7 +8,7 @@ ThoughtView::ThoughtView(BRect r)
 	BGridLayout* thoughtGrid = new BGridLayout();
 	SetLayout(thoughtGrid);
 	thoughtGrid->SetInsets(0, 0, 0, 0);
-	thoughtGrid->AddView(thoughtEntry, 0, 0);
+	thoughtGrid->AddView(thoughtEntry);
 }
 
 ThoughtView::~ThoughtView(void)
