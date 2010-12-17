@@ -21,8 +21,8 @@ SummaryView::~SummaryView(void)
 
 void SummaryView::AttachedToWindow()
 {
-	if(Parent())
-		SetViewColor(Parent()->ViewColor());
+	//if(Parent())
+		//SetViewColor(Parent()->ViewColor());
 	BView::AttachedToWindow();
 }
 

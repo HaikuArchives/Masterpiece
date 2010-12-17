@@ -11,6 +11,7 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	:	BWindow(BRect(30, 100, 285, 300), "Open Existing MasterPiece", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
 	openListView = new DoubleClickListView();
+	rgb_color myColor = {215, 215, 215, 255};
 	openButton = new BButton(BRect(10, 370, 90, 395), NULL, "Open", new BMessage(OPEN_EXISTING_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	cancelButton = new BButton(BRect(10, 370, 90, 395), NULL, "Cancel", new BMessage(CANCEL_OPEN_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	BGridLayout* mainGrid = new BGridLayout();

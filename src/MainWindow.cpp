@@ -26,7 +26,6 @@ MainWindow::MainWindow(void)
 	mainGroup->SetInsets(0, 0, 0, 0);
 	mainGroup->AddView(mpMenuBar);
 	mainGroup->AddItem(mainCard);
-
 	BRect sumRect(Bounds());
 	sumView = new SummaryView(sumRect);
 	mainCard->AddView(sumView); // item 0
