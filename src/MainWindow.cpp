@@ -17,7 +17,7 @@ MainWindow::MainWindow(void)
 	:	BWindow(BRect(100,100,900,700),"MasterPiece",B_DOCUMENT_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
 {
 	BRect r(Bounds());
-	BGroupLayout* mainGroup = new BGroupLayout(B_VERTICAL);
+	BGroupLayout* mainGroup = new BGroupLayout(B_VERTICAL, 0);
 	mainCard = new BCardLayout();
 	SetLayout(mainGroup);
 	rgb_color myColor = {215, 215, 215, 255};
@@ -248,4 +248,344 @@ private:
 };
 
 #endif	// _CARD_LAYOUT_H
+*/
+
+/*
+#ifndef	_ABSTRACT_LAYOUT_H
+#define	_ABSTRACT_LAYOUT_H
+
+#include <Alignment.h>
+#include <Layout.h>
+#include <Size.h>
+
+class BAbstractLayout : public BLayout {
+public:
+								BAbstractLayout();
+								BAbstractLayout(BMessage* from);
+	virtual						~BAbstractLayout();
+
+	virtual	BSize				MinSize();
+	virtual	BSize				MaxSize();
+	virtual	BSize				PreferredSize();
+	virtual	BAlignment			Alignment();
+
+	virtual	void				SetExplicitMinSize(BSize size);
+	virtual	void				SetExplicitMaxSize(BSize size);
+	virtual	void				SetExplicitPreferredSize(BSize size);
+	virtual	void				SetExplicitAlignment(BAlignment alignment);
+
+	virtual	BSize				BaseMinSize();
+	virtual	BSize				BaseMaxSize();
+	virtual	BSize				BasePreferredSize();
+	virtual	BAlignment			BaseAlignment();
+
+	virtual BRect				Frame();
+	virtual	void				SetFrame(BRect frame);	
+
+	virtual	bool				IsVisible();
+	virtual	void				SetVisible(bool visible);
+
+	virtual status_t			Archive(BMessage* into, bool deep = true) const;
+	virtual	status_t			AllUnarchived(const BMessage* from);
+
+protected:
+	virtual	void				OwnerChanged(BView* was);
+	virtual	void				AncestorVisibilityChanged(bool shown);
+
+private:
+			struct	Proxy;
+			struct	ViewProxy;
+			struct	DataProxy;
+
+			Proxy*				fExplicitData;
+};
+
+#endif	//	_ABSTRACT_LAYOUT_ITEM_H
+
+*/
+
+/*
+#ifndef	_LAYOUT_H
+#define	_LAYOUT_H
+
+
+#include <Alignment.h>
+#include <Archivable.h>
+#include <LayoutItem.h>
+#include <List.h>
+#include <Size.h>
+
+
+class BLayoutContext;
+class BLayoutItem;
+class BView;
+
+
+class BLayout : public BLayoutItem {
+public:
+								BLayout();
+								BLayout(BMessage* archive);
+	virtual						~BLayout();
+
+			BView*				Owner() const;
+			BView*				TargetView() const;
+	virtual	BView*				View(); // from BLayoutItem
+
+	// methods dealing with items
+	virtual	BLayoutItem*		AddView(BView* child);
+	virtual	BLayoutItem*		AddView(int32 index, BView* child);
+
+	virtual	bool				AddItem(BLayoutItem* item);
+	virtual	bool				AddItem(int32 index, BLayoutItem* item);
+
+	virtual	bool				RemoveView(BView* child);
+	virtual	bool				RemoveItem(BLayoutItem* item);
+	virtual	BLayoutItem*		RemoveItem(int32 index);
+
+			BLayoutItem*		ItemAt(int32 index) const;
+			int32				CountItems() const;
+			int32				IndexOfItem(const BLayoutItem* item) const;
+			int32				IndexOfView(BView* child) const;
+
+			bool				AncestorsVisible() const;
+
+	// Layouting related methods
+
+	virtual	void				InvalidateLayout(bool children = false);
+	virtual	void				Relayout(bool immediate = false);
+			void				RequireLayout();
+			bool				IsValid();
+			void				EnableLayoutInvalidation();
+			void				DisableLayoutInvalidation();
+
+			void				LayoutItems(bool force = false);
+			BRect				LayoutArea();
+			BLayoutContext*		LayoutContext() const;
+
+	// Archiving methods
+
+	virtual status_t			Archive(BMessage* into, bool deep = true) const;
+	virtual	status_t			AllUnarchived(const BMessage* from);
+
+	virtual status_t			ItemArchived(BMessage* into, BLayoutItem* item,
+									int32 index) const;
+	virtual	status_t			ItemUnarchived(const BMessage* from,
+									BLayoutItem* item, int32 index);
+
+protected:
+	// BLayout hook methods
+	virtual	bool				ItemAdded(BLayoutItem* item, int32 atIndex);
+	virtual	void				ItemRemoved(BLayoutItem* item, int32 fromIndex);
+	virtual	void				DerivedLayoutItems() = 0;
+	virtual	void				OwnerChanged(BView* was);
+
+	// BLayoutItem hook methods
+	virtual	void				AttachedToLayout();
+	virtual void				DetachedFromLayout(BLayout* layout);
+	virtual	void				AncestorVisibilityChanged(bool shown);
+
+	// To be called by sub-classes in SetVisible().
+			void				VisibilityChanged(bool show);
+	// To be called when layout data is known to be good
+			void				ResetLayoutInvalidation();
+
+private:
+			friend class BView;
+
+			bool				RemoveViewRecursive(BView* view);
+			bool				InvalidateLayoutsForView(BView* view);
+			bool				InvalidationLegal();
+			void				SetOwner(BView* owner);
+			void				SetTarget(BView* target);
+
+			void				_LayoutWithinContext(bool force,
+									BLayoutContext* context);
+
+			uint32				fState;
+			bool				fAncestorsVisible;
+			int32				fInvalidationDisabled;
+			BLayoutContext*		fContext;
+			BView*				fOwner;
+			BView*				fTarget;
+			BList				fItems;
+			BList				fNestedLayouts;
+};
+
+
+#endif	//	_LAYOUT_H
+*/
+/*
+#ifndef	_GROUP_LAYOUT_H
+#define	_GROUP_LAYOUT_H
+
+#include <TwoDimensionalLayout.h>
+
+class BGroupLayout : public BTwoDimensionalLayout {
+public:
+								BGroupLayout(enum orientation orientation,
+									float spacing = B_USE_DEFAULT_SPACING);
+								BGroupLayout(BMessage* from);
+	virtual						~BGroupLayout();
+
+			float				Spacing() const;
+			void				SetSpacing(float spacing);
+
+			orientation			Orientation() const;
+			void				SetOrientation(enum orientation orientation);
+	
+			float				ItemWeight(int32 index) const;
+			void				SetItemWeight(int32 index, float weight);
+
+	virtual	BLayoutItem*		AddView(BView* child);
+	virtual	BLayoutItem*		AddView(int32 index, BView* child);
+	virtual	BLayoutItem*		AddView(BView* child, float weight);
+	virtual	BLayoutItem*		AddView(int32 index, BView* child,
+									float weight);
+
+	virtual	bool				AddItem(BLayoutItem* item);
+	virtual	bool				AddItem(int32 index, BLayoutItem* item);
+	virtual	bool				AddItem(BLayoutItem* item, float weight);
+	virtual	bool				AddItem(int32 index, BLayoutItem* item,
+									float weight);
+
+	virtual status_t			Archive(BMessage* into, bool deep = true) const;
+	virtual	status_t			AllUnarchived(const BMessage* from);
+	static	BArchivable*		Instantiate(BMessage* from);
+
+	virtual status_t			ItemArchived(BMessage* into, BLayoutItem* item,
+									int32 index) const;
+	virtual	status_t			ItemUnarchived(const BMessage* from,
+									BLayoutItem* item, int32 index);
+
+protected:	
+	virtual	bool				ItemAdded(BLayoutItem* item, int32 atIndex);
+	virtual	void				ItemRemoved(BLayoutItem* item, int32 fromIndex);
+
+	virtual	void				PrepareItems(enum orientation orientation);
+	
+	virtual	int32				InternalCountColumns();
+	virtual	int32				InternalCountRows();
+	virtual	void				GetColumnRowConstraints(
+									enum orientation orientation,
+									int32 index,
+									ColumnRowConstraints* constraints);
+	virtual	void				GetItemDimensions(BLayoutItem* item,
+									Dimensions* dimensions);
+
+private:
+			struct ItemLayoutData;
+
+			ItemLayoutData*		_LayoutDataForItem(BLayoutItem* item) const;
+
+			orientation			fOrientation;
+			BList				fVisibleItems;
+};
+
+#endif	// _GROUP_LAYOUT_H
+*/
+/*
+#ifndef	_GRID_LAYOUT_H
+#define	_GRID_LAYOUT_H
+
+#include <TwoDimensionalLayout.h>
+
+
+class BGridLayout : public BTwoDimensionalLayout {
+public:
+								BGridLayout(float horizontal
+										= B_USE_DEFAULT_SPACING,
+									float vertical = B_USE_DEFAULT_SPACING);
+								BGridLayout(BMessage* from);
+	virtual						~BGridLayout();
+
+			int32				CountColumns() const;
+			int32				CountRows() const;
+
+			float				HorizontalSpacing() const;
+			float				VerticalSpacing() const;
+
+			void				SetHorizontalSpacing(float spacing);
+			void				SetVerticalSpacing(float spacing);
+			void				SetSpacing(float horizontal, float vertical);
+
+			float				ColumnWeight(int32 column) const;
+			void				SetColumnWeight(int32 column, float weight);
+
+			float				MinColumnWidth(int32 column) const;
+			void				SetMinColumnWidth(int32 column, float width);
+
+			float				MaxColumnWidth(int32 column) const;
+			void				SetMaxColumnWidth(int32 column, float width);
+
+			float				RowWeight(int32 row) const;
+			void				SetRowWeight(int32 row, float weight);
+
+			float				MinRowHeight(int row) const;
+			void				SetMinRowHeight(int32 row, float height);
+
+			float				MaxRowHeight(int32 row) const;
+			void				SetMaxRowHeight(int32 row, float height);
+
+	virtual	BLayoutItem*		AddView(BView* child);
+	virtual	BLayoutItem*		AddView(int32 index, BView* child);
+	virtual	BLayoutItem*		AddView(BView* child, int32 column, int32 row,
+									int32 columnCount = 1, int32 rowCount = 1);
+
+	virtual	bool				AddItem(BLayoutItem* item);
+	virtual	bool				AddItem(int32 index, BLayoutItem* item);
+	virtual	bool				AddItem(BLayoutItem* item, int32 column,
+									int32 row, int32 columnCount = 1,
+									int32 rowCount = 1);
+
+	virtual	status_t			Archive(BMessage* into, bool deep = true) const;
+	static	BArchivable*		Instantiate(BMessage* from);
+
+	virtual status_t			ItemArchived(BMessage* into,
+									BLayoutItem* item, int32 index) const;
+	virtual status_t			ItemUnarchived(const BMessage* from,
+									BLayoutItem* item, int32 index);
+
+protected:	
+	virtual	bool				ItemAdded(BLayoutItem* item, int32 atIndex);
+	virtual	void				ItemRemoved(BLayoutItem* item, int32 fromIndex);
+
+	virtual	bool				HasMultiColumnItems();
+	virtual	bool				HasMultiRowItems();
+	
+	virtual	int32				InternalCountColumns();
+	virtual	int32				InternalCountRows();
+	virtual	void				GetColumnRowConstraints(
+									enum orientation orientation,
+									int32 index,
+									ColumnRowConstraints* constraints);
+	virtual	void				GetItemDimensions(BLayoutItem* item,
+									Dimensions* dimensions);
+
+private:	
+			class DummyLayoutItem;
+			class RowInfoArray;
+			struct ItemLayoutData;
+			
+			bool				_IsGridCellEmpty(int32 column, int32 row);
+			bool				_AreGridCellsEmpty(int32 column, int32 row,
+									int32 columnCount, int32 rowCount);
+
+			bool				_InsertItemIntoGrid(BLayoutItem* item);
+			bool				_ResizeGrid(int32 columnCount, int32 rowCount);
+
+			ItemLayoutData*		_LayoutDataForItem(BLayoutItem* item) const;
+
+private:
+			BLayoutItem***		fGrid;
+			int32				fColumnCount;
+			int32				fRowCount;
+
+			RowInfoArray*		fRowInfos;
+			RowInfoArray*		fColumnInfos;
+
+			int32				fMultiColumnItems;
+			int32				fMultiRowItems;
+};
+
+#endif	// _GRID_LAYOUT_H
 */
