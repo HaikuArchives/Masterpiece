@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <Box.h>
 #include <GridLayout.h>
+#include <GroupLayout.h>
+#include <StringView.h>
 
 #include "MultiLineTextControl.h"
 
@@ -21,6 +23,7 @@ public:
 		
 		MultiLineTextControl	*thoughtEntry;
 		BBox					*thoughtBox;
+		BStringView				*thoughtString;
 		
 private:
 protected:

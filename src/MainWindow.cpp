@@ -21,15 +21,13 @@ MainWindow::MainWindow(void)
 	mainCard = new BCardLayout();
 	SetLayout(mainGroup);
 	rgb_color myColor = {215, 215, 215, 255};
-	//mainView->SetViewColor(myColor);
 	r.bottom = 20;
-	mpMenuBar = new MPMenuBar(BRect(0, 0, 0, 0));
+	mpMenuBar = new MPMenuBar(r);
 	mainGroup->SetInsets(0, 0, 0, 0);
 	mainGroup->AddView(mpMenuBar);
 	mainGroup->AddItem(mainCard);
 
 	BRect sumRect(Bounds());
-	sumRect.top = 0;
 	sumView = new SummaryView(sumRect);
 	mainCard->AddView(sumView); // item 0
 	sumView->SetViewColor(myColor);
