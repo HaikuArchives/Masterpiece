@@ -18,11 +18,12 @@ MainWindow::MainWindow(void)
 {
 	mainGroup = new BGroupLayout(B_VERTICAL, 0);
 	mainCard = new BCardLayout();
-	//BView* backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
-	//backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
-	//AddChild(backView);
-	//backView->SetLayout(mainGroup);
-	SetLayout(mainGroup);
+	// backview code can set background to gray prior to adding layout elements if needed
+	BView* backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
+	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+	AddChild(backView);
+	backView->SetLayout(mainGroup);
+	//SetLayout(mainGroup);
 	rgb_color myColor = {215, 215, 215, 255};
 	mpMenuBar = new MPMenuBar(Bounds());
 	mainGroup->SetInsets(0, 0, 0, 0);
