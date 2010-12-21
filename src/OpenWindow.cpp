@@ -11,7 +11,6 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	:	BWindow(BRect(30, 100, 285, 300), "Open Existing MasterPiece", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
 	openListView = new DoubleClickListView();
-	rgb_color myColor = {215, 215, 215, 255};
 	openButton = new BButton(BRect(10, 370, 90, 395), NULL, "Open", new BMessage(OPEN_EXISTING_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	cancelButton = new BButton(BRect(10, 370, 90, 395), NULL, "Cancel", new BMessage(CANCEL_OPEN_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	BGridLayout* mainGrid = new BGridLayout();
@@ -92,7 +91,7 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 		eAlert->Launch();
 	}
 }
-void OpenWindow::MessageReceived(BMessage *msg)
+void OpenWindow::MessageReceived(BMessage* msg)
 {
 	switch(msg->what)
 	{
@@ -110,7 +109,7 @@ void OpenWindow::MessageReceived(BMessage *msg)
 				eAlert = new ErrorAlert("3.1 No Existing Masterpiece was found.  Please Try Again");
 				eAlert->Launch();
 			}
-			BStringItem *item;
+			BStringItem* item;
 			item = dynamic_cast<BStringItem*>(this->openListView->ItemAt(selected - 1));
 			if(item)
 			{
@@ -157,7 +156,7 @@ DoubleClickListView::DoubleClickListView()
 
 void DoubleClickListView::MouseDown(BPoint point)
 {
-	BMessage *msg = Window()->CurrentMessage();
+	BMessage* msg = Window()->CurrentMessage();
 	int32 clicks;
 	msg->FindInt32("clicks", &clicks);
 	if(clicks > 1)

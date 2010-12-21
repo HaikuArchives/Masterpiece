@@ -28,28 +28,28 @@ class NewWindow : public BWindow
 {
 public:
 				NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY);
-		void	MessageReceived(BMessage *msg);
+		void	MessageReceived(BMessage* msg);
 		void	Draw(BRect rect);
 private:
-		BTextView	*titleText;
-		BStringView *titleString;
-		BButton		*newButton;
-		BButton		*cancelButton;
-		DeepBevelView *bevelView;
-		ErrorAlert	*eAlert;
-		int			returnValue;
-		sqlite3		*mpdb;
-		int			sqlValue;
-		char		*sqlErrMsg;
-		char		**selectResult;
-		int			nrow, ncol;
-		BString		tmpString;
-		BAlert		*userAlert;
-		BMessage	mpMessage;
-		BMessenger	mpMessenger;
-		OpenWindow	*openWin;
-		float		xPos;
-		float		yPos;
+		BTextView*		titleText;
+		BStringView* 	titleString;
+		BButton*		newButton;
+		BButton*		cancelButton;
+		DeepBevelView*	bevelView;
+		ErrorAlert*		eAlert;
+		int				returnValue;
+		sqlite3*		mpdb;
+		int				sqlValue;
+		char*			sqlErrMsg;
+		char**			selectResult;
+		int				nrow, ncol;
+		BString			tmpString;
+		BAlert*			userAlert;
+		BMessage		mpMessage;
+		BMessenger		mpMessenger;
+		OpenWindow*		openWin;
+		float			xPos;
+		float			yPos;
 };
 
 

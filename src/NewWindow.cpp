@@ -3,25 +3,21 @@
 NewWindow::NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY)
 	:	BWindow(BRect(20, 20, 200, 85), "Enter Title", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
-	/*
-		SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR)
-	*/
-	//rgb_color myColor = {215, 215, 215, 255};
-	BRect viewFrame(3, 3, 153, 28);
-	BRect viewFrame2(3, 3, 140, 20);
+	BRect viewFrame(3, 3, 139, 28);
+	BRect viewFrame2(3, 3, 137, 20);
 	BRect textFrame(3, 3, 137, 17);
 	titleText = new BTextView(viewFrame2, "textTitle", textFrame, false, B_WILL_DRAW);
 	titleText->SetWordWrap(false);
-	bevelView = new DeepBevelView(viewFrame, "bevel", B_FOLLOW_NONE, B_WILL_DRAW);
+	bevelView = new DeepBevelView(viewFrame, "bevel", B_FOLLOW_ALL, B_WILL_DRAW);
+	//bevelView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	bevelView->AddChild(titleText);
 	newButton = new BButton(BRect(190, 50, 270, 75), NULL, "Add", new BMessage(ADD_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	cancelButton = new BButton(BRect(100, 50, 180, 75), NULL, "Cancel", new BMessage(CANCEL_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	BGridLayout* mainGrid = new BGridLayout();
-	//BView* backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
-	//backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
-	//AddChild(backView);
-	SetLayout(mainGrid);
-	//mainGrid->AddView(0, 0, 2, 2);
+	BView* backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
+	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+	AddChild(backView);
+	backView->SetLayout(mainGrid);
 	mainGrid->SetInsets(2, 2, 2, 2);
 	mainGrid->AddView(bevelView, 0, 0, 2, 1);
 	mainGrid->AddView(cancelButton, 0, 1);
@@ -71,7 +67,7 @@ NewWindow::NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, f
 		eAlert->Launch();
 	}
 }
-void NewWindow::MessageReceived(BMessage *msg)
+void NewWindow::MessageReceived(BMessage* msg)
 {
 	switch (msg->what)
 	{

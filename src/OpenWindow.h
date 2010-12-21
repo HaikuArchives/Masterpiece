@@ -26,25 +26,25 @@ class OpenWindow : public BWindow
 {
 	public:
 						OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, const BString commonName);
-			void		MessageReceived(BMessage *msg);
+			void		MessageReceived(BMessage* msg);
 			
 	private:
-			BListView	*openListView;
-			BStringView *openTitleString;
-			BTextView	*titleText;
-			BButton		*openButton;
-			BButton		*cancelButton;
-			ErrorAlert	*eAlert;
-			int			returnValue;
-			sqlite3		*mpdb;
-			int			sqlValue;
-			char		*sqlErrMsg;
-			char		**selectResult;
-			int			nrow, ncol;
-			BString		tmpString;
-			BAlert		*userAlert;
-			BMessage	mpMessage;
-			BMessenger	mpMessenger;
+			BListView*		openListView;
+			BStringView*	openTitleString;
+			BTextView*		titleText;
+			BButton*		openButton;
+			BButton*		cancelButton;
+			ErrorAlert*		eAlert;
+			int				returnValue;
+			sqlite3*		mpdb;
+			int				sqlValue;
+			char*			sqlErrMsg;
+			char**			selectResult;
+			int				nrow, ncol;
+			BString			tmpString;
+			BAlert*			userAlert;
+			BMessage		mpMessage;
+			BMessenger		mpMessenger;
 };
 
 #endif
