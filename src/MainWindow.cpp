@@ -19,9 +19,13 @@ MainWindow::MainWindow(void)
 	BRect r(Bounds());
 	BGroupLayout* mainGroup = new BGroupLayout(B_VERTICAL, 0);
 	mainCard = new BCardLayout();
-	SetLayout(mainGroup);
+	BView* backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
+	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+	AddChild(backView);
+	backView->SetLayout(mainGroup);
+	//SetLayout(mainGroup);
 	rgb_color myColor = {215, 215, 215, 255};
-	//r.bottom = 20;
+	r.bottom = 20;
 	mpMenuBar = new MPMenuBar(r);
 	mainGroup->AddView(0, mpMenuBar);
 	mainGroup->SetInsets(0, 0, 0, 0);
