@@ -16,20 +16,17 @@
 MainWindow::MainWindow(void)
 	:	BWindow(BRect(100,100,900,700),"MasterPiece",B_DOCUMENT_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
 {
-	BRect r(Bounds());
-	BGroupLayout* mainGroup = new BGroupLayout(B_VERTICAL, 0);
+	mainGroup = new BGroupLayout(B_VERTICAL, 0);
 	mainCard = new BCardLayout();
-	BView* backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
-	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
-	AddChild(backView);
-	backView->SetLayout(mainGroup);
-	//SetLayout(mainGroup);
+	//BView* backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
+	//backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+	//AddChild(backView);
+	//backView->SetLayout(mainGroup);
+	SetLayout(mainGroup);
 	rgb_color myColor = {215, 215, 215, 255};
-	r.bottom = 20;
-	mpMenuBar = new MPMenuBar(r);
-	mainGroup->AddView(0, mpMenuBar);
+	mpMenuBar = new MPMenuBar(Bounds());
 	mainGroup->SetInsets(0, 0, 0, 0);
-	mainGroup->AddItem(mainCard);
+	mainGroup->AddView(mpMenuBar);
 	BRect sumRect(Bounds());
 	sumView = new SummaryView(sumRect);
 	mainCard->AddView(sumView); // item 0
@@ -38,6 +35,8 @@ MainWindow::MainWindow(void)
 	thoughtView = new ThoughtView(sumRect);
 	mainCard->AddView(thoughtView); // item 1
 	thoughtView->SetViewColor(myColor);
+
+	mainGroup->AddItem(mainCard);
 	
 	sqlErrMsg = 0;
 	

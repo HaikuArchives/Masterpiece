@@ -73,6 +73,7 @@ private:
 			BString			mptitle;
 			int64			mpid;
 			BCardLayout*	mainCard;
+			BGroupLayout*	mainGroup;
 };
 
 #endif
