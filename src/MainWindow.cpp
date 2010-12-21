@@ -86,7 +86,7 @@ void MainWindow::Draw(BRect rect)
 	//rgb_color backColor = {215, 215, 215, 255};
 }
 
-void MainWindow::MessageReceived(BMessage *msg)
+void MainWindow::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());	
 	switch (msg->what)

@@ -5,6 +5,7 @@
 #include <String.h>
 #include <StringView.h>
 #include <stdio.h>
+#include <GridLayout.h>
 
 class SummaryView : public BView
 {
