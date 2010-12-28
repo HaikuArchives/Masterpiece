@@ -27,6 +27,7 @@
 #include "NewWindow.h"
 #include "OpenWindow.h"
 #include "PlaceHolderView.h"
+#include "CommonFunctions.h"
 
 #define MNG_CONTENT_MSG		'mcm'
 #define MNG_LAYOUT_MSG		'mlm'

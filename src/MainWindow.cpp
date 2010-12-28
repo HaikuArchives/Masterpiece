@@ -31,12 +31,10 @@ MainWindow::MainWindow(void)
 	placeHolderView = new PlaceHolderView(placeHolderRect);
 	mainCard->AddView(placeHolderView); // item 0
 
-	BRect sumRect(Bounds());
-
-	sumView = new SummaryView(sumRect);
+	sumView = new SummaryView(placeHolderRect);
 	mainCard->AddView(sumView); // item 1
 	
-	thoughtView = new ThoughtView(sumRect);
+	thoughtView = new ThoughtView(placeHolderRect);
 	mainCard->AddView(thoughtView); // item 2
 	
 	mainCard->SetVisibleItem((long)0);
@@ -89,7 +87,6 @@ MainWindow::MainWindow(void)
 
 void MainWindow::Draw(BRect rect)
 {
-	//rgb_color backColor = {215, 215, 215, 255};
 }
 
 void MainWindow::MessageReceived(BMessage* msg)

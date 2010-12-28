@@ -25,6 +25,7 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	mainGrid->AddView(openButton, 2, 1);
 	MoveTo(mainX, mainY);
 	openListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
+	
 	sqlErrMsg = 0;
 	app_info info;
 	be_app->GetAppInfo(&info);
