@@ -15,7 +15,6 @@
 #include <Messenger.h>
 #include <Message.h>
 
-#include "DeepBevelView.h"
 #include "ErrorAlert.h"
 #include "OpenWindow.h"
 
@@ -35,7 +34,6 @@ private:
 		BStringView* 	titleString;
 		BButton*		newButton;
 		BButton*		cancelButton;
-		DeepBevelView*	bevelView;
 		ErrorAlert*		eAlert;
 		int				returnValue;
 		sqlite3*		mpdb;
@@ -50,6 +48,8 @@ private:
 		OpenWindow*		openWin;
 		float			xPos;
 		float			yPos;
+		BView*			backView;
+		BGridLayout*	mainGrid;
 };
 
 
