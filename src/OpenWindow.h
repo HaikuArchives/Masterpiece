@@ -45,6 +45,8 @@ class OpenWindow : public BWindow
 			BAlert*			userAlert;
 			BMessage		mpMessage;
 			BMessenger		mpMessenger;
+			BGridLayout*	mainGrid;
+			BView*			backView;
 };
 
 #endif

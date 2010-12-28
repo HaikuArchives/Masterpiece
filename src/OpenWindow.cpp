@@ -13,8 +13,12 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	openListView = new DoubleClickListView();
 	openButton = new BButton(BRect(10, 370, 90, 395), NULL, "Open", new BMessage(OPEN_EXISTING_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	cancelButton = new BButton(BRect(10, 370, 90, 395), NULL, "Cancel", new BMessage(CANCEL_OPEN_MP), B_FOLLOW_NONE, B_WILL_DRAW);
-	BGridLayout* mainGrid = new BGridLayout();
-	SetLayout(mainGrid);
+	mainGrid = new BGridLayout();
+	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
+	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+	AddChild(backView);
+	backView->SetLayout(mainGrid);
+	//SetLayout(mainGrid);
 	mainGrid->SetInsets(2, 2, 2, 2);
 	mainGrid->AddView(new BScrollView("scroll_mplist", openListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 0, 3, 1);
 	mainGrid->AddView(cancelButton, 1, 1);
