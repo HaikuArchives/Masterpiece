@@ -17,11 +17,12 @@ public:
 		void	Draw(BRect rect);		// set view draw here
 		void	AttachedToWindow();		// set view to get background properties here
 		
-		BStringView	*sumViewTitleString;
-		BStringView *thoughtTitleString;
-		BStringView *orderedTitleString;
-		BStringView *thoughtCountString;
-		BStringView *orderedCountString;
+		BStringView* sumViewTitleString;
+		BStringView* thoughtTitleString;
+		BStringView* orderedTitleString;
+		BStringView* thoughtCountString;
+		BStringView* orderedCountString;
+		BGridLayout* sumLayout;
 		
 private:
 protected:

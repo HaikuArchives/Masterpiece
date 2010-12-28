@@ -26,6 +26,7 @@
 #include "ErrorAlert.h"
 #include "NewWindow.h"
 #include "OpenWindow.h"
+#include "PlaceHolderView.h"
 
 #define MNG_CONTENT_MSG		'mcm'
 #define MNG_LAYOUT_MSG		'mlm'
@@ -35,45 +36,47 @@
 class MainWindow : public BWindow
 {
 public:
-							MainWindow(void);
-			void			MessageReceived(BMessage *msg);
-			void			Draw(BRect rect);
-			bool			QuitRequested(void);
-			void			FrameResized(float width, float height);
-			void			PopulateSummaryView(int mpID);
+								MainWindow(void);
+			void				MessageReceived(BMessage *msg);
+			void				Draw(BRect rect);
+			bool				QuitRequested(void);
+			void				FrameResized(float width, float height);
+			void				PopulateSummaryView(int mpID);
 private:
-			MPMenuBar*		mpMenuBar;
-			BBitmap*		testImage;
-			BView*			toolbarView;
-			BView*			tmpView;
-			BPicture*		onImage;
-			BPictureButton* newButton;
-			BEntry			homeEntry;
-			BEntry			newCourseTestEntry;
-			BEntry			entry;
-			BPath			tmpPath;
-			BDirectory* 	homeDir;
-			BAlert*			debugAlert;
-			BAlert*			userAlert;
-			BListView*		openListView;
-			SummaryView*	sumView;
-			ThoughtView*	thoughtView;
-			BString			tmpString;
-			int				returnValue;
-			sqlite3*		mpdb;
-			int				sqlValue;
-			char*			sqlErrMsg;
-			char**			selectResult;
-			int				nrow, ncol;
-			ErrorAlert*		errorAlert;
-			NewWindow*		newWin;
-			OpenWindow*		openWin;
-			float			xPos;
-			float			yPos;
-			BString			mptitle;
-			int64			mpid;
-			BCardLayout*	mainCard;
-			BGroupLayout*	mainGroup;
+			MPMenuBar*			mpMenuBar;
+			BBitmap*			testImage;
+			BView*				toolbarView;
+			BView*				tmpView;
+			BPicture*			onImage;
+			BPictureButton* 	newButton;
+			BEntry				homeEntry;
+			BEntry				newCourseTestEntry;
+			BEntry				entry;
+			BPath				tmpPath;
+			BDirectory* 		homeDir;
+			BAlert*				debugAlert;
+			BAlert*				userAlert;
+			BListView*			openListView;
+			SummaryView*		sumView;
+			ThoughtView*		thoughtView;
+			BString				tmpString;
+			int					returnValue;
+			sqlite3*			mpdb;
+			int					sqlValue;
+			char*				sqlErrMsg;
+			char**				selectResult;
+			int					nrow, ncol;
+			ErrorAlert*			errorAlert;
+			NewWindow*			newWin;
+			OpenWindow*			openWin;
+			float				xPos;
+			float				yPos;
+			BString				mptitle;
+			int64				mpid;
+			BCardLayout*		mainCard;
+			BGroupLayout*		mainGroup;
+			BView*				backView;
+			PlaceHolderView*	placeHolderView;
 };
 
 #endif

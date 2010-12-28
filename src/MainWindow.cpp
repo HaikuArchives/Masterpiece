@@ -18,26 +18,28 @@ MainWindow::MainWindow(void)
 {
 	mainGroup = new BGroupLayout(B_VERTICAL, 0);
 	mainCard = new BCardLayout();
-	// backview code can set background to gray prior to adding layout elements if needed
-	BView* backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
+	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
+	BRect placeHolderRect(Bounds());
 	backView->SetLayout(mainGroup);
-	//SetLayout(mainGroup);
-	rgb_color myColor = {215, 215, 215, 255};
 	mpMenuBar = new MPMenuBar(Bounds());
 	mainGroup->SetInsets(0, 0, 0, 0);
 	mainGroup->AddView(mpMenuBar);
+	mainGroup->AddItem(mainCard);
+	
+	placeHolderView = new PlaceHolderView(placeHolderRect);
+	mainCard->AddView(placeHolderView); // item 0
+
 	BRect sumRect(Bounds());
+
 	sumView = new SummaryView(sumRect);
-	mainCard->AddView(sumView); // item 0
-	sumView->SetViewColor(myColor);
+	mainCard->AddView(sumView); // item 1
 	
 	thoughtView = new ThoughtView(sumRect);
-	mainCard->AddView(thoughtView); // item 1
-	thoughtView->SetViewColor(myColor);
-
-	mainGroup->AddItem(mainCard);
+	mainCard->AddView(thoughtView); // item 2
+	
+	mainCard->SetVisibleItem((long)0);
 	
 	sqlErrMsg = 0;
 	
@@ -112,7 +114,7 @@ void MainWindow::MessageReceived(BMessage* msg)
 				tmpString = mptitle;
 				tmpString += " Summary";
 				this->sumView->sumViewTitleString->SetText(tmpString);
-				this->mainCard->SetVisibleItem((long)0);
+				this->mainCard->SetVisibleItem((long)1);
 				this->mpMenuBar->contentMenu->SetEnabled(true);
 				this->mpMenuBar->layoutMenu->SetEnabled(true);
 				this->mpMenuBar->closeFileMenuItem->SetEnabled(true);
@@ -134,7 +136,7 @@ void MainWindow::MessageReceived(BMessage* msg)
 				tmpString = mptitle;
 				tmpString += " Summary";
 				this->sumView->sumViewTitleString->SetText(tmpString);
-				this->mainCard->SetVisibleItem((long)0);
+				this->mainCard->SetVisibleItem((long)1);
 				
 				this->mpMenuBar->summaryMenuItem->SetEnabled(false);
 				this->mpMenuBar->contentMenu->SetEnabled(true);
@@ -146,7 +148,7 @@ void MainWindow::MessageReceived(BMessage* msg)
 			
 		case MENU_CLS_MSG:
 			// 1.  close course - simply clear values and hide views.
-			this->mainCard->SetVisibleItem((long)-1);
+			this->mainCard->SetVisibleItem((long)0);
 			this->SetTitle("MasterPiece");
 			this->mpMenuBar->closeFileMenuItem->SetEnabled(false);
 			this->mpMenuBar->contentMenu->SetEnabled(false);
@@ -155,7 +157,7 @@ void MainWindow::MessageReceived(BMessage* msg)
 			break;
 
 		case MENU_THT_MSG:
-			this->mainCard->SetVisibleItem((long)1);
+			this->mainCard->SetVisibleItem((long)2);
 			this->mpMenuBar->thoughtsMenuItem->SetEnabled(false);
 			this->mpMenuBar->summaryMenuItem->SetEnabled(true);
 			// when in a view, might want to invalidate the menu option so it can't be redone and screwed up for now
@@ -167,7 +169,7 @@ void MainWindow::MessageReceived(BMessage* msg)
 			break;
 			
 		case MENU_SUM_MSG:
-			this->mainCard->SetVisibleItem((long)0);
+			this->mainCard->SetVisibleItem((long)1);
 			this->mpMenuBar->summaryMenuItem->SetEnabled(false);
 			this->mpMenuBar->thoughtsMenuItem->SetEnabled(true);
 			// do something here...
