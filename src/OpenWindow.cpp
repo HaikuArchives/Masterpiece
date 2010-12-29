@@ -7,10 +7,9 @@ class DoubleClickListView : public BListView
 		void	MouseDown(BPoint point);
 };
 
-OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, const BString commonName, sqlite3* mainDB)
+OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, const BString commonName)
 	:	BWindow(BRect(30, 100, 285, 300), "Open Existing MasterPiece", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
-	//tmpdb = mainDB;
 	openListView = new DoubleClickListView();
 	openButton = new BButton(BRect(10, 370, 90, 395), NULL, "Open", new BMessage(OPEN_EXISTING_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	cancelButton = new BButton(BRect(10, 370, 90, 395), NULL, "Cancel", new BMessage(CANCEL_OPEN_MP), B_FOLLOW_NONE, B_WILL_DRAW);
@@ -19,7 +18,6 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
 	backView->SetLayout(mainGrid);
-	//SetLayout(mainGrid);
 	mainGrid->SetInsets(2, 2, 2, 2);
 	mainGrid->AddView(new BScrollView("scroll_mplist", openListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 0, 3, 1);
 	mainGrid->AddView(cancelButton, 1, 1);
@@ -27,37 +25,9 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	MoveTo(mainX, mainY);
 	openListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
 	
+	// if i can't figure out how to pass the sqlite db around, i can always just remove the error checking,
+	// since it already exists and was checked when the app was open...
 	sqlErrMsg = 0;
-	this->openListView->MakeEmpty();
-	if(commonName == "")
-	{
-		tmpString = "select mpid, mpname from mptable";
-	}
-	else
-	{
-		tmpString = "select mpid, mpname from mptable where mpname = '";
-		tmpString += commonName;
-		tmpString += "'";
-	}
-	sqlValue = sqlite3_get_table(mainDB, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
-	if(sqlValue == SQLITE_OK) // if sql query was successful
-	{
-		for(int i = 0; i < nrow; i++)
-		{
-			tmpString = selectResult[(i*ncol) + 2];
-			tmpString += ". ";
-			tmpString += selectResult[(i*ncol)+3];
-			this->openListView->AddItem(new BStringItem(tmpString));
-		}
-	}
-	else // sql select failed
-	{
-		eAlert = new ErrorAlert("No Masterpiece Exist.  Please Create One First.\r\n1.4 SQL Error: ", sqlErrMsg);
-		eAlert->Launch();
-	}
-	sqlite3_free_table(selectResult); // free table either way
-	
-	/*
 	app_info info;
 	be_app->GetAppInfo(&info);
 	BPath path(&info.ref);
@@ -126,7 +96,6 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 		eAlert = new ErrorAlert("1.2 Sql Error: ", sqlite3_errmsg(mpdb));
 		eAlert->Launch();
 	}
-	*/
 }
 void OpenWindow::MessageReceived(BMessage* msg)
 {
@@ -152,7 +121,7 @@ void OpenWindow::MessageReceived(BMessage* msg)
 			{
 				tmpString = "select mpname from mptable where mpid = ";
 				tmpString << selected;
-				sqlValue = sqlite3_get_table(tmpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
+				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 				if(sqlValue == SQLITE_OK) // sql was successful
 				{
 					if(nrow == 1) // 1 id was returned.

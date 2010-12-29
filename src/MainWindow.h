@@ -42,8 +42,7 @@ public:
 			bool				QuitRequested(void);
 			void				FrameResized(float width, float height);
 			void				PopulateSummaryView(int mpID);
-			int					OpenMasterPieceDB(void);
-			sqlite3*			mpdb;
+			void				OpenMasterPieceDB(void);
 
 private:
 			MPMenuBar*			mpMenuBar;
@@ -63,6 +62,7 @@ private:
 			SummaryView*		sumView;
 			ThoughtView*		thoughtView;
 			BString				tmpString;
+			sqlite3*			mpdb;
 			int					returnValue;
 			int					sqlValue;
 			char*				sqlErrMsg;

@@ -114,7 +114,7 @@ void NewWindow::MessageReceived(BMessage* msg)
 								BRect r(Frame());
 								xPos = r.left;
 								yPos = r.top;
-								openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos, this->titleText->Text(), this->mpdb);
+								openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos, this->titleText->Text());
 								openWin->Show();
 								this->titleText->SetText("");
 								this->Close();

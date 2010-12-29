@@ -38,6 +38,7 @@ MainWindow::MainWindow(void)
 	mainCard->AddView(thoughtView); // item 2
 	
 	mainCard->SetVisibleItem((long)0);
+	OpenMasterPieceDB();
 }
 
 void MainWindow::Draw(BRect rect)
@@ -77,7 +78,7 @@ void MainWindow::MessageReceived(BMessage* msg)
 		case MENU_OPN_MSG:
 			xPos = (r.right - r.left) / 2;
 			yPos = (r.bottom - r.top) / 2;
-			openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos, "", mpdb);
+			openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos, "");
 			openWin->Show();
 			break;
 		
@@ -154,7 +155,7 @@ void MainWindow::PopulateSummaryView(int mpID)
 	//tmpString = "select thoughtID, thoughtData from ttable wher
 	// place code here to populate summary view based on input id...
 }
-int MainWindow::OpenMasterPieceDB()
+void MainWindow::OpenMasterPieceDB()
 {
 	sqlErrMsg = 0;
 	app_info info;
@@ -199,7 +200,6 @@ int MainWindow::OpenMasterPieceDB()
 		errorAlert->Launch();
 		this->mpMenuBar->fileMenu->SetEnabled(false);
 	}
-	return 0;
 }
 /*
 #ifndef	_CARD_LAYOUT_H
