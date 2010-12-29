@@ -16,7 +16,7 @@
 MainWindow::MainWindow(void)
 	:	BWindow(BRect(100,100,900,700),"MasterPiece",B_DOCUMENT_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE)
 {
-	mainGroup = new BGroupLayout(B_VERTICAL);
+	mainGroup = new BGroupLayout(B_VERTICAL, 0);
 	mainCard = new BCardLayout();
 	mpMenuBar = new MPMenuBar(Bounds());
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
@@ -25,8 +25,8 @@ MainWindow::MainWindow(void)
 	BRect placeHolderRect(Bounds());
 	backView->SetLayout(mainGroup);
 	mainGroup->SetInsets(0, 0, 0, 0);
-	mainGroup->AddView(0, mpMenuBar, 10.0);
-	mainGroup->AddItem(1, mainCard, 0.0);
+	mainGroup->AddView(mpMenuBar, 10.0);
+	mainGroup->AddItem(mainCard, 0.0);
 
 	
 	placeHolderView = new PlaceHolderView(placeHolderRect);
