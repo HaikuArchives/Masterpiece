@@ -10,6 +10,7 @@ class DoubleClickListView : public BListView
 OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, const BString commonName)
 	:	BWindow(BRect(30, 100, 285, 300), "Open Existing MasterPiece", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
+	CommonName = commonName;
 	openListView = new DoubleClickListView();
 	openButton = new BButton(BRect(10, 370, 90, 395), NULL, "Open", new BMessage(OPEN_EXISTING_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	cancelButton = new BButton(BRect(10, 370, 90, 395), NULL, "Cancel", new BMessage(CANCEL_OPEN_MP), B_FOLLOW_NONE, B_WILL_DRAW);
@@ -24,9 +25,43 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	mainGrid->AddView(openButton, 2, 1);
 	MoveTo(mainX, mainY);
 	openListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
+	OpenMasterPieceDB();
 	
-	// if i can't figure out how to pass the sqlite db around, i can always just remove the error checking,
-	// since it already exists and was checked when the app was open...
+}
+void OpenWindow::MessageReceived(BMessage* msg)
+{
+	switch(msg->what)
+	{
+		case CANCEL_OPEN_MP:
+			if(!this->IsHidden())
+			{
+				this->Close();
+			}
+			break;
+		case OPEN_EXISTING_MP:
+			selected = this->openListView->CurrentSelection() + 1; // list item value + 1
+			if(selected < 0)
+			{
+				eAlert = new ErrorAlert("3.1 No Existing Masterpiece was found.  Please Try Again");
+				eAlert->Launch();
+			}
+			BStringItem* item;
+			item = dynamic_cast<BStringItem*>(this->openListView->ItemAt(selected - 1));
+			if(item)
+			{
+				OpenExistingSql();
+			}
+			break;
+			
+		default:
+		{
+			BWindow::MessageReceived(msg);
+			break;
+		}
+	}
+}
+void OpenWindow::OpenMasterPieceDB()
+{
 	sqlErrMsg = 0;
 	app_info info;
 	be_app->GetAppInfo(&info);
@@ -63,14 +98,14 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 	else if(sqlite3_errcode(mpdb) == 0) // SQLITE_OK, it exists
 	{
 		this->openListView->MakeEmpty();
-		if(commonName == "")
+		if(CommonName == "")
 		{
 			tmpString = "select mpid, mpname from mptable";
 		}
 		else
 		{
 			tmpString = "select mpid, mpname from mptable where mpname = '";
-			tmpString += commonName;
+			tmpString += CommonName;
 			tmpString += "'";
 		}
 		sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
@@ -97,28 +132,9 @@ OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX,
 		eAlert->Launch();
 	}
 }
-void OpenWindow::MessageReceived(BMessage* msg)
+
+void OpenWindow::OpenExistingSql()
 {
-	switch(msg->what)
-	{
-		case CANCEL_OPEN_MP:
-			if(!this->IsHidden())
-			{
-				this->Close();
-			}
-			break;
-		case OPEN_EXISTING_MP:
-			int selected;
-			selected = this->openListView->CurrentSelection() + 1; // list item value + 1
-			if(selected < 0)
-			{
-				eAlert = new ErrorAlert("3.1 No Existing Masterpiece was found.  Please Try Again");
-				eAlert->Launch();
-			}
-			BStringItem* item;
-			item = dynamic_cast<BStringItem*>(this->openListView->ItemAt(selected - 1));
-			if(item)
-			{
 				tmpString = "select mpname from mptable where mpid = ";
 				tmpString << selected;
 				sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
@@ -144,15 +160,6 @@ void OpenWindow::MessageReceived(BMessage* msg)
 					eAlert->Launch();
 				}
 				sqlite3_free_table(selectResult);
-			}
-			break;
-			
-		default:
-		{
-			BWindow::MessageReceived(msg);
-			break;
-		}
-	}
 }
 
 DoubleClickListView::DoubleClickListView()

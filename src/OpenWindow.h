@@ -27,6 +27,8 @@ class OpenWindow : public BWindow
 	public:
 						OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, const BString commonName);
 			void		MessageReceived(BMessage* msg);
+			void		OpenMasterPieceDB(void);
+			void		OpenExistingSql();
 			
 	private:
 			BListView*		openListView;
@@ -38,6 +40,7 @@ class OpenWindow : public BWindow
 			int				returnValue;
 			sqlite3*		mpdb;
 			int				sqlValue;
+			int				selected;
 			char*			sqlErrMsg;
 			char**			selectResult;
 			int				nrow, ncol;
@@ -47,6 +50,7 @@ class OpenWindow : public BWindow
 			BMessenger		mpMessenger;
 			BGridLayout*	mainGrid;
 			BView*			backView;
+			BString			CommonName;
 };
 
 #endif
