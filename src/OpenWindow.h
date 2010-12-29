@@ -25,7 +25,7 @@
 class OpenWindow : public BWindow
 {
 	public:
-						OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, const BString commonName);
+						OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, const BString commonName, sqlite3* mainDB);
 			void		MessageReceived(BMessage* msg);
 			
 	private:
@@ -36,7 +36,7 @@ class OpenWindow : public BWindow
 			BButton*		cancelButton;
 			ErrorAlert*		eAlert;
 			int				returnValue;
-			sqlite3*		mpdb;
+			sqlite3*		tmpdb;
 			int				sqlValue;
 			char*			sqlErrMsg;
 			char**			selectResult;

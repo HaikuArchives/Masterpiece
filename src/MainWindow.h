@@ -42,6 +42,9 @@ public:
 			bool				QuitRequested(void);
 			void				FrameResized(float width, float height);
 			void				PopulateSummaryView(int mpID);
+			int					OpenMasterPieceDB(void);
+			sqlite3*			mpdb;
+
 private:
 			MPMenuBar*			mpMenuBar;
 			BBitmap*			testImage;
@@ -61,7 +64,6 @@ private:
 			ThoughtView*		thoughtView;
 			BString				tmpString;
 			int					returnValue;
-			sqlite3*			mpdb;
 			int					sqlValue;
 			char*				sqlErrMsg;
 			char**				selectResult;

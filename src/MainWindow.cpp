@@ -38,51 +38,6 @@ MainWindow::MainWindow(void)
 	mainCard->AddView(thoughtView); // item 2
 	
 	mainCard->SetVisibleItem((long)0);
-	
-	sqlErrMsg = 0;
-	
-	app_info info;
-	be_app->GetAppInfo(&info);
-	BPath path(&info.ref);
-	path.GetParent(&path);
-	BString tmpPath = path.Path();
-	tmpPath += "/MasterPiece.db";
-	sqlValue = sqlite3_open_v2(tmpPath, &mpdb, SQLITE_OPEN_READWRITE, NULL); // open masterpiece.db
-	if(sqlite3_errcode(mpdb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure.
-	{
-		sqlValue = sqlite3_open_v2(tmpPath, &mpdb, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL); // create masterpiece.db
-		if(sqlite3_errcode(mpdb) == 0) // sqlite_ok
-		{
-			tmpString = "create table mptable(mpid integer primary key autoincrement, mpname text);";
-			tmpString += " create table ideatable(ideaid integer primary key autoincrement, ideadata blob, ideatype integer, mpid integer, ordernumber integer);";
-			tmpString += " create table itypetable(itypeid integer primary key autoincrement, itypename text, itypedescription text);";
-			sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
-			if(sqlValue == SQLITE_OK) // if sql was successful
-			{
-				// ladida...
-			}
-			else // sql not successful
-			{
-				errorAlert = new ErrorAlert("1.1 SQL Error: ", sqlErrMsg);
-				errorAlert->Launch();
-			}
-		}
-		else // some kind of failure...
-		{
-			errorAlert = new ErrorAlert("1.0 Sql Error: ", sqlite3_errmsg(mpdb));
-			errorAlert->Launch();
-		}
-	}
-	else if(sqlite3_errcode(mpdb) == 0) // SQLITE_OK, it exists
-	{
-		// ladida
-	}
-	else // if error is not ok or not existing, then display error in alert.
-	{
-		errorAlert = new ErrorAlert("1.2 Sql Error: ", sqlite3_errmsg(mpdb));
-		errorAlert->Launch();
-		this->mpMenuBar->fileMenu->SetEnabled(false);
-	}
 }
 
 void MainWindow::Draw(BRect rect)
@@ -122,7 +77,7 @@ void MainWindow::MessageReceived(BMessage* msg)
 		case MENU_OPN_MSG:
 			xPos = (r.right - r.left) / 2;
 			yPos = (r.bottom - r.top) / 2;
-			openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos, "");
+			openWin = new OpenWindow(BMessage(UPDATE_OPEN_MP), BMessenger(this), xPos, yPos, "", mpdb);
 			openWin->Show();
 			break;
 		
@@ -198,6 +153,53 @@ void MainWindow::PopulateSummaryView(int mpID)
 {
 	//tmpString = "select thoughtID, thoughtData from ttable wher
 	// place code here to populate summary view based on input id...
+}
+int MainWindow::OpenMasterPieceDB()
+{
+	sqlErrMsg = 0;
+	app_info info;
+	be_app->GetAppInfo(&info);
+	BPath path(&info.ref);
+	path.GetParent(&path);
+	BString tmpPath = path.Path();
+	tmpPath += "/MasterPiece.db";
+	sqlValue = sqlite3_open_v2(tmpPath, &mpdb, SQLITE_OPEN_READWRITE, NULL); // open masterpiece.db
+	if(sqlite3_errcode(mpdb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure.
+	{
+		sqlValue = sqlite3_open_v2(tmpPath, &mpdb, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL); // create masterpiece.db
+		if(sqlite3_errcode(mpdb) == 0) // sqlite_ok
+		{
+			tmpString = "create table mptable(mpid integer primary key autoincrement, mpname text);";
+			tmpString += " create table ideatable(ideaid integer primary key autoincrement, ideadata blob, ideatype integer, mpid integer, ordernumber integer);";
+			tmpString += " create table itypetable(itypeid integer primary key autoincrement, itypename text, itypedescription text);";
+			sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
+			if(sqlValue == SQLITE_OK) // if sql was successful
+			{
+				// ladida...
+			}
+			else // sql not successful
+			{
+				errorAlert = new ErrorAlert("1.1 SQL Error: ", sqlErrMsg);
+				errorAlert->Launch();
+			}
+		}
+		else // some kind of failure...
+		{
+			errorAlert = new ErrorAlert("1.0 Sql Error: ", sqlite3_errmsg(mpdb));
+			errorAlert->Launch();
+		}
+	}
+	else if(sqlite3_errcode(mpdb) == 0) // SQLITE_OK, it exists
+	{
+		// ladida
+	}
+	else // if error is not ok or not existing, then display error in alert.
+	{
+		errorAlert = new ErrorAlert("1.2 Sql Error: ", sqlite3_errmsg(mpdb));
+		errorAlert->Launch();
+		this->mpMenuBar->fileMenu->SetEnabled(false);
+	}
+	return 0;
 }
 /*
 #ifndef	_CARD_LAYOUT_H
