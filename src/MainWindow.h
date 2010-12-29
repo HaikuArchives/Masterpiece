@@ -16,7 +16,6 @@
 #include <Roster.h>
 #include <String.h>
 #include <File.h>
-#include <GroupLayout.h>
 #include <GridLayout.h>
 #include <CardLayout.h>
 
@@ -75,7 +74,7 @@ private:
 			BString				mptitle;
 			int64				mpid;
 			BCardLayout*		mainCard;
-			BGroupLayout*		mainGroup;
+			BGridLayout*		mainGrid;
 			BView*				backView;
 			PlaceHolderView*	placeHolderView;
 };
