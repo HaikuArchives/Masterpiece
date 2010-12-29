@@ -18,8 +18,49 @@ NewWindow::NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, f
 	mainGrid->AddView(cancelButton, 0, 1);
 	mainGrid->AddView(newButton, 1, 1);
 	MoveTo(mainX, mainY);
-	sqlErrMsg = 0;
 	
+	OpenMasterPieceDB();
+	
+}
+void NewWindow::MessageReceived(BMessage* msg)
+{
+	switch (msg->what)
+	{
+		case CANCEL_NEW_MP:
+			if(!this->IsHidden())
+			{
+				this->titleText->SetText("");
+				this->Hide();
+			}
+			break;
+		
+		case ADD_NEW_MP:
+			if(strlen(this->titleText->Text()) == 0) // mp title is empty
+			{
+				eAlert = new ErrorAlert("2.2 MasterPiece Name Cannot Be Blank.  Please Try Again.");
+				eAlert->Launch();
+			}
+			else // mp title has length
+			{
+				AddNewMasterPiece();
+			}
+			break;
+			
+		default:
+		{
+			BWindow::MessageReceived(msg);
+			break;
+		}
+	}
+}
+
+void NewWindow::Draw(BRect rect)
+{
+}
+
+void NewWindow::OpenMasterPieceDB()
+{
+	sqlErrMsg = 0;
 	app_info info;
 	be_app->GetAppInfo(&info);
 	BPath path(&info.ref);
@@ -62,26 +103,9 @@ NewWindow::NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, f
 		eAlert->Launch();
 	}
 }
-void NewWindow::MessageReceived(BMessage* msg)
+
+void NewWindow::AddNewMasterPiece()
 {
-	switch (msg->what)
-	{
-		case CANCEL_NEW_MP:
-			if(!this->IsHidden())
-			{
-				this->titleText->SetText("");
-				this->Hide();
-			}
-			break;
-		
-		case ADD_NEW_MP:
-			if(strlen(this->titleText->Text()) == 0) // mp title is empty
-			{
-				eAlert = new ErrorAlert("2.2 MasterPiece Name Cannot Be Blank.  Please Try Again.");
-				eAlert->Launch();
-			}
-			else // mp title has length
-			{
 				tmpString = "select mpid from mptable where mpname = '";
 				tmpString += this->titleText->Text();
 				tmpString += "';";
@@ -180,16 +204,4 @@ void NewWindow::MessageReceived(BMessage* msg)
 					eAlert = new ErrorAlert("1.3 Sql Error: ", sqlErrMsg);
 					eAlert->Launch();
 				}
-			}
-			break;
-			
-		default:
-		{
-			BWindow::MessageReceived(msg);
-			break;
-		}
-	}
-}
-void NewWindow::Draw(BRect rect)
-{
 }

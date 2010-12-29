@@ -29,6 +29,8 @@ public:
 				NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY);
 		void	MessageReceived(BMessage* msg);
 		void	Draw(BRect rect);
+		void	OpenMasterPieceDB(void);
+		void	AddNewMasterPiece(void);
 private:
 		BTextView*		titleText;
 		BStringView* 	titleString;

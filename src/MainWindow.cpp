@@ -38,6 +38,7 @@ MainWindow::MainWindow(void)
 	mainCard->AddView(thoughtView); // item 2
 	
 	mainCard->SetVisibleItem((long)0);
+	
 	OpenMasterPieceDB();
 }
 

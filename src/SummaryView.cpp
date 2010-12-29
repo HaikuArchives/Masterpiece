@@ -14,11 +14,6 @@ SummaryView::SummaryView(BRect r)
 	sumLayout->SetInsets(2, 2, 2, 2);
 	sumLayout->AddView(sumViewTitleString, 0, 0);
 	sumLayout->AddView(thoughtTitleString, 1, 0);
-	//AddChild(sumViewTitleString);
-	//AddChild(thoughtTitleString);
-	//AddChild(orderedTitleString);
-	//AddChild(thoughtCountString);
-	//AddChild(orderedCountString);
 }
 
 SummaryView::~SummaryView(void)
