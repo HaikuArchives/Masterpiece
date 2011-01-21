@@ -1,11 +1,13 @@
 #include "NewWindow.h"
 
 NewWindow::NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY)
-	:	BWindow(BRect(20, 20, 200, 85), "Enter Title", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
+	:	BWindow(BRect(20, 20, 200, 100), "Enter Title", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
-	BRect textFrame(3, 3, 137, 17);
-	titleText = new BTextView(textFrame, "textTitle", textFrame, false, B_WILL_DRAW);
-	titleText->SetWordWrap(false);
+	//BRect textFrame(3, 3, 137, 17);
+	BRect textFrame(0, 0, 170, 40);
+	//titleText = new BTextView(textFrame, "textTitle", textFrame, false, B_WILL_DRAW);
+	//titleText->SetWordWrap(false);
+	titleText = new MultiLineTextControl(textFrame, NULL, NULL, false, "", NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
 	newButton = new BButton(BRect(190, 50, 270, 75), NULL, "Add", new BMessage(ADD_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	cancelButton = new BButton(BRect(100, 50, 180, 75), NULL, "Cancel", new BMessage(CANCEL_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	mainGrid = new BGridLayout();

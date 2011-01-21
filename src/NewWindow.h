@@ -17,6 +17,7 @@
 
 #include "ErrorAlert.h"
 #include "OpenWindow.h"
+#include "MultiLineTextControl.h"
 
 #define ADD_NEW_MP		'add' // add new mp button
 #define CANCEL_NEW_MP	'can' // cancel message
@@ -32,26 +33,27 @@ public:
 		void	OpenMasterPieceDB(void);
 		void	AddNewMasterPiece(void);
 private:
-		BTextView*		titleText;
-		BStringView* 	titleString;
-		BButton*		newButton;
-		BButton*		cancelButton;
-		ErrorAlert*		eAlert;
-		int				returnValue;
-		sqlite3*		mpdb;
-		int				sqlValue;
-		char*			sqlErrMsg;
-		char**			selectResult;
-		int				nrow, ncol;
-		BString			tmpString;
-		BAlert*			userAlert;
-		BMessage		mpMessage;
-		BMessenger		mpMessenger;
-		OpenWindow*		openWin;
-		float			xPos;
-		float			yPos;
-		BView*			backView;
-		BGridLayout*	mainGrid;
+		//BTextView*				titleText;
+		MultiLineTextControl*	titleText;
+		BStringView*	 		titleString;
+		BButton*				newButton;
+		BButton*				cancelButton;
+		ErrorAlert*				eAlert;
+		int						returnValue;
+		sqlite3*				mpdb;
+		int						sqlValue;
+		char*					sqlErrMsg;
+		char**					selectResult;
+		int						nrow, ncol;
+		BString					tmpString;
+		BAlert*					userAlert;
+		BMessage				mpMessage;
+		BMessenger				mpMessenger;
+		OpenWindow*				openWin;
+		float					xPos;
+		float					yPos;
+		BView*					backView;
+		BGridLayout*			mainGrid;
 };
 
 
