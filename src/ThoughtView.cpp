@@ -6,6 +6,7 @@ ThoughtView::ThoughtView(BRect r)
 {
 	thoughtEntry = new MultiLineTextControl(BRect(0, 0, 400, 250), NULL, NULL, false, "", NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
 	thoughtString = new BStringView(BRect(0, 0, 100, 50), NULL, "ADD NEW THOUGHT");
+	thoughtString->SetAlignment(B_ALIGN_LEFT);
 	thoughtGrid = new BGridLayout(0.0, 0.0);
 	SetLayout(thoughtGrid);
 	thoughtGrid->SetInsets(0, 0, 0, 0);
