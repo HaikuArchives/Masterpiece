@@ -21,7 +21,7 @@
 
 #define ADD_NEW_MP		'add' // add new mp button
 #define CANCEL_NEW_MP	'can' // cancel message
-#define UPDATE_OPEN_MP		'uomp'
+#define UPDATE_OPEN_MP	'uomp'
 #define TEXT_INSET 3.0
 
 class NewWindow : public BWindow
@@ -33,7 +33,6 @@ public:
 		void	OpenMasterPieceDB(void);
 		void	AddNewMasterPiece(void);
 private:
-		//BTextView*				titleText;
 		MultiLineTextControl*	titleText;
 		BStringView*	 		titleString;
 		BButton*				newButton;

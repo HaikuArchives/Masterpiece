@@ -12,7 +12,7 @@ public:
 				~ErrorAlert(void);
 				int Launch(void);
 				
-		BAlert	*tmpAlert;
+		BAlert*	tmpAlert;
 };
 
 #endif

@@ -8,15 +8,15 @@
 class PlaceHolderView : public BView
 {
 public:
-				PlaceHolderView(BRect r);	// main view widgets here
-				~PlaceHolderView(void);
+						PlaceHolderView(BRect r);	// main view widgets here
+						~PlaceHolderView(void);
 				
 				
-		void	Draw(BRect rect);		// set view draw here
-		void	AttachedToWindow();		// set view to get background properties here
+		void			Draw(BRect rect);		// set view draw here
+		void			AttachedToWindow();		// set view to get background properties here
 		
-		BStringView* welcomeTitleString;
-		BGridLayout* welcomeLayout;
+		BStringView* 	welcomeTitleString;
+		BGridLayout*	welcomeLayout;
 		
 private:
 protected:

@@ -14,16 +14,16 @@
 class ThoughtView : public BView
 {
 public:
-				ThoughtView(BRect r);	// main view widgets here
-				~ThoughtView(void);
+								ThoughtView(BRect r);	// main view widgets here
+								~ThoughtView(void);
 				
 				
-		void	Draw(BRect rect);		// set view draw here
-		void	AttachedToWindow();		// set view to get background properties here
+		void					Draw(BRect rect);		// set view draw here
+		void					AttachedToWindow();		// set view to get background properties here
 		
-		MultiLineTextControl	*thoughtEntry;
-		BBox					*thoughtBox;
-		BStringView				*thoughtString;
+		MultiLineTextControl*	thoughtEntry;
+		BBox*					thoughtBox;
+		BStringView*			thoughtString;
 		
 private:
 protected:

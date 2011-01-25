@@ -15,16 +15,16 @@ class MPMenuBar : public BMenuBar
 {
 public:
 							MPMenuBar(BRect r);		// MenuBar function with rect r
-			BMenu			*fileMenu;				// File Menu
-			BMenu			*contentMenu;			// Content Menu
-			BMenu			*layoutMenu;			// Layout Menu
-			BMenuItem		*newFileMenuItem;		// New Masterpiece MenuItem
-			BMenuItem		*openFileMenuItem;		// Open Masterpiece MenuItem
-			BMenuItem		*closeFileMenuItem;		// Close MasterPiece MenuItem
-			BMenuItem		*quitMenuItem;			// Quit Application MenuItem
-			BMenuItem		*thoughtsMenuItem;		// Thoughts View MenuItem
-			BMenuItem		*imagesMenuItem;		// Images View MenuItem
-			BMenuItem		*summaryMenuItem;		// Summary View MenuItem
+			BMenu*			fileMenu;				// File Menu
+			BMenu*			contentMenu;			// Content Menu
+			BMenu*			layoutMenu;				// Layout Menu
+			BMenuItem*		newFileMenuItem;		// New Masterpiece MenuItem
+			BMenuItem*		openFileMenuItem;		// Open Masterpiece MenuItem
+			BMenuItem*		closeFileMenuItem;		// Close MasterPiece MenuItem
+			BMenuItem*		quitMenuItem;			// Quit Application MenuItem
+			BMenuItem*		thoughtsMenuItem;		// Thoughts View MenuItem
+			BMenuItem*		imagesMenuItem;			// Images View MenuItem
+			BMenuItem*		summaryMenuItem;		// Summary View MenuItem
 private:
 
 };
