@@ -4,7 +4,6 @@
 #include <View.h>
 #include <String.h>
 #include <stdio.h>
-#include <Box.h>
 #include <GridLayout.h>
 #include <GroupLayout.h>
 #include <StringView.h>
@@ -21,8 +20,8 @@ public:
 		void					Draw(BRect rect);		// set view draw here
 		void					AttachedToWindow();		// set view to get background properties here
 		
+		BGridLayout*			thoughtGrid;
 		MultiLineTextControl*	thoughtEntry;
-		BBox*					thoughtBox;
 		BStringView*			thoughtString;
 		
 private:
