@@ -128,6 +128,12 @@ void MainWindow::MessageReceived(BMessage* msg)
 			this->mpMenuBar->thoughtsMenuItem->SetEnabled(true);
 			// do something here...
 			break;
+			
+		case MENU_MRK_MSG:
+			// do something here..
+			errorAlert = new ErrorAlert("Display Markup Help Window");
+			errorAlert->Launch();
+			break;
 
 		default:
 		{

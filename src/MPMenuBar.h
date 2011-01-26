@@ -10,6 +10,7 @@
 #define MENU_THT_MSG		'mtm'					// thought menu message
 #define MENU_IMG_MSG		'mim'					// image menu message
 #define MENU_SUM_MSG		'msm'					// summary menu message
+#define MENU_MRK_MSG		'mmm'					// markup menu message
 
 class MPMenuBar : public BMenuBar
 {
@@ -18,6 +19,7 @@ public:
 			BMenu*			fileMenu;				// File Menu
 			BMenu*			contentMenu;			// Content Menu
 			BMenu*			layoutMenu;				// Layout Menu
+			BMenu*			helpMenu;				// Help Menu
 			BMenuItem*		newFileMenuItem;		// New Masterpiece MenuItem
 			BMenuItem*		openFileMenuItem;		// Open Masterpiece MenuItem
 			BMenuItem*		closeFileMenuItem;		// Close MasterPiece MenuItem
@@ -25,6 +27,7 @@ public:
 			BMenuItem*		thoughtsMenuItem;		// Thoughts View MenuItem
 			BMenuItem*		imagesMenuItem;			// Images View MenuItem
 			BMenuItem*		summaryMenuItem;		// Summary View MenuItem
+			BMenuItem*		markupHelpMenuItem;		// Markup Help Menu Item
 private:
 
 };
