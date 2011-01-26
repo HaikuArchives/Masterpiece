@@ -8,14 +8,17 @@ ThoughtView::ThoughtView(BRect r)
 	thoughtString = new BStringView(BRect(0, 0, 10, 10), NULL, "Add New Thought");
 	thoughtString->SetAlignment(B_ALIGN_LEFT);
 	thoughtString->SetFont(be_bold_font);
-	helpString = new BStringView(BRect(0, 0, 10, 10), NULL, "Markup Help");
-	helpString->SetAlignment(B_ALIGN_RIGHT);
-	thoughtGrid = new BGridLayout(0.0, 0.0);
-	SetLayout(thoughtGrid);
-	thoughtGrid->SetInsets(0, 0, 0, 0);
-	thoughtGrid->AddView(thoughtString, 0, 0, 2, 1);
-	thoughtGrid->AddView(helpString, 2, 0, 2, 1);
-	thoughtGrid->AddView(thoughtEntry, 0, 1, 2, 1);
+	//helpString = new BStringView(BRect(0, 0, 10, 10), NULL, "Markup Help");
+	//helpString->SetAlignment(B_ALIGN_RIGHT);
+	thoughtGroup = new BGroupLayout(B_HORIZONTAL, 0.0);
+	SetLayout(thoughtGroup);
+	AddChild(BGridLayoutBuilder()
+		.Add(thoughtString, 0, 0)
+		.Add(BSpaceLayoutItem::CreateGlue(), 1, 0)
+		//.Add(helpString, 2, 0)
+		.Add(thoughtEntry, 0, 1, 2, 1)
+		.SetInsets(5, 2, 5, 2)
+	);
 }
 
 ThoughtView::~ThoughtView(void)
