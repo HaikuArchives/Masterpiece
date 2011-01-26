@@ -1,7 +1,7 @@
 #include "NewWindow.h"
 
 NewWindow::NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY)
-	:	BWindow(BRect(20, 20, 200, 100), "Enter Title", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
+	:	BWindow(BRect(20, 20, 200, 100), "Enter Title", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
 	BRect textFrame(0, 0, 170, 40);
 	titleText = new MultiLineTextControl(textFrame, NULL, NULL, false, "", NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);

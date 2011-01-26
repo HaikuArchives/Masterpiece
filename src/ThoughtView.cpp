@@ -8,13 +8,14 @@ ThoughtView::ThoughtView(BRect r)
 	thoughtString = new BStringView(BRect(0, 0, 10, 10), NULL, "Add New Thought");
 	thoughtString->SetAlignment(B_ALIGN_LEFT);
 	thoughtString->SetFont(be_bold_font);
+	helpString = new BStringView(BRect(0, 0, 10, 10), NULL, "Markup Help");
+	helpString->SetAlignment(B_ALIGN_RIGHT);
 	thoughtGrid = new BGridLayout(0.0, 0.0);
-	topGroup = new BGroupLayout(B_HORIZONTAL, 0.0);
 	SetLayout(thoughtGrid);
 	thoughtGrid->SetInsets(0, 0, 0, 0);
-	thoughtGrid->AddItem(topGroup, 0, 0);
-	thoughtGrid->AddView(thoughtEntry, 0, 1);
-	topGroup->AddView(thoughtString);
+	thoughtGrid->AddView(thoughtString, 0, 0, 2, 1);
+	thoughtGrid->AddView(helpString, 2, 0, 2, 1);
+	thoughtGrid->AddView(thoughtEntry, 0, 1, 2, 1);
 }
 
 ThoughtView::~ThoughtView(void)

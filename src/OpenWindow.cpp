@@ -8,7 +8,7 @@ class DoubleClickListView : public BListView
 };
 
 OpenWindow::OpenWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, const BString commonName)
-	:	BWindow(BRect(30, 100, 285, 300), "Open Existing MasterPiece", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
+	:	BWindow(BRect(30, 100, 285, 300), "Open Existing MasterPiece", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
 	CommonName = commonName;
 	openListView = new DoubleClickListView();
