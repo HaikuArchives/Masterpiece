@@ -4,7 +4,9 @@
 #include <Window.h>
 #include <View.h>
 #include <sqlite3.h>
-#include <GridLayout.h>
+#include <GroupLayout.h>
+#include <SpaceLayoutItem.h>
+#include <GridLayoutBuilder.h>
 #include <Button.h>
 #include <ListView.h>
 #include <ScrollView.h>
@@ -28,7 +30,7 @@ public:
 private:
 	
 		BView*			backView;
-		BGridLayout*	mainGrid;
+		BGroupLayout*	mainGroup;
 		BButton*		newMasterpieceButton;
 		BButton*		newThoughtButton;
 		BListView*		openThoughtListView;
