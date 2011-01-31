@@ -9,6 +9,13 @@
 #include <ListView.h>
 #include <ScrollView.h>
 #include <StringView.h>
+#include <Message.h>
+#include <Messenger.h>
+
+#define CREATE_NEW_MP		'cnmp'
+#define	CREATE_NEW_THT		'cntt'
+#define	OPEN_EXISTING_MP	'oemp'
+#define	OPEN_EXISTING_THT	'oett'
 
 class MPLauncher : public BWindow
 {
@@ -26,6 +33,8 @@ private:
 		BListView*		openMasterpieceListView;
 		BStringView*	thoughtStringView;
 		BStringView*	masterpieceStringView;
+		BStringView*	openMasterpieceStringView;
+		BStringView*	openThoughtStringView;
 		
 };
 
