@@ -11,6 +11,7 @@
 #include <StringView.h>
 #include <Message.h>
 #include <Messenger.h>
+#include <Application.h>
 
 #define CREATE_NEW_MP		'cnmp'
 #define	CREATE_NEW_THT		'cntt'
@@ -22,6 +23,7 @@ class MPLauncher : public BWindow
 public:
 						MPLauncher(void);
 		void			MessageReceived(BMessage* msg);
+		bool			QuitRequested(void);
 		
 private:
 	
