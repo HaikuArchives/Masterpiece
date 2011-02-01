@@ -34,7 +34,6 @@ public:
 		void			OpenMasterpieceDB(void);
 		
 private:
-	
 		BView*			backView;
 		BGroupLayout*	mainGroup;
 		BButton*		newMasterpieceButton;
