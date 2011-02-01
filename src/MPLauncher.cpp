@@ -43,6 +43,9 @@ void MPLauncher::MessageReceived(BMessage* msg)
 	switch(msg->what)
 	{
 		case CREATE_NEW_MP:
+			mpBuilder = new MPBuilder("MasterPiece Builder - untitled");
+			this->Hide();
+			mpBuilder->Show();
 			// do something here
 			break;
 		case CREATE_NEW_THT:

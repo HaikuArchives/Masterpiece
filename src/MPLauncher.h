@@ -19,6 +19,7 @@
 #include <Roster.h>
 
 #include "ErrorAlert.h"
+#include "MPBuilder.h"
 
 #define CREATE_NEW_MP		'cnmp'
 #define	CREATE_NEW_THT		'cntt'
@@ -52,6 +53,8 @@ private:
 		int				sqlValue;
 		int				nrow, ncol;
 		BString			tmpString;
+		
+		MPBuilder*		mpBuilder;
 };
 
 #endif

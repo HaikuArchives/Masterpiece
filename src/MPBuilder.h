@@ -19,7 +19,7 @@
 class MPBuilder : public BWindow
 {
 public:
-						MPBuilder(void);
+						MPBuilder(BString windowTitle);
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
 private:
