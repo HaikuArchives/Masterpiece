@@ -7,6 +7,7 @@ MPBuilder::MPBuilder(void)
 void MPBuilder::MessageReceived(BMessage* msg)
 {
 }
-bool MPLauncher::QuitRequested(void)
+bool MPBuilder::QuitRequested(void)
 {
+	return true;
 }
