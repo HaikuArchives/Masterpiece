@@ -85,24 +85,31 @@ void MPLauncher::OpenMasterpieceDB()
 			sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
 			if(sqlValue == SQLITE_OK) // if sql was successful
 			{
+				eAlert = new ErrorAlert("sql was created successfully");
+				eAlert->Launch();
 				// ladida...
 			}
 			else // sql not successful
 			{
-				// display error here...
+				eAlert = new ErrorAlert("1.1 Sql Error: ", sqlErrMsg);
+				eAlert->Launch();
 			}
 		}
 		else // some kind of failure
 		{
-			// display error here...
+			eAlert = new ErrorAlert("1.0 Sql Error: ", sqlite3_errmsg(mpdb));
+			eAlert->Launch();
 		}
 	}
 	else if(sqlite3_errcode(mpdb) == 0) // sqlite_OK, it exists
 	{
+		eAlert = new ErrorAlert("sql was found.");
+		eAlert->Launch();
 		// ladida
 	}
 	else // if error is not ok or not existing, then display error in alert
 	{
-		// display error here
+		eAlert = new ErrorAlert("1.2 Sql Error: ", sqlite3_errmsg(mpdb));
+		eAlert->Launch();
 	}
 }

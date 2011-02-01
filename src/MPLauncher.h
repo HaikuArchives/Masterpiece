@@ -18,6 +18,8 @@
 #include <Path.h>
 #include <Roster.h>
 
+#include "ErrorAlert.h"
+
 #define CREATE_NEW_MP		'cnmp'
 #define	CREATE_NEW_THT		'cntt'
 #define	OPEN_EXISTING_MP	'oemp'
@@ -44,6 +46,7 @@ private:
 		BStringView*	openMasterpieceStringView;
 		BStringView*	openThoughtStringView;
 		sqlite3*		mpdb;
+		ErrorAlert*		eAlert;
 		char*			sqlErrMsg;
 		char**			selectResult;
 		int				returnValue;
