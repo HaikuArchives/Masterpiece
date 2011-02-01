@@ -14,6 +14,9 @@
 #include <Message.h>
 #include <Messenger.h>
 #include <Application.h>
+#include <String.h>
+#include <Path.h>
+#include <Roster.h>
 
 #define CREATE_NEW_MP		'cnmp'
 #define	CREATE_NEW_THT		'cntt'
@@ -26,6 +29,7 @@ public:
 						MPLauncher(void);
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
+		void			OpenMasterpieceDB(void);
 		
 private:
 	
@@ -39,7 +43,13 @@ private:
 		BStringView*	masterpieceStringView;
 		BStringView*	openMasterpieceStringView;
 		BStringView*	openThoughtStringView;
-		
+		sqlite3*		mpdb;
+		char*			sqlErrMsg;
+		char**			selectResult;
+		int				returnValue;
+		int				sqlValue;
+		int				nrow, ncol;
+		BString			tmpString;
 };
 
 #endif

@@ -4,7 +4,6 @@ MPLauncher::MPLauncher(void)
 	:	BWindow(BRect(100, 100, 650, 400), "MasterPiece Launcher", B_TITLED_WINDOW,  B_NOT_H_RESIZABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
 {
 	mainGroup = new BGroupLayout(B_HORIZONTAL, 0.0);
-	//mainGrid = new BGridLayout();
 	newThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_THT), B_FOLLOW_NONE, B_WILL_DRAW);
 	newMasterpieceButton = new BButton(BRect(10, 10, 90, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	thoughtStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Work on a Thought");
@@ -32,21 +31,12 @@ MPLauncher::MPLauncher(void)
 		.Add(BSpaceLayoutItem::CreateGlue(), 3, 2)
 		.Add(new BScrollView("scroll_masterpiecelist", openMasterpieceListView,  B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 3, 2, 3)
 		.Add(new BScrollView("scroll_thoughtlist", openThoughtListView,  B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 2, 3, 2, 3)
-		.SetInsets(5, 2, 5, 2)
+		.SetInsets(5, 5, 5, 2)
 	);
-	//backView->SetLayout(mainGrid);
-	//mainGrid->SetInsets(2, 2, 2, 2);
-	//mainGrid->AddView(masterpieceStringView, 0, 0);
-	//mainGrid->AddView(thoughtStringView, 1, 0);
-	//mainGrid->AddView(newMasterpieceButton, 0, 1);
-	//mainGrid->AddView(newThoughtButton, 1, 1);
-	//mainGrid->AddView(openMasterpieceStringView, 0, 2);
-	//mainGrid->AddView(openThoughtStringView, 1, 2);
-	//mainGrid->AddView(new BScrollView("scroll_masterpiecelist", openMasterpieceListView,  B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 3, 1, 3);
-	//mainGrid->AddView(new BScrollView("scroll_thoughtlist", openThoughtListView,  B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 1, 3, 1, 3);
-	
 	openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
 	openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
+	
+	OpenMasterpieceDB();
 }
 void MPLauncher::MessageReceived(BMessage* msg)
 {
@@ -75,4 +65,44 @@ bool MPLauncher::QuitRequested(void)
 {
 	be_app->PostMessage(B_QUIT_REQUESTED);
 	return true;
+}
+void MPLauncher::OpenMasterpieceDB()
+{
+	sqlErrMsg = 0;
+	app_info info;
+	be_app->GetAppInfo(&info);
+	BPath path(&info.ref);
+	path.GetParent(&path);
+	BString tmpPath = path.Path();
+	tmpPath += "/MasterPiece.db";
+	sqlValue = sqlite3_open_v2(tmpPath, &mpdb, SQLITE_OPEN_READWRITE, NULL); // open db
+	if(sqlite3_errcode(mpdb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure
+	{
+		sqlValue = sqlite3_open_v2(tmpPath, &mpdb, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL); 
+		if(sqlite3_errcode(mpdb) == 0) // sqlite_ok
+		{
+			tmpString = "CREATE TABLE ideatable(ideaid integer primary key autoincrement, ideaname text, ideatext text, ismp integer, mpid integer, ordernumber integer);";
+			sqlValue = sqlite3_exec(mpdb, tmpString, NULL, NULL, &sqlErrMsg);
+			if(sqlValue == SQLITE_OK) // if sql was successful
+			{
+				// ladida...
+			}
+			else // sql not successful
+			{
+				// display error here...
+			}
+		}
+		else // some kind of failure
+		{
+			// display error here...
+		}
+	}
+	else if(sqlite3_errcode(mpdb) == 0) // sqlite_OK, it exists
+	{
+		// ladida
+	}
+	else // if error is not ok or not existing, then display error in alert
+	{
+		// display error here
+	}
 }
