@@ -16,8 +16,6 @@
 
 #include "ErrorAlert.h"
 
-#define SHOW_LAUNCHER		'lnch' // show mp launcher window
-
 class MPBuilder : public BWindow
 {
 public:
