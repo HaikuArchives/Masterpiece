@@ -20,6 +20,7 @@
 
 #include "ErrorAlert.h"
 #include "MPBuilder.h"
+#include "MPEditor.h"
 
 #define CREATE_NEW_MP		'cnmp'
 #define	CREATE_NEW_THT		'cntt'
@@ -57,6 +58,7 @@ private:
 		BString			tmpString;
 		
 		MPBuilder*		mpBuilder;
+		MPEditor*		mpEditor;
 };
 
 #endif

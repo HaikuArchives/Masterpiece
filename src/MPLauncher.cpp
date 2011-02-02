@@ -44,11 +44,14 @@ void MPLauncher::MessageReceived(BMessage* msg)
 	{
 		case CREATE_NEW_MP:
 			mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
-			this->Hide();
 			mpBuilder->Show();
+			this->Hide();
 			// do something here
 			break;
 		case CREATE_NEW_THT:
+			mpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled");
+			mpEditor->Show();
+			this->Hide();
 			// do something here
 			break;
 		case OPEN_EXISTING_MP:
@@ -61,11 +64,17 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			// do something here
 			if(msg->FindInt64("showLauncher", &showLauncher) == B_OK)
 			{
-				if(showLauncher == 1) this->Show();
-				else if(showLauncher == 0) this->Hide();
+				if(showLauncher == 1)
+				{
+					this->Show();
+				}
+				else if(showLauncher == 0)
+				{
+					this->Hide();
+				}
 				else
 				{
-					eAlert = new ErrorAlert("Message is not right");
+					eAlert = new ErrorAlert("Message is not 0 or 1");
 					eAlert->Launch();
 					// big error must display 
 				}
