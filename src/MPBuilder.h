@@ -16,10 +16,12 @@
 
 #include "ErrorAlert.h"
 
+#define SHOW_LAUNCHER		'lnch' // show mp launcher window
+
 class MPBuilder : public BWindow
 {
 public:
-						MPBuilder(BString windowTitle);
+						MPBuilder(const BMessage &msg, const BMessenger &msgr, BString windowTitle);
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
 private:

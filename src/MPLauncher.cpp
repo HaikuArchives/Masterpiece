@@ -43,7 +43,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 	switch(msg->what)
 	{
 		case CREATE_NEW_MP:
-			mpBuilder = new MPBuilder("MasterPiece Builder - untitled");
+			mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
 			this->Hide();
 			mpBuilder->Show();
 			// do something here
@@ -65,8 +65,15 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				else if(showLauncher == 0) this->Hide();
 				else
 				{
+					eAlert = new ErrorAlert("Message is not right");
+					eAlert->Launch();
 					// big error must display 
 				}
+			}
+			else
+			{
+				eAlert = new ErrorAlert("Message is not right");
+				eAlert->Launch();
 			}
 			break;
 		default:
