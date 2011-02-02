@@ -11,8 +11,8 @@
 #include <ListView.h>
 #include <ScrollView.h>
 #include <StringView.h>
-#include <Message.h>
 #include <Messenger.h>
+#include <Message.h>
 
 #include "ErrorAlert.h"
 
@@ -25,6 +25,8 @@ public:
 private:
 		BView*			backView;
 		BGroupLayout*	mainGroup;
+		BMessage		launcherMessage;
+		BMessenger		launcherMessenger;
 };
 
 #endif

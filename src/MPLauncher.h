@@ -25,6 +25,7 @@
 #define	CREATE_NEW_THT		'cntt'
 #define	OPEN_EXISTING_MP	'oemp'
 #define	OPEN_EXISTING_THT	'oett'
+#define SHOW_LAUNCHER		'lnch' // show mp launcher window
 
 class MPLauncher : public BWindow
 {
@@ -52,6 +53,7 @@ private:
 		int				returnValue;
 		int				sqlValue;
 		int				nrow, ncol;
+		int64			showLauncher;
 		BString			tmpString;
 		
 		MPBuilder*		mpBuilder;

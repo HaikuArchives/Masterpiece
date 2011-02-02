@@ -57,6 +57,18 @@ void MPLauncher::MessageReceived(BMessage* msg)
 		case OPEN_EXISTING_THT:
 			// do something here
 			break;
+		case SHOW_LAUNCHER:
+			// do something here
+			if(msg->FindInt64("showLauncher", &showLauncher) == B_OK)
+			{
+				if(showLauncher == 1) this->Show();
+				else if(showLauncher == 0) this->Hide();
+				else
+				{
+					// big error must display 
+				}
+			}
+			break;
 		default:
 		{
 			BWindow::MessageReceived(msg);
