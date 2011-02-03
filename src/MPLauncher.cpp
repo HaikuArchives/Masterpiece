@@ -5,6 +5,7 @@ class MPStringItem : public BStringItem
 	public:
 				int	ideaID;
 					MPStringItem(BString itemText, int ideaid);
+				int	ReturnID(void);	
 };
 
 MPLauncher::MPLauncher(void)
@@ -167,7 +168,7 @@ void MPLauncher::OpenMasterpieceDB()
 				tmpString = selectResult[(i*ncol) + 2];
 				tmpString += ". ";
 				tmpString += selectResult[(i*ncol) + 3];
-				this->openMasterpieceListView->AddItem(new BStringItem(tmpString));
+				this->openMasterpieceListView->AddItem(new MPStringItem(tmpString, (int)selectResult[(i*ncol) + 3]));
 			}
 		}
 		else // sql select failed
@@ -190,4 +191,8 @@ MPStringItem::MPStringItem(BString itemText, int ideaid)
 	:	BStringItem(itemText)
 {
 	ideaID = ideaid;
+}
+int MPStringItem::ReturnID(void)
+{
+	return ideaID;
 }
