@@ -54,6 +54,7 @@ private:
 		int				returnValue;
 		int				sqlValue;
 		int				nrow, ncol;
+		int				selected;
 		int64			showLauncher;
 		BString			tmpString;
 		

@@ -35,6 +35,8 @@ MPLauncher::MPLauncher(void)
 	);
 	openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
 	openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
+	openMasterpieceListView->MakeEmpty();
+	openThoughtListView->MakeEmpty();
 	
 	OpenMasterpieceDB();
 }
@@ -55,10 +57,18 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			// do something here
 			break;
 		case OPEN_EXISTING_MP:
-			mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
-			mpBuilder->Show();
-			this->Hide();
-			// do something here
+			selected = openMasterpieceListView->CurrentSelection() + 1; // list item value + 1
+			if(selected > 0)
+			{
+				eAlert = new ErrorAlert("No MP to select");
+				eAlert->Launch();
+			}
+			else
+			{
+				mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
+				mpBuilder->Show();
+				this->Hide();
+			}
 			break;
 		case OPEN_EXISTING_THT:
 			mpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled");
