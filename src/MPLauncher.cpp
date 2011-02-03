@@ -1,5 +1,12 @@
 #include "MPLauncher.h"
 
+class MPStringItem : public BStringItem
+{
+	public:
+				int	ideaID;
+					MPStringItem(BString itemText, int ideaid);
+};
+
 MPLauncher::MPLauncher(void)
 	:	BWindow(BRect(100, 100, 650, 400), "MasterPiece Launcher", B_TITLED_WINDOW,  B_NOT_H_RESIZABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
 {
@@ -177,4 +184,10 @@ void MPLauncher::OpenMasterpieceDB()
 		eAlert = new ErrorAlert("1.2 Sql Error: ", sqlite3_errmsg(mpdb));
 		eAlert->Launch();
 	}
+}
+
+MPStringItem::MPStringItem(BString itemText, int ideaid)
+	:	BStringItem(itemText)
+{
+	ideaID = ideaid;
 }
