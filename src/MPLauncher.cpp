@@ -73,9 +73,26 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			}
 			else
 			{
-				mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
-				mpBuilder->Show();
-				this->Hide();
+				MPStringItem* item;
+				item = dynamic_cast<MPStringItem*>(openMasterpieceListView->ItemAt(selected));
+				if(item->ReturnID() == 0)
+				{
+					eAlert = new ErrorAlert("0");
+					eAlert->Launch();
+				}
+				else if(item->ReturnID() == 1)
+				{
+					eAlert = new ErrorAlert("1");
+					eAlert->Launch();
+				}
+				else
+				{
+					eAlert = new ErrorAlert("?");
+					eAlert->Launch();
+				}
+				//mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
+				//mpBuilder->Show();
+				//this->Hide();
 			}
 			break;
 		case OPEN_EXISTING_THT:
