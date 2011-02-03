@@ -17,6 +17,7 @@
 #include <String.h>
 #include <Path.h>
 #include <Roster.h>
+#include <stdio.h>
 
 #include "ErrorAlert.h"
 #include "MPBuilder.h"

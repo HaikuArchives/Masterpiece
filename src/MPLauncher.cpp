@@ -5,7 +5,9 @@ class MPStringItem : public BStringItem
 	public:
 				int	ideaID;
 					MPStringItem(BString itemText, int ideaid);
-				int	ReturnID(void);	
+				int	ReturnID(void);
+	private:
+				//int ideaID;
 };
 
 MPLauncher::MPLauncher(void)
@@ -75,7 +77,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			{
 				MPStringItem* item;
 				item = dynamic_cast<MPStringItem*>(openMasterpieceListView->ItemAt(selected));
-				if(item->ReturnID() == 0)
+				if(item->ideaID == 0)
 				{
 					eAlert = new ErrorAlert("0");
 					eAlert->Launch();
@@ -87,8 +89,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				}
 				else
 				{
-					eAlert = new ErrorAlert("?");
-					eAlert->Launch();
+					//stdout->write(item->ideaID);
 				}
 				//mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
 				//mpBuilder->Show();
