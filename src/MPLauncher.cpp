@@ -89,6 +89,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				}
 				else
 				{
+					printf("%d", item->ReturnID());
 					//stdout->write(item->ideaID);
 				}
 				//mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
@@ -208,6 +209,7 @@ void MPLauncher::OpenMasterpieceDB()
 MPStringItem::MPStringItem(BString itemText, int ideaid)
 	:	BStringItem(itemText)
 {
+	ideaID = -1;
 	ideaID = ideaid;
 }
 int MPStringItem::ReturnID(void)
