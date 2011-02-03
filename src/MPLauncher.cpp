@@ -33,8 +33,8 @@ MPLauncher::MPLauncher(void)
 		.Add(new BScrollView("scroll_thoughtlist", openThoughtListView,  B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 2, 3, 2, 3)
 		.SetInsets(5, 5, 5, 2)
 	);
-	openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
-	openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
+	//openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
+	//openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
 	openMasterpieceListView->MakeEmpty();
 	openThoughtListView->MakeEmpty();
 	
@@ -58,7 +58,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			break;
 		case OPEN_EXISTING_MP:
 			selected = openMasterpieceListView->CurrentSelection() + 1; // list item value + 1
-			if(selected > 0)
+			if(selected < 0)
 			{
 				eAlert = new ErrorAlert("No MP to select");
 				eAlert->Launch();
@@ -134,7 +134,7 @@ void MPLauncher::OpenMasterpieceDB()
 			{
 				eAlert = new ErrorAlert("sql was created successfully");
 				eAlert->Launch();
-				// ladida...
+				// nothing to select, need to remove invocationmessage...
 			}
 			else // sql not successful
 			{
@@ -150,9 +150,27 @@ void MPLauncher::OpenMasterpieceDB()
 	}
 	else if(sqlite3_errcode(mpdb) == 0) // sqlite_OK, it exists
 	{
-		eAlert = new ErrorAlert("sql was found.");
-		eAlert->Launch();
-		// ladida
+		// determine if mp's and or thoughts exist, then set invocation message as necessary
+		tmpString = "select ideaname, ideaid from ideatable where ismp = 1";
+		sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
+		if(sqlValue == SQLITE_OK) // sql query was successful
+		{
+			for(int i = 0; i < nrow; i++)
+			{
+				tmpString = selectResult[(i*ncol) + 2];
+				tmpString += ". ";
+				tmpString += selectResult[(i*ncol) + 3];
+				this->openMasterpieceListView->AddItem(new BStringItem(tmpString));
+			}
+		}
+		else // sql select failed
+		{
+			eAlert = new ErrorAlert("No Masterpiece Exist. Please Create One First.");
+			eAlert->Launch();
+		}
+		openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
+		openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
+		// populate mpview with mp's
 	}
 	else // if error is not ok or not existing, then display error in alert
 	{
