@@ -3,11 +3,12 @@
 class MPStringItem : public BStringItem
 {
 	public:
-				int	ideaID;
-					MPStringItem(BString itemText, int ideaid);
-				int	ReturnID(void);
+				//int	ideaID;
+								MPStringItem(BString itemText, int ideaid = -1);
+				virtual	void	SetID(const int &ideaid);
+				int				ReturnID(void) const;
 	private:
-				//int ideaID;
+				int ideaID;
 };
 
 MPLauncher::MPLauncher(void)
@@ -77,7 +78,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			{
 				MPStringItem* item;
 				item = dynamic_cast<MPStringItem*>(openMasterpieceListView->ItemAt(selected));
-				if(item->ideaID == 0)
+				if(item->ReturnID() == 0)
 				{
 					eAlert = new ErrorAlert("0");
 					eAlert->Launch();
@@ -90,7 +91,6 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				else
 				{
 					printf("%d", item->ReturnID());
-					//stdout->write(item->ideaID);
 				}
 				//mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
 				//mpBuilder->Show();
@@ -187,6 +187,7 @@ void MPLauncher::OpenMasterpieceDB()
 				tmpString = selectResult[(i*ncol) + 2];
 				tmpString += ". ";
 				tmpString += selectResult[(i*ncol) + 3];
+				printf("ideaid %s", selectResult[(i*ncol) + 3]);
 				this->openMasterpieceListView->AddItem(new MPStringItem(tmpString, (int)selectResult[(i*ncol) + 3]));
 			}
 		}
@@ -209,10 +210,17 @@ void MPLauncher::OpenMasterpieceDB()
 MPStringItem::MPStringItem(BString itemText, int ideaid)
 	:	BStringItem(itemText)
 {
-	ideaID = -1;
-	ideaID = ideaid;
+	//ideaID = -1;
+	//ideaID = ideaid;
 }
-int MPStringItem::ReturnID(void)
+void MPStringItem::SetID(const int &ideaid)
+{
+	if(ideaid != ideaID)
+	{
+		ideaID = ideaid;
+	}
+}
+int MPStringItem::ReturnID(void) const
 {
 	return ideaID;
 }
