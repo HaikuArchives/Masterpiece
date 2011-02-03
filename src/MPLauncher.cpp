@@ -55,9 +55,15 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			// do something here
 			break;
 		case OPEN_EXISTING_MP:
+			mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
+			mpBuilder->Show();
+			this->Hide();
 			// do something here
 			break;
 		case OPEN_EXISTING_THT:
+			mpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled");
+			mpEditor->Show();
+			this->Hide();
 			// do something here
 			break;
 		case SHOW_LAUNCHER:
