@@ -57,7 +57,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			// do something here
 			break;
 		case OPEN_EXISTING_MP:
-			selected = openMasterpieceListView->CurrentSelection() + 1; // list item value + 1
+			selected = openMasterpieceListView->CurrentSelection(); // list item value
 			if(selected < 0)
 			{
 				eAlert = new ErrorAlert("No MP to select");
