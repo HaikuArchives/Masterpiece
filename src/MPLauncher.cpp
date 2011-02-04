@@ -5,7 +5,7 @@ class MPStringItem : public BStringItem
 	public:
 				//int	ideaID;
 								MPStringItem(BString itemText, int ideaid = -1);
-				virtual	void	SetID(const int &ideaid);
+				//virtual	void	SetID(const int &ideaid);
 				int				ReturnID(void) const;
 	private:
 				int ideaID;
@@ -214,9 +214,9 @@ void MPLauncher::OpenMasterpieceDB()
 MPStringItem::MPStringItem(BString itemText, int ideaid)
 	:	BStringItem(itemText)
 {
-	//ideaID = -1;
 	ideaID = ideaid;
 }
+/*
 void MPStringItem::SetID(const int &ideaid)
 {
 	if(ideaid != ideaID)
@@ -224,6 +224,7 @@ void MPStringItem::SetID(const int &ideaid)
 		ideaID = ideaid;
 	}
 }
+*/
 int MPStringItem::ReturnID(void) const
 {
 	return ideaID;
