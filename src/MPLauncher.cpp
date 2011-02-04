@@ -3,8 +3,8 @@
 class MPStringItem : public BStringItem
 {
 	public:
-								MPStringItem(BString itemText, int ideaid = -1);
-				int				ReturnID(void) const;
+					MPStringItem(BString itemText, int ideaid = -1);
+				int	ReturnID(void) const;
 	private:
 				int ideaID;
 };
@@ -42,8 +42,6 @@ MPLauncher::MPLauncher(void)
 		.Add(new BScrollView("scroll_thoughtlist", openThoughtListView,  B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 2, 3, 2, 3)
 		.SetInsets(5, 5, 5, 2)
 	);
-	//openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
-	//openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
 	openMasterpieceListView->MakeEmpty();
 	openThoughtListView->MakeEmpty();
 	
@@ -76,24 +74,12 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			{
 				MPStringItem* item;
 				item = dynamic_cast<MPStringItem*>(openMasterpieceListView->ItemAt(selected));
-				if(item->ReturnID() == 1)
-				{
-					eAlert = new ErrorAlert("1");
-					eAlert->Launch();
-				}
-				else if(item->ReturnID() == 2)
-				{
-					eAlert = new ErrorAlert("2");
-					eAlert->Launch();
-				}
-				else
-				{
-					printf("%d", item->ReturnID());
-				}
-				printf("returnid %d\r\n", item->ReturnID());
-				//mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
-				//mpBuilder->Show();
-				//this->Hide();
+				BString tmpText;
+				tmpText = "MasterPiece Builder - ";
+				tmpText += item->Text();
+				mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), tmpText, item->ReturnID());
+				mpBuilder->Show();
+				this->Hide();
 			}
 			break;
 		case OPEN_EXISTING_THT:
@@ -160,7 +146,6 @@ void MPLauncher::OpenMasterpieceDB()
 			{
 				eAlert = new ErrorAlert("sql was created successfully");
 				eAlert->Launch();
-				// nothing to select, need to remove invocationmessage...
 			}
 			else // sql not successful
 			{
@@ -184,20 +169,16 @@ void MPLauncher::OpenMasterpieceDB()
 			for(int i = 0; i < nrow; i++)
 			{
 				tmpString = selectResult[(i*ncol) + 2];
-				tmpString += ". ";
-				tmpString += selectResult[(i*ncol) + 3];
-				printf("ideaid %s\r\n", selectResult[(i*ncol) + 3]);
-				int tmpID = atoi(selectResult[(i*ncol) + 3]);
-				this->openMasterpieceListView->AddItem(new MPStringItem(tmpString, tmpID));
-				printf("int %d\r\n", tmpID);
+				openMasterpieceListView->AddItem(new MPStringItem(tmpString, atoi(selectResult[(i*ncol) + 3])));
 			}
+			openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
 		}
 		else // sql select failed
 		{
 			eAlert = new ErrorAlert("No Masterpiece Exist. Please Create One First.");
 			eAlert->Launch();
 		}
-		openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
+		//openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
 		openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
 		// populate mpview with mp's
 	}
