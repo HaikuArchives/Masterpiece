@@ -78,20 +78,21 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			{
 				MPStringItem* item;
 				item = dynamic_cast<MPStringItem*>(openMasterpieceListView->ItemAt(selected));
-				if(item->ReturnID() == 0)
-				{
-					eAlert = new ErrorAlert("0");
-					eAlert->Launch();
-				}
-				else if(item->ReturnID() == 1)
+				if(item->ReturnID() == 1)
 				{
 					eAlert = new ErrorAlert("1");
+					eAlert->Launch();
+				}
+				else if(item->ReturnID() == 2)
+				{
+					eAlert = new ErrorAlert("2");
 					eAlert->Launch();
 				}
 				else
 				{
 					printf("%d", item->ReturnID());
 				}
+				printf("returnid %d\r\n", item->ReturnID());
 				//mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
 				//mpBuilder->Show();
 				//this->Hide();
@@ -182,13 +183,16 @@ void MPLauncher::OpenMasterpieceDB()
 		sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 		if(sqlValue == SQLITE_OK) // sql query was successful
 		{
+			int a = 1;
 			for(int i = 0; i < nrow; i++)
 			{
 				tmpString = selectResult[(i*ncol) + 2];
 				tmpString += ". ";
 				tmpString += selectResult[(i*ncol) + 3];
-				printf("ideaid %s", selectResult[(i*ncol) + 3]);
-				this->openMasterpieceListView->AddItem(new MPStringItem(tmpString, (int)selectResult[(i*ncol) + 3]));
+				printf("ideaid %s\r\n", selectResult[(i*ncol) + 3]);
+				this->openMasterpieceListView->AddItem(new MPStringItem(tmpString, a));
+				printf("a %d\r\n", a);
+				a++;
 			}
 		}
 		else // sql select failed
@@ -211,7 +215,7 @@ MPStringItem::MPStringItem(BString itemText, int ideaid)
 	:	BStringItem(itemText)
 {
 	//ideaID = -1;
-	//ideaID = ideaid;
+	ideaID = ideaid;
 }
 void MPStringItem::SetID(const int &ideaid)
 {
