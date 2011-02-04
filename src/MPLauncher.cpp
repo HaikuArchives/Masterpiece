@@ -161,7 +161,7 @@ void MPLauncher::OpenMasterpieceDB()
 	}
 	else if(sqlite3_errcode(mpdb) == 0) // sqlite_OK, it exists
 	{
-		// determine if mp's and or thoughts exist, then set invocation message as necessary
+		// sql to get mp's, need to sql to get thoughts
 		tmpString = "select ideaname, ideaid from ideatable where ismp = 1";
 		sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 		if(sqlValue == SQLITE_OK) // sql query was successful
@@ -178,8 +178,6 @@ void MPLauncher::OpenMasterpieceDB()
 			eAlert = new ErrorAlert("No Masterpiece Exist. Please Create One First.");
 			eAlert->Launch();
 		}
-		//openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
-		openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
 		// populate mpview with mp's
 	}
 	else // if error is not ok or not existing, then display error in alert
