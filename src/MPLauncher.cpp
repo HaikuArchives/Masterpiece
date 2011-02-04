@@ -3,9 +3,7 @@
 class MPStringItem : public BStringItem
 {
 	public:
-				//int	ideaID;
 								MPStringItem(BString itemText, int ideaid = -1);
-				//virtual	void	SetID(const int &ideaid);
 				int				ReturnID(void) const;
 	private:
 				int ideaID;
@@ -183,16 +181,15 @@ void MPLauncher::OpenMasterpieceDB()
 		sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 		if(sqlValue == SQLITE_OK) // sql query was successful
 		{
-			int a = 1;
 			for(int i = 0; i < nrow; i++)
 			{
 				tmpString = selectResult[(i*ncol) + 2];
 				tmpString += ". ";
 				tmpString += selectResult[(i*ncol) + 3];
 				printf("ideaid %s\r\n", selectResult[(i*ncol) + 3]);
-				this->openMasterpieceListView->AddItem(new MPStringItem(tmpString, a));
-				printf("a %d\r\n", a);
-				a++;
+				int tmpID = atoi(selectResult[(i*ncol) + 3]);
+				this->openMasterpieceListView->AddItem(new MPStringItem(tmpString, tmpID));
+				printf("int %d\r\n", tmpID);
 			}
 		}
 		else // sql select failed
@@ -216,15 +213,6 @@ MPStringItem::MPStringItem(BString itemText, int ideaid)
 {
 	ideaID = ideaid;
 }
-/*
-void MPStringItem::SetID(const int &ideaid)
-{
-	if(ideaid != ideaID)
-	{
-		ideaID = ideaid;
-	}
-}
-*/
 int MPStringItem::ReturnID(void) const
 {
 	return ideaID;
