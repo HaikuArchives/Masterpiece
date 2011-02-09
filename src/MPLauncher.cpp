@@ -83,10 +83,24 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			}
 			break;
 		case OPEN_EXISTING_THT:
-			mpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled");
-			mpEditor->Show();
-			this->Hide();
-			// do something here
+			selected = openThoughtListView->CurrentSelection(); // list item value
+			if(selected < 0)
+			{
+				eAlert = new ErrorAlert("No ThT to select");
+				eAlert->Launch();
+				// might want to have this open a new one... instead of the button above...
+			}
+			else
+			{
+				MPStringItem* item;
+				item = dynamic_cast<MPStringItem*>(openThoughtListView->ItemAt(selected));
+				BString tmpText;
+				tmpText = "MasterPiece Editor - ";
+				tmpText += item->Text();
+				mpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), tmpText, item->ReturnID());
+				mpEditor->Show();
+				this->Hide();
+			}
 			break;
 		case SHOW_LAUNCHER:
 			// do something here
@@ -172,17 +186,27 @@ void MPLauncher::OpenMasterpieceDB()
 			}
 			openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
 		}
-		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 0", -1, &ideaStatement, NULL);
-		if(sqlValue == SQLITE_OK) // sql statement was prepared
-		{
-			
-		}
 		else // sql select failed
 		{
 			eAlert = new ErrorAlert("No Masterpiece Exist. Please Create One First.");
 			eAlert->Launch();
 		}
-		// populate mpview with mp's
+		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 0", -1, &ideaStatement, NULL);
+		if(sqlValue == SQLITE_OK) // sql statement was prepared
+		{
+			while(sqlite3_step(ideaStatement) == SQLITE_ROW)
+			{
+				tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
+				openThoughtListView->AddItem(new MPStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
+			}
+			openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
+		}
+		else
+		{
+			eAlert = new ErrorAlert("No Thoughts Exist.  Please Create One First.");
+			eAlert->Launch();
+		}
+		sqlite3_finalize(ideaStatement);
 	}
 	else // if error is not ok or not existing, then display error in alert
 	{

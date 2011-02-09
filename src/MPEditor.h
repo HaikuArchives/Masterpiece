@@ -13,6 +13,7 @@
 #include <StringView.h>
 #include <Messenger.h>
 #include <Message.h>
+#include <stdio.h>
 
 #include "ErrorAlert.h"
 
@@ -20,6 +21,7 @@ class MPEditor : public BWindow
 {
 public:
 						MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTitle);
+						MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID);
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
 private:
