@@ -50,6 +50,7 @@ private:
 		BStringView*	openMasterpieceStringView;
 		BStringView*	openThoughtStringView;
 		sqlite3*		mpdb;
+		sqlite3_stmt*	ideaStatement;
 		ErrorAlert*		eAlert;
 		char*			sqlErrMsg;
 		char**			selectResult;

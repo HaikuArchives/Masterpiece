@@ -168,10 +168,14 @@ void MPLauncher::OpenMasterpieceDB()
 		{
 			for(int i = 0; i < nrow; i++)
 			{
-				tmpString = selectResult[(i*ncol) + 2];
-				openMasterpieceListView->AddItem(new MPStringItem(tmpString, atoi(selectResult[(i*ncol) + 3])));
+				openMasterpieceListView->AddItem(new MPStringItem(selectResult[(i*ncol) + 2], atoi(selectResult[(i*ncol) + 3])));
 			}
 			openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
+		}
+		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 0", -1, &ideaStatement, NULL);
+		if(sqlValue == SQLITE_OK) // sql statement was prepared
+		{
+			
 		}
 		else // sql select failed
 		{
