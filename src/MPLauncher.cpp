@@ -176,14 +176,13 @@ void MPLauncher::OpenMasterpieceDB()
 	}
 	else if(sqlite3_errcode(mpdb) == 0) // sqlite_OK, it exists
 	{
-		// sql to get mp's, need to sql to get thoughts
-		tmpString = "select ideaname, ideaid from ideatable where ismp = 1";
-		sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
+		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 1", -1, &ideaStatement, NULL);
 		if(sqlValue == SQLITE_OK) // sql query was successful
 		{
-			for(int i = 0; i < nrow; i++)
+			while(sqlite3_step(ideaStatement) == SQLITE_ROW)
 			{
-				openMasterpieceListView->AddItem(new MPStringItem(selectResult[(i*ncol) + 2], atoi(selectResult[(i*ncol) + 3])));
+				tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
+				openMasterpieceListView->AddItem(new MPStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
 			}
 			openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
 		}

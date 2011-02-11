@@ -53,10 +53,7 @@ private:
 		sqlite3_stmt*	ideaStatement;
 		ErrorAlert*		eAlert;
 		char*			sqlErrMsg;
-		char**			selectResult;
-		int				returnValue;
 		int				sqlValue;
-		int				nrow, ncol;
 		int				selected;
 		int64			showLauncher;
 		BString			tmpString;
