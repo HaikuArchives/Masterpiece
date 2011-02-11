@@ -67,8 +67,9 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			selected = openMasterpieceListView->CurrentSelection(); // list item value
 			if(selected < 0)
 			{
-				eAlert = new ErrorAlert("No MP to select");
-				eAlert->Launch();
+				mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled", -1);
+				mpBuilder->Show();
+				this->Hide();
 			}
 			else
 			{
@@ -86,9 +87,9 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			selected = openThoughtListView->CurrentSelection(); // list item value
 			if(selected < 0)
 			{
-				eAlert = new ErrorAlert("No ThT to select");
-				eAlert->Launch();
-				// might want to have this open a new one... instead of the button above...
+				mpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled", -1);
+				mpEditor->Show();
+				this->Hide();
 			}
 			else
 			{
