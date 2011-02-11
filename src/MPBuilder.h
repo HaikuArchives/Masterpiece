@@ -20,7 +20,6 @@
 class MPBuilder : public BWindow
 {
 public:
-						MPBuilder(const BMessage &msg, const BMessenger &msgr, BString windowTitle);
 						MPBuilder(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID);
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
