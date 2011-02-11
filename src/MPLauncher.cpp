@@ -52,13 +52,13 @@ void MPLauncher::MessageReceived(BMessage* msg)
 	switch(msg->what)
 	{
 		case CREATE_NEW_MP:
-			mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled");
+			mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled", -1);
 			mpBuilder->Show();
 			this->Hide();
 			// do something here
 			break;
 		case CREATE_NEW_THT:
-			mpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled");
+			mpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled", -1);
 			mpEditor->Show();
 			this->Hide();
 			// do something here
