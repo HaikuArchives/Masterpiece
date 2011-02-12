@@ -1,7 +1,7 @@
 #include "EditorMenu.h"
 
 EditorMenu::EditorMenu()
-	:	BMenuBar(BRect(0, 0, 10, 10), "editorbar")
+	:	BMenuBar(BRect(0, 0, 10, 1), "editorbar")
 {
 	// initialize menu and menuitems
 	helpMenu = new BMenu("Help");
