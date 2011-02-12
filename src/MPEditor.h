@@ -19,6 +19,7 @@
 #include "ErrorAlert.h"
 #include "EditorMenu.h"
 
+#define SHOW_LAUNCHER		'lnch' // show mp launcher window
 class MPEditor : public BWindow
 {
 public:
@@ -31,6 +32,7 @@ private:
 		BMessenger		launcherMessenger;
 		BTextView*		editorTextView;
 		int				currentideaID;
+		MPEditor*		tmpEditor;
 };
 
 

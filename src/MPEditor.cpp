@@ -23,6 +23,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 	switch(msg->what)
 	{
 		case MENU_NEW_THT:
+			tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled", -1);
+			tmpEditor->Show();
 			break;
 		case MENU_EDT_THT:
 			break;

@@ -109,7 +109,10 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			{
 				if(showLauncher == 1)
 				{
-					this->Show();
+					if(this->IsHidden())
+					{
+						this->Show();
+					}
 				}
 				else if(showLauncher == 0)
 				{
