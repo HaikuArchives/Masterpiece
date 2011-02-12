@@ -3,7 +3,9 @@
 MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID)
 	:	BWindow(BRect(100, 100, 900, 700), windowTitle, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), launcherMessage(msg), launcherMessenger(msgr)
 {
-	editorTextView = new BTextView(Bounds(), NULL, Bounds(), B_FOLLOW_ALL, B_WILL_DRAW);	
+	BRect r = Bounds();
+	r.bottom = r.bottom - 400;
+	editorTextView = new BTextView(r, NULL, r, B_FOLLOW_ALL, B_WILL_DRAW);	
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
