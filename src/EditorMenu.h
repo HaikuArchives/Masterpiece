@@ -3,6 +3,9 @@
 
 #include <MenuBar.h>
 #include <MenuItem.h>
+#include <GroupLayout.h>
+#include <SpaceLayoutItem.h>
+#include <GridLayoutBuilder.h>
 
 #define MENU_NEW_THT	'new' 	// new thought
 #define MENU_EDT_THT	'edit' 	// edit thought name

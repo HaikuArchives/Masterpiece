@@ -16,6 +16,7 @@
 #include <stdio.h>
 
 #include "ErrorAlert.h"
+#include "EditorMenu.h"
 
 class MPEditor : public BWindow
 {
@@ -25,9 +26,9 @@ public:
 		bool			QuitRequested(void);
 private:
 		BView*			backView;
-		BGroupLayout*	mainGroup;
 		BMessage		launcherMessage;
 		BMessenger		launcherMessenger;
+		BTextView*		
 };
 
 

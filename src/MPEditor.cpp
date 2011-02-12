@@ -3,6 +3,16 @@
 MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID)
 	:	BWindow(BRect(100, 100, 900, 700), windowTitle, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), launcherMessage(msg), launcherMessenger(msgr)
 {
+	//editorMenu = new EditorMenu();
+	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
+	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+	AddChild(backView);
+	
+	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
+	backView->AddChild(BGridLayoutBuilder()
+		.Add(new EditorMenu(), 0, 0)
+		.Add(BSpaceLayoutItem::CreateGlue(), 0, 1)
+	);
 	if(ideaID == -1)
 	{
 		printf("must open save dialog");
