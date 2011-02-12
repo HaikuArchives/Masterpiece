@@ -6,14 +6,15 @@
 #include <sqlite3.h>
 #include <Application.h>
 #include <String.h>
-#include <GroupLayout.h>
-#include <GridLayoutBuilder.h>
-#include <ListView.h>
 #include <ScrollView.h>
-#include <StringView.h>
 #include <Messenger.h>
 #include <Message.h>
 #include <stdio.h>
+#include <GroupLayout.h>
+#include <SpaceLayoutItem.h>
+#include <GridLayoutBuilder.h>
+#include <TextView.h>
+#include <ScrollView.h>
 
 #include "ErrorAlert.h"
 #include "EditorMenu.h"
@@ -28,7 +29,7 @@ private:
 		BView*			backView;
 		BMessage		launcherMessage;
 		BMessenger		launcherMessenger;
-		BTextView*		
+		BTextView*		editorTextView;
 };
 
 
