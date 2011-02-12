@@ -27,6 +27,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			tmpEditor->Show();
 			break;
 		case MENU_EDT_THT:
+			printf(" must open edit name dialog\r\n");
 			break;
 		case MENU_SAV_THT:
 			if(currentideaID == -1)
