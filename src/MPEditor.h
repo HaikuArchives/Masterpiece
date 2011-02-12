@@ -30,6 +30,7 @@ private:
 		BMessage		launcherMessage;
 		BMessenger		launcherMessenger;
 		BTextView*		editorTextView;
+		int				currentideaID;
 };
 
 
