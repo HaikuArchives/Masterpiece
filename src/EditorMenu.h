@@ -17,9 +17,19 @@
 class EditorMenu : public BMenuBar
 {
 public:
-						EditorMenu();	// editor menu
-			BMenu*		helpMenu;		// help menu
-			BMenuItem*	
+						EditorMenu();		// editor menu
+			BMenu*		helpMenu;			// help menu
+			BMenuItem*	newThoughtMenuItem	// new thought menu item
+			BMenuItem*	editThoughtMenuItem	// edit thought menu item
+			BMenuItem*	saveThoughtMenuItem	// save thought menu item
+			BMenuItem*	previewMenuItem		// preview menu item
+			BMenuItem*	publishMenuItem		// publish menu item
+			BMenuItem*	keyboardRefMenuItem	// keyboard reference menu item
+			BMenuItem*	markupRefMenuItem	// markup reference menu item
+			BMenuItem*	helpTopicsMenuItem	// help topics menu item
+			BMenuItem*	aboutMenuItem		// about menu item
+private:
+
 };
 
 #endif
