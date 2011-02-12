@@ -32,6 +32,24 @@ void MPEditor::MessageReceived(BMessage* msg)
 {
 	switch(msg->what)
 	{
+		case MENU_NEW_THT:
+			break;
+		case MENU_EDT_THT:
+			break;
+		case MENU_SAV_THT:
+			break;
+		case MENU_PRV_THT:
+			break;
+		case MENU_PUB_THT:
+			break;
+		case MENU_HLP_THT:
+			break;
+		case MENU_KEY_THT:
+			break;
+		case MENU_MRK_THT:
+			break;
+		case MENU_ABT_THT:
+			break;
 		default:
 		{
 			BWindow::MessageReceived(msg);
