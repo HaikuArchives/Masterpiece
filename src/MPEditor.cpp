@@ -38,12 +38,11 @@ void MPEditor::MessageReceived(BMessage* msg)
 				yPos = (r.bottom - r.top) / 2;
 				saveIdea = new SaveIdea(xPos, yPos, currentideaID);
 				saveIdea->Show();
-				// save name and then call insert into sql...
 			}
 			else
 			{
+				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideatext = ? where ideaid = ?", -1, &ideaStatement, NULL);
 				printf("must just write sql\r\n");
-				// update data to sql with id value
 			}
 			break;
 		case MENU_PRV_THT:

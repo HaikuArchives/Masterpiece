@@ -21,6 +21,7 @@
 #include "SaveIdea.h"
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
+
 class MPEditor : public BWindow
 {
 public:
@@ -34,6 +35,11 @@ private:
 		BTextView*		editorTextView;
 		MPEditor*		tmpEditor;
 		SaveIdea*		saveIdea;
+		sqlite3*		mpdb;
+		sqlite3_stmt*	ideaStatement;
+		char*			sqlErrMsg;
+		BString			tmpString;
+		int				sqlValue;
 		int				currentideaID;
 		float			xPos;
 		float			yPos;
