@@ -20,6 +20,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 }
 void MPEditor::MessageReceived(BMessage* msg)
 {
+	BRect r(Bounds());
 	switch(msg->what)
 	{
 		case MENU_NEW_THT:
@@ -32,7 +33,11 @@ void MPEditor::MessageReceived(BMessage* msg)
 		case MENU_SAV_THT:
 			if(currentideaID == -1)
 			{
-				printf("must open save dialog\r\n");
+				printf("need to write sql for idea, then must open save dialog to set name\r\n");
+				xPos = (r.right - r.left) / 2;
+				yPos = (r.bottom - r.top) / 2;
+				saveIdea = new SaveIdea(xPos, yPos, currentideaID);
+				saveIdea->Show();
 				// save name and then call insert into sql...
 			}
 			else

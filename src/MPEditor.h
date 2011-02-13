@@ -18,6 +18,7 @@
 
 #include "ErrorAlert.h"
 #include "EditorMenu.h"
+#include "SaveIdea.h"
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 class MPEditor : public BWindow
@@ -33,6 +34,8 @@ private:
 		BTextView*		editorTextView;
 		int				currentideaID;
 		MPEditor*		tmpEditor;
+		SaveIdea*		saveIdea;
+		float			xPos, yPos;
 };
 
 
