@@ -42,16 +42,22 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT:
+			printf("save data, export to python html one and open data in preview window or webpositive");
 			break;
 		case MENU_PUB_THT:
+			printf("save data, open publish to window, export to python and save as name in publish window");
 			break;
 		case MENU_HLP_THT:
+			printf("open help topic window");
 			break;
 		case MENU_KEY_THT:
+			printf("open keyboard reference window");
 			break;
 		case MENU_MRK_THT:
+			printf("open markup reference window");
 			break;
 		case MENU_ABT_THT:
+			printf("open about window");
 			break;
 		default:
 		{
