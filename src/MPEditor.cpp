@@ -14,7 +14,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	backView->AddChild(BGridLayoutBuilder()
 		.Add(new EditorMenu(), 0, 0)
 		.Add(new BScrollView("scroll_editor", editorTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 1)
-		//.SetInsets(0, 0, 0, 0)
+		.SetInsets(0, 0, 0, 0)
 	);
 	currentideaID = ideaID;
 }
