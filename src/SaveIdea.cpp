@@ -1,10 +1,10 @@
 #include "SaveIdea.h"
 
 SaveIdea::SaveIdea(float mainX, float mainY, int currentID)
-	:	BWindow(BRect(20, 20, 200, 100), "Save As", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
+	:	BWindow(BRect(0, 0, 400, 50), "Save As", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
 {
-	BRect textFrame(0, 0, 170, 40);
-	titleText = new BTextView(textFrame, NULL, textFrame, B_FOLLOW_ALL, B_WILL_DRAW);
+	BRect textFrame(0, 5, 300, 10);
+	titleText = new BTextView(textFrame, NULL, textFrame, B_FOLLOW_LEFT, B_WILL_DRAW);
 	titleString = new BStringView(BRect(10, 10, 200, 30), NULL, "Enter Thought Title:");
 	saveButton = new BButton(BRect(190, 50, 270, 75), NULL, "Save", new BMessage(SAVE_IDEA));
 	cancelButton = new BButton(BRect(190, 50, 270, 75), NULL, "Cancel", new BMessage(CANCEL_SAVE));
@@ -14,10 +14,12 @@ SaveIdea::SaveIdea(float mainX, float mainY, int currentID)
 	
 	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
 	backView->AddChild(BGridLayoutBuilder()
-		.Add(titleString, 0, 0)
-		.Add(titleText, 1, 0, 2, 1)
-		.Add(cancelButton, 1, 1)
-		.Add(saveButton, 2, 1)
+		//.Add(titleString, 0, 0, 2, 1)
+		.Add(titleText, 0, 0, 2, 1)
+		.Add(BSpaceLayoutItem::CreateVerticalStrut(1.0), 0, 1, 2, 1)
+		.Add(cancelButton, 0, 2)
+		.Add(saveButton, 1, 2)
+		.SetInsets(2, 2, 2, 2)
 	);
 	MoveTo(mainX, mainY);
 }

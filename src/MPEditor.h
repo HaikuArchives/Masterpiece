@@ -32,10 +32,11 @@ private:
 		BMessage		launcherMessage;
 		BMessenger		launcherMessenger;
 		BTextView*		editorTextView;
-		int				currentideaID;
 		MPEditor*		tmpEditor;
 		SaveIdea*		saveIdea;
-		float			xPos, yPos;
+		int				currentideaID;
+		float			xPos;
+		float			yPos;
 };
 
 

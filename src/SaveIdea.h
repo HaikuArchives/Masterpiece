@@ -12,6 +12,7 @@
 #include <Message.h>
 #include <Messenger.h>
 #include <String.h>
+#include <StringView.h>
 
 #include "ErrorAlert.h"
 
