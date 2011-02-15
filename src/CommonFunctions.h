@@ -1,6 +1,8 @@
 #ifndef COMMONFUNCTIONS_H
 #define COMMONFUNCTIONS_H
 
-int OpenMasterPieceDB(void);
+#include <sqlite3.h>
+
+sqlite3* OpenSqliteDB(void);
 
 #endif
