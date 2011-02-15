@@ -18,6 +18,9 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	);
 	currentideaID = ideaID;
 	
+	mpdb = OpenSqliteDB();
+	if(mpdb == NULL) printf("it returned null");
+	else printf(" it returned a db object i can use");
 	//OpenMasterpieceDB();
 }
 void MPEditor::MessageReceived(BMessage* msg)

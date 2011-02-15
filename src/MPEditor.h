@@ -19,6 +19,7 @@
 #include "ErrorAlert.h"
 #include "EditorMenu.h"
 #include "SaveIdea.h"
+#include "CommonFunctions.h"
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 
