@@ -49,7 +49,11 @@ void MPEditor::MessageReceived(BMessage* msg)
 			else
 			{
 				// need to open mpdb first...
-				//sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideatext = ? where ideaid = ?", -1, &ideaStatement, NULL);
+				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideatext = ? where ideaid = ?", -1, &ideaStatement, NULL);
+				sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT);
+				sqlite3_bind_int(ideaStatement, 2, currentideaID);
+				sqlite3_step(ideaStatement);
+				sqlite3_finalize(ideaStatement);
 				printf("must just write sql\r\n");
 			}
 			break;

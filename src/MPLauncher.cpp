@@ -59,6 +59,7 @@ MPLauncher::MPLauncher(void)
 			eAlert = new ErrorAlert("No Masterpiece Exist. Please Create One First.");
 			eAlert->Launch();
 		}
+		sqlite3_finalize(ideaStatement);
 		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 0", -1, &ideaStatement, NULL);
 		if(sqlValue == SQLITE_OK) // sql statement was prepared
 		{
@@ -170,6 +171,8 @@ void MPLauncher::MessageReceived(BMessage* msg)
 }
 bool MPLauncher::QuitRequested(void)
 {
+	sqlite3_free(sqlErrMsg);
+	sqlite3_close(mpdb);
 	be_app->PostMessage(B_QUIT_REQUESTED);
 	return true;
 }
