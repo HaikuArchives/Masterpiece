@@ -23,6 +23,7 @@
 #include "ErrorAlert.h"
 #include "MPBuilder.h"
 #include "MPEditor.h"
+#include "CommonFunctions.h"
 
 #define CREATE_NEW_MP		'cnmp'
 #define	CREATE_NEW_THT		'cntt'
@@ -36,7 +37,7 @@ public:
 						MPLauncher(void);
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
-		void			OpenMasterpieceDB(void);
+		//void			OpenMasterpieceDB(void);
 		
 private:
 		BView*			backView;

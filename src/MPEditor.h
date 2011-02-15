@@ -35,6 +35,7 @@ private:
 		BMessenger		launcherMessenger;
 		BTextView*		editorTextView;
 		MPEditor*		tmpEditor;
+		ErrorAlert*		eAlert;
 		SaveIdea*		saveIdea;
 		sqlite3*		mpdb;
 		sqlite3_stmt*	ideaStatement;

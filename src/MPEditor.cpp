@@ -19,9 +19,11 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	currentideaID = ideaID;
 	
 	mpdb = OpenSqliteDB();
-	if(mpdb == NULL) printf("it returned null");
-	else printf(" it returned a db object i can use");
-	//OpenMasterpieceDB();
+	if(mpdb == NULL)
+	{
+		eAlert = new ErrorAlert("sql db was not opened properly.");
+		eAlert->Launch();
+	}
 }
 void MPEditor::MessageReceived(BMessage* msg)
 {

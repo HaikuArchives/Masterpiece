@@ -45,7 +45,47 @@ MPLauncher::MPLauncher(void)
 	openMasterpieceListView->MakeEmpty();
 	openThoughtListView->MakeEmpty();
 	
-	OpenMasterpieceDB();
+	mpdb = OpenSqliteDB();
+	if(mpdb == NULL)
+	{
+		eAlert = new ErrorAlert("sql db was not opened properly.");
+		eAlert->Launch();
+	}
+	else  // populate listview's here...
+	{
+		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 1", -1, &ideaStatement, NULL);
+		if(sqlValue == SQLITE_OK) // sql query was successful
+		{
+			while(sqlite3_step(ideaStatement) == SQLITE_ROW)
+			{
+				tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
+				openMasterpieceListView->AddItem(new MPStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
+			}
+			openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
+		}
+		else // sql select failed
+		{
+			eAlert = new ErrorAlert("No Masterpiece Exist. Please Create One First.");
+			eAlert->Launch();
+		}
+		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 0", -1, &ideaStatement, NULL);
+		if(sqlValue == SQLITE_OK) // sql statement was prepared
+		{
+			while(sqlite3_step(ideaStatement) == SQLITE_ROW)
+			{
+				tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
+				openThoughtListView->AddItem(new MPStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
+			}
+			openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
+		}
+		else
+		{
+			eAlert = new ErrorAlert("No Thoughts Exist.  Please Create One First.");
+			eAlert->Launch();
+		}
+		sqlite3_finalize(ideaStatement);
+	}
+	//OpenMasterpieceDB();
 }
 void MPLauncher::MessageReceived(BMessage* msg)
 {
@@ -143,6 +183,7 @@ bool MPLauncher::QuitRequested(void)
 	be_app->PostMessage(B_QUIT_REQUESTED);
 	return true;
 }
+/*
 void MPLauncher::OpenMasterpieceDB()
 {
 	sqlErrMsg = 0;
@@ -217,7 +258,7 @@ void MPLauncher::OpenMasterpieceDB()
 		eAlert->Launch();
 	}
 }
-
+*/
 MPStringItem::MPStringItem(BString itemText, int ideaid)
 	:	BStringItem(itemText)
 {

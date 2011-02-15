@@ -26,8 +26,6 @@ sqlite3* OpenSqliteDB()
 			sqlValue = sqlite3_exec(opendb, tmpString, NULL, NULL, &sqlErrMsg);
 			if(sqlValue == SQLITE_OK) // if sql was successful
 			{
-				//eAlert = new ErrorAlert("sql was created successfully");
-				//eAlert->Launch();
 				//return opendb;
 			}
 			else // sql not successful
