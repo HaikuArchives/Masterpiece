@@ -49,7 +49,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 		case MENU_SAV_THT:
 			if(currentideaID == -1)
 			{
-				printf("need to write sql for idea, then must open save dialog to set name\r\n");
+				printf("need to write sql for idea insert, then must open save dialog to set name\r\n");
 				xPos = (r.right - r.left) / 2;
 				yPos = (r.bottom - r.top) / 2;
 				saveIdea = new SaveIdea(xPos, yPos, currentideaID);
