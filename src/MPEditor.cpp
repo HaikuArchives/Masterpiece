@@ -49,6 +49,10 @@ void MPEditor::MessageReceived(BMessage* msg)
 		case MENU_SAV_THT:
 			if(currentideaID == -1)
 			{
+				sqlValue = sqlite3_prepare_v2(mpdb, "insert into ideatable (ideaname, ideatext, ismp) values('untitled', ?, 0)", -1, &ideaStatement, NULL);
+				sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT);
+				sqlite3_step(ideaStatement);
+				sqlite3_finalize(ideaStatement);
 				printf("need to write sql for idea insert, then must open save dialog to set name\r\n");
 				xPos = (r.right - r.left) / 2;
 				yPos = (r.bottom - r.top) / 2;

@@ -140,6 +140,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			{
 				if(showLauncher == 1)
 				{
+					// need to rerun the sql and repopulate the 2 listviews
 					if(this->IsHidden())
 					{
 						this->Show();

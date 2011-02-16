@@ -24,15 +24,39 @@ SaveIdea::SaveIdea(float mainX, float mainY, int currentID)
 		.SetInsets(2, 5, 2, 2)
 	);
 	MoveTo(mainX, mainY);
+	
+	currentideaID = currentID;
+	mpdb = OpenSqliteDB();
+	if(mpdb == NULL)
+	{
+		eAlert = new ErrorAlert("sql db was not opened properly.");
+		eAlert->Launch();
+	}
 }
 void SaveIdea::MessageReceived(BMessage* msg)
 {
 	switch(msg->what)
 	{
 		case SAVE_IDEA:
+			if(currentideaID > 0)
+			{
+				// do what i need here...
+				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideaname = ? where ideaid = ?", -1, &ideaStatement, NULL);
+				sqlite3_bind_text(ideaStatement, 1, titleText->Text(), -1, SQLITE_TRANSIENT);
+				sqlite3_bind_int(ideaStatement, 2, currentideaID);
+				sqlite3_step(ideaStatement);
+				sqlite3_finalize(ideaStatement);
+				// need to error check the sqlite step or finalize statements as i go.
+			}
+			else
+			{
+				eAlert = new ErrorAlert("idea not selected, big error here");
+				eAlert->Launch();
+			}
 			this->Close();
 			break;
 		case CANCEL_SAVE:
+			// do sql to save new name...
 			this->Close();
 			break;
 		default:
