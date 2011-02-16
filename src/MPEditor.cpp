@@ -24,6 +24,15 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 		eAlert = new ErrorAlert("sql db was not opened properly.");
 		eAlert->Launch();
 	}
+	if(currentideaID != -1)
+	{
+		// need to pull data from db and populate thoughtview with it...
+		sqlValue = sqlite3_prepare_v2(mpdb, "select ideatext from ideatable where ideaid = ?", -1, &ideaStatement, NULL);
+		sqlite3_bind_int(ideaStatement, 1, currentideaID);
+		sqlite3_step(ideaStatement);
+		editorTextView->SetText(sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0)));
+		sqlite3_finalize(ideaStatement);
+	}
 }
 void MPEditor::MessageReceived(BMessage* msg)
 {
