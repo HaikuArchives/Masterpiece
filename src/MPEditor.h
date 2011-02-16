@@ -22,6 +22,7 @@
 #include "CommonFunctions.h"
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
+#define UPDATE_TITLE		'uttl' // update title...
 
 class MPEditor : public BWindow
 {
@@ -41,6 +42,7 @@ private:
 		sqlite3_stmt*	ideaStatement;
 		char*			sqlErrMsg;
 		BString			tmpString;
+		BString			updateTitle;
 		int				sqlValue;
 		int				currentideaID;
 		float			xPos;

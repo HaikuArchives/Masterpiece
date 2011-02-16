@@ -56,7 +56,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				printf("need to write sql for idea insert, then must open save dialog to set name\r\n");
 				xPos = (r.right - r.left) / 2;
 				yPos = (r.bottom - r.top) / 2;
-				saveIdea = new SaveIdea(xPos, yPos, currentideaID);
+				saveIdea = new SaveIdea(BMessage(UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlite3_last_insert_rowid(mpdb));
 				saveIdea->Show();
 			}
 			else
@@ -87,6 +87,18 @@ void MPEditor::MessageReceived(BMessage* msg)
 			break;
 		case MENU_ABT_THT:
 			printf("open about window");
+			break;
+		case UPDATE_TITLE:
+			if(msg->FindString("updatetitle", &updateTitle) == B_OK)
+			{
+				tmpString = "Masterpiece Editor - ";
+				tmpString += updateTitle;
+				this->SetTitle(tmpString);
+			}
+			else
+			{
+				// put error alert here...
+			}
 			break;
 		default:
 		{

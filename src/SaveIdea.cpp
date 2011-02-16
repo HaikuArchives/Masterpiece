@@ -1,7 +1,7 @@
 #include "SaveIdea.h"
 
-SaveIdea::SaveIdea(float mainX, float mainY, int currentID)
-	:	BWindow(BRect(0, 0, 358, 60), "Save As", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
+SaveIdea::SaveIdea(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY, int currentID)
+	:	BWindow(BRect(0, 0, 358, 60), "Save As", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), updatetitleMessage(msg), updatetitleMessenger(msgr)
 {
 	BRect textFrame(0, 0, 300, 10);
 	titleText = new BTextView(textFrame, NULL, textFrame, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
@@ -46,6 +46,9 @@ void SaveIdea::MessageReceived(BMessage* msg)
 				sqlite3_bind_int(ideaStatement, 2, currentideaID);
 				sqlite3_step(ideaStatement);
 				sqlite3_finalize(ideaStatement);
+				updatetitleMessage.MakeEmpty();
+				updatetitleMessage.AddString("updatetitle", titleText->Text());
+				updatetitleMessenger.SendMessage(&updatetitleMessage);
 				// need to error check the sqlite step or finalize statements as i go.
 			}
 			else
@@ -53,10 +56,10 @@ void SaveIdea::MessageReceived(BMessage* msg)
 				eAlert = new ErrorAlert("idea not selected, big error here");
 				eAlert->Launch();
 			}
+			// need to send message to update editor title from untitled to new name... send it as message back to editor...
 			this->Close();
 			break;
 		case CANCEL_SAVE:
-			// do sql to save new name...
 			this->Close();
 			break;
 		default:
