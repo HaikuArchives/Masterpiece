@@ -17,7 +17,7 @@
 
 #include "ErrorAlert.h"
 #include "OpenWindow.h"
-#include "MultiLineTextControl.h"
+//#include "MultiLineTextControl.h"
 
 #define ADD_NEW_MP		'add' // add new mp button
 #define CANCEL_NEW_MP	'can' // cancel message
@@ -33,7 +33,7 @@ public:
 		void	OpenMasterPieceDB(void);
 		void	AddNewMasterPiece(void);
 private:
-		MultiLineTextControl*	titleText;
+		//MultiLineTextControl*	titleText;
 		BStringView*	 		titleString;
 		BButton*				newButton;
 		BButton*				cancelButton;

@@ -3,6 +3,7 @@
 NewWindow::NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, float mainY)
 	:	BWindow(BRect(20, 20, 200, 100), "Enter Title", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), mpMessage(msg), mpMessenger(msgr)
 {
+	/*
 	BRect textFrame(0, 0, 170, 40);
 	titleText = new MultiLineTextControl(textFrame, NULL, NULL, false, "", NULL, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW);
 	newButton = new BButton(BRect(190, 50, 270, 75), NULL, "Add", new BMessage(ADD_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
@@ -19,7 +20,7 @@ NewWindow::NewWindow(const BMessage &msg, const BMessenger &msgr, float mainX, f
 	MoveTo(mainX, mainY);
 	
 	OpenMasterPieceDB();
-	
+	*/
 }
 void NewWindow::MessageReceived(BMessage* msg)
 {
@@ -28,12 +29,13 @@ void NewWindow::MessageReceived(BMessage* msg)
 		case CANCEL_NEW_MP:
 			if(!this->IsHidden())
 			{
-				this->titleText->SetText("");
+				//this->titleText->SetText("");
 				this->Hide();
 			}
 			break;
 		
 		case ADD_NEW_MP:
+			/*
 			if(strlen(this->titleText->Text()) == 0) // mp title is empty
 			{
 				eAlert = new ErrorAlert("2.2 MasterPiece Name Cannot Be Blank.  Please Try Again.");
@@ -43,6 +45,7 @@ void NewWindow::MessageReceived(BMessage* msg)
 			{
 				AddNewMasterPiece();
 			}
+			*/
 			break;
 			
 		default:
@@ -105,6 +108,7 @@ void NewWindow::OpenMasterPieceDB()
 
 void NewWindow::AddNewMasterPiece()
 {
+	/*
 				tmpString = "select mpid from mptable where mpname = '";
 				tmpString += this->titleText->Text();
 				tmpString += "';";
@@ -203,4 +207,5 @@ void NewWindow::AddNewMasterPiece()
 					eAlert = new ErrorAlert("1.3 Sql Error: ", sqlErrMsg);
 					eAlert->Launch();
 				}
+				*/
 }

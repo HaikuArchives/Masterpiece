@@ -10,7 +10,7 @@
 #include <GridLayoutBuilder.h>
 #include <SpaceLayoutItem.h>
 
-#include "MultiLineTextControl.h"
+//#include "MultiLineTextControl.h"
 
 class ThoughtView : public BView
 {
@@ -23,7 +23,7 @@ public:
 		void					AttachedToWindow();		// set view to get background properties here
 		
 		BGroupLayout*			thoughtGroup;
-		MultiLineTextControl*	thoughtEntry;
+		//MultiLineTextControl*	thoughtEntry;
 		BStringView*			thoughtString;
 		
 private:
