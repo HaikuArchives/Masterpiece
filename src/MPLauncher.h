@@ -38,6 +38,7 @@ public:
 						MPLauncher(void);
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
+		void			PopulateLauncherListViews(void);
 		
 private:
 		BView*			backView;

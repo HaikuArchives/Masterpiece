@@ -33,8 +33,6 @@ MPLauncher::MPLauncher(void)
 		.Add(new BScrollView("scroll_thoughtlist", openThoughtListView,  B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 2, 3, 2, 3)
 		.SetInsets(5, 5, 5, 2)
 	);
-	openMasterpieceListView->MakeEmpty();
-	openThoughtListView->MakeEmpty();
 	
 	mpdb = OpenSqliteDB();
 	if(mpdb == NULL)
@@ -44,6 +42,10 @@ MPLauncher::MPLauncher(void)
 	}
 	else  // populate listview's here...
 	{
+		PopulateLauncherListViews();
+		openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
+		openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
+		/*
 		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 1", -1, &ideaStatement, NULL);
 		if(sqlValue == SQLITE_OK) // sql query was successful
 		{
@@ -76,6 +78,7 @@ MPLauncher::MPLauncher(void)
 			eAlert->Launch();
 		}
 		sqlite3_finalize(ideaStatement);
+		*/
 	}
 }
 void MPLauncher::MessageReceived(BMessage* msg)
@@ -141,6 +144,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				if(showLauncher == 1)
 				{
 					// need to rerun the sql and repopulate the 2 listviews
+					PopulateLauncherListViews();
 					if(this->IsHidden())
 					{
 						this->Show();
@@ -176,4 +180,44 @@ bool MPLauncher::QuitRequested(void)
 	sqlite3_close(mpdb);
 	be_app->PostMessage(B_QUIT_REQUESTED);
 	return true;
+}
+void MPLauncher::PopulateLauncherListViews(void)
+{
+	openMasterpieceListView->MakeEmpty();
+	openThoughtListView->MakeEmpty();
+	
+	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 1", -1, &ideaStatement, NULL);
+	if(sqlValue == SQLITE_OK) // sql query was successful
+	{
+		while(sqlite3_step(ideaStatement) == SQLITE_ROW)
+		{
+			tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
+			openMasterpieceListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
+		}
+		//backView->Invalidate();
+		//openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
+	}
+	else // sql select failed
+	{
+		eAlert = new ErrorAlert("No Masterpiece Exist. Please Create One First.");
+		eAlert->Launch();
+	}
+	sqlite3_finalize(ideaStatement);
+	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 0", -1, &ideaStatement, NULL);
+	if(sqlValue == SQLITE_OK) // sql statement was prepared
+	{
+		while(sqlite3_step(ideaStatement) == SQLITE_ROW)
+		{
+			tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
+			openThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
+		}
+		//backView->Invalidate();
+		//openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
+	}
+	else
+	{
+		eAlert = new ErrorAlert("No Thoughts Exist.  Please Create One First.");
+		eAlert->Launch();
+	}
+	sqlite3_finalize(ideaStatement);
 }
