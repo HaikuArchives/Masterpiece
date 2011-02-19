@@ -63,19 +63,23 @@ void MPEditor::MessageReceived(BMessage* msg)
 			printf(" must open edit name dialog\r\n");
 			break;
 		case MENU_SAV_THT: // save current idea progress
-			if(currentideaID == -1)
+			if(currentideaID == -1) // if its untitled insert new thought, then show saveidea to apply a name...
 			{
 				sqlValue = sqlite3_prepare_v2(mpdb, "insert into ideatable (ideaname, ideatext, ismp) values('untitled', ?, 0)", -1, &ideaStatement, NULL);
-				sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT);
-				sqlite3_step(ideaStatement);
-				sqlite3_finalize(ideaStatement);
-				printf("need to write sql for idea insert, then must open save dialog to set name\r\n");
-				xPos = (r.right - r.left) / 2;
-				yPos = (r.bottom - r.top) / 2;
-				saveIdea = new SaveIdea(BMessage(UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlite3_last_insert_rowid(mpdb));
-				saveIdea->Show();
+				if(sqlValue == SQLITE_OK) // sql statement was prepared properly
+				{
+					if(sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT) == SQLITE_OK)
+					{
+						sqlite3_step(ideaStatement);
+						sqlite3_finalize(ideaStatement);
+						xPos = (r.right - r.left) / 2;
+						yPos = (r.bottom - r.top) / 2;
+						saveIdea = new SaveIdea(BMessage(UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlite3_last_insert_rowid(mpdb));
+						saveIdea->Show();
+					}
+				}
 			}
-			else
+			else // already exists, just update ideatext and save new information
 			{
 				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideatext = ? where ideaid = ?", -1, &ideaStatement, NULL);
 				sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT);
