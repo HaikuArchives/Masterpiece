@@ -1,8 +1,20 @@
+/*
+ *
+ * Error Codes
+ * 1.x - Sql Errors
+ * 2.x - New MP
+ * 3.x - Open MP
+ *
+ */
+
 #include "MPLauncher.h"
 
 MPLauncher::MPLauncher(void)
 	:	BWindow(BRect(100, 100, 650, 400), "MasterPiece Launcher", B_TITLED_WINDOW,  B_NOT_H_RESIZABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
 {
+	// mplauncher is the main window of the application
+	
+	// gui control initialization
 	mainGroup = new BGroupLayout(B_HORIZONTAL, 0.0);
 	newThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_THT), B_FOLLOW_NONE, B_WILL_DRAW);
 	newMasterpieceButton = new BButton(BRect(10, 10, 90, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
@@ -15,7 +27,7 @@ MPLauncher::MPLauncher(void)
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
-	
+	// layout builder code
 	backView->SetLayout(mainGroup);
 	backView->AddChild(BGridLayoutBuilder()
 		.Add(masterpieceStringView, 0, 0)
@@ -33,11 +45,11 @@ MPLauncher::MPLauncher(void)
 		.Add(new BScrollView("scroll_thoughtlist", openThoughtListView,  B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 2, 3, 2, 3)
 		.SetInsets(5, 5, 5, 2)
 	);
-	
-	mpdb = OpenSqliteDB();
+
+	mpdb = OpenSqliteDB(); // open sqldb
 	if(mpdb == NULL)
 	{
-		eAlert = new ErrorAlert("sql db was not opened properly.");
+		eAlert = new ErrorAlert("1.1. SQL DB was not opened properly.");
 		eAlert->Launch();
 	}
 	else  // populate listview's here...
