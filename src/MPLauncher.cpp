@@ -116,7 +116,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			}
 			break;
 		case SHOW_LAUNCHER:  // once finished with editor or builder, call to show this launcher
-			if(msg->FindInt64("showLauncher", &showLauncher) == B_OK)
+			if(msg->FindInt64("showLauncher", &showLauncher) == B_OK) // message was found
 			{
 				if(showLauncher == 1)
 				{
@@ -137,7 +137,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 					// big error must display 
 				}
 			}
-			else
+			else // message not found
 			{
 				eAlert = new ErrorAlert("2.2 Launcher Error: Message Variable was not found.");
 				eAlert->Launch();

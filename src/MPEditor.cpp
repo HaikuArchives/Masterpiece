@@ -138,16 +138,16 @@ void MPEditor::MessageReceived(BMessage* msg)
 		case MENU_ABT_THT: // open about window
 			printf("open about window");
 			break;
-		case UPDATE_TITLE: // update title with the
-			if(msg->FindString("updatetitle", &updateTitle) == B_OK)
+		case UPDATE_TITLE: // update title with the name from the saveidea window
+			if(msg->FindString("updatetitle", &updateTitle) == B_OK) // updated title exists in variable
 			{
 				tmpString = "Masterpiece Editor - ";
 				tmpString += updateTitle;
 				this->SetTitle(tmpString);
 			}
-			else
+			else // 
 			{
-				// put error alert here...
+				eAlert = new ErrorAlert("3.1 Editor Error: Message not found."); // message variable not found
 			}
 			break;
 		default:
@@ -159,6 +159,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 }
 bool MPEditor::QuitRequested(void)
 {
+	// on quit, show launcher by sending message
 	launcherMessage.MakeEmpty();
 	launcherMessage.AddInt64("showLauncher", 1);
 	launcherMessenger.SendMessage(&launcherMessage);

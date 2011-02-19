@@ -26,6 +26,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 }
 bool MPBuilder::QuitRequested(void)
 {
+	// on quit, show launcher with message
 	launcherMessage.MakeEmpty();
 	launcherMessage.AddInt64("showLauncher", 1);
 	launcherMessenger.SendMessage(&launcherMessage);
