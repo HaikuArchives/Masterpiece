@@ -165,7 +165,7 @@ void MPLauncher::PopulateLauncherListViews(void)
 	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 1", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql query was successful
 	{
-		while(sqlite3_step(ideaStatement) == SQLITE_ROW)
+		while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
 		{
 			tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
 			openMasterpieceListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
@@ -173,23 +173,23 @@ void MPLauncher::PopulateLauncherListViews(void)
 	}
 	else // sql select failed
 	{
-		eAlert = new ErrorAlert("No Masterpiece Exist. Please Create One First.");
+		eAlert = new ErrorAlert("1.5 Sql Error: No Masterpiece Exist. Please Create One First.");
 		eAlert->Launch();
 	}
-	sqlite3_finalize(ideaStatement);
+	sqlite3_finalize(ideaStatement); // finish with the sql statement
 	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 0", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql statement was prepared
 	{
-		while(sqlite3_step(ideaStatement) == SQLITE_ROW)
+		while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
 		{
 			tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
 			openThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
 		}
 	}
-	else
+	else // sql select failed
 	{
-		eAlert = new ErrorAlert("No Thoughts Exist.  Please Create One First.");
+		eAlert = new ErrorAlert("1.6 Sql Error: No Thoughts Exist.  Please Create One First.");
 		eAlert->Launch();
 	}
-	sqlite3_finalize(ideaStatement);
+	sqlite3_finalize(ideaStatement); // finish with sql statement
 }
