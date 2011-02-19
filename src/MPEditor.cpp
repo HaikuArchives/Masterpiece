@@ -37,10 +37,16 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 				sqlite3_step(ideaStatement);
 				editorTextView->SetText(sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0)));
 			}
+			else
+			{
+				eAlert = new ErrorAlert("1.7 Sql Error: Sql Bind failed.");
+				eAlert->Launch();
+			}
 			sqlite3_finalize(ideaStatement);
 		}
 		else
 		{
+			eAlert = new ErrorAlert("1.8 Sql Error: Sql Prepare failed.");
 		}
 	}
 }
@@ -49,14 +55,14 @@ void MPEditor::MessageReceived(BMessage* msg)
 	BRect r(Bounds());
 	switch(msg->what)
 	{
-		case MENU_NEW_THT:
+		case MENU_NEW_THT: // open another untitled editor window
 			tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled", -1);
 			tmpEditor->Show();
 			break;
-		case MENU_EDT_THT:
+		case MENU_EDT_THT: // edit current idea name for editing
 			printf(" must open edit name dialog\r\n");
 			break;
-		case MENU_SAV_THT:
+		case MENU_SAV_THT: // save current idea progress
 			if(currentideaID == -1)
 			{
 				sqlValue = sqlite3_prepare_v2(mpdb, "insert into ideatable (ideaname, ideatext, ismp) values('untitled', ?, 0)", -1, &ideaStatement, NULL);
