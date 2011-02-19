@@ -132,14 +132,14 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				}
 				else
 				{
-					eAlert = new ErrorAlert("Message is not 0 or 1");
+					eAlert = new ErrorAlert("2.1 Launcher Error: Illegal Value was returned.");
 					eAlert->Launch();
 					// big error must display 
 				}
 			}
 			else
 			{
-				eAlert = new ErrorAlert("Message is not right");
+				eAlert = new ErrorAlert("2.2 Launcher Error: Message Variable was not found.");
 				eAlert->Launch();
 			}
 			break;
@@ -152,9 +152,9 @@ void MPLauncher::MessageReceived(BMessage* msg)
 }
 bool MPLauncher::QuitRequested(void)
 {
-	sqlite3_free(sqlErrMsg);
-	sqlite3_close(mpdb);
-	be_app->PostMessage(B_QUIT_REQUESTED);
+	sqlite3_free(sqlErrMsg); // free up sql
+	sqlite3_close(mpdb); // close db
+	be_app->PostMessage(B_QUIT_REQUESTED); // exit application
 	return true;
 }
 void MPLauncher::PopulateLauncherListViews(void)
