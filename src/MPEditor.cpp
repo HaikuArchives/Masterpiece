@@ -99,7 +99,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 						if(sqlite3_bind_int(ideaStatement, 2, currentideaID) == SQLITE_OK) // bind was successful
 						{
 							sqlite3_step(ideaStatement); // execute update statement
-							sqlite3_finalize(ideaStatement); // finish teh statement
+							sqlite3_finalize(ideaStatement); // finish the statement
 						}
 						else
 						{
