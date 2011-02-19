@@ -68,46 +68,77 @@ void MPEditor::MessageReceived(BMessage* msg)
 				sqlValue = sqlite3_prepare_v2(mpdb, "insert into ideatable (ideaname, ideatext, ismp) values('untitled', ?, 0)", -1, &ideaStatement, NULL);
 				if(sqlValue == SQLITE_OK) // sql statement was prepared properly
 				{
-					if(sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT) == SQLITE_OK)
+					if(sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT) == SQLITE_OK) // bind was successful
 					{
-						sqlite3_step(ideaStatement);
-						sqlite3_finalize(ideaStatement);
-						xPos = (r.right - r.left) / 2;
-						yPos = (r.bottom - r.top) / 2;
+						sqlite3_step(ideaStatement); // execute insert statement
+						sqlite3_finalize(ideaStatement); // finish the statement
+						xPos = (r.right - r.left) / 2; // find xpos for window
+						yPos = (r.bottom - r.top) / 2; // find ypos for window
 						saveIdea = new SaveIdea(BMessage(UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlite3_last_insert_rowid(mpdb));
-						saveIdea->Show();
+						saveIdea->Show(); // show save window to name the untitled thought
 					}
+					else // sql didn't bind
+					{
+						eAlert = new ErrorAlert("1.9 Sql Error: Sql Bind failed.");
+						eAlert->Launch();
+					}
+				}
+				else // sql didn't prepare properly
+				{
+					eAlert = new ErrorAlert("1.10 Sql Error: Sql Prepare failed.");
+					eAlert->Launch();
 				}
 			}
 			else // already exists, just update ideatext and save new information
 			{
 				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideatext = ? where ideaid = ?", -1, &ideaStatement, NULL);
-				sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT);
-				sqlite3_bind_int(ideaStatement, 2, currentideaID);
-				sqlite3_step(ideaStatement);
-				sqlite3_finalize(ideaStatement);
-				printf("must just write sql\r\n");
+				if(sqlValue == SQLITE_OK) // sql statement was prepared properly
+				{
+					if(sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT) == SQLITE_OK) // bind was successful
+					{
+						if(sqlite3_bind_int(ideaStatement, 2, currentideaID) == SQLITE_OK) // bind was successful
+						{
+							sqlite3_step(ideaStatement); // execute update statement
+							sqlite3_finalize(ideaStatement); // finish teh statement
+						}
+						else
+						{
+							eAlert = new ErrorAlert("1.12 Sql Error: Sql Bind failed.");
+							eAlert->Launch();
+						}
+					}
+					else
+					{
+						eAlert = new ErrorAlert("1.11 Sql Error: Sql Bind failed.");
+						eAlert->Launch();
+					}
+				}
+				else
+				{
+					eAlert = new ErrorAlert("1.13 Sql Error: Sql Prepare failed.");
+					eAlert->Launch();
+				}
 			}
 			break;
-		case MENU_PRV_THT:
+		case MENU_PRV_THT: // preview thought in html in webpositive
 			printf("save data, export to python html one and open data in preview window or webpositive");
 			break;
-		case MENU_PUB_THT:
+		case MENU_PUB_THT: // publish thought by opening publish window
 			printf("save data, open publish to window, export to python and save as name in publish window");
 			break;
-		case MENU_HLP_THT:
+		case MENU_HLP_THT: // open help topic window
 			printf("open help topic window");
 			break;
-		case MENU_KEY_THT:
+		case MENU_KEY_THT: // open keyboard reference window
 			printf("open keyboard reference window");
 			break;
-		case MENU_MRK_THT:
+		case MENU_MRK_THT: // open markup reference window
 			printf("open markup reference window");
 			break;
-		case MENU_ABT_THT:
+		case MENU_ABT_THT: // open about window
 			printf("open about window");
 			break;
-		case UPDATE_TITLE:
+		case UPDATE_TITLE: // update title with the
 			if(msg->FindString("updatetitle", &updateTitle) == B_OK)
 			{
 				tmpString = "Masterpiece Editor - ";
