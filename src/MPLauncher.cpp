@@ -2,8 +2,10 @@
  *
  * Error Codes
  * 1.x - Sql Errors
- * 2.x - New MP
- * 3.x - Open MP
+ * 2.x - Launcher Errors
+ * 3.x - Editor Errors
+ * 4.x - Builder Errors
+ * 5.x - Save Errors
  *
  */
 
@@ -49,7 +51,7 @@ MPLauncher::MPLauncher(void)
 	mpdb = OpenSqliteDB(); // open sqldb
 	if(mpdb == NULL)
 	{
-		eAlert = new ErrorAlert("1.1. SQL DB was not opened properly.");
+		eAlert = new ErrorAlert("1.4. Sql Error: SQL DB was not opened properly.");
 		eAlert->Launch();
 	}
 	else  // populate listview's here...
@@ -63,25 +65,25 @@ void MPLauncher::MessageReceived(BMessage* msg)
 {
 	switch(msg->what)
 	{
-		case CREATE_NEW_MP:
+		case CREATE_NEW_MP: // create new mp by opening mp builder
 			mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled", -1);
 			mpBuilder->Show();
 			this->Hide();
 			break;
-		case CREATE_NEW_THT:
+		case CREATE_NEW_THT: // create new thought by opening thought editor
 			mpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled", -1);
 			mpEditor->Show();
 			this->Hide();
 			break;
-		case OPEN_EXISTING_MP:
+		case OPEN_EXISTING_MP: // open existing mp by selecting from listview
 			selected = openMasterpieceListView->CurrentSelection(); // list item value
-			if(selected < 0)
+			if(selected < 0) // if selected nothing, open empty builder window
 			{
 				mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled", -1);
 				mpBuilder->Show();
 				this->Hide();
 			}
-			else
+			else // you selected an actual existing mp from listview
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(openMasterpieceListView->ItemAt(selected));
@@ -93,15 +95,15 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				this->Hide();
 			}
 			break;
-		case OPEN_EXISTING_THT:
+		case OPEN_EXISTING_THT: // open existing thought by selecting from listview
 			selected = openThoughtListView->CurrentSelection(); // list item value
-			if(selected < 0)
+			if(selected < 0) // if selected nothing, open empty builder window
 			{
 				mpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled", -1);
 				mpEditor->Show();
 				this->Hide();
 			}
-			else
+			else // you selected an actual existing thought from listview
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(openThoughtListView->ItemAt(selected));
@@ -113,13 +115,12 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				this->Hide();
 			}
 			break;
-		case SHOW_LAUNCHER:
+		case SHOW_LAUNCHER:  // once finished with editor or builder, call to show this launcher
 			if(msg->FindInt64("showLauncher", &showLauncher) == B_OK)
 			{
 				if(showLauncher == 1)
 				{
-					// need to rerun the sql and repopulate the 2 listviews
-					PopulateLauncherListViews();
+					PopulateLauncherListViews(); // rerun the sql and repopulate the 2 listviews with any updated values
 					if(this->IsHidden())
 					{
 						this->Show();

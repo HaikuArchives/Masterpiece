@@ -1,5 +1,6 @@
 #include "CommonFunctions.h"
 
+// open sqlite db and return it as the db object i need
 sqlite3* OpenSqliteDB()
 {
 	char*		sqlErrMsg;
@@ -26,7 +27,7 @@ sqlite3* OpenSqliteDB()
 			sqlValue = sqlite3_exec(opendb, tmpString, NULL, NULL, &sqlErrMsg);
 			if(sqlValue == SQLITE_OK) // if sql was successful
 			{
-				//return opendb;
+				// no error, so i will return opendb at end;
 			}
 			else // sql not successful
 			{
@@ -42,7 +43,7 @@ sqlite3* OpenSqliteDB()
 	}
 	else if(sqlite3_errcode(opendb) == 0) // sqlite_OK, it exists
 	{
-		//return opendb;
+		//no error, so i will return opendb at end;
 	}
 	else // if error is not ok or not existing, then display error in alert
 	{
