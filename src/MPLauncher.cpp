@@ -45,40 +45,6 @@ MPLauncher::MPLauncher(void)
 		PopulateLauncherListViews();
 		openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
 		openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
-		/*
-		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 1", -1, &ideaStatement, NULL);
-		if(sqlValue == SQLITE_OK) // sql query was successful
-		{
-			while(sqlite3_step(ideaStatement) == SQLITE_ROW)
-			{
-				tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
-				openMasterpieceListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
-			}
-			openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
-		}
-		else // sql select failed
-		{
-			eAlert = new ErrorAlert("No Masterpiece Exist. Please Create One First.");
-			eAlert->Launch();
-		}
-		sqlite3_finalize(ideaStatement);
-		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 0", -1, &ideaStatement, NULL);
-		if(sqlValue == SQLITE_OK) // sql statement was prepared
-		{
-			while(sqlite3_step(ideaStatement) == SQLITE_ROW)
-			{
-				tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
-				openThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
-			}
-			openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
-		}
-		else
-		{
-			eAlert = new ErrorAlert("No Thoughts Exist.  Please Create One First.");
-			eAlert->Launch();
-		}
-		sqlite3_finalize(ideaStatement);
-		*/
 	}
 }
 void MPLauncher::MessageReceived(BMessage* msg)
@@ -89,13 +55,11 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			mpBuilder = new MPBuilder(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Builder - untitled", -1);
 			mpBuilder->Show();
 			this->Hide();
-			// do something here
 			break;
 		case CREATE_NEW_THT:
 			mpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled", -1);
 			mpEditor->Show();
 			this->Hide();
-			// do something here
 			break;
 		case OPEN_EXISTING_MP:
 			selected = openMasterpieceListView->CurrentSelection(); // list item value
@@ -138,7 +102,6 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			}
 			break;
 		case SHOW_LAUNCHER:
-			// do something here
 			if(msg->FindInt64("showLauncher", &showLauncher) == B_OK)
 			{
 				if(showLauncher == 1)
@@ -194,8 +157,6 @@ void MPLauncher::PopulateLauncherListViews(void)
 			tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
 			openMasterpieceListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
 		}
-		//backView->Invalidate();
-		//openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
 	}
 	else // sql select failed
 	{
@@ -211,8 +172,6 @@ void MPLauncher::PopulateLauncherListViews(void)
 			tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
 			openThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
 		}
-		//backView->Invalidate();
-		//openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
 	}
 	else
 	{
