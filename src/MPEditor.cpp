@@ -3,35 +3,43 @@
 MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID)
 	:	BWindow(BRect(100, 100, 900, 700), windowTitle, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), launcherMessage(msg), launcherMessenger(msgr)
 {
+	// initialize controls
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
 	editorTextView = new BTextView(r, NULL, r, B_FOLLOW_ALL, B_WILL_DRAW);	
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
-	
+	// gui layout builder
 	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
 	backView->AddChild(BGridLayoutBuilder()
 		.Add(new EditorMenu(), 0, 0)
 		.Add(new BScrollView("scroll_editor", editorTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 1)
 		.SetInsets(0, 0, 0, 0)
 	);
-	currentideaID = ideaID;
 	
-	mpdb = OpenSqliteDB();
-	if(mpdb == NULL)
+	currentideaID = ideaID; // pass current idea id selected to editor window for use
+	
+	mpdb = OpenSqliteDB(); // open mpdb db
+	if(mpdb == NULL) // if db doesn't exist
 	{
-		eAlert = new ErrorAlert("sql db was not opened properly.");
+		eAlert = new ErrorAlert("1.6 Sql Error: Sql DB was not opened properly.");
 		eAlert->Launch();
 	}
-	if(currentideaID != -1)
+	if(currentideaID != -1) // if id has a real value
 	{
-		// need to pull data from db and populate thoughtview with it...
+		// Pull data from db and populate thoughtview with it
 		sqlValue = sqlite3_prepare_v2(mpdb, "select ideatext from ideatable where ideaid = ?", -1, &ideaStatement, NULL);
-		sqlite3_bind_int(ideaStatement, 1, currentideaID);
-		sqlite3_step(ideaStatement);
-		editorTextView->SetText(sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0)));
-		sqlite3_finalize(ideaStatement);
+		if(sqlValue == SQLITE_OK) // sql statement was prepared properly
+		{
+			sqlite3_bind_int(ideaStatement, 1, currentideaID);
+			sqlite3_step(ideaStatement);
+			editorTextView->SetText(sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0)));
+			sqlite3_finalize(ideaStatement);
+		}
+		else
+		{
+		}
 	}
 }
 void MPEditor::MessageReceived(BMessage* msg)
