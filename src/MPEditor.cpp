@@ -32,9 +32,11 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 		sqlValue = sqlite3_prepare_v2(mpdb, "select ideatext from ideatable where ideaid = ?", -1, &ideaStatement, NULL);
 		if(sqlValue == SQLITE_OK) // sql statement was prepared properly
 		{
-			sqlite3_bind_int(ideaStatement, 1, currentideaID);
-			sqlite3_step(ideaStatement);
-			editorTextView->SetText(sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0)));
+			if(sqlite3_bind_int(ideaStatement, 1, currentideaID) == SQLITE_OK)
+			{
+				sqlite3_step(ideaStatement);
+				editorTextView->SetText(sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0)));
+			}
 			sqlite3_finalize(ideaStatement);
 		}
 		else
