@@ -32,8 +32,33 @@ EditIdeaName::EditIdeaName(const BMessage &msg, const BMessenger &msgr, float ma
 	mpdb = OpenSqliteDB(); // open db
 	if(mpdb == NULL) // if db failed
 	{
-		eAlert = new ErrorAlert("1.14 Sql Error: Sql DB was not opened properly.");
+		eAlert = new ErrorAlert("1.18 Sql Error: Sql DB was not opened properly.");
 		eAlert->Launch();
+	}
+	else // sql was successful, find the current title and populate in the titletext-settext
+	{
+		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname from ideatable where ideaid = ?", -1, &ideaStatement, NULL);
+		if(sqlValue == SQLITE_OK) // sql statement was prepared properly
+		{
+			if(sqlite3_bind_int(ideaStatement, 1, currentideaID) == SQLITE_OK) // bind was successful
+			{
+				while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
+				{
+					tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
+					titleText->SetText(tmpString);
+				}
+			}
+			else
+			{
+				eAlert = new ErrorAlert("1.23 Sql Error: Sql Bind Failed");
+				eAlert->Launch();
+			}
+		}
+		else
+		{
+			eAlert = new ErrorAlert("1.22 Sql Error: Sql Prepare Failed");
+			eAlert->Launch();
+		}
 	}
 }
 void EditIdeaName::MessageReceived(BMessage* msg)
@@ -59,25 +84,25 @@ void EditIdeaName::MessageReceived(BMessage* msg)
 						}
 						else
 						{
-							eAlert = new ErrorAlert("1.17 Sql Error: Sql Bind Failed.");
+							eAlert = new ErrorAlert("1.21 Sql Error: Sql Bind Failed.");
 							eAlert->Launch();
 						}
 					}
 					else
 					{
-						eAlert = new ErrorAlert("1.16 Sql Error: Sql Bind Failed.");
+						eAlert = new ErrorAlert("1.20 Sql Error: Sql Bind Failed.");
 						eAlert->Launch();
 					}
 				}
 				else
 				{
-					eAlert = new ErrorAlert("1.15 Sql Error: Sql Prepare Failed.");
+					eAlert = new ErrorAlert("1.19 Sql Error: Sql Prepare Failed.");
 					eAlert->Launch();
 				}
 			}
 			else
 			{
-				eAlert = new ErrorAlert("5.1 Save Error: There is no idea to save.");
+				eAlert = new ErrorAlert("6.1 Edit Idea Name Error: There is no idea to use.");
 				eAlert->Launch();
 			}
 			this->Close();

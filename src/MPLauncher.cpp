@@ -6,6 +6,7 @@
  * 3.x - Editor Errors
  * 4.x - Builder Errors
  * 5.x - Save Errors
+ * 6.x - Edit Idea Name Errors
  *
  */
 

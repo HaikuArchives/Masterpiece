@@ -41,6 +41,7 @@ private:
 		char*			sqlErrMsg;	
 		BMessage		updatetitleMessage;
 		BMessenger		updatetitleMessenger;
+		BString			tmpString;
 		int				sqlValue;
 		int				currentideaID;
 };
