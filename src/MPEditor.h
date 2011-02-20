@@ -19,6 +19,7 @@
 #include "ErrorAlert.h"
 #include "EditorMenu.h"
 #include "SaveIdea.h"
+#include "EditIdeaName.h"
 #include "CommonFunctions.h"
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
@@ -38,6 +39,7 @@ private:
 		MPEditor*		tmpEditor;
 		ErrorAlert*		eAlert;
 		SaveIdea*		saveIdea;
+		EditIdeaName*	editIdeaName;
 		sqlite3*		mpdb;
 		sqlite3_stmt*	ideaStatement;
 		char*			sqlErrMsg;

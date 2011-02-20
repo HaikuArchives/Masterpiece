@@ -60,7 +60,10 @@ void MPEditor::MessageReceived(BMessage* msg)
 			tmpEditor->Show();
 			break;
 		case MENU_EDT_THT: // edit current idea name for editing
-			printf(" must open edit name dialog\r\n");
+			xPos = (r.right - r.left) / 2; // find xpos for window
+			yPos = (r.bottom - r.top) / 2; // find ypos for window
+			editIdeaName = new EditIdeaName(BMessage(UPDATE_TITLE), BMessenger(this), xPos, yPos, currentideaID);
+			editIdeaName->Show(); // show edit idea name window
 			break;
 		case MENU_SAV_THT: // save current idea progress
 			if(currentideaID == -1) // if its untitled insert new thought, then show saveidea to apply a name...
