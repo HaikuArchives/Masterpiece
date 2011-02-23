@@ -8,6 +8,7 @@
 #include <String.h>
 #include <GroupLayout.h>
 #include <GridLayoutBuilder.h>
+#include <SpaceLayoutItem.h>
 #include <ListView.h>
 #include <ScrollView.h>
 #include <StringView.h>
@@ -16,6 +17,14 @@
 #include <stdio.h>
 
 #include "ErrorAlert.h"
+#include "BuilderMenu.h"
+#include "SaveIdea.h"
+#include "EditIdeaName.h"
+#include "CommonFunctions.h"
+#include "MPEditor.h"
+
+#define SHOW_LAUNCHER	'lnch' // show mp launcher window
+#define UPDATE_TITLE	'uttl' // update title
 
 class MPBuilder : public BWindow
 {
@@ -28,6 +37,27 @@ private:
 		BGroupLayout*	mainGroup;
 		BMessage		launcherMessage;
 		BMessenger		launcherMessenger;
+		BListView*		availableThoughtListView;
+		BListView*		orderedThoughtListView;
+		BButton*		rightButton;
+		BButton*		leftButton;
+		BButton*		topButton;
+		BButton*		upButton;
+		BButton*		downButton;
+		BButton*		bottomButton;
+		MPEditor*		tmpEditor;
+		ErrorAlert*		eAlert;
+		SaveIdea*		saveIdea;
+		EditIdeaName*	editIdeaName;
+		sqlite3*		mpdb;
+		sqlite3_stmt*	ideaStatement;
+		char*			sqlErrMsg;
+		BString			updateTitle;
+		BString			tmpString;
+		int				sqlValue;
+		int				currentideaID;
+		float			xPos;
+		float			yPos;
 };
 
 #endif
