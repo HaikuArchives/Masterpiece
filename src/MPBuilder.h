@@ -25,6 +25,7 @@
 
 #define SHOW_LAUNCHER	'lnch' // show mp launcher window
 #define UPDATE_TITLE	'uttl' // update title
+#define	MOVE_RIGHT		'mvrt' // move right
 
 class MPBuilder : public BWindow
 {
