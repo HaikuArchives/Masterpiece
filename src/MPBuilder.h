@@ -26,6 +26,11 @@
 #define SHOW_LAUNCHER	'lnch' // show mp launcher window
 #define UPDATE_TITLE	'uttl' // update title
 #define	MOVE_RIGHT		'mvrt' // move right
+#define MOVE_LEFT		'mvlt' // move left
+#define MOVE_TOP		'mvtp' // move top
+#define	MOVE_UP			'mvup' // move up
+#define MOVE_DOWN		'mvdn' // move down
+#define MOVE_BOTTOM		'mvbt' // move bottom
 
 class MPBuilder : public BWindow
 {
