@@ -6,8 +6,8 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	// initialize controls
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
-	availableThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_MULTIPLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
-	orderedThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_MULTIPLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
+	availableThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
+	orderedThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
 	builderTextView = new BTextView(BRect(0, 0, r.right, 100), NULL, BRect(10, 10, r.right, 100), B_FOLLOW_ALL, B_WILL_DRAW);
 	rightButton = new BButton(BRect(10, 10, 90, 35), NULL, ">", new BMessage(MOVE_RIGHT), B_FOLLOW_NONE, B_WILL_DRAW);
 	leftButton = new BButton(BRect(10, 10, 90, 35), NULL, "<", new BMessage(MOVE_LEFT), B_FOLLOW_NONE, B_WILL_DRAW);
@@ -44,17 +44,25 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 		eAlert = new ErrorAlert("1.21 Sql Error: Sql DB was not opened properly");
 		eAlert->Launch();
 	}
-	if(currentideaID != -1) // if id has a real value
+	else
 	{
-		// Pull data from db and populate ordered thought list with them...
 		PopulateBuilderListViews();
+		availableThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_AVAIL_TEXT));
+		availableThoughtListView->SetInvocationMessage(new BMessage(MOVE_RIGHT));
+		orderedThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_ORDER_TEXT));
+		orderedThoughtListView->SetInvocationMessage(new BMessage(MOVE_LEFT));
 	}
-	// Pull data from db and populate available thought list with them.
 }
 void MPBuilder::MessageReceived(BMessage* msg)
 {
 	switch(msg->what)
 	{
+		case MOVE_RIGHT: // add item to ordered list
+			printf("move right\r\n");
+			break;
+		case DISPLAY_AVAIL_TEXT: // display preview text from item id
+			printf("display avail text\r\n");
+			break;
 		default:
 		{
 			BWindow::MessageReceived(msg);
@@ -89,4 +97,9 @@ void MPBuilder::PopulateBuilderListViews(void)
 		eAlert->Launch();
 	}
 	sqlite3_finalize(ideaStatement); // finish with sql statement
+	if(currentideaID != -1) // if id has a real value...
+	{
+		// populate the ordered list items from here with the information from passed id...
+		// select ideaname, ideaid, ideatext from ideatable where ismp = 0 and mpid = currentideaID
+	}
 }
