@@ -15,6 +15,7 @@
 #include <Messenger.h>
 #include <Message.h>
 #include <stdio.h>
+#include <TextView.h>
 
 #include "ErrorAlert.h"
 #include "BuilderMenu.h"
@@ -22,6 +23,7 @@
 #include "EditIdeaName.h"
 #include "CommonFunctions.h"
 #include "MPEditor.h"
+#include "IdeaStringItem.h"
 
 #define SHOW_LAUNCHER	'lnch' // show mp launcher window
 #define UPDATE_TITLE	'uttl' // update title
@@ -38,6 +40,7 @@ public:
 						MPBuilder(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID);
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
+		void			PopulateBuilderListViews(void);
 private:
 		BView*			backView;
 		BGroupLayout*	mainGroup;
@@ -45,6 +48,7 @@ private:
 		BMessenger		launcherMessenger;
 		BListView*		availableThoughtListView;
 		BListView*		orderedThoughtListView;
+		BTextView*		builderTextView;
 		BButton*		rightButton;
 		BButton*		leftButton;
 		BButton*		topButton;

@@ -8,6 +8,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	r.bottom = r.bottom - 50;
 	availableThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_MULTIPLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
 	orderedThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_MULTIPLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
+	builderTextView = new BTextView(BRect(0, 0, r.right, 100), NULL, BRect(10, 10, r.right, 100), B_FOLLOW_ALL, B_WILL_DRAW);
 	rightButton = new BButton(BRect(10, 10, 90, 35), NULL, ">", new BMessage(MOVE_RIGHT), B_FOLLOW_NONE, B_WILL_DRAW);
 	leftButton = new BButton(BRect(10, 10, 90, 35), NULL, "<", new BMessage(MOVE_LEFT), B_FOLLOW_NONE, B_WILL_DRAW);
 	topButton = new BButton(BRect(10, 10, 90, 35), NULL, "TOP", new BMessage(MOVE_TOP), B_FOLLOW_NONE, B_WILL_DRAW);
@@ -31,6 +32,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 		.Add(downButton, 4, 8)
 		.Add(bottomButton, 4, 9)
 		.Add(new BScrollView("scroll_ordered", orderedThoughtListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 5, 2, 5, 10)
+		.Add(new BScrollView("scroll_editor", builderTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 12, 10, 5)
 		.SetInsets(0, 0, 0, 0)
 	);
 	
@@ -83,6 +85,8 @@ void MPBuilder::PopulateBuilderListViews(void)
 	}
 	else // sql select failed
 	{
+		eAlert = new ErrorAlert("1.22 Sql Error: No Available Thoughts Exist. Please Create Some First.");
+		eAlert->Launch();
 	}
 	sqlite3_finalize(ideaStatement); // finish with sql statement
 }
