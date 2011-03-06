@@ -17,6 +17,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
+	// gui layout builder
 	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
 	backView->AddChild(BGridLayoutBuilder()
 		.Add(new BuilderMenu(), 0, 0, 10, 1)
@@ -41,6 +42,11 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 		eAlert = new ErrorAlert("1.21 Sql Error: Sql DB was not opened properly");
 		eAlert->Launch();
 	}
+	if(currentideaID != -1) // if id has a real value
+	{
+		// Pull data from db and populate ordered thought list with them...
+	}
+	// Pull data from db and populate available thought list with them.
 }
 void MPBuilder::MessageReceived(BMessage* msg)
 {
