@@ -19,8 +19,17 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	AddChild(backView);
 	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
 	backView->AddChild(BGridLayoutBuilder()
-		.Add(new BuilderMenu(), 0, 0)
-		.Add(new BScrollView("scroll_available", availableThoughtListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 1)
+		.Add(new BuilderMenu(), 0, 0, 10, 1)
+		.Add(new BStringView(BRect(10, 10, 200, 30), NULL, "All Available Thoughts"), 0, 1)		
+		.Add(new BStringView(BRect(10, 10, 200, 30), NULL, "Ordered Thoughts"), 5, 1)		
+		.Add(new BScrollView("scroll_available", availableThoughtListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 2, 4, 10)
+		.Add(rightButton, 4, 4)
+		.Add(leftButton, 4, 5)
+		.Add(topButton, 4, 6)
+		.Add(upButton, 4, 7)
+		.Add(downButton, 4, 8)
+		.Add(bottomButton, 4, 9)
+		.Add(new BScrollView("scroll_ordered", orderedThoughtListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 5, 2, 5, 10)
 		.SetInsets(0, 0, 0, 0)
 	);
 	
