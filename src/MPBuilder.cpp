@@ -45,6 +45,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	if(currentideaID != -1) // if id has a real value
 	{
 		// Pull data from db and populate ordered thought list with them...
+		PopulateBuilderListViews();
 	}
 	// Pull data from db and populate available thought list with them.
 }
@@ -66,4 +67,22 @@ bool MPBuilder::QuitRequested(void)
 	launcherMessage.AddInt64("showLauncher", 1);
 	launcherMessenger.SendMessage(&launcherMessage);
 	return true;
+}
+void MPBuilder::PopulateBuilderListViews(void)
+{
+	availableThoughtListView->MakeEmpty();
+	orderedThoughtListView->MakeEmpty();
+	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid, ideatext from ideatable where ismp = 0 and mpid is null", -1, &ideaStatement, NULL);
+	if(sqlValue == SQLITE_OK) // sql statement was prepared
+	{
+		while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
+		{
+			tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
+			availableThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
+		}
+	}
+	else // sql select failed
+	{
+	}
+	sqlite3_finalize(ideaStatement); // finish with sql statement
 }
