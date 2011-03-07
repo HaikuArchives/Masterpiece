@@ -75,6 +75,7 @@ private:
 		int				availArrayLength;
 		int				orderArrayLength;
 		int				curIndex;
+		int				k;
 		BString*		availtextArray;
 		BString*		ordertextArray;
 		int*			availidArray;

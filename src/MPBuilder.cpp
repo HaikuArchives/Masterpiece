@@ -84,11 +84,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
 			if(selected >= 0) // if something is selected
 			{
-				//curIndex = -1; // set tmp value
+				curIndex = -1; // set tmp value
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
 				builderTextView->SetText(item->Text());
-				/*
 				for(int m = 0; m < orderArrayLength; m++)
 				{
 					if(orderidArray[m] == item->ReturnID())
@@ -100,7 +99,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				{
 					builderTextView->SetText(ordertextArray[curIndex]);
 				}
-				*/
 			}
 			break;
 		default:
@@ -140,14 +138,14 @@ void MPBuilder::PopulateBuilderListViews(void)
 	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid, ideatext from ideatable where ismp = 0 and mpid is null", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql statement was prepared
 	{
-		int i = 0;
+		k = 0;
 		while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
 		{
 			tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
 			availableThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
-			availtextArray[i] = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2));
-			availidArray[i] = sqlite3_column_int(ideaStatement, 1);
-			i++;
+			availtextArray[k] = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2));
+			availidArray[k] = sqlite3_column_int(ideaStatement, 1);
+			k++;
 		}
 	}
 	else // sql select failed
@@ -158,9 +156,8 @@ void MPBuilder::PopulateBuilderListViews(void)
 	sqlite3_finalize(ideaStatement); // finish with sql statement
 	if(currentideaID != -1) // if id has a real value...
 	{
-		printf("currentideaid: %d", currentideaID);
 		tmpString = "select ideaid from ideatable where ismp = 0 and mpid = ";
-		tmpString += currentideaID;
+		tmpString << currentideaID;
 		sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 		if(sqlValue == SQLITE_OK) // if sql query was successful
 		{
@@ -171,10 +168,7 @@ void MPBuilder::PopulateBuilderListViews(void)
 		}
 		else // sql select failed
 		{
-			orderArrayLength = -1;
-			ordertextArray = NULL;
-			orderidArray = NULL;
-			eAlert = new ErrorAlert("1.26 Sql Error: No Ordered Thoughts Exist. Please Add Some First.");
+			eAlert = new ErrorAlert("1.26 Sql Error: No Ordered Thoughts Exist. Please Add Some First.", sqlErrMsg);
 			eAlert->Launch();
 		}
 		sqlite3_free_table(selectResult); // free table either way
@@ -183,16 +177,16 @@ void MPBuilder::PopulateBuilderListViews(void)
 		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid, ideatext from ideatable where ismp=0 and mpid=?", -1, &ideaStatement, NULL);
 		if(sqlValue == SQLITE_OK) // sql statement was prepared
 		{
-			//int k = 0;
+			k = 0;
 			if(sqlite3_bind_int(ideaStatement, 1, currentideaID) == SQLITE_OK)
 			{
 				while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
 				{
 					tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
 					orderedThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
-					//ordertextArray[k] = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2));
-					//orderidArray[k] = sqlite3_column_int(ideaStatement, 1);
-					//k++;
+					ordertextArray[k] = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2));
+					orderidArray[k] = sqlite3_column_int(ideaStatement, 1);
+					k++;
 				}
 			}
 			else
