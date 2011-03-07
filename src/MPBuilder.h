@@ -73,8 +73,12 @@ private:
 		int				nrow;
 		int				ncol;
 		int				availArrayLength;
+		int				orderArrayLength;
+		int				curIndex;
 		BString*		availtextArray;
+		BString*		ordertextArray;
 		int*			availidArray;
+		int*			orderidArray;
 		float			xPos;
 		float			yPos;
 };
