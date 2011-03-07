@@ -73,7 +73,6 @@ private:
 		int				nrow;
 		int				ncol;
 		int				availArrayLength;
-		int				orderArrayLength;
 		int				curIndex;
 		int				k;
 		BString*		availtextArray;
