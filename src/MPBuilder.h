@@ -72,7 +72,8 @@ private:
 		int				selected;
 		int				nrow;
 		int				ncol;
-		int				availArray;
+		BString*		availtextArray;
+		int*			availidArray;
 		float			xPos;
 		float			yPos;
 };

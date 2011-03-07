@@ -88,13 +88,30 @@ void MPBuilder::PopulateBuilderListViews(void)
 {
 	availableThoughtListView->MakeEmpty();
 	orderedThoughtListView->MakeEmpty();
+	sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
+	if(sqlValue == SQLITE_OK) // if sql query was successful
+	{
+		// use the number of returned rows to set the arrays...
+		availtextArray = new BString[nrow];
+		availidArray = new int[nrow];
+	}
+	else // sql select failed
+	{
+		eAlert = new ErrorAlert("1.25 Sql Error: No Available Thoughts Exist. Please Create Some First.");
+		eAlert->Launch();
+	}
+	sqlite3_free_table(selectResult); // free table either way
 	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid, ideatext from ideatable where ismp = 0 and mpid is null", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql statement was prepared
 	{
+		int i = 0;
 		while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
 		{
 			tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
 			availableThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
+			availtextArray[i] = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2));
+			availidArray[i] = sqlite3_column_int(ideaStatement, 1);
+			i++;
 		}
 	}
 	else // sql select failed
@@ -103,17 +120,6 @@ void MPBuilder::PopulateBuilderListViews(void)
 		eAlert->Launch();
 	}
 	sqlite3_finalize(ideaStatement); // finish with sql statement
-	sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
-	if(sqlValue == SQLITE_OK) // if sql query was successful
-	{
-		// use the number of returned rows to set the arrays...
-	}
-	else // sql select failed
-	{
-		eAlert = new ErrorAlert("1.25 Sql Error: No Available Thoughts Exist. Please Create Some First.");
-		eAlert->Launch();
-	}
-	sqlite3_free_table(selectResult); // free table either way
 	/*
    sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
     if(sqlValue == SQLITE_OK) // if sql query was successful
