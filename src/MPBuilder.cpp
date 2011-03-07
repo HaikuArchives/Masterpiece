@@ -66,18 +66,14 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				int curIndex = -1;
 				IdeaStringItem* item;
-				printf("size of availidArray - %d\r\n", availArrayLength);
 				item = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
 				for(int j = 0; j < availArrayLength; j++)
 				{
-					printf("returnid - %d\r\n", item->ReturnID());
-					printf("availidArray - %d\r\n", availidArray[j]);
 					if(availidArray[j] == item->ReturnID())
 					{
 						curIndex = j;
 					}
 				}
-				printf("cur index - %d\r\n", curIndex);
 				if(curIndex > -1)
 				{
 					builderTextView->SetText(availtextArray[curIndex]);
@@ -129,7 +125,6 @@ void MPBuilder::PopulateBuilderListViews(void)
 			availableThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
 			availtextArray[i] = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2));
 			availidArray[i] = sqlite3_column_int(ideaStatement, 1);
-			printf("%d - %d. \r\n", i, availidArray[i]);
 			i++;
 		}
 	}
