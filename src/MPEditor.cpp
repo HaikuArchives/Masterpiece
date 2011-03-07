@@ -47,6 +47,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 		else
 		{
 			eAlert = new ErrorAlert("1.8 Sql Error: Sql Prepare failed.");
+			eAlert->Launch();
 		}
 	}
 }

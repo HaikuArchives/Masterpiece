@@ -101,5 +101,27 @@ void MPBuilder::PopulateBuilderListViews(void)
 	{
 		// populate the ordered list items from here with the information from passed id...
 		// select ideaname, ideaid, ideatext from ideatable where ismp = 0 and mpid = currentideaID
+		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid, ideatext from ideatable where ismp=0 and mpid=?", -1, &ideaStatement, NULL);
+		if(sqlValue == SQLITE_OK) // sql statement was prepared
+		{
+			if(sqlite3_bind_int(ideaStatement, 1, currentideaID) == SQLITE_OK)
+			{
+				while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
+				{
+					tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
+					orderedThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
+				}
+			}
+			else
+			{
+				eAlert = new ErrorAlert("1.24 Sql Error: Sql bind failed.");
+				eAlert->Launch();
+			}
+		}
+		else // sql select failed
+		{
+			eAlert = new ErrorAlert("1.23 Sql Error: No Ordered Thoughts Exist.  Please Add Some First.");
+			eAlert->Launch();
+		}
 	}
 }
