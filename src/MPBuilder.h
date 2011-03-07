@@ -64,11 +64,15 @@ private:
 		sqlite3*		mpdb;
 		sqlite3_stmt*	ideaStatement;
 		char*			sqlErrMsg;
+		char**			selectResult;
 		BString			updateTitle;
 		BString			tmpString;
 		int				sqlValue;
 		int				currentideaID;
 		int				selected;
+		int				nrow;
+		int				ncol;
+		int				availArray;
 		float			xPos;
 		float			yPos;
 };
