@@ -68,6 +68,7 @@ private:
 		BString			tmpString;
 		int				sqlValue;
 		int				currentideaID;
+		int				selected;
 		float			xPos;
 		float			yPos;
 };

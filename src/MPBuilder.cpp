@@ -61,7 +61,13 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			printf("move right\r\n");
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
-			printf("display avail text\r\n");
+			selected = availableThoughtListView->CurrentSelection(); // selected list item value
+			if(selected >= 0) // if something is selected
+			{
+				IdeaStringItem* item;
+				item = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
+				builderTextView->SetText(item->Text());
+			}
 			break;
 		default:
 		{
