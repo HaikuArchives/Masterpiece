@@ -158,25 +158,33 @@ void MPBuilder::PopulateBuilderListViews(void)
 		eAlert->Launch();
 	}
 	sqlite3_finalize(ideaStatement); // finish with sql statement
-	if(currentideaID != -1) // if id has a real value...
+	if(currentideaID != -1 && currentideaID > 0) // if id has a real value...
 	{
 		tmpString = "select ideaid from ideatable where ismp = 0 and mpid = ";
 		tmpString << currentideaID;
 		sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 		if(sqlValue == SQLITE_OK) // if sql query was successful
 		{
+			printf("orderarraylength: %d\r\n", nrow);
 			if(nrow > 0)
 			{
-				availArrayLength = nrow;
+				orderArrayLength = nrow;
+				// use the number of returned rows to set the arrays...
+				ordertextArray = new BString[nrow];
+				orderidArray = new int[nrow];
 			}
-			printf("orderarraylength: %d\r\n", nrow);
-			//orderArrayLength = nrow;
-			// use the number of returned rows to set the arrays...
-			//availtextArray = new BString[nrow];
-			//availidArray = new int[nrow];
+			else
+			{
+				orderArrayLength = -1;
+				ordertextArray = new BString[1];
+				orderidArray = new int[1];
+			}
 		}
 		else // sql select failed
 		{
+			orderArrayLength = -1;
+			ordertextArray = new BString[1];
+			orderidArray = new int[1];
 			eAlert = new ErrorAlert("1.26 Sql Error: No Ordered Thoughts Exist. Please Add Some First.", sqlErrMsg);
 			eAlert->Launch();
 		}
@@ -193,8 +201,13 @@ void MPBuilder::PopulateBuilderListViews(void)
 				{
 					tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
 					orderedThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
-					//ordertextArray[k] = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2));
-					//orderidArray[k] = sqlite3_column_int(ideaStatement, 1);
+					/*
+					if(orderArrayLength != -1 && orderArrayLength > 0)
+					{
+						ordertextArray[k] = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2));
+						orderidArray[k] = sqlite3_column_int(ideaStatement, 1);
+					}
+					*/
 					k++;
 				}
 			}
@@ -210,5 +223,11 @@ void MPBuilder::PopulateBuilderListViews(void)
 			eAlert->Launch();
 		}
 		sqlite3_finalize(ideaStatement); // finish with sql statement
+	}
+	else
+	{
+		orderArrayLength = -1;
+		ordertextArray = new BString[1];
+		orderidArray = new int[1];
 	}
 }
