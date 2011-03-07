@@ -66,7 +66,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
-				builderTextView->SetText(availtextArray[item->ReturnID()]);
+				//builderTextView->SetText(availtextArray[item->ReturnID()]);
 			}
 			break;
 		default:
@@ -92,7 +92,7 @@ void MPBuilder::PopulateBuilderListViews(void)
 	sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
 	if(sqlValue == SQLITE_OK) // if sql query was successful
 	{
-		printf("%d", nrow);
+		printf("%d\r\n", nrow);
 		// use the number of returned rows to set the arrays...
 		availtextArray = new BString[nrow];
 		availidArray = new int[nrow];
@@ -113,6 +113,7 @@ void MPBuilder::PopulateBuilderListViews(void)
 			availableThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
 			availtextArray[i] = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2));
 			availidArray[i] = sqlite3_column_int(ideaStatement, 1);
+			printf("%d - %d.\r\n", i, availidArray[i]);
 			i++;
 		}
 	}
