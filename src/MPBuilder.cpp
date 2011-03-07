@@ -66,7 +66,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
-				builderTextView->SetText(item->Text());
+				//builderTextView->SetText(availtextArray[item->ReturnID()]);
 			}
 			break;
 		default:
@@ -109,8 +109,8 @@ void MPBuilder::PopulateBuilderListViews(void)
 		{
 			tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
 			availableThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
-			availtextArray[i] = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2));
-			availidArray[i] = sqlite3_column_int(ideaStatement, 1);
+			//availtextArray[i] = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2));
+			//availidArray[i] = sqlite3_column_int(ideaStatement, 1);
 			i++;
 		}
 	}
@@ -120,25 +120,6 @@ void MPBuilder::PopulateBuilderListViews(void)
 		eAlert->Launch();
 	}
 	sqlite3_finalize(ideaStatement); // finish with sql statement
-	/*
-   sqlValue = sqlite3_get_table(mpdb, tmpString, &selectResult, &nrow, &ncol, &sqlErrMsg);
-    if(sqlValue == SQLITE_OK) // if sql query was successful
-    {
-     for(int i = 0; i < nrow; i++)
-     {
-         tmpString = selectResult[(i*ncol) + 2];
-         tmpString += ". ";
-        tmpString += selectResult[(i*ncol)+3];
-         this->openListView->AddItem(new BStringItem(tmpString));
-      }
-    }
-    else // sql select failed
-    {
-         eAlert = new ErrorAlert("No Masterpiece Exist.  Please Create One First.\r\n1.4 SQL Error: ", sqlErrMsg);
-         eAlert->Launch();
-    }
-    sqlite3_free_table(selectResult); // free table either way
-	*/
 	if(currentideaID != -1) // if id has a real value...
 	{
 		// populate the ordered list items from here with the information from passed id...
