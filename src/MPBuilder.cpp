@@ -64,9 +64,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			selected = availableThoughtListView->CurrentSelection(); // selected list item value
 			if(selected >= 0) // if something is selected
 			{
-				curIndex = -1; // tmp value for current index where selected item's id equals id from avalidArray
+				//curIndex = -1; // tmp value for current index where selected item's id equals id from avalidArray
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
+				/*
 				for(int j = 0; j < availArrayLength; j++)
 				{
 					if(availidArray[j] == item->ReturnID())
@@ -78,13 +79,14 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				{
 					builderTextView->SetText(availtextArray[curIndex]);
 				}
+				*/
 			}
 			break;
 		case DISPLAY_ORDER_TEXT: // display preview text from item id
 			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
 			if(selected >= 0) // if something is selected
 			{
-				curIndex = -1; // set tmp value
+				//curIndex = -1; // set tmp value
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
 				builderTextView->SetText(item->Text());
