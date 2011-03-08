@@ -7,12 +7,13 @@
 class IdeaStringItem : public BStringItem
 {
 	public:
-					IdeaStringItem(BString itemText, int ideaid = -1);
-					IdeaStringItem(BString ideaname, BString ideatext, int ismp, int mpid, int ordernumber, int ideaid = -1);
-				int	ReturnID(void) const;
-				int ReturnIsMP(void) const;
-				int ReturnMpID(void) const;
-				int ReturnOrderNumber(void) const;
+						IdeaStringItem(BString itemText, int ideaid = -1);
+						IdeaStringItem(BString ideaname, BString ideatext, int ideaid = -1);
+						IdeaStringItem(BString ideaname, BString ideatext, int ismp, int mpid, int ordernumber, int ideaid = -1);
+				int		ReturnID(void) const;
+				int 	ReturnIsMP(void) const;
+				int 	ReturnMpID(void) const;
+				int 	ReturnOrderNumber(void) const;
 				BString ReturnText(void) const;
 				BString ReturnName(void) const;
 	private:

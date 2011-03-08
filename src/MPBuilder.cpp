@@ -66,6 +66,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
+				builderTextView->SetText(item->ReturnText());
 			}
 			break;
 		case DISPLAY_ORDER_TEXT: // display preview text from item id
@@ -74,7 +75,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
-				builderTextView->SetText(item->Text());
+				builderTextView->SetText(item->ReturnText());
 			}
 			break;
 		case MOVE_LEFT:
@@ -103,8 +104,7 @@ void MPBuilder::PopulateBuilderListViews(void)
 	{
 		while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
 		{
-			tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
-			availableThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
+			availableThoughtListView->AddItem(new IdeaStringItem(sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0)), sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2)),sqlite3_column_int(ideaStatement, 1)));
 		}
 	}
 	else // sql select failed
@@ -116,15 +116,14 @@ void MPBuilder::PopulateBuilderListViews(void)
 	if(currentideaID != -1) // if id has a real value...
 	{
 		// populate the ordered list items from here with the information from passed id...
-		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid, ideatext from ideatable where ismp=0 and mpid=?", -1, &ideaStatement, NULL);
+		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideatext, ismp, mpid, ordernumber, ideaid from ideatable where ismp=0 and mpid=?", -1, &ideaStatement, NULL);
 		if(sqlValue == SQLITE_OK) // sql statement was prepared
 		{
 			if(sqlite3_bind_int(ideaStatement, 1, currentideaID) == SQLITE_OK)
 			{
 				while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
 				{
-					tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
-					orderedThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
+					orderedThoughtListView->AddItem(new IdeaStringItem(sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0)), sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 1)), sqlite3_column_int(ideaStatement, 2), sqlite3_column_int(ideaStatement, 3), sqlite3_column_int(ideaStatement, 4), sqlite3_column_int(ideaStatement, 5)));
 				}
 			}
 			else

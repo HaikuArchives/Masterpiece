@@ -5,6 +5,13 @@ IdeaStringItem::IdeaStringItem(BString itemText, int ideaid)
 {
 	ideaID = ideaid;
 }
+IdeaStringItem::IdeaStringItem(BString ideaname, BString ideatext, int ideaid)
+	:	BStringItem(ideaname)
+{
+	ideaID = ideaid;
+	ideaText = ideatext;
+	ideaName = ideaname;
+}
 IdeaStringItem::IdeaStringItem(BString ideaname, BString ideatext, int ismp, int mpid, int ordernumber, int ideaid)
 	:	BStringItem(ideaname)
 {
