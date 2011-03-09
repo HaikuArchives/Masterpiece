@@ -123,7 +123,8 @@ void MPBuilder::PopulateBuilderListViews(void)
 			{
 				while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
 				{
-					orderedThoughtListView->AddItem(new IdeaStringItem(sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0)), sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 1)), sqlite3_column_int(ideaStatement, 2), sqlite3_column_int(ideaStatement, 3), sqlite3_column_int(ideaStatement, 4), sqlite3_column_int(ideaStatement, 5)));
+					//tmpString = 
+					orderedThoughtListView->AddItem(new IdeaStringItem(sqlite3_mprintf("%d. %s", sqlite3_column_int(ideaStatement, 4), sqlite3_column_text(ideaStatement, 0)), sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 1)), sqlite3_column_int(ideaStatement, 2), sqlite3_column_int(ideaStatement, 3), sqlite3_column_int(ideaStatement, 4), sqlite3_column_int(ideaStatement, 5)));
 				}
 			}
 			else
