@@ -58,7 +58,15 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	switch(msg->what)
 	{
 		case MOVE_RIGHT: // add item to ordered list
-			printf("move right\r\n");
+			selected = availableThoughtListView->CurrentSelection(); // selected list item value
+			if(selected >= 0) // if something is selected
+			{
+				IdeaStringItem* item;
+				item = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
+				// perform sql to move it to the right ordered side by using currentideaID
+				// update ideatable set mpid = currentideaID, ordernumber = [orderedlistview.count] where ideaid = item->ReturnID()
+				
+			}
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
 			selected = availableThoughtListView->CurrentSelection(); // selected list item value
