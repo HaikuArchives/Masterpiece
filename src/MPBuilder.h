@@ -35,6 +35,7 @@
 #define MOVE_BOTTOM			'mvbt' // move bottom
 #define DISPLAY_AVAIL_TEXT	'davt' // display available text for selected item
 #define DISPLAY_ORDER_TEXT	'dort' // display ordered text for selected item
+#define OPEN_THOUGHT_EDITOR 'oted' // open thought editor
 
 class MPBuilder : public BWindow
 {
