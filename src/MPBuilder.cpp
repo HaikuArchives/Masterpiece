@@ -116,7 +116,7 @@ void MPBuilder::PopulateBuilderListViews(void)
 	if(currentideaID != -1) // if id has a real value...
 	{
 		// populate the ordered list items from here with the information from passed id...
-		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideatext, ismp, mpid, ordernumber, ideaid from ideatable where ismp=0 and mpid=?", -1, &ideaStatement, NULL);
+		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideatext, ismp, mpid, ordernumber, ideaid from ideatable where ismp=0 and mpid=? order by ordernumber", -1, &ideaStatement, NULL);
 		if(sqlValue == SQLITE_OK) // sql statement was prepared
 		{
 			if(sqlite3_bind_int(ideaStatement, 1, currentideaID) == SQLITE_OK)
