@@ -48,10 +48,9 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	{
 		PopulateBuilderListViews();
 		availableThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_AVAIL_TEXT));
-		//availableThoughtListView->SetInvocationMessage(new BMessage(MOVE_RIGHT));
-		// double clicking should open the thought editor with the id and information displayed...
+		availableThoughtListView->SetInvocationMessage(new BMessage(OPEN_THOUGHT_EDITOR));
 		orderedThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_ORDER_TEXT));
-		//orderedThoughtListView->SetInvocationMessage(new BMessage(MOVE_LEFT));
+		orderedThoughtListView->SetInvocationMessage(new BMessage(OPEN_THOUGHT_EDITOR));
 	}
 }
 void MPBuilder::MessageReceived(BMessage* msg)
