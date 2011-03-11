@@ -48,9 +48,9 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	{
 		PopulateBuilderListViews();
 		availableThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_AVAIL_TEXT));
-		availableThoughtListView->SetInvocationMessage(new BMessage(OPEN_THOUGHT_EDITOR));
+		availableThoughtListView->SetInvocationMessage(new BMessage(AVAIL_THOUGHT_EDITOR));
 		orderedThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_ORDER_TEXT));
-		orderedThoughtListView->SetInvocationMessage(new BMessage(OPEN_THOUGHT_EDITOR));
+		orderedThoughtListView->SetInvocationMessage(new BMessage(ORDER_THOUGHT_EDITOR));
 	}
 }
 void MPBuilder::MessageReceived(BMessage* msg)
@@ -63,8 +63,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
-				// perform sql to move it to the right ordered side by using currentideaID
-				// update ideatable set mpid = currentideaID, ordernumber = [orderedlistview->CountItems()] where ideaid = item->ReturnID()
 				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set mpid=?, ordernumber=? where ideaid=?", -1, &ideaStatement, NULL);
 				if(sqlValue == SQLITE_OK) // sql statement was prepared
 				{
@@ -100,8 +98,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 					eAlert->Launch();
 				}
 				sqlite3_finalize(ideaStatement); // finish with sql statement
-				// update listviews...
-				PopulateBuilderListViews();
+				PopulateBuilderListViews(); // update listviews' items
 			}
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
@@ -123,6 +120,46 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MOVE_LEFT:
+			break;
+		case ORDER_THOUGHT_EDITOR:
+			selected = orderedThoughtListView->CurrentSelection(); // list item value
+			if(selected < 0) // if selected nothing, open empty builder window
+			{
+				tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled", -1);
+				tmpEditor->Show();
+				//this->Hide();
+			}
+			else // you selected an actual existing thought from listview
+			{
+				IdeaStringItem* item;
+				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
+				BString tmpText;
+				tmpText = "MasterPiece Editor - ";
+				tmpText += item->Text();
+				tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), tmpText, item->ReturnID());
+				tmpEditor->Show();
+				//this->Hide();
+			}
+			break;
+		case AVAIL_THOUGHT_EDITOR:
+			selected = availableThoughtListView->CurrentSelection(); // list item value
+			if(selected < 0) // if selected nothing, open empty builder window
+			{
+				tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled", -1);
+				tmpEditor->Show();
+				//this->Hide();
+			}
+			else // you selected an actual existing thought from listview
+			{
+				IdeaStringItem* item;
+				item = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
+				BString tmpText;
+				tmpText = "MasterPiece Editor - ";
+				tmpText += item->Text();
+				tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), tmpText, item->ReturnID());
+				tmpEditor->Show();
+				//this->Hide();
+			}
 			break;
 		default:
 		{
