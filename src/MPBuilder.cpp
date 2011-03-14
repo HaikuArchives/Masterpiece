@@ -102,7 +102,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MOVE_LEFT: // remove item from ordered list of current mp.
-			selected = orderedThoughtListView->CurrentSelection() // selected list item value
+			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
 			if(selected >= 0) // if something is selected
 			{
 				IdeaStringItem* item;
