@@ -101,6 +101,16 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				PopulateBuilderListViews(); // update listviews' items
 			}
 			break;
+		case MOVE_LEFT: // remove item from ordered list of current mp.
+			selected = orderedThoughtListView->CurrentSelection() // selected list item value
+			if(selected >= 0) // if something is selected
+			{
+				IdeaStringItem* item;
+				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
+				// update ideateable set mpid = null, ordernumber = null where ideaid = ?"
+				//sqlValue = sqlite3_prepare_v2();
+			}
+			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
 			selected = availableThoughtListView->CurrentSelection(); // selected list item value
 			if(selected >= 0) // if something is selected
@@ -118,8 +128,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
 				builderTextView->SetText(item->ReturnText());
 			}
-			break;
-		case MOVE_LEFT:
 			break;
 		case ORDER_THOUGHT_EDITOR:
 			selected = orderedThoughtListView->CurrentSelection(); // list item value
