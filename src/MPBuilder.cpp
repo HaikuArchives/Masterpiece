@@ -127,7 +127,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled", -1);
 				tmpEditor->Show();
-				//this->Hide();
+				this->Hide();
 			}
 			else // you selected an actual existing thought from listview
 			{
@@ -138,7 +138,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				tmpText += item->Text();
 				tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), tmpText, item->ReturnID());
 				tmpEditor->Show();
-				//this->Hide();
+				this->Hide();
 			}
 			break;
 		case AVAIL_THOUGHT_EDITOR:
@@ -147,7 +147,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled", -1);
 				tmpEditor->Show();
-				//this->Hide();
+				this->Hide();
 			}
 			else // you selected an actual existing thought from listview
 			{
@@ -158,7 +158,35 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				tmpText += item->Text();
 				tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), tmpText, item->ReturnID());
 				tmpEditor->Show();
-				//this->Hide();
+				this->Hide();
+			}
+			break;
+		case SHOW_LAUNCHER:
+			if(msg->FindInt64("showLauncher", &showLauncher) == B_OK) // message was found
+			{
+				if(showLauncher == 1)
+				{
+					PopulateBuilderListViews(); // rerun the sql and repopulate the 2 listviews with any updated values
+					if(this->IsHidden())
+					{
+						this->Show();
+					}
+				}
+				else if(showLauncher == 0)
+				{
+					this->Hide();
+				}
+				else
+				{
+					eAlert = new ErrorAlert("4.4 Builder Error: Illegal Value was returned.");
+					eAlert->Launch();
+					// big error must display 
+				}
+			}
+			else // message not found
+			{
+				eAlert = new ErrorAlert("4.5 Builder Error: Message Variable was not found.");
+				eAlert->Launch();
 			}
 			break;
 		default:

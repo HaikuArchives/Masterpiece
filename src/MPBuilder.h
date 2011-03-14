@@ -68,6 +68,7 @@ private:
 		char*			sqlErrMsg;
 		BString			updateTitle;
 		BString			tmpString;
+		int64			showLauncher;
 		int				sqlValue;
 		int				currentideaID;
 		int				selected;
