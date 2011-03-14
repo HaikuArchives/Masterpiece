@@ -76,7 +76,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 							}
 							else
 							{
-								eAlert = new ErrorAlert("1.27 Sql Error: Move Right Bind 3 Failed");
+								eAlert = new ErrorAlert("1.28 Sql Error: Move Right Bind 3 Failed");
 								eAlert->Launch();
 							}
 						}
@@ -107,8 +107,26 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
-				// update ideateable set mpid = null, ordernumber = null where ideaid = ?"
-				//sqlValue = sqlite3_prepare_v2();
+				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?", -1, &ideaStatement, NULL);
+				if(sqlValue == SQLITE_OK) // sql statement was prepared
+				{
+					if(sqlite3_bind_int(ideaStatement, 1, item->ReturnID()) == SQLITE_OK) // sql bind successful
+					{
+						sqlite3_step(ideaStatement); // execute the update statement
+					}
+					else
+					{
+						eAlert = new ErrorAlert("1.30 Sql Error: Move Left Bind Failed");
+						eAlert->Launch();
+					}
+				}
+				else // sql update failed
+				{
+					eAlert = new ErrorAlert("1.29 Sql Error: Move Left Update Failed");
+					eAlert->Launch();
+				}
+				sqlite3_finalize(ideaStatement); // finish with sql statement
+				PopulateBuilderListViews(); // update listviews' items
 			}
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
