@@ -130,6 +130,13 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
+			topButton->SetEnabled(false); // disable top button
+			upButton->SetEnabled(false); // disable the up button
+			downButton->SetEnabled(false); // disable down button
+			bottomButton->SetEnabled(false); // disable bottom button
+			leftButton->SetEnabled(false); // disable left button
+			rightButton->SetEnabled(true); // enable right button
+			orderedThoughtListView->Deselect(orderedThoughtListView->CurrentSelection()); // deselect from this list when other list is active
 			selected = availableThoughtListView->CurrentSelection(); // selected list item value
 			if(selected >= 0) // if something is selected
 			{
@@ -139,9 +146,36 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			break;
 		case DISPLAY_ORDER_TEXT: // display preview text from item id
+			leftButton->SetEnabled(true); // disable left button
+			rightButton->SetEnabled(false); // enable right button
+			availableThoughtListView->Deselect(availableThoughtListView->CurrentSelection()); // deselect from this list when other list is active
 			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
-			if(selected >= 0) // if something is selected
+			if(selected == 0) // if its top item
 			{
+				topButton->SetEnabled(false); // disable top button
+				upButton->SetEnabled(false); // disable the up button
+				downButton->SetEnabled(true); // disable down button
+				bottomButton->SetEnabled(true); // disable bottom button
+				IdeaStringItem* item;
+				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
+				builderTextView->SetText(item->ReturnText());
+			}
+			if(selected > 0 && selected == (orderedThoughtListView->CountItems() - 1)) // if something is selected
+			{
+				topButton->SetEnabled(true); // enable top button
+				upButton->SetEnabled(true); // enable up button
+				downButton->SetEnabled(false); // disable down button
+				bottomButton->SetEnabled(false); // disable bottom button
+				IdeaStringItem* item;
+				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
+				builderTextView->SetText(item->ReturnText());
+			}
+			if(selected > 0 && selected < (orderedThoughtListView->CountItems() - 1))
+			{
+				topButton->SetEnabled(true); // enable top button
+				upButton->SetEnabled(true); // enable up button
+				downButton->SetEnabled(true); // disable down button
+				bottomButton->SetEnabled(true); // disable bottom button
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
 				builderTextView->SetText(item->ReturnText());
@@ -256,10 +290,8 @@ void MPBuilder::PopulateBuilderListViews(void)
 		{
 			if(sqlite3_bind_int(ideaStatement, 1, currentideaID) == SQLITE_OK)
 			{
-				// int a = 0;
 				while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
 				{
-					// 
 					orderedThoughtListView->AddItem(new IdeaStringItem(sqlite3_mprintf("%d. %s", sqlite3_column_int(ideaStatement, 4), sqlite3_column_text(ideaStatement, 0)), sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 1)), sqlite3_column_int(ideaStatement, 2), sqlite3_column_int(ideaStatement, 3), sqlite3_column_int(ideaStatement, 4), sqlite3_column_int(ideaStatement, 5)));
 				}
 			}
