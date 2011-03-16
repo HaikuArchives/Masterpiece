@@ -127,6 +127,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				}
 				sqlite3_finalize(ideaStatement); // finish with sql statement
 				PopulateBuilderListViews(); // update listviews' items
+				// need to reorder the ordernumbers and then repopulate the orderedlistview
 			}
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
