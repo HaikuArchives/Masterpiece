@@ -137,7 +137,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			bottomButton->SetEnabled(false); // disable bottom button
 			leftButton->SetEnabled(false); // disable left button
 			rightButton->SetEnabled(true); // enable right button
-			orderedThoughtListView->DeselectAll();
+			//orderedThoughtListView->DeselectAll();
 			//orderedThoughtListView->Deselect(orderedThoughtListView->CurrentSelection()); // deselect from this list when other list is active
 			selected = availableThoughtListView->CurrentSelection(); // selected list item value
 			if(selected >= 0) // if something is selected
