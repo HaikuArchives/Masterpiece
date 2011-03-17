@@ -137,7 +137,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			bottomButton->SetEnabled(false); // disable bottom button
 			leftButton->SetEnabled(false); // disable left button
 			rightButton->SetEnabled(true); // enable right button
-			//orderedThoughtListView->DeselectAll();
+			if(availableThoughtListView->CurrentSelection(0) >= 0)
+			{
+				orderedThoughtListView->DeselectAll();
+			}
 			//orderedThoughtListView->Deselect(orderedThoughtListView->CurrentSelection()); // deselect from this list when other list is active
 			selected = availableThoughtListView->CurrentSelection(); // selected list item value
 			if(selected >= 0) // if something is selected
@@ -150,7 +153,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 		case DISPLAY_ORDER_TEXT: // display preview text from item id
 			leftButton->SetEnabled(true); // disable left button
 			rightButton->SetEnabled(false); // enable right button
-			availableThoughtListView->DeselectAll();
+			if(orderedThoughtListView->CurrentSelection(0) >= 0)
+			{
+				availableThoughtListView->DeselectAll();
+			}
 			//availableThoughtListView->Deselect(availableThoughtListView->CurrentSelection()); // deselect from this list when other list is active
 			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
 			if(selected == 0) // if its top item
