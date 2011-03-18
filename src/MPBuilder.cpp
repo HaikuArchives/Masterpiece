@@ -126,8 +126,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 					eAlert->Launch();
 				}
 				sqlite3_finalize(ideaStatement); // finish with sql statement
+				ReorderOrderedListView(); // reorder orderedlistview items for mp
 				PopulateBuilderListViews(); // update listviews' items
-				// need to reorder the ordernumbers and then repopulate the orderedlistview
 			}
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
@@ -141,7 +141,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				orderedThoughtListView->DeselectAll();
 			}
-			//orderedThoughtListView->Deselect(orderedThoughtListView->CurrentSelection()); // deselect from this list when other list is active
 			selected = availableThoughtListView->CurrentSelection(); // selected list item value
 			if(selected >= 0) // if something is selected
 			{
@@ -157,7 +156,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				availableThoughtListView->DeselectAll();
 			}
-			//availableThoughtListView->Deselect(availableThoughtListView->CurrentSelection()); // deselect from this list when other list is active
 			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
 			if(selected == 0) // if its top item
 			{
@@ -317,4 +315,65 @@ void MPBuilder::PopulateBuilderListViews(void)
 		}
 		sqlite3_finalize(ideaStatement); // finish with sql statement
 	}
+}
+void MPBuilder::ReorderOrderedListView(void)
+{
+	int a = 1;
+	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaid from ideatable where ismp=0 and mpid=? order by ordernumber", -1, &ideaStatement, NULL);
+	if(sqlValue == SQLITE_OK) // sql statement was prepared
+	{
+		if(sqlite3_bind_int(ideaStatement, 1, currentideaID) == SQLITE_OK) // bind was successful
+		{
+			while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
+			{
+				sqlite3_prepare_v2(mpdb, "update ideatable set ordernumber=? where ideaid=?", -1, &reorderStatement, NULL);
+				if(sqlValue == SQLITE_OK) // sql statement was prepared
+				{
+					if(sqlite3_bind_int(reorderStatement, 1, a) == SQLITE_OK) // bind was successful
+					{
+						if(sqlite3_bind_int(reorderStatement, 2, sqlite3_column_int(ideaStatement, 0)) == SQLITE_OK) // bind was successful
+						{
+							if(sqlite3_step(reorderStatement) == SQLITE_DONE) // execute the update statement was successful
+							{
+								sqlite3_reset(reorderStatement);
+								a++;
+							}
+							else // sql update failed
+							{
+								eAlert = new ErrorAlert("1.36 Sql Error: OrderNumber Update Failed");
+								eAlert->Launch();
+							}
+						}
+						else // sql bind failed
+						{
+							eAlert = new ErrorAlert("1.35 Sql Error: No Idea ID Bound.");
+							eAlert->Launch();
+						}
+					}
+					else // sql bind failed
+					{
+						eAlert = new ErrorAlert("1.34 Sql Error: No Order Integer Bound.");
+						eAlert->Launch();
+					}
+				}
+				else // sql update was not prepared
+				{
+					eAlert = new ErrorAlert("1.33 Sql Error: OrderNumber Update did not prepare.");
+					eAlert->Launch();
+				}
+			}
+		}
+		else // sql bind failed
+		{
+			eAlert = new ErrorAlert("1.32 Sql Error: No Masterpiece ID Bound.");
+			eAlert->Launch();
+		}
+	}
+	else // sql select failed
+	{
+		eAlert = new ErrorAlert("1.31 Sql Error: No Ordered Thoughts Exist.  Please Add Some First.");
+		eAlert->Launch();
+	}
+	sqlite3_finalize(ideaStatement); // finish with sql statement
+	sqlite3_finalize(reorderStatement); // finish with sql statement
 }

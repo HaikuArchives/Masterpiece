@@ -45,6 +45,7 @@ public:
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
 		void			PopulateBuilderListViews(void);
+		void			ReorderOrderedListView(void);
 private:
 		BView*			backView;
 		BGroupLayout*	mainGroup;
@@ -65,6 +66,7 @@ private:
 		EditIdeaName*	editIdeaName;
 		sqlite3*		mpdb;
 		sqlite3_stmt*	ideaStatement;
+		sqlite3_stmt*	reorderStatement;
 		char*			sqlErrMsg;
 		BString			updateTitle;
 		BString			tmpString;
