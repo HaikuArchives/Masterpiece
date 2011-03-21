@@ -213,6 +213,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				sqlite3_finalize(ideaStatement); // finalize the sql statement
 				ReorderOrderedListView(); // reorder orderedlistview items for mp
 				PopulateBuilderListViews(); // update listviews' items				
+				orderedThoughtListView->Select(selected - 1); // highlight the newly moved item
 			}
 			else if(selected == 0) // this item is already at the top of the list
 			{
@@ -225,14 +226,90 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				eAlert->Launch();
 			}
 			break;
+		case MOVE_DOWN:
+			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
+			if(selected >= 0 && selected < (orderedThoughtListView->CountItems() - 1)) // if something is selected
+			{
+				IdeaStringItem* item;
+				IdeaStringItem* item2;
+				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
+				item2 = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected+1));
+				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ordernumber=? where ideaid=?", -1, &ideaStatement, NULL);
+				if(sqlValue == SQLITE_OK) // sql statement was prepared
+				{
+					if(sqlite3_bind_int(ideaStatement, 1, item2->ReturnOrderNumber()) == SQLITE_OK) // sql bind successful
+					{
+						if(sqlite3_bind_int(ideaStatement, 2, item->ReturnID()) == SQLITE_OK) // sql bind successful
+						{
+							if(sqlite3_step(ideaStatement) == SQLITE_DONE) // execute the update statement succesfully
+							{
+								sqlite3_reset(ideaStatement); // reset ideastatement for new bindings
+								if(sqlite3_bind_int(ideaStatement, 1, item->ReturnOrderNumber()) == SQLITE_OK) // sql bind successful
+								{
+									if(sqlite3_bind_int(ideaStatement, 2, item2->ReturnID()) == SQLITE_OK) // sql bind successful
+									{
+										if(sqlite3_step(ideaStatement) == SQLITE_DONE) // execute update succesfully
+										{
+										}
+										else // sql update failed
+										{
+											eAlert = new ErrorAlert("1.46 Sql Error: Move Down 2 Update Execution Failed");
+											eAlert->Launch();
+										}
+									}
+									else // sql bind 2 failed
+									{
+										eAlert = new ErrorAlert("1.47 Sql Error: Move Down 2 Bind 2 Failed.");
+										eAlert->Launch();
+									}
+								}
+								else // sql bind 1 failed
+								{
+									eAlert = new ErrorAlert("1.48 Sql Error: Move Down 2 Bind 1 Failed");
+									eAlert->Launch();
+								}
+							}
+							else // sql update failed
+							{
+								eAlert = new ErrorAlert("1.49 Sql Error: Move Down 1 Update Execution Failed.");
+								eAlert->Launch();
+							}
+						}
+						else // sql bind 2 failed
+						{
+							eAlert = new ErrorAlert("1.50 Sql Error: Move Down 1 Bind 2 Failed");
+							eAlert->Launch();
+						}
+					}
+					else // sql bind 1 failed
+					{
+						eAlert = new ErrorAlert("1.51 Sql Error: Move Down 1 Bind 1 Failed.");
+						eAlert->Launch();
+					}
+				}
+				else // sql update failed
+				{
+					eAlert = new ErrorAlert("1.52 Sql Error: Move Down 1 Update Prepare Failed");
+					eAlert->Launch();
+				}
+				sqlite3_finalize(ideaStatement); // finalize the sql statement
+				ReorderOrderedListView(); // reorder orderedlistview items for mp
+				PopulateBuilderListViews(); // update listviews' items
+				orderedThoughtListView->Select(selected + 1); // highlight the newly moved item
+			}
+			else if(selected == (orderedThoughtListView->CountItems() - 1)) // this item is already at the bottom of the list
+			{
+				eAlert = new ErrorAlert("4.8 Builder Error: Idea is already at the bottom of the list.");
+				eAlert->Launch();
+			}
+			else // no item was selected
+			{
+				eAlert = new ErrorAlert("4.9 Builder Error: No Idea is selected to move down.");
+				eAlert->Launch();
+			}
+			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
-			topButton->SetEnabled(false); // disable top button
-			upButton->SetEnabled(false); // disable the up button
-			downButton->SetEnabled(false); // disable down button
-			bottomButton->SetEnabled(false); // disable bottom button
-			leftButton->SetEnabled(false); // disable left button
-			rightButton->SetEnabled(true); // enable right button
-			if(availableThoughtListView->CurrentSelection(0) >= 0)
+			if(availableThoughtListView->CurrentSelection() >= 0)
 			{
 				orderedThoughtListView->DeselectAll();
 			}
@@ -243,11 +320,15 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				item = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
 				builderTextView->SetText(item->ReturnText());
 			}
+			topButton->SetEnabled(false); // disable top button
+			upButton->SetEnabled(false); // disable the up button
+			downButton->SetEnabled(false); // disable down button
+			bottomButton->SetEnabled(false); // disable bottom button
+			leftButton->SetEnabled(false); // disable left button
+			rightButton->SetEnabled(true); // enable right button
 			break;
 		case DISPLAY_ORDER_TEXT: // display preview text from item id
-			leftButton->SetEnabled(true); // disable left button
-			rightButton->SetEnabled(false); // enable right button
-			if(orderedThoughtListView->CurrentSelection(0) >= 0)
+			if(orderedThoughtListView->CurrentSelection() >= 0)
 			{
 				availableThoughtListView->DeselectAll();
 			}
@@ -282,6 +363,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
 				builderTextView->SetText(item->ReturnText());
 			}
+			leftButton->SetEnabled(true); // disable left button
+			rightButton->SetEnabled(false); // enable right button
 			break;
 		case ORDER_THOUGHT_EDITOR:
 			selected = orderedThoughtListView->CurrentSelection(); // list item value
