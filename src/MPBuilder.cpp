@@ -72,7 +72,14 @@ void MPBuilder::MessageReceived(BMessage* msg)
 						{
 							if(sqlite3_bind_int(ideaStatement, 3, item->ReturnID()) == SQLITE_OK) // sql bind successful
 							{
-								sqlite3_step(ideaStatement); // execute the update statement
+								if(sqlite3_step(ideaStatement) == SQLITE_DONE) // execute the update statement
+								{
+								}
+								else
+								{
+									eAlert = new ErrorAlert("1.37 Sql Error: Move Right Update Execution Failed.");
+									eAlert->Launch();
+								}
 							}
 							else
 							{
@@ -94,7 +101,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				}
 				else // sql update failed
 				{
-					eAlert = new ErrorAlert("1.25 Sql Error: Move Right Update Failed");
+					eAlert = new ErrorAlert("1.25 Sql Error: Move Right Update Prepare Failed");
 					eAlert->Launch();
 				}
 				sqlite3_finalize(ideaStatement); // finish with sql statement
@@ -112,7 +119,14 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				{
 					if(sqlite3_bind_int(ideaStatement, 1, item->ReturnID()) == SQLITE_OK) // sql bind successful
 					{
-						sqlite3_step(ideaStatement); // execute the update statement
+						if(sqlite3_step(ideaStatement) == SQLITE_DONE) // execute the update statement
+						{
+						}
+						else // sql update failed
+						{
+							eAlert = new ErrorAlert("1.38 SqlError: Move Left Update Execution Failed.");
+							eAlert->Launch();
+						}
 					}
 					else
 					{
@@ -122,12 +136,93 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				}
 				else // sql update failed
 				{
-					eAlert = new ErrorAlert("1.29 Sql Error: Move Left Update Failed");
+					eAlert = new ErrorAlert("1.29 Sql Error: Move Left Update Prepare Failed");
 					eAlert->Launch();
 				}
 				sqlite3_finalize(ideaStatement); // finish with sql statement
 				ReorderOrderedListView(); // reorder orderedlistview items for mp
 				PopulateBuilderListViews(); // update listviews' items
+			}
+			break;
+		case MOVE_UP: // move idea up 1 in ordered list
+			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
+			if(selected >= 1) // if something is selected
+			{
+				IdeaStringItem* item;
+				IdeaStringItem* item2;
+				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
+				item2 = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected-1));
+				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ordernumber=? where ideaid=?", -1, &ideaStatement, NULL);
+				if(sqlValue == SQLITE_OK) // sql statement was prepared
+				{
+					if(sqlite3_bind_int(ideaStatement, 1, item2->ReturnOrderNumber()) == SQLITE_OK) // sql bind successful
+					{
+						if(sqlite3_bind_int(ideaStatement, 2, item->ReturnID()) == SQLITE_OK) // sql bind successful
+						{
+							if(sqlite3_step(ideaStatement) == SQLITE_DONE) // execute the update statement succesfully
+							{
+								sqlite3_reset(ideaStatement); // reset ideastatement for new bindings
+								if(sqlite3_bind_int(ideaStatement, 1, item->ReturnOrderNumber()) == SQLITE_OK) // sql bind successful
+								{
+									if(sqlite3_bind_int(ideaStatement, 2, item2->ReturnID()) == SQLITE_OK) // sql bind successful
+									{
+										if(sqlite3_step(ideaStatement) == SQLITE_DONE) // execute update succesfully
+										{
+										}
+										else // sql update failed
+										{
+											eAlert = new ErrorAlert("1.39 Sql Error: Move Up 2 Update Execution Failed");
+											eAlert->Launch();
+										}
+									}
+									else // sql bind 2 failed
+									{
+										eAlert = new ErrorAlert("1.40 Sql Error: Move UP 2 Bind 2 Failed.");
+										eAlert->Launch();
+									}
+								}
+								else // sql bind 1 failed
+								{
+									eAlert = new ErrorAlert("1.41 Sql Error: Move UP 2 Bind 1 Failed");
+									eAlert->Launch();
+								}
+							}
+							else // sql update failed
+							{
+								eAlert = new ErrorAlert("1.42 Sql Error: Move UP 1 Update Execution Failed.");
+								eAlert->Launch();
+							}
+						}
+						else // sql bind 2 failed
+						{
+							eAlert = new ErrorAlert("1.43 Sql Error: Move Up 1 Bind 2 Failed");
+							eAlert->Launch();
+						}
+					}
+					else // sql bind 1 failed
+					{
+						eAlert = new ErrorAlert("1.44 Sql Error: Move Up 1 Bind 1 Failed.");
+						eAlert->Launch();
+					}
+				}
+				else // sql update failed
+				{
+					eAlert = new ErrorAlert("1.45 Sql Error: Move Up 1 Update Prepare Failed");
+					eAlert->Launch();
+				}
+				sqlite3_finalize(ideaStatement); // finalize the sql statement
+				ReorderOrderedListView(); // reorder orderedlistview items for mp
+				PopulateBuilderListViews(); // update listviews' items				
+			}
+			else if(selected == 0) // this item is already at the top of the list
+			{
+				eAlert = new ErrorAlert("4.6 Idea is already at the top of the list.");
+				eAlert->Launch();
+			}
+			else // no item was selected
+			{
+				eAlert = new ErrorAlert("4.7 No Idea is selected to move up.");
+				eAlert->Launch();
 			}
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
@@ -247,7 +342,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				{
 					eAlert = new ErrorAlert("4.4 Builder Error: Illegal Value was returned.");
 					eAlert->Launch();
-					// big error must display 
 				}
 			}
 			else // message not found
