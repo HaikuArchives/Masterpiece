@@ -195,6 +195,22 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				eAlert->Launch();
 			}
 			break;
+		case MOVE_BOTTOM:
+			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
+			if(selected >= 0 && selected < (orderedThoughtListView->CountItems() - 1)) // if something is selected that is not at bottom
+			{
+				ModifyOrderedItems(selected, (orderedThoughtListView->CountItems() - 1)); // sql move to bottom
+			}
+			else if(selected == (orderedThoughtListView->CountItems() - 1)) // this item is already at bottom
+			{
+				eAlert = new ErrorAlert("4.12 Builder Error: Idea is already at the bottom of the list.");
+				eAlert->Launch();
+			}
+			else // no item was selected
+			{
+				eAlert = new ErrorAlert("4.13 Builder Error: No Idea is selected to move to the bottom.");
+				eAlert->Launch();
+			}
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
 			if(availableThoughtListView->CurrentSelection() >= 0)
 			{
@@ -450,7 +466,18 @@ void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 	IdeaStringItem* item;
 	IdeaStringItem* item2;
 	item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(curOrderNumber));
-	item2 = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->FirstItem());
+	if(newOrderNumber == 0)
+	{
+		item2 = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->FirstItem());
+	}
+	else if(newOrderNumber == (orderedThoughtListView->CountItems() - 1))
+	{
+		item2 = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->LastItem());
+	}
+	else
+	{
+		item2 = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(newOrderNumber));
+	}
 	sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ordernumber=? where ideaid=?", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql statement was prepared
 	{
