@@ -146,24 +146,24 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		case MOVE_UP: // move idea up 1 in ordered list
 			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
-			if(selected >= 1) // if something is selected
+			if(selected >= 1) // if something is selected that is not at top
 			{
 				ModifyOrderedItems(selected, (selected - 1)); // sql reorder of items
 			}
 			else if(selected == 0) // this item is already at the top of the list
 			{
-				eAlert = new ErrorAlert("4.6 Idea is already at the top of the list.");
+				eAlert = new ErrorAlert("4.6 Builder Error: Idea is already at the top of the list.");
 				eAlert->Launch();
 			}
 			else // no item was selected
 			{
-				eAlert = new ErrorAlert("4.7 No Idea is selected to move up.");
+				eAlert = new ErrorAlert("4.7 Builder Error: No Idea is selected to move up.");
 				eAlert->Launch();
 			}
 			break;
 		case MOVE_DOWN:
 			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
-			if(selected >= 0 && selected < (orderedThoughtListView->CountItems() - 1)) // if something is selected
+			if(selected >= 0 && selected < (orderedThoughtListView->CountItems() - 1)) // if something is selected that is not at bottom
 			{
 				ModifyOrderedItems(selected, (selected + 1)); // sql reorder of items
 			}
@@ -180,6 +180,20 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		case MOVE_TOP:
 			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
+			if(selected >= 1) // if something is selected that is not at top
+			{
+				ModifyOrderedItems(selected, 0); // sql reorder of items
+			}
+			else if(selected == 0) // this item is already at the top of the list
+			{
+				eAlert = new ErrorAlert("4.10 Builder Error: Idea is already at the top of the list.");
+				eAlert->Launch();
+			}
+			else // no item was selected
+			{
+				eAlert = new ErrorAlert("4.11 Builder Error: No Idea is selected to move to top.");
+				eAlert->Launch();
+			}
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
 			if(availableThoughtListView->CurrentSelection() >= 0)
@@ -436,7 +450,7 @@ void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 	IdeaStringItem* item;
 	IdeaStringItem* item2;
 	item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(curOrderNumber));
-	item2 = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(newOrderNumber));
+	item2 = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->FirstItem());
 	sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ordernumber=? where ideaid=?", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql statement was prepared
 	{
@@ -456,37 +470,37 @@ void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 							}
 							else // sql update failed
 							{
-								eAlert = new ErrorAlert("1.46 Sql Error: Move Down 2 Update Execution Failed");
+								eAlert = new ErrorAlert("1.40 Sql Error: Move Down 2 Update Execution Failed");
 								eAlert->Launch();
 							}
 						}
 						else // sql bind 2 failed
 						{
-							eAlert = new ErrorAlert("1.47 Sql Error: Move Down 2 Bind 2 Failed.");
+							eAlert = new ErrorAlert("1.41 Sql Error: Move Down 2 Bind 2 Failed.");
 							eAlert->Launch();
 						}
 					}
 					else // sql bind 1 failed
 					{
-						eAlert = new ErrorAlert("1.48 Sql Error: Move Down 2 Bind 1 Failed");
+						eAlert = new ErrorAlert("1.42 Sql Error: Move Down 2 Bind 1 Failed");
 						eAlert->Launch();
 					}
 				}
 				else // sql update failed
 				{
-					eAlert = new ErrorAlert("1.49 Sql Error: Move Down 1 Update Execution Failed.");
+					eAlert = new ErrorAlert("1.43 Sql Error: Move Down 1 Update Execution Failed.");
 					eAlert->Launch();
 				}
 			}
 			else // sql bind 2 failed
 			{
-				eAlert = new ErrorAlert("1.50 Sql Error: Move Down 1 Bind 2 Failed");
+				eAlert = new ErrorAlert("1.44 Sql Error: Move Down 1 Bind 2 Failed");
 				eAlert->Launch();
 			}
 		}
 		else // sql bind 1 failed
 		{
-			eAlert = new ErrorAlert("1.51 Sql Error: Move Down 1 Bind 1 Failed.");
+			eAlert = new ErrorAlert("1.45 Sql Error: Move Down 1 Bind 1 Failed.");
 			eAlert->Launch();
 		}
 	}
