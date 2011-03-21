@@ -46,6 +46,7 @@ public:
 		bool			QuitRequested(void);
 		void			PopulateBuilderListViews(void);
 		void			ReorderOrderedListView(void);
+		void			ModifyOrderedItems(int curOrderNumber, int newOrderNumber);
 private:
 		BView*			backView;
 		BGroupLayout*	mainGroup;
