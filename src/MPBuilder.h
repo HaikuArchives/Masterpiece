@@ -75,6 +75,7 @@ private:
 		int				sqlValue;
 		int				currentideaID;
 		int				selected;
+		int				bindValue;
 		float			xPos;
 		float			yPos;
 };

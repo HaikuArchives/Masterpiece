@@ -488,7 +488,19 @@ void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 				if(sqlite3_step(ideaStatement) == SQLITE_DONE) // execute the update statement succesfully
 				{
 					sqlite3_reset(ideaStatement); // reset ideastatement for new bindings
-					if(sqlite3_bind_int(ideaStatement, 1, item->ReturnOrderNumber()) == SQLITE_OK) // sql bind successful
+					if(newOrderNumber == 0)
+					{
+						bindValue = sqlite3_bind_int(ideaStatement, 1, (item2->ReturnOrderNumber()+1)); // move next to first
+					}
+					else if(newOrderNumber == (orderedThoughtListView->CountItems() - 1))
+					{
+						bindValue = sqlite3_bind_int(ideaStatement, 1, (item2->ReturnOrderNumber()-1)); // move next to last
+					}
+					else
+					{
+						bindValue = sqlite3_bind_int(ideaStatement, 1, item->ReturnOrderNumber()); // swap with item
+					}
+					if(bindValue == SQLITE_OK) // sql bind successful
 					{
 						if(sqlite3_bind_int(ideaStatement, 2, item2->ReturnID()) == SQLITE_OK) // sql bind successful
 						{
