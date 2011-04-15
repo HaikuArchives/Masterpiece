@@ -10,7 +10,7 @@
 #include "ErrorAlert.h"
 
 sqlite3*	OpenSqliteDB(void);
-int			PrepareSql(sqlite3* tmpdb, const char sqlstatement, int -1, sqlite3_stmt statement, NULL);
+int			PrepareSql(sqlite3* tmpdb, const char* sqlstatement, sqlite3_stmt** tmpStatement, int tmpInt=-1, const char** unused=NULL);
 
 
 #endif
