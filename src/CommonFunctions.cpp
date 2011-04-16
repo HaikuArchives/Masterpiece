@@ -75,10 +75,22 @@ int PrepareSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement
 	// if else for prepare_v2 statement... automate error statements with # string input in functions
 	return 1;
 }
-int BindInteger(sqlite3_stmt* tmpstatement, int bindplace, int bindvalue)
+int BindInteger(sqlite3_stmt* tmpstatement, int bindplace, int bindvalue, const char* errornumber)
 {
 	ErrorAlert* eAlert;
 	BString		tmpString;
 	int			tmpReturn;
-	return 1;
+	
+	if(sqlite3_bind_int(tmpstatement, bindplace, bindvalue) == SQLITE_OK)
+	{
+		return SQLITE_OK;
+	}
+	else
+	{
+		tmpString = errornumber;
+		tmpString += " Sql Error: Bind Integer Failed";
+		eAlert =  new ErrorAlert(tmpString);
+		eAlert->Launch();
+		return -15;
+	}
 }
