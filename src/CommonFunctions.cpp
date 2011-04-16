@@ -75,3 +75,10 @@ int PrepareSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement
 	// if else for prepare_v2 statement... automate error statements with # string input in functions
 	return 1;
 }
+int BindInteger(sqlite3_stmt* tmpstatement, int bindplace, int bindvalue)
+{
+	ErrorAlert* eAlert;
+	BString		tmpString;
+	int			tmpReturn;
+	return 1;
+}
