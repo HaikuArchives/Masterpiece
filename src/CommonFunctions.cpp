@@ -59,6 +59,18 @@ int PrepareSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement
 	int			tmpReturn;
 	
 	tmpReturn = sqlite3_prepare_v2(tmpdb, sqlquery, tmpint, tmpstatement, unused);
+	if(tmpReturn == SQLITE_OK) // sql statement was prepared
+	{
+		return SQLITE_OK;
+	}
+	else
+	{
+		tmpString = errornumber;
+		tmpString += " Sql Error: Prepare Statement Failed";
+		eAlert = new ErrorAlert(tmpString);
+		eAlert->Launch();
+		return -15;
+	}
 	//int tmpReturn = 
 	// if else for prepare_v2 statement... automate error statements with # string input in functions
 	return 1;
