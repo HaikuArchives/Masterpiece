@@ -52,3 +52,14 @@ sqlite3* OpenSqliteDB()
 	}
 	return opendb;
 }
+int PrepareSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement, const char* errornumber, int tmpint=-1, const char** unused=NULL)
+{
+	ErrorAlert* eAlert;
+	BString		tmpString;
+	int			tmpReturn;
+	
+	tmpReturn = sqlite3_prepare_v2(tmpdb, sqlquery, tmpint, tmpstatement, unused);
+	//int tmpReturn = 
+	// if else for prepare_v2 statement... automate error statements with # string input in functions
+	return 1;
+}
