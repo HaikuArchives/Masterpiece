@@ -56,10 +56,8 @@ int PrepareSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement
 {
 	ErrorAlert* eAlert;
 	BString		tmpString;
-	int			tmpReturn;
 	
-	tmpReturn = sqlite3_prepare_v2(tmpdb, sqlquery, tmpint, tmpstatement, unused);
-	if(tmpReturn == SQLITE_OK) // sql statement was prepared
+	if(sqlite3_prepare_v2(tmpdb, sqlquery, tmpint, tmpstatement, unused) == SQLITE_OK) // sql statement was prepared
 	{
 		return SQLITE_OK;
 	}
@@ -71,9 +69,33 @@ int PrepareSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement
 		eAlert->Launch();
 		return -15;
 	}
-	//int tmpReturn = 
-	// if else for prepare_v2 statement... automate error statements with # string input in functions
-	//return 1;
+}
+// might not be able to step since it iterates... will have to look at that.
+int StepSql(sqlite3_stmt* tmpstatement, const char* errornumber)
+{
+	ErrorAlert* eAlert;
+	BString		tmpString;
+	int			tmpReturn;
+	
+	tmpReturn = sqlite3_step(tmpstatement);
+	if(tmpReturn == SQLITE_ROW)
+	{
+		return SQLITE_ROW;
+	}
+	else if(tmpReturn == SQLITE_DONE)
+	{
+		// do stuff here prior to reset call...
+		sqlite3_reset(tmpstatement);
+		return SQLITE_DONE;
+	}
+	else
+	{
+		tmpString = errornumber;
+		tmpString += " Sql Error: Step Failed";
+		eAlert = new ErrorAlert(tmpString);
+		eAlert->Launch();
+		return -15;
+	}
 }
 int BindInteger(sqlite3_stmt* tmpstatement, int bindplace, int bindvalue, const char* errornumber)
 {
