@@ -114,47 +114,18 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
+				// might need to rework sql functions because the blank if's is useless..
+				// will need to rework it to call a execute sql call RunSql(db, query, statement, error#, bind values...)
+				// this will remove the if's and reduce it to 1 line...
 				if(PrepareSql(mpdb, "update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?", &ideaStatement, "38") == SQLITE_OK)
 				{
 					if(BindInteger(ideaStatement, 1, item->ReturnID(), "39") == SQLITE_OK)
 					{
-						if(sqlite3_step(ideaStatement) == SQLITE_DONE)
+						if(StepSql(ideaStatement, "40") == SQLITE_DONE)
 						{
 						}
-						else // sql update failed
-						{
-							eAlert = new ErrorAlert("1.38 SqlError: Move Left Update Execution Failed.");
-							eAlert->Launch();
-						}						
 					}
 				}
-				/*
-				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?", -1, &ideaStatement, NULL);
-				if(sqlValue == SQLITE_OK) // sql statement was prepared
-				{
-					if(sqlite3_bind_int(ideaStatement, 1, item->ReturnID()) == SQLITE_OK) // sql bind successful
-					{
-						if(sqlite3_step(ideaStatement) == SQLITE_DONE) // execute the update statement
-						{
-						}
-						else // sql update failed
-						{
-							eAlert = new ErrorAlert("1.38 SqlError: Move Left Update Execution Failed.");
-							eAlert->Launch();
-						}
-					}
-					else
-					{
-						eAlert = new ErrorAlert("1.30 Sql Error: Move Left Bind Failed");
-						eAlert->Launch();
-					}
-				}
-				else // sql update failed
-				{
-					eAlert = new ErrorAlert("1.29 Sql Error: Move Left Update Prepare Failed");
-					eAlert->Launch();
-				}
-				*/
 				sqlite3_finalize(ideaStatement); // finish with sql statement
 				ReorderOrderedListView(); // reorder orderedlistview items for mp
 				PopulateBuilderListViews(); // update listviews' items
