@@ -73,13 +73,12 @@ int PrepareSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement
 	}
 	//int tmpReturn = 
 	// if else for prepare_v2 statement... automate error statements with # string input in functions
-	return 1;
+	//return 1;
 }
 int BindInteger(sqlite3_stmt* tmpstatement, int bindplace, int bindvalue, const char* errornumber)
 {
 	ErrorAlert* eAlert;
 	BString		tmpString;
-	int			tmpReturn;
 	
 	if(sqlite3_bind_int(tmpstatement, bindplace, bindvalue) == SQLITE_OK)
 	{

@@ -114,6 +114,21 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
+				if(PrepareSql(mpdb, "update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?", &ideaStatement, "38") == SQLITE_OK)
+				{
+					if(BindInteger(ideaStatement, 1, item->ReturnID(), "39") == SQLITE_OK)
+					{
+						if(sqlite3_step(ideaStatement) == SQLITE_DONE)
+						{
+						}
+						else // sql update failed
+						{
+							eAlert = new ErrorAlert("1.38 SqlError: Move Left Update Execution Failed.");
+							eAlert->Launch();
+						}						
+					}
+				}
+				/*
 				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?", -1, &ideaStatement, NULL);
 				if(sqlValue == SQLITE_OK) // sql statement was prepared
 				{
@@ -139,6 +154,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 					eAlert = new ErrorAlert("1.29 Sql Error: Move Left Update Prepare Failed");
 					eAlert->Launch();
 				}
+				*/
 				sqlite3_finalize(ideaStatement); // finish with sql statement
 				ReorderOrderedListView(); // reorder orderedlistview items for mp
 				PopulateBuilderListViews(); // update listviews' items
