@@ -14,4 +14,6 @@ int			PrepareSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpStateme
 int			BindInteger(sqlite3_stmt* tmpStatement, int bindPlace, int bindValue, const char* errorNumber);
 int			StepSql(sqlite3_stmt* tmpStatement, const char* errorNumber);
 
+int			RunSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpStatement, const char* errorNumber, int tmpInt=-1, const char** unused=NULL);
+
 #endif
