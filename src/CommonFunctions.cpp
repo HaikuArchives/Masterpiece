@@ -104,6 +104,10 @@ void SqlObject::ResetSql(void)
 {
 	sqlite3_reset(sqlstatement);
 }
+void SqlObject::FinalizeSql(void)
+{
+	sqlite3_finalize(sqlstatement);
+}
 
 int PrepareSql2(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement, const char* errornumber, int tmpint=-1, const char** unused=NULL)
 {

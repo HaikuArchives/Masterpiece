@@ -24,6 +24,7 @@ class SqlObject
 				void			BindInt(int bindPlace, int bindValue);
 				void			StepSql(void);
 				void			ResetSql(void);
+				void			FinalizeSql(void);
 	private:
 				sqlite3*		sqldb;
 				const char*		sqlquery;
