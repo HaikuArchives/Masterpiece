@@ -10,10 +10,6 @@
 #include "ErrorAlert.h"
 
 sqlite3*	OpenSqliteDB(void);
-int			PrepareSql2(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpStatement, const char* errorNumber, int tmpInt=-1, const char** unused=NULL);
-int			BindInteger2(sqlite3_stmt* tmpStatement, int bindPlace, int bindValue, const char* errorNumber);
-int			StepSql2(sqlite3_stmt* tmpStatement, const char* errorNumber);
-int			RunSql2(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpStatement, const char* errorNumber, int bindCount, int tmpInt=-1, const char** unused=NULL);
 
 class SqlObject
 {

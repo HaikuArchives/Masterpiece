@@ -81,6 +81,38 @@ void SqlObject::BindInt(int bindPlace, int bindValue)
 		ealert->Launch();
 	}
 }
+/* bind functions */
+/*
+int sqlite3_bind_blob(sqlite3_stmt*, int, const void*, int n, void(*)(void*));
+int sqlite3_bind_double(sqlite3_stmt*, int, double);
+int sqlite3_bind_int(sqlite3_stmt*, int, int);
+int sqlite3_bind_int64(sqlite3_stmt*, int, sqlite3_int64);
+int sqlite3_bind_null(sqlite3_stmt*, int);
+int sqlite3_bind_text(sqlite3_stmt*, int, const char*, int n, void(*)(void*));
+int sqlite3_bind_text16(sqlite3_stmt*, int, const void*, int, void(*)(void*));
+int sqlite3_bind_value(sqlite3_stmt*, int, const sqlite3_value*);
+int sqlite3_bind_zeroblob(sqlite3_stmt*, int, int n);
+
+The first argument to the sqlite3_bind_*() routines is always a pointer to the sqlite3_stmt object returned from sqlite3_prepare_v2() or its variants.
+
+The second argument is the index of the SQL parameter to be set. The leftmost SQL parameter has an index of 1. When the same named SQL parameter is used more than once, second and subsequent occurrences have the same index as the first occurrence. The index for named parameters can be looked up using the sqlite3_bind_parameter_index() API if desired. The index for "?NNN" parameters is the value of NNN. The NNN value must be between 1 and the sqlite3_limit() parameter SQLITE_LIMIT_VARIABLE_NUMBER (default value: 999).
+
+The third argument is the value to bind to the parameter.
+
+In those routines that have a fourth argument, its value is the number of bytes in the parameter. To be clear: the value is the number of bytes in the value, not the number of characters. If the fourth parameter is negative, the length of the string is the number of bytes up to the first zero terminator.
+
+The fifth argument to sqlite3_bind_blob(), sqlite3_bind_text(), and sqlite3_bind_text16() is a destructor used to dispose of the BLOB or string after SQLite has finished with it. The destructor is called to dispose of the BLOB or string even if the call to sqlite3_bind_blob(), sqlite3_bind_text(), or sqlite3_bind_text16() fails. If the fifth argument is the special value SQLITE_STATIC, then SQLite assumes that the information is in static, unmanaged space and does not need to be freed. If the fifth argument has the value SQLITE_TRANSIENT, then SQLite makes its own private copy of the data immediately, before the sqlite3_bind_*() routine returns.
+
+The sqlite3_bind_zeroblob() routine binds a BLOB of length N that is filled with zeroes. A zeroblob uses a fixed amount of memory (just an integer to hold its size) while it is being processed. Zeroblobs are intended to serve as placeholders for BLOBs whose content is later written using incremental BLOB I/O routines. A negative value for the zeroblob results in a zero-length BLOB.
+
+If any of the sqlite3_bind_*() routines are called with a NULL pointer for the prepared statement or with a prepared statement for which sqlite3_step() has been called more recently than sqlite3_reset(), then the call will return SQLITE_MISUSE. If any sqlite3_bind_() routine is passed a prepared statement that has been finalized, the result is undefined and probably harmful.
+
+Bindings are not cleared by the sqlite3_reset() routine. Unbound parameters are interpreted as NULL.
+
+The sqlite3_bind_* routines return SQLITE_OK on success or an error code if anything goes wrong. SQLITE_RANGE is returned if the parameter index is out of range. SQLITE_NOMEM is returned if malloc() fails.
+
+
+*/
 void SqlObject::StepSql(void)
 {
 	sqlcode = sqlite3_step(sqlstatement);
@@ -102,77 +134,21 @@ void SqlObject::StepSql(void)
 }
 void SqlObject::ResetSql(void)
 {
-	sqlite3_reset(sqlstatement);
+	if(sqlite3_reset(sqlstatement) != SQLITE_OK)
+	{
+		tmpstring = errornumber;
+		tmpstring += " Sql Error: Reset Failed";
+		ealert = new ErrorAlert(tmpstring);
+		ealert->Launch();
+	}
 }
 void SqlObject::FinalizeSql(void)
 {
-	sqlite3_finalize(sqlstatement);
-}
-
-int PrepareSql2(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement, const char* errornumber, int tmpint=-1, const char** unused=NULL)
-{
-	ErrorAlert* eAlert;
-	BString		tmpString;
-	
-	if(sqlite3_prepare_v2(tmpdb, sqlquery, tmpint, tmpstatement, unused) == SQLITE_OK) // sql statement was prepared
+	if(sqlite3_finalize(sqlstatement) != SQLITE_OK)
 	{
-		return SQLITE_OK;
+		tmpstring = errornumber;
+		tmpstring += " Sql Error: Finalize Failed";
+		ealert = new ErrorAlert(tmpstring);
+		ealert->Launch();
 	}
-	else
-	{
-		tmpString = errornumber;
-		tmpString += " Sql Error: Prepare Statement Failed";
-		eAlert = new ErrorAlert(tmpString);
-		eAlert->Launch();
-		return -15;
-	}
-}
-// might not be able to step since it iterates... will have to look at that.
-int StepSql2(sqlite3_stmt* tmpstatement, const char* errornumber)
-{
-	ErrorAlert* eAlert;
-	BString		tmpString;
-	int			tmpReturn;
-	
-	tmpReturn = sqlite3_step(tmpstatement);
-	if(tmpReturn == SQLITE_ROW)
-	{
-		return SQLITE_ROW;
-	}
-	else if(tmpReturn == SQLITE_DONE)
-	{
-		// do stuff here prior to reset call...
-		sqlite3_reset(tmpstatement);
-		return SQLITE_DONE;
-	}
-	else
-	{
-		tmpString = errornumber;
-		tmpString += " Sql Error: Step Failed";
-		eAlert = new ErrorAlert(tmpString);
-		eAlert->Launch();
-		return -15;
-	}
-}
-int BindInteger2(sqlite3_stmt* tmpstatement, int bindplace, int bindvalue, const char* errornumber)
-{
-	ErrorAlert* eAlert;
-	BString		tmpString;
-	
-	if(sqlite3_bind_int(tmpstatement, bindplace, bindvalue) == SQLITE_OK)
-	{
-		return SQLITE_OK;
-	}
-	else
-	{
-		tmpString = errornumber;
-		tmpString += " Sql Error: Bind Integer Failed";
-		eAlert =  new ErrorAlert(tmpString);
-		eAlert->Launch();
-		return -15;
-	}
-}
-int RunSql2(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement, const char* errornumber, int bindcount, int tmpint=-1, const char** unused=NULL)
-{
-	return -15;
 }
