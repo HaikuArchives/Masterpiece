@@ -114,20 +114,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
-				// might need to rework sql functions because the blank if's is useless..
-				// will need to rework it to call a execute sql call RunSql(db, query, statement, error#, bind values...)
-				// this will remove the if's and reduce it to 1 line...
-				/*
-				if(PrepareSql2(mpdb, "update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?", &ideaStatement, "38") == SQLITE_OK)
-				{
-					if(BindInteger2(ideaStatement, 1, item->ReturnID(), "39") == SQLITE_OK)
-					{
-						if(StepSql2(ideaStatement, "40") == SQLITE_DONE)
-						{
-						}
-					}
-				}
-				*/
 				sqlObject = new SqlObject(mpdb, ideaStatement, "38");
 				sqlObject->PrepareSql("update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?");
 				sqlObject->BindInt(1, item->ReturnID());
