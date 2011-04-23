@@ -52,13 +52,18 @@ sqlite3* OpenSqliteDB()
 	}
 	return opendb;
 }
+
+// might need to do an if bind count else if return count... or just know what we're calling...
+// int SqlObject::ReturnInt(1);
+// BString SqlObject::ReturnString();
+
 SqlObject::SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* errorNumber)
 {
 	sqldb = sqlDB;
 	sqlstatement = sqlStatement;
 	errornumber = errorNumber;
 }
-void SqlObject::PrepareSql(const char* sqlQuery)
+void SqlObject::PrepareSql(const char* sqlQuery, int bindCount, int returnCount)
 {
 	sqlquery = sqlQuery;
 	if(sqlite3_prepare_v2(sqldb, sqlquery, -1, &sqlstatement, NULL) != SQLITE_OK) // sql statement was not prepared
@@ -142,6 +147,7 @@ void SqlObject::StepSql(void)
 	if(sqlcode == SQLITE_ROW)
 	{
 		// do something here
+		// might do the while here... or call the while in while(SqlObject->SqlStep()=SQITE_ROW)
 	}
 	else if(sqlcode == SQLITE_DONE)
 	{

@@ -16,7 +16,7 @@ class SqlObject
 	public:
 								SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* errorNumber);
 								~SqlObject(void);
-				void			PrepareSql(const char* sqlQuery);
+				void			PrepareSql(const char* sqlQuery, int bindCount, int returnCount);
 				void			BindInt(int bindPlace, int bindValue);
 				void			StepSql(void);
 				void			ResetSql(void);
