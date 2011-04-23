@@ -27,5 +27,7 @@ class SqlObject
 	private:
 				sqlite3*		sqldb;
 				sqlite3_stmt**	sqlstatement;
+				int				sqlcode;
+				
 };
 #endif
