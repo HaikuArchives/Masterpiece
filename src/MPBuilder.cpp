@@ -117,11 +117,11 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				// might need to rework sql functions because the blank if's is useless..
 				// will need to rework it to call a execute sql call RunSql(db, query, statement, error#, bind values...)
 				// this will remove the if's and reduce it to 1 line...
-				if(PrepareSql(mpdb, "update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?", &ideaStatement, "38") == SQLITE_OK)
+				if(PrepareSql2(mpdb, "update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?", &ideaStatement, "38") == SQLITE_OK)
 				{
-					if(BindInteger(ideaStatement, 1, item->ReturnID(), "39") == SQLITE_OK)
+					if(BindInteger2(ideaStatement, 1, item->ReturnID(), "39") == SQLITE_OK)
 					{
-						if(StepSql(ideaStatement, "40") == SQLITE_DONE)
+						if(StepSql2(ideaStatement, "40") == SQLITE_DONE)
 						{
 						}
 					}

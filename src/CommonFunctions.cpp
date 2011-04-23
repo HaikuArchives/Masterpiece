@@ -52,7 +52,26 @@ sqlite3* OpenSqliteDB()
 	}
 	return opendb;
 }
-int PrepareSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement, const char* errornumber, int tmpint=-1, const char** unused=NULL)
+SqlObject::SqlObject(sqlite3* sqlDB, sqlite3_stmt** sqlStatement, const char* errorNumber)
+{
+	sqldb = sqlDB;
+	sqlstatement = sqlStatement;
+	errornumber = errorNumber;
+}
+void SqlObject::PrepareSql(const char* sqlQuery)
+{
+	sqlquery = sqlQuery;
+}
+void SqlObject::BindInt(int bindPlace, int bindValue)
+{
+	bindplace = bindPlace;
+	bindvalue = bindValue;
+}
+void SqlObject::StepSql(void)
+{
+}
+
+int PrepareSql2(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement, const char* errornumber, int tmpint=-1, const char** unused=NULL)
 {
 	ErrorAlert* eAlert;
 	BString		tmpString;
@@ -71,7 +90,7 @@ int PrepareSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement
 	}
 }
 // might not be able to step since it iterates... will have to look at that.
-int StepSql(sqlite3_stmt* tmpstatement, const char* errornumber)
+int StepSql2(sqlite3_stmt* tmpstatement, const char* errornumber)
 {
 	ErrorAlert* eAlert;
 	BString		tmpString;
@@ -97,7 +116,7 @@ int StepSql(sqlite3_stmt* tmpstatement, const char* errornumber)
 		return -15;
 	}
 }
-int BindInteger(sqlite3_stmt* tmpstatement, int bindplace, int bindvalue, const char* errornumber)
+int BindInteger2(sqlite3_stmt* tmpstatement, int bindplace, int bindvalue, const char* errornumber)
 {
 	ErrorAlert* eAlert;
 	BString		tmpString;
@@ -115,7 +134,7 @@ int BindInteger(sqlite3_stmt* tmpstatement, int bindplace, int bindvalue, const 
 		return -15;
 	}
 }
-int RunSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement, const char* errornumber, int bindcount, int tmpint=-1, const char** unused=NULL)
+int RunSql2(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement, const char* errornumber, int bindcount, int tmpint=-1, const char** unused=NULL)
 {
 	return -15;
 }
