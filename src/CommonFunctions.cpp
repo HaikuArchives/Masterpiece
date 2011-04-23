@@ -61,13 +61,30 @@ SqlObject::SqlObject(sqlite3* sqlDB, sqlite3_stmt** sqlStatement, const char* er
 void SqlObject::PrepareSql(const char* sqlQuery)
 {
 	sqlquery = sqlQuery;
+	if(sqlite3_prepare_v2(sqldb, sqlquery, -1, sqlstatement, NULL) != SQLITE_OK) // sql statement was not prepared
+	{
+		tmpstring = errornumber;
+		tmpstring += " Sql Error: Prepare Statement Failed";
+		ealert = new ErrorAlert(tmpstring);
+		ealert->Launch();
+	}
 }
 void SqlObject::BindInt(int bindPlace, int bindValue)
 {
 	bindplace = bindPlace;
 	bindvalue = bindValue;
+	if(sqlite3_bind_int(&sqlstatement, bindplace, bindvalue) != SQLITE_OK) // sql int bind failed
+	{
+		tmpstring = errornumber;
+		tmpstring += " Sql Error: Bind Int Failed";
+		ealert = new ErrorAlert(tmpstring);
+		ealert->Launch();
+	}
 }
 void SqlObject::StepSql(void)
+{
+}
+void SqlObject::ResetSql(void)
 {
 }
 

@@ -28,10 +28,12 @@ class SqlObject
 				sqlite3*		sqldb;
 				const char*		sqlquery;
 				const char*		errornumber;
+				ErrorAlert*		ealert;
 				sqlite3_stmt**	sqlstatement;
 				int				sqlcode;
 				int				bindplace;
 				int				bindvalue;
+				BString			tmpstring;
 				
 };
 #endif
