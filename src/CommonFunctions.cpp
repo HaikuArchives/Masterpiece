@@ -115,3 +115,7 @@ int BindInteger(sqlite3_stmt* tmpstatement, int bindplace, int bindvalue, const 
 		return -15;
 	}
 }
+int RunSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpstatement, const char* errornumber, int bindcount, int tmpint=-1, const char** unused=NULL)
+{
+	return -15;
+}

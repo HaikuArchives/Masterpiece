@@ -13,7 +13,6 @@ sqlite3*	OpenSqliteDB(void);
 int			PrepareSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpStatement, const char* errorNumber, int tmpInt=-1, const char** unused=NULL);
 int			BindInteger(sqlite3_stmt* tmpStatement, int bindPlace, int bindValue, const char* errorNumber);
 int			StepSql(sqlite3_stmt* tmpStatement, const char* errorNumber);
-
-int			RunSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpStatement, const char* errorNumber, int tmpInt=-1, const char** unused=NULL);
+int			RunSql(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpStatement, const char* errorNumber, int bindCount, int tmpInt=-1, const char** unused=NULL);
 
 #endif
