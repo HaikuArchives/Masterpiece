@@ -117,6 +117,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				// might need to rework sql functions because the blank if's is useless..
 				// will need to rework it to call a execute sql call RunSql(db, query, statement, error#, bind values...)
 				// this will remove the if's and reduce it to 1 line...
+				/*
 				if(PrepareSql2(mpdb, "update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?", &ideaStatement, "38") == SQLITE_OK)
 				{
 					if(BindInteger2(ideaStatement, 1, item->ReturnID(), "39") == SQLITE_OK)
@@ -126,6 +127,11 @@ void MPBuilder::MessageReceived(BMessage* msg)
 						}
 					}
 				}
+				*/
+				sqlObject = new SqlObject(mpdb, ideaStatement, "38");
+				sqlObject->PrepareSql("update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?");
+				sqlObject->BindInt(1, item->ReturnID());
+				sqlObject->StepSql();
 				sqlite3_finalize(ideaStatement); // finish with sql statement
 				ReorderOrderedListView(); // reorder orderedlistview items for mp
 				PopulateBuilderListViews(); // update listviews' items

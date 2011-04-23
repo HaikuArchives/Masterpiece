@@ -78,6 +78,7 @@ private:
 		int				bindValue;
 		float			xPos;
 		float			yPos;
+		SqlObject*		sqlObject;
 };
 
 #endif

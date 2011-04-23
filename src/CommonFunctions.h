@@ -18,7 +18,7 @@ int			RunSql2(sqlite3* tmpdb, const char* sqlquery, sqlite3_stmt** tmpStatement,
 class SqlObject
 {
 	public:
-								SqlObject(sqlite3* sqlDB, sqlite3_stmt** sqlStatement, const char* errorNumber);
+								SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* errorNumber);
 								~SqlObject(void);
 				void			PrepareSql(const char* sqlQuery);
 				void			BindInt(int bindPlace, int bindValue);
@@ -29,7 +29,7 @@ class SqlObject
 				const char*		sqlquery;
 				const char*		errornumber;
 				ErrorAlert*		ealert;
-				sqlite3_stmt**	sqlstatement;
+				sqlite3_stmt*	sqlstatement;
 				int				sqlcode;
 				int				bindplace;
 				int				bindvalue;
