@@ -18,6 +18,7 @@ class SqlObject
 								~SqlObject(void);
 				void			PrepareSql(const char* sqlQuery, int bindCount, int returnCount);
 				void			BindInt(int bindPlace, int bindValue);
+				int				ReturnInt(int returnPlace)
 				void			StepSql(void);
 				void			ResetSql(void);
 				void			FinalizeSql(void);
@@ -30,6 +31,7 @@ class SqlObject
 				int				sqlcode;
 				int				bindplace;
 				int				bindvalue;
+				int				returnplace;
 				BString			tmpstring;
 				
 };

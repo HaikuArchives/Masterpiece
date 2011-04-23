@@ -138,9 +138,21 @@ Bindings are not cleared by the sqlite3_reset() routine. Unbound parameters are 
 The sqlite3_bind_* routines return SQLITE_OK on success or an error code if anything goes wrong.
 SQLITE_RANGE is returned if the parameter index is out of range. SQLITE_NOMEM is returned if
 malloc() fails.
-
-
 */
+
+int SqlObject::ReturnInt(int returnPlace)
+{
+	returnplace = ReturnPlace;
+	if(sqlite3_column_type(sqlstatement, returnplace) == SQLITE_INTEGER)
+	{
+		return sqlite3_column_int(sqlstatement, returnplace);
+	}
+	else
+	{
+		// return error not valid
+	}
+}
+
 void SqlObject::StepSql(void)
 {
 	sqlcode = sqlite3_step(sqlstatement);
