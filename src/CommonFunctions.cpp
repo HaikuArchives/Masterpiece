@@ -63,7 +63,7 @@ SqlObject::SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* err
 	sqlstatement = sqlStatement;
 	errornumber = errorNumber;
 }
-void SqlObject::PrepareSql(const char* sqlQuery, int bindCount, int returnCount)
+void SqlObject::PrepareSql(const char* sqlQuery)
 {
 	sqlquery = sqlQuery;
 	if(sqlite3_prepare_v2(sqldb, sqlquery, -1, &sqlstatement, NULL) != SQLITE_OK) // sql statement was not prepared
@@ -74,7 +74,7 @@ void SqlObject::PrepareSql(const char* sqlQuery, int bindCount, int returnCount)
 		ealert->Launch();
 	}
 }
-void SqlObject::BindInt(int bindPlace, int bindValue)
+void SqlObject::BindValue(int bindPlace, int bindValue)
 {
 	bindplace = bindPlace;
 	bindvalue = bindValue;
@@ -82,6 +82,18 @@ void SqlObject::BindInt(int bindPlace, int bindValue)
 	{
 		tmpstring = errornumber;
 		tmpstring += " Sql Error: Bind Int Failed";
+		ealert = new ErrorAlert(tmpstring);
+		ealert->Launch();
+	}
+}
+void SqlObject::BindValue(int bindPlace, double bindValue)
+{
+	bindplace = bindPlace;
+	binddouble = bindValue;
+	if(sqlite3_bind_double(sqlstatement, bindplace, binddouble) != SQLITE_OK) // sql double bind failed
+	{
+		tmpstring = errornumber;
+		tmpstring += " Sql Error: Bind Double Failed";
 		ealert = new ErrorAlert(tmpstring);
 		ealert->Launch();
 	}
@@ -140,9 +152,9 @@ SQLITE_RANGE is returned if the parameter index is out of range. SQLITE_NOMEM is
 malloc() fails.
 */
 
-int SqlObject::ReturnInt(int returnPlace)
+int SqlObject::ReturnValue(int returnPlace)
 {
-	returnplace = ReturnPlace;
+	returnplace = returnPlace;
 	if(sqlite3_column_type(sqlstatement, returnplace) == SQLITE_INTEGER)
 	{
 		return sqlite3_column_int(sqlstatement, returnplace);
@@ -150,6 +162,7 @@ int SqlObject::ReturnInt(int returnPlace)
 	else
 	{
 		// return error not valid
+		return -15;
 	}
 }
 

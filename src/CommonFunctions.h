@@ -16,9 +16,10 @@ class SqlObject
 	public:
 								SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* errorNumber);
 								~SqlObject(void);
-				void			PrepareSql(const char* sqlQuery, int bindCount, int returnCount);
-				void			BindInt(int bindPlace, int bindValue);
-				int				ReturnInt(int returnPlace)
+				void			PrepareSql(const char* sqlQuery);
+				void			BindValue(int bindPlace, int bindValue);
+				void			BindValue(int bindPlace, double bindValue);
+				int				ReturnValue(int returnPlace);
 				void			StepSql(void);
 				void			ResetSql(void);
 				void			FinalizeSql(void);
@@ -33,6 +34,7 @@ class SqlObject
 				int				bindvalue;
 				int				returnplace;
 				BString			tmpstring;
+				double			binddouble;
 				
 };
 #endif

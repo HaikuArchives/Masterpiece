@@ -116,7 +116,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
 				sqlObject = new SqlObject(mpdb, ideaStatement, "38");
 				sqlObject->PrepareSql("update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?");
-				sqlObject->BindInt(1, item->ReturnID());
+				sqlObject->BindValue(1, item->ReturnID());
 				sqlObject->StepSql();
 				sqlite3_finalize(ideaStatement); // finish with sql statement
 				ReorderOrderedListView(); // reorder orderedlistview items for mp
