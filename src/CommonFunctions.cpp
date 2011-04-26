@@ -77,8 +77,8 @@ void SqlObject::PrepareSql(const char* sqlQuery)
 void SqlObject::BindValue(int bindPlace, int bindValue)
 {
 	bindplace = bindPlace;
-	bindvalue = bindValue;
-	if(sqlite3_bind_int(sqlstatement, bindplace, bindvalue) != SQLITE_OK) // sql int bind failed
+	bindint = bindValue;
+	if(sqlite3_bind_int(sqlstatement, bindplace, bindint) != SQLITE_OK) // sql int bind failed
 	{
 		tmpstring = errornumber;
 		tmpstring += " Sql Error: Bind Int Failed";
@@ -98,12 +98,25 @@ void SqlObject::BindValue(int bindPlace, double bindValue)
 		ealert->Launch();
 	}
 }
+void SqlObject::BindValue(int bindPlace, int64 bindValue)
+{
+	bindplace = bindPlace;
+	bindint64 = bindValue;
+	if(sqlite3_bind_int64(sqlstatement, bindplace, bindint64) != SQLITE_OK) // sql int64 bind failed
+	{
+		tmpstring = errornumber;
+		tmpstring += " Sql Error: Bind Int64 Failed";
+		ealert = new ErrorAlert(tmpstring);
+		ealert->Launch();
+	}
+}
+void SqlObject::BindValue(int bindPlace) // bind null
+{
+	bindplace = bindPlace;
+}
 /* bind functions */
 /*
 int sqlite3_bind_blob(sqlite3_stmt*, int, const void*, int n, void(*)(void*));
-int sqlite3_bind_double(sqlite3_stmt*, int, double);
-int sqlite3_bind_int(sqlite3_stmt*, int, int);
-int sqlite3_bind_int64(sqlite3_stmt*, int, sqlite3_int64);
 int sqlite3_bind_null(sqlite3_stmt*, int);
 int sqlite3_bind_text(sqlite3_stmt*, int, const char*, int n, void(*)(void*));
 int sqlite3_bind_text16(sqlite3_stmt*, int, const void*, int, void(*)(void*));

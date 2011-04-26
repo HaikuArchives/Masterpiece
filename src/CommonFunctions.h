@@ -19,6 +19,7 @@ class SqlObject
 				void			PrepareSql(const char* sqlQuery);
 				void			BindValue(int bindPlace, int bindValue);
 				void			BindValue(int bindPlace, double bindValue);
+				void			BindValue(int bindPlace, int64 bindValue);
 				int				ReturnValue(int returnPlace);
 				void			StepSql(void);
 				void			ResetSql(void);
@@ -31,10 +32,11 @@ class SqlObject
 				sqlite3_stmt*	sqlstatement;
 				int				sqlcode;
 				int				bindplace;
-				int				bindvalue;
+				int				bindint;
 				int				returnplace;
-				BString			tmpstring;
 				double			binddouble;
+				int64			bindint64;
+				BString			tmpstring;
 				
 };
 #endif
