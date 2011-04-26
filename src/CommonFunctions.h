@@ -20,7 +20,8 @@ class SqlObject
 				void			BindValue(int bindPlace, int bindValue);
 				void			BindValue(int bindPlace, double bindValue);
 				void			BindValue(int bindPlace, int64 bindValue);
-				void			BindValue(int bindPlace, const char* bindValue);				
+				void			BindValue(int bindPlace, const char* bindValue);
+				void			BindValue(int bindPlace, 
 				void			BindValue(int bindPlace);
 				int				ReturnValue(int returnPlace);
 				void			StepSql(void);
