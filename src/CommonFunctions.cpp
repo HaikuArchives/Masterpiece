@@ -110,14 +110,32 @@ void SqlObject::BindValue(int bindPlace, int64 bindValue)
 		ealert->Launch();
 	}
 }
+void SqlObject::BindValue(int bindPlace, const char* bindValue)
+{
+	bindplace = bindPlace;
+	bindstring = bindValue;
+	if(sqlite3_bind_text(sqlstatement, bindplace, bindstring, -1, SQLITE_TRANSIENT) != SQLITE_OK) // sql text bind failed
+	{
+		tmpstring = errornumber;
+		tmpstring += " Sql Error: Bind Text Failed";
+		ealert = new ErrorAlert(tmpstring);
+		ealert->Launch();
+	}
+}
 void SqlObject::BindValue(int bindPlace) // bind null
 {
 	bindplace = bindPlace;
+	if(sqlite3_bind_null(sqlstatement, bindplace) != SQLITE_OK)
+	{
+		tmpstring = errornumber;
+		tmpstring += " Sql Error: Bind NULL Failed";
+		ealert = new ErrorAlert(tmpstring);
+		ealert->Launch();
+	}
 }
 /* bind functions */
 /*
 int sqlite3_bind_blob(sqlite3_stmt*, int, const void*, int n, void(*)(void*));
-int sqlite3_bind_null(sqlite3_stmt*, int);
 int sqlite3_bind_text(sqlite3_stmt*, int, const char*, int n, void(*)(void*));
 int sqlite3_bind_text16(sqlite3_stmt*, int, const void*, int, void(*)(void*));
 int sqlite3_bind_value(sqlite3_stmt*, int, const sqlite3_value*);
