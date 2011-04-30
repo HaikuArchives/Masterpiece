@@ -21,7 +21,7 @@ class SqlObject
 				void			BindValue(int bindPlace, double bindValue);
 				void			BindValue(int bindPlace, int64 bindValue);
 				void			BindValue(int bindPlace, const char* bindValue);
-				//void			BindValue(int bindPlace, // blob bind
+				void			BindValue(int bindPlace, const void* bindValue);// blob bind
 				void			BindValue(int bindPlace);
 				int				ReturnValue(int returnPlace);
 				void			StepSql(void);
@@ -32,6 +32,7 @@ class SqlObject
 				const char*		sqlquery;
 				const char*		errornumber;
 				const char*		bindstring;
+				const void*		bindblob;
 				ErrorAlert*		ealert;
 				sqlite3_stmt*	sqlstatement;
 				int				sqlcode;

@@ -133,6 +133,18 @@ void SqlObject::BindValue(int bindPlace) // bind null
 		ealert->Launch();
 	}
 }
+void SqlObject::BindValue(int bindPlace, const void* bindValue)
+{
+	bindplace = bindPlace;
+	bindblob = bindValue;
+	if(sqlite3_bind_blob(sqlstatement, bindplace, bindblob, -1, SQLITE_TRANSIENT) != SQLITE_OK) // sql blob bind failed
+	{
+		tmpstring = errornumber;
+		tmpstring += " Sql Error: Bind Blob Failed";
+		ealert = new ErrorAlert(tmpstring);
+		ealert->Launch();
+	}
+}
 /* bind functions */
 /*
 int sqlite3_bind_blob(sqlite3_stmt*, int, const void*, int n, void(*)(void*));
