@@ -25,8 +25,9 @@ class SqlObject
 				void			BindValue(int bindPlace);
 				int				ReturnValue(int returnPlace);
 				double			ReturnValue(int returnPlace);
-				sqlite3_int64	ReturnValue(int returnPlace);
-				
+				int64			ReturnValue(int returnPlace);
+				BString			ReturnValue(int returnPlace);
+				const void*		ReturnValue(int returnPlace);
 				void			StepSql(void);
 				void			ResetSql(void);
 				void			FinalizeSql(void);
@@ -35,15 +36,20 @@ class SqlObject
 				const char*		sqlquery;
 				const char*		errornumber;
 				const char*		bindstring;
+				const char*		returnstring;
 				const void*		bindblob;
+				const void*		returnblob;
 				ErrorAlert*		ealert;
 				sqlite3_stmt*	sqlstatement;
 				int				sqlcode;
 				int				bindplace;
-				int				bindint;
 				int				returnplace;
+				int				bindint;
+				int				returnint;
 				double			binddouble;
+				double			returndouble;
 				int64			bindint64;
+				int64			returnint64;
 				BString			tmpstring;
 				
 };
