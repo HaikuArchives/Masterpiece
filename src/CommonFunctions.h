@@ -23,11 +23,11 @@ class SqlObject
 				void			BindValue(int bindPlace, const char* bindValue);
 				void			BindValue(int bindPlace, const void* bindValue);// blob bind
 				void			BindValue(int bindPlace);
-				int				ReturnValue(int returnPlace);
-				double			ReturnValue(int returnPlace);
-				int64			ReturnValue(int returnPlace);
-				const char*		ReturnValue(int returnPlace);
-				const void*		ReturnValue(int returnPlace);
+				int				ReturnInt(int returnPlace);
+				double			ReturnDouble(int returnPlace);
+				int64			ReturnInt64(int returnPlace);
+				const char*		ReturnText(int returnPlace);
+				const void*		ReturnBlob(int returnPlace);
 				void			StepSql(void);
 				void			ResetSql(void);
 				void			FinalizeSql(void);

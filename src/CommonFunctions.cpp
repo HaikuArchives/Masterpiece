@@ -141,27 +141,27 @@ void SqlObject::BindValue(int bindPlace, const void* bindValue)
 		ealert->Launch();
 	}
 }
-int SqlObject::ReturnValue(int returnPlace)
+int SqlObject::ReturnInt(int returnPlace)
 {
 	returnplace = returnPlace;
 	return sqlite3_column_int(sqlstatement, returnplace);
 }
-double SqlObject::ReturnValue(int returnPlace)
+double SqlObject::ReturnDouble(int returnPlace)
 {
 	returnplace = returnPlace;
 	return sqlite3_column_double(sqlstatement, returnplace);
 }
-int64 SqlObject::ReturnValue(int returnPlace)
+int64 SqlObject::ReturnInt64(int returnPlace)
 {
 	returnplace = returnPlace;
 	return sqlite3_column_int64(sqlstatement, returnplace);
 }
-const char* ReturnValue(int returnPlace)
+const char* SqlObject::ReturnText(int returnPlace)
 {
 	returnplace = returnPlace;
-	return sqlite3_column_text(sqlstatement, returnplace);
+	return sqlite3_mprintf("%s", sqlite3_column_text(sqlstatement, returnplace));
 }
-const void* ReturnValue(int returnPlace)
+const void* SqlObject::ReturnBlob(int returnPlace)
 {
 	returnplace = returnPlace;
 	return sqlite3_column_blob(sqlstatement, returnplace);
@@ -186,6 +186,31 @@ void SqlObject::StepSql(void)
 		ealert->Launch();
 	}
 }
+/* sql step information and example */
+/*
+		// while loop to return columns //
+while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
+{
+	tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
+	openThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
+}
+
+		// single step insert or update //
+sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideatext = ? where ideaid = ?", -1, &ideaStatement, NULL);
+if(sqlValue == SQLITE_OK) // sql statement was prepared properly
+{
+	if(sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT) == SQLITE_OK) // bind was successful
+	{
+		if(sqlite3_bind_int(ideaStatement, 2, currentideaID) == SQLITE_OK) // bind was successful
+		{
+			sqlite3_step(ideaStatement); // execute update statement
+			sqlite3_finalize(ideaStatement); // finish the statement
+		}
+	}
+}
+		
+*/
+
 void SqlObject::ResetSql(void)
 {
 	if(sqlite3_reset(sqlstatement) != SQLITE_OK)
