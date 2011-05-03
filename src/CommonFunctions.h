@@ -26,7 +26,7 @@ class SqlObject
 				int				ReturnValue(int returnPlace);
 				double			ReturnValue(int returnPlace);
 				int64			ReturnValue(int returnPlace);
-				BString			ReturnValue(int returnPlace);
+				const char*		ReturnValue(int returnPlace);
 				const void*		ReturnValue(int returnPlace);
 				void			StepSql(void);
 				void			ResetSql(void);
