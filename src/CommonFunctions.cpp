@@ -158,9 +158,9 @@ int SqlObject::ReturnValue(int returnPlace)
 /*
 Result Values From A Query
 
+sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0))
+
 const void *sqlite3_column_blob(sqlite3_stmt*, int iCol);
-int sqlite3_column_bytes(sqlite3_stmt*, int iCol);
-int sqlite3_column_bytes16(sqlite3_stmt*, int iCol);
 double sqlite3_column_double(sqlite3_stmt*, int iCol);
 int sqlite3_column_int(sqlite3_stmt*, int iCol);
 sqlite3_int64 sqlite3_column_int64(sqlite3_stmt*, int iCol);

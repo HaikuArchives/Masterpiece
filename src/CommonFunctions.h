@@ -24,6 +24,9 @@ class SqlObject
 				void			BindValue(int bindPlace, const void* bindValue);// blob bind
 				void			BindValue(int bindPlace);
 				int				ReturnValue(int returnPlace);
+				double			ReturnValue(int returnPlace);
+				sqlite3_int64	ReturnValue(int returnPlace);
+				
 				void			StepSql(void);
 				void			ResetSql(void);
 				void			FinalizeSql(void);
