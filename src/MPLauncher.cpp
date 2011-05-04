@@ -162,7 +162,20 @@ void MPLauncher::PopulateLauncherListViews(void)
 {
 	openMasterpieceListView->MakeEmpty();
 	openThoughtListView->MakeEmpty();
-	
+	sqlObject = new SqlObject(mpdb, ideaStatement, "5");
+	sqlObject->PrepareSql("select ideaname, ideaid from ideatable where ismp = 1");
+	while(sqlObject->StepSql() == SQLITE_ROW)
+	{
+		openMasterpieceListView->AddItem(new IdeaStringItem(sqlObject->ReturnText(0), sqlObject->ReturnInt(1)));
+	}
+	sqlObject->FinalizeSql();
+	sqlObject->PrepareSql("select ideaname, ideaid from ideatable where ismp = 0");
+	while(sqlObject->StepSql() == SQLITE_ROW)
+	{
+		openThoughtListView->AddItem(new IdeaStringItem(sqlObject->ReturnText(0), sqlObject->ReturnInt(1)));
+	}
+	sqlObject->FinalizeSql();
+	/*
 	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid from ideatable where ismp = 1", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql query was successful
 	{
@@ -193,4 +206,5 @@ void MPLauncher::PopulateLauncherListViews(void)
 		eAlert->Launch();
 	}
 	sqlite3_finalize(ideaStatement); // finish with sql statement
+	*/
 }
