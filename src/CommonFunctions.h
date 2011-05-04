@@ -28,7 +28,9 @@ class SqlObject
 				int64			ReturnInt64(int returnPlace);
 				const char*		ReturnText(int returnPlace);
 				const void*		ReturnBlob(int returnPlace);
-				void			StepSql(void);
+				int				StepSql(void);
+				void			ClearBindings(void);
+				int64			ReturnLastInsertRowID(void);
 				void			ResetSql(void);
 				void			FinalizeSql(void);
 	private:

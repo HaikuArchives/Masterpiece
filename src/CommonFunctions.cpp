@@ -166,51 +166,34 @@ const void* SqlObject::ReturnBlob(int returnPlace)
 	returnplace = returnPlace;
 	return sqlite3_column_blob(sqlstatement, returnplace);
 }
-void SqlObject::StepSql(void)
+int64 SqlObject::ReturnLastInsertRowID(void)
+{
+	return sqlite3_last_insert_rowid(sqldb);
+}
+int SqlObject::StepSql(void)
 {
 	sqlcode = sqlite3_step(sqlstatement);
-	if(sqlcode == SQLITE_ROW)
-	{
-		// do something here
-		// might do the while here... or call the while in while(SqlObject->SqlStep()=SQITE_ROW)
-	}
-	else if(sqlcode == SQLITE_DONE)
-	{
-		// do something here
-	}
-	else
+	if(sqlcode != SQLITE_ROW && sqlcode != SQLITE_DONE)
 	{
 		tmpstring = errornumber;
-		tmpstring += " Sql Error: Step Failed";
+		tmpstring += " Sql Error: Step Failed: ";
+		tmpstring += sqlcode;
+		tmpstring += ".";
+		ealert = new ErrorAlert(tmpstring);
+		ealert->Launch();
+	}
+	return sqlcode;
+}
+void SqlObject::ClearBindings(void)
+{
+	if(sqlite3_clear_bindings(sqlstatement) != SQLITE_OK)
+	{
+		tmpstring = errornumber;
+		tmpstring += " Sql Error: Clear Bindings Failed";
 		ealert = new ErrorAlert(tmpstring);
 		ealert->Launch();
 	}
 }
-/* sql step information and example */
-/*
-		// while loop to return columns //
-while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
-{
-	tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
-	openThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlite3_column_int(ideaStatement, 1)));
-}
-
-		// single step insert or update //
-sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideatext = ? where ideaid = ?", -1, &ideaStatement, NULL);
-if(sqlValue == SQLITE_OK) // sql statement was prepared properly
-{
-	if(sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT) == SQLITE_OK) // bind was successful
-	{
-		if(sqlite3_bind_int(ideaStatement, 2, currentideaID) == SQLITE_OK) // bind was successful
-		{
-			sqlite3_step(ideaStatement); // execute update statement
-			sqlite3_finalize(ideaStatement); // finish the statement
-		}
-	}
-}
-		
-*/
-
 void SqlObject::ResetSql(void)
 {
 	if(sqlite3_reset(sqlstatement) != SQLITE_OK)
