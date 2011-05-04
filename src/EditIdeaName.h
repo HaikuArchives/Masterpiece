@@ -44,6 +44,7 @@ private:
 		BString			tmpString;
 		int				sqlValue;
 		int				currentideaID;
+		SqlObject*		sqlObject;
 };
 
 #endif

@@ -37,28 +37,15 @@ EditIdeaName::EditIdeaName(const BMessage &msg, const BMessenger &msgr, float ma
 	}
 	else // sql was successful, find the current title and populate in the titletext-settext
 	{
-		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname from ideatable where ideaid = ?", -1, &ideaStatement, NULL);
-		if(sqlValue == SQLITE_OK) // sql statement was prepared properly
+		sqlObject = new SqlObject(mpdb, ideaStatement, "22");
+		sqlObject->PrepareSql("select ideaname from ideatable where ideaid = ?");
+		sqlObject->BindValue(1, currentideaID);
+		while(sqlObject->StepSql() == SQLITE_ROW)
 		{
-			if(sqlite3_bind_int(ideaStatement, 1, currentideaID) == SQLITE_OK) // bind was successful
-			{
-				while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
-				{
-					tmpString = sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0));
-					titleText->SetText(tmpString);
-				}
-			}
-			else
-			{
-				eAlert = new ErrorAlert("1.23 Sql Error: Sql Bind Failed");
-				eAlert->Launch();
-			}
+			titleText->SetText(sqlObject->ReturnText(0));
 		}
-		else
-		{
-			eAlert = new ErrorAlert("1.22 Sql Error: Sql Prepare Failed");
-			eAlert->Launch();
-		}
+		//sqlObject->ClearBindings();
+		//sqlObject->ResetSql();
 	}
 }
 void EditIdeaName::MessageReceived(BMessage* msg)
@@ -68,6 +55,18 @@ void EditIdeaName::MessageReceived(BMessage* msg)
 		case UPDATE_IDEA_NAME: // save thought name to sql
 			if(currentideaID > 0)
 			{
+				//sqlObject->ClearBindings();
+				sqlObject->PrepareSql("update ideatable set ideaname = ? where ideaid = ?");
+				sqlObject->BindValue(1, titleText->Text());
+				sqlObject->BindValue(2, currentideaID);
+				sqlObject->StepSql();
+				//sqlObject->ClearBindings();
+				//sqlObject->FinalizeSql();
+				/**/
+				updatetitleMessage.MakeEmpty();
+				updatetitleMessage.AddString("updatetitle", titleText->Text());  // prepare message with idea name
+				updatetitleMessenger.SendMessage(&updatetitleMessage); // send message with prepare name to editor
+				/*
 				// do what i need here...
 				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideaname = ? where ideaid = ?", -1, &ideaStatement, NULL);
 				if(sqlValue == SQLITE_OK) // sql statement was prepared properly
@@ -99,6 +98,7 @@ void EditIdeaName::MessageReceived(BMessage* msg)
 					eAlert = new ErrorAlert("1.19 Sql Error: Sql Prepare Failed.");
 					eAlert->Launch();
 				}
+				*/
 			}
 			else
 			{
