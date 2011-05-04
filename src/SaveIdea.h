@@ -43,6 +43,7 @@ private:
 		BMessenger		updatetitleMessenger;
 		int				sqlValue;
 		int				currentideaID;
+		SqlObject*		sqlObject;
 };
 
 #endif

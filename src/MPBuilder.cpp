@@ -118,7 +118,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				sqlObject->PrepareSql("update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?");
 				sqlObject->BindValue(1, item->ReturnID());
 				sqlObject->StepSql();
-				sqlite3_finalize(ideaStatement); // finish with sql statement
+				sqlObject->FinalizeSql();
+				//sqlite3_finalize(ideaStatement); // finish with sql statement
 				ReorderOrderedListView(); // reorder orderedlistview items for mp
 				PopulateBuilderListViews(); // update listviews' items
 			}
