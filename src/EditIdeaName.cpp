@@ -61,7 +61,7 @@ void EditIdeaName::MessageReceived(BMessage* msg)
 				sqlObject->BindValue(2, currentideaID);
 				sqlObject->StepSql();
 				//sqlObject->ClearBindings();
-				//sqlObject->FinalizeSql();
+				sqlObject->FinalizeSql();
 				/**/
 				updatetitleMessage.MakeEmpty();
 				updatetitleMessage.AddString("updatetitle", titleText->Text());  // prepare message with idea name
