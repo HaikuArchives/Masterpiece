@@ -176,9 +176,7 @@ int SqlObject::StepSql(void)
 	if(sqlcode != SQLITE_ROW && sqlcode != SQLITE_DONE)
 	{
 		tmpstring = errornumber;
-		tmpstring += " Sql Error: Step Failed: ";
-		tmpstring += sqlcode;
-		tmpstring += ".";
+		tmpstring += " Sql Error: Step Failed";
 		ealert = new ErrorAlert(tmpstring);
 		ealert->Launch();
 	}
