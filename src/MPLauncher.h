@@ -62,6 +62,7 @@ private:
 		
 		MPBuilder*		mpBuilder;
 		MPEditor*		mpEditor;
+		SqlObject*		sqlObject;
 };
 
 #endif
