@@ -44,8 +44,6 @@ EditIdeaName::EditIdeaName(const BMessage &msg, const BMessenger &msgr, float ma
 		{
 			titleText->SetText(sqlObject->ReturnText(0));
 		}
-		//sqlObject->ClearBindings();
-		//sqlObject->ResetSql();
 	}
 }
 void EditIdeaName::MessageReceived(BMessage* msg)
@@ -55,50 +53,14 @@ void EditIdeaName::MessageReceived(BMessage* msg)
 		case UPDATE_IDEA_NAME: // save thought name to sql
 			if(currentideaID > 0)
 			{
-				//sqlObject->ClearBindings();
 				sqlObject->PrepareSql("update ideatable set ideaname = ? where ideaid = ?");
 				sqlObject->BindValue(1, titleText->Text());
 				sqlObject->BindValue(2, currentideaID);
 				sqlObject->StepSql();
-				//sqlObject->ClearBindings();
 				sqlObject->FinalizeSql();
-				/**/
 				updatetitleMessage.MakeEmpty();
 				updatetitleMessage.AddString("updatetitle", titleText->Text());  // prepare message with idea name
 				updatetitleMessenger.SendMessage(&updatetitleMessage); // send message with prepare name to editor
-				/*
-				// do what i need here...
-				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideaname = ? where ideaid = ?", -1, &ideaStatement, NULL);
-				if(sqlValue == SQLITE_OK) // sql statement was prepared properly
-				{
-					if(sqlite3_bind_text(ideaStatement, 1, titleText->Text(), -1, SQLITE_TRANSIENT) == SQLITE_OK) // bind was successful
-					{
-						if(sqlite3_bind_int(ideaStatement, 2, currentideaID) == SQLITE_OK) // bind was successful
-						{
-							sqlite3_step(ideaStatement); // execute update finished
-							sqlite3_finalize(ideaStatement); // finish the statement
-							updatetitleMessage.MakeEmpty();
-							updatetitleMessage.AddString("updatetitle", titleText->Text());  // prepare message with idea name
-							updatetitleMessenger.SendMessage(&updatetitleMessage); // send message with prepare name to editor
-						}
-						else
-						{
-							eAlert = new ErrorAlert("1.21 Sql Error: Sql Bind Failed.");
-							eAlert->Launch();
-						}
-					}
-					else
-					{
-						eAlert = new ErrorAlert("1.20 Sql Error: Sql Bind Failed.");
-						eAlert->Launch();
-					}
-				}
-				else
-				{
-					eAlert = new ErrorAlert("1.19 Sql Error: Sql Prepare Failed.");
-					eAlert->Launch();
-				}
-				*/
 			}
 			else
 			{
