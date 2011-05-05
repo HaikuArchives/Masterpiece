@@ -3,7 +3,6 @@
 
 #include <Application.h>
 
-#include "MainWindow.h"
 #include "MPLauncher.h"
 
 // initialize the application

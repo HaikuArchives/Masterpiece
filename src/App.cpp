@@ -5,9 +5,7 @@
 App::App(void)
 	:	BApplication("application/x-vnd.pjr-MasterPiece")
 {
-	//MainWindow* mainwin = new MainWindow(); // initialize the main app window
 	MPLauncher* mpLauncher = new MPLauncher(); // initialize the mplauncher window
-	//mainwin->Show(); // show the main app window
 	mpLauncher->Show(); // show the mp launcher window
 }
 
