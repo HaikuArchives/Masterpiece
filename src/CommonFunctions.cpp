@@ -292,5 +292,6 @@ may want to open and close everytime i need it or just open and close once, but 
 
 also might want to expand my error wrapper, to simply call DisplayError("15", "PREPARE", "BUSY"); which in turn calls the erroralert and populates the tmpstring with 15: Sql Error: Prepare Failed with Busy" built and then calls the launch, so my stuff is only 1 line versus 4 or 5 everytime i need to call an error for the wrapper.
 
+multiple processes can read from a single open db, but only process can write to it and locks the db.  so i think the db gets locked, the busy command comes back so the process never finishes and the db gets stuck in a locked state.
 
 */
