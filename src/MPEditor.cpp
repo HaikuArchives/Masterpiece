@@ -54,7 +54,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 		case MENU_SAV_THT: // save current idea progress
 			if(currentideaID == -1) // if its untitled insert new thought, then show saveidea to apply a name...
 			{
-				sqlObject = new SqlObject(mpdb, ideaStatement, "8");
+				//sqlObject = new SqlObject(mpdb, ideaStatement, "8");
 				sqlObject->PrepareSql("insert into ideatable (ideaname, ideatext, ismp) values('untitled', ?, 0)");
 				sqlObject->BindValue(1, editorTextView->Text());
 				sqlObject->StepSql();
@@ -65,7 +65,11 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			else // already exists, just update ideatext and save new information
 			{
-				/**/
+				sqlObject->PrepareSql("update ideatable set ideatext = ? where ideaid = ?");
+				sqlObject->BindValue(1, editorTextView->Text());
+				sqlObject->BindValue(2, currentideaID);
+				sqlObject->StepSql();
+				/*
 				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideatext = ? where ideaid = ?", -1, &ideaStatement, NULL);
 				if(sqlValue == SQLITE_OK) // sql statement was prepared properly
 				{
