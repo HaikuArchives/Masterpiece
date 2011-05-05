@@ -54,32 +54,18 @@ void MPEditor::MessageReceived(BMessage* msg)
 		case MENU_SAV_THT: // save current idea progress
 			if(currentideaID == -1) // if its untitled insert new thought, then show saveidea to apply a name...
 			{
-				sqlValue = sqlite3_prepare_v2(mpdb, "insert into ideatable (ideaname, ideatext, ismp) values('untitled', ?, 0)", -1, &ideaStatement, NULL);
-				if(sqlValue == SQLITE_OK) // sql statement was prepared properly
-				{
-					if(sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT) == SQLITE_OK) // bind was successful
-					{
-						sqlite3_step(ideaStatement); // execute insert statement
-						sqlite3_finalize(ideaStatement); // finish the statement
-						xPos = (r.right - r.left) / 2; // find xpos for window
-						yPos = (r.bottom - r.top) / 2; // find ypos for window
-						saveIdea = new SaveIdea(BMessage(UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlite3_last_insert_rowid(mpdb));
-						saveIdea->Show(); // show save window to name the untitled thought
-					}
-					else // sql didn't bind
-					{
-						eAlert = new ErrorAlert("1.9 Sql Error: Sql Bind failed.");
-						eAlert->Launch();
-					}
-				}
-				else // sql didn't prepare properly
-				{
-					eAlert = new ErrorAlert("1.10 Sql Error: Sql Prepare failed.");
-					eAlert->Launch();
-				}
+				sqlObject = new SqlObject(mpdb, ideaStatement, "8");
+				sqlObject->PrepareSql("insert into ideatable (ideaname, ideatext, ismp) values('untitled', ?, 0)");
+				sqlObject->BindValue(1, editorTextView->Text());
+				sqlObject->StepSql();
+				xPos = (r.right - r.left) / 2; // find xpos for window
+				yPos = (r.bottom - r.top) / 2; // find ypos for window
+				saveIdea = new SaveIdea(BMessage(UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlObject->ReturnLastInsertRowID());
+				saveIdea->Show(); // show save window to name the untitled thought
 			}
 			else // already exists, just update ideatext and save new information
 			{
+				/**/
 				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideatext = ? where ideaid = ?", -1, &ideaStatement, NULL);
 				if(sqlValue == SQLITE_OK) // sql statement was prepared properly
 				{
@@ -88,7 +74,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 						if(sqlite3_bind_int(ideaStatement, 2, currentideaID) == SQLITE_OK) // bind was successful
 						{
 							sqlite3_step(ideaStatement); // execute update statement
-							sqlite3_finalize(ideaStatement); // finish the statement
+							//sqlite3_finalize(ideaStatement); // finish the statement
 						}
 						else
 						{
@@ -107,6 +93,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 					eAlert = new ErrorAlert("1.13 Sql Error: Sql Prepare failed.");
 					eAlert->Launch();
 				}
+				/**/
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
