@@ -28,7 +28,13 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	}
 	if(currentideaID != -1) // if id has a real value
 	{
+		sqlObject = new SqlObject(mpdb, ideaStatement, "7");
+		sqlObject->PrepareSql("select ideatext from ideatable where ideaid = ?");
+		sqlObject->BindValue(1, currentideaID);
+		sqlObject->StepSql();
+		editorTextView->SetText(sqlObject->ReturnText(0));
 		// Pull data from db and populate thoughtview with it
+		/*
 		sqlValue = sqlite3_prepare_v2(mpdb, "select ideatext from ideatable where ideaid = ?", -1, &ideaStatement, NULL);
 		if(sqlValue == SQLITE_OK) // sql statement was prepared properly
 		{
@@ -49,6 +55,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 			eAlert = new ErrorAlert("1.8 Sql Error: Sql Prepare failed.");
 			eAlert->Launch();
 		}
+		*/
 	}
 }
 void MPEditor::MessageReceived(BMessage* msg)

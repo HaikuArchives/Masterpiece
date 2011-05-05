@@ -49,6 +49,7 @@ private:
 		int				currentideaID;
 		float			xPos;
 		float			yPos;
+		SqlObject*		sqlObject;
 };
 
 
