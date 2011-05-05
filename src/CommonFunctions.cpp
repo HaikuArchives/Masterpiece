@@ -294,4 +294,6 @@ also might want to expand my error wrapper, to simply call DisplayError("15", "P
 
 multiple processes can read from a single open db, but only process can write to it and locks the db.  so i think the db gets locked, the busy command comes back so the process never finishes and the db gets stuck in a locked state.
 
+i will modify wrapper class to open connection with OpenSql("READWRITE", "CREATE") and close with CloseSql() and any variables, etc... and then i will open and close with every need for data and then also re-initialize the sqlobject everytime i need it as well.  this will be safest and i can clear/reset/finalize without any locks or problems, hopefully...
+
 */
