@@ -10,8 +10,7 @@ public:
 				ErrorAlert(BString tmpText);
 				ErrorAlert(BString tmpText1, BString tmpText2);
 				~ErrorAlert(void);
-				int Launch(void);
-				
+		int 	Launch(void);			
 		BAlert*	tmpAlert;
 };
 

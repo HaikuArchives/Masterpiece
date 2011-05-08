@@ -29,7 +29,7 @@ EditIdeaName::EditIdeaName(const BMessage &msg, const BMessenger &msgr, float ma
 	MoveTo(mainX, mainY); // move to window position
 	
 	currentideaID = currentID; // make current idea id available to 
-	mpdb = OpenSqliteDB(); // open db
+//	mpdb = OpenSqliteDB(); // open db
 	if(mpdb == NULL) // if db failed
 	{
 		eAlert = new ErrorAlert("1.18 Sql Error: Sql DB was not opened properly.");

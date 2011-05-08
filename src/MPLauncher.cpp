@@ -49,7 +49,7 @@ MPLauncher::MPLauncher(void)
 		.SetInsets(5, 5, 5, 2)
 	);
 
-	mpdb = OpenSqliteDB(); // open sqldb
+	//mpdb = OpenSqliteDB(); // open sqldb
 	if(mpdb == NULL)
 	{
 		eAlert = new ErrorAlert("1.4. Sql Error: SQL DB was not opened properly.");

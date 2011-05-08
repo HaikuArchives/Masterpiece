@@ -27,7 +27,7 @@ SaveIdea::SaveIdea(const BMessage &msg, const BMessenger &msgr, float mainX, flo
 	MoveTo(mainX, mainY); // move to window position
 	
 	currentideaID = currentID; // make current idea id available to 
-	mpdb = OpenSqliteDB(); // open db
+	//mpdb = OpenSqliteDB(); // open db
 	if(mpdb == NULL) // if db failed
 	{
 		eAlert = new ErrorAlert("1.14 Sql Error: Sql DB was not opened properly.");

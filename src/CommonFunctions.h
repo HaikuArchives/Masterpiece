@@ -9,12 +9,13 @@
 
 #include "ErrorAlert.h"
 
-sqlite3*	OpenSqliteDB(void);
+//sqlite3*	OpenSqliteDB(void);
+void		DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
 
 class SqlObject
 {
 	public:
-								SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* errorNumber);
+								SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* openType);
 								~SqlObject(void);
 				void			PrepareSql(const char* sqlQuery);
 				void			BindValue(int bindPlace, int bindValue);
@@ -33,6 +34,7 @@ class SqlObject
 				int64			ReturnLastInsertRowID(void);
 				void			ResetSql(void);
 				void			FinalizeSql(void);
+				void			CloseSql(void);
 	private:
 				sqlite3*		sqldb;
 				const char*		sqlquery;

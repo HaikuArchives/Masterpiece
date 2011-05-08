@@ -20,7 +20,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	
 	currentideaID = ideaID; // pass current idea id selected to editor window for use
 	
-	mpdb = OpenSqliteDB(); // open mpdb db
+//	mpdb = OpenSqliteDB(); // open mpdb db
 	if(mpdb == NULL) // if db doesn't exist
 	{
 		eAlert = new ErrorAlert("1.6 Sql Error: Sql DB was not opened properly.");

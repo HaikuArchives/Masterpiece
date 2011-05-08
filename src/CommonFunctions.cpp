@@ -1,5 +1,6 @@
 #include "CommonFunctions.h"
 
+/*
 // open sqlite db and return it as the db object i need
 sqlite3* OpenSqliteDB()
 {
@@ -51,6 +52,15 @@ sqlite3* OpenSqliteDB()
 		eAlert->Launch();
 	}
 	return opendb;
+}
+*/
+void DisplayError(const char* errorNumber, const char* errorType, const char* errorValue)
+{
+	BString tmpString = errorNumber;
+	ErrorAlert* ealert;
+	tmpString += ". SqlError: ";
+	ealert = new ErrorAlert(tmpString);
+	ealert->Launch();
 }
 
 SqlObject::SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* errorNumber)
@@ -288,7 +298,10 @@ The C parameter to sqlite3_close(C) must be either a NULL pointer or an sqlite3 
 
 OPEN:
 
-may want to open and close everytime i need it or just open and close once, but i must reset, finalize and clear all bindings with each prepare... i'm not doing that properly right now and i think that is where i am getting into trouble...  also might to expand my error statements to include the different error responses... such as if returnvalue = sqlite_busy then tmpstring += " BUSY...", etc..
+may want to open and close everytime i need it or just open and close once, but i must reset, finalize and clear all bindings
+with each prepare... i'm not doing that properly right now and i think that is where i am getting into trouble... 
+also might to expand my error statements to include the different error responses... such as if returnvalue = sqlite_busy then
+tmpstring += " BUSY...", etc..
 
 also might want to expand my error wrapper, to simply call DisplayError("15", "PREPARE", "BUSY"); which in turn calls the erroralert and populates the tmpstring with 15: Sql Error: Prepare Failed with Busy" built and then calls the launch, so my stuff is only 1 line versus 4 or 5 everytime i need to call an error for the wrapper.
 

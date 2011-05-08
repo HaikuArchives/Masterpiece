@@ -38,7 +38,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	
 	currentideaID = ideaID; // pass current idea id selected to builder window to use
 	
-	mpdb = OpenSqliteDB(); // open mpdb db
+	//mpdb = OpenSqliteDB(); // open mpdb db
 	if(mpdb == NULL) // if db doesn't exist
 	{
 		eAlert = new ErrorAlert("1.21 Sql Error: Sql DB was not opened properly");
