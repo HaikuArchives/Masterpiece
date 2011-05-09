@@ -50,6 +50,7 @@ MPLauncher::MPLauncher(void)
 	);
 
 	//mpdb = OpenSqliteDB(); // open sqldb
+	/*
 	if(mpdb == NULL)
 	{
 		eAlert = new ErrorAlert("1.4. Sql Error: SQL DB was not opened properly.");
@@ -57,10 +58,11 @@ MPLauncher::MPLauncher(void)
 	}
 	else  // populate listview's here...
 	{
-		PopulateLauncherListViews();
-		openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
-		openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
 	}
+	*/
+	PopulateLauncherListViews();
+	openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
+	openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
 }
 void MPLauncher::MessageReceived(BMessage* msg)
 {

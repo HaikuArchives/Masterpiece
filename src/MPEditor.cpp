@@ -19,15 +19,23 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	);
 	
 	currentideaID = ideaID; // pass current idea id selected to editor window for use
-	
+	/*
 //	mpdb = OpenSqliteDB(); // open mpdb db
 	if(mpdb == NULL) // if db doesn't exist
 	{
 		eAlert = new ErrorAlert("1.6 Sql Error: Sql DB was not opened properly.");
 		eAlert->Launch();
 	}
+	*/
 	if(currentideaID != -1) // if id has a real value
 	{
+		sqlObject = new SqlObject(ideaStatement, "7");
+		sqlObject->PrepareSql("select ideatext from ideatable where ideaid = ?");
+		sqlObject->BindValue(1, currentideaID);
+		sqlObject->StepSql();
+		editorTextView->SetText(sqlObject->ReturnText(0));
+		sqlObject->FinalizeSql();
+		sqlObject->CloseSql();
 		// Pull data from db and populate thoughtview with it
 		/*
 		sqlObject = new SqlObject(mpdb, ideaStatement, "7");
@@ -57,20 +65,26 @@ void MPEditor::MessageReceived(BMessage* msg)
 			if(currentideaID == -1) // if its untitled insert new thought, then show saveidea to apply a name...
 			{
 				//sqlObject = new SqlObject(mpdb, ideaStatement, "8");
+				sqlObject = new SqlObject(ideaStatement, "8");
 				sqlObject->PrepareSql("insert into ideatable (ideaname, ideatext, ismp) values('untitled', ?, 0)");
 				sqlObject->BindValue(1, editorTextView->Text());
 				sqlObject->StepSql();
 				xPos = (r.right - r.left) / 2; // find xpos for window
 				yPos = (r.bottom - r.top) / 2; // find ypos for window
 				saveIdea = new SaveIdea(BMessage(UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlObject->ReturnLastInsertRowID());
+				sqlObject->FinalizeSql();
+				sqlObject->CloseSql();
 				saveIdea->Show(); // show save window to name the untitled thought
 			}
 			else // already exists, just update ideatext and save new information
 			{
+				sqlObject = new SqlObject(ideaStatement, "9");
 				sqlObject->PrepareSql("update ideatable set ideatext = ? where ideaid = ?");
 				sqlObject->BindValue(1, editorTextView->Text());
 				sqlObject->BindValue(2, currentideaID);
 				sqlObject->StepSql();
+				sqlObject->FinalizeSql();
+				sqlObject->CloseSql();
 				/*
 				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideatext = ? where ideaid = ?", -1, &ideaStatement, NULL);
 				if(sqlValue == SQLITE_OK) // sql statement was prepared properly
@@ -99,7 +113,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 					eAlert = new ErrorAlert("1.13 Sql Error: Sql Prepare failed.");
 					eAlert->Launch();
 				}
-				/**/
+				*/
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive

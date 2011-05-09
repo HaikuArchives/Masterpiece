@@ -37,7 +37,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	);
 	
 	currentideaID = ideaID; // pass current idea id selected to builder window to use
-	
+	/*
 	//mpdb = OpenSqliteDB(); // open mpdb db
 	if(mpdb == NULL) // if db doesn't exist
 	{
@@ -52,6 +52,12 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 		orderedThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_ORDER_TEXT));
 		orderedThoughtListView->SetInvocationMessage(new BMessage(ORDER_THOUGHT_EDITOR));
 	}
+	*/
+	PopulateBuilderListViews();
+	availableThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_AVAIL_TEXT));
+	availableThoughtListView->SetInvocationMessage(new BMessage(AVAIL_THOUGHT_EDITOR));
+	orderedThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_ORDER_TEXT));
+	orderedThoughtListView->SetInvocationMessage(new BMessage(ORDER_THOUGHT_EDITOR));
 }
 void MPBuilder::MessageReceived(BMessage* msg)
 {
@@ -114,14 +120,12 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
-				/*
-				sqlObject = new SqlObject(mpdb, ideaStatement, "38");
+				sqlObject = new SqlObject(ideaStatement, "38");
 				sqlObject->PrepareSql("update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?");
 				sqlObject->BindValue(1, item->ReturnID());
 				sqlObject->StepSql();
 				sqlObject->FinalizeSql();
-				//sqlite3_finalize(ideaStatement); // finish with sql statement
-				*/
+				sqlObject->CloseSql();
 				ReorderOrderedListView(); // reorder orderedlistview items for mp
 				PopulateBuilderListViews(); // update listviews' items
 			}
