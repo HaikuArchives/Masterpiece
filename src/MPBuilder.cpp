@@ -69,10 +69,11 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
+				int totalItems = orderedThoughtListView->CountItems() + 1;
 				sqlObject = new SqlObject(ideaStatement, "28");
 				sqlObject->PrepareSql("update ideatable set mpid=?, ordernumber=? where ideaid=?");
 				sqlObject->BindValue(1, currentideaID);
-				sqlObject->BindValue(2, (int)(orderedThoughtListView->CountItems()+1));
+				sqlObject->BindValue(2, totalItems);
 				sqlObject->BindValue(3, item->ReturnID());
 				sqlObject->StepSql();
 				sqlObject->FinalizeSql();
@@ -424,20 +425,21 @@ void MPBuilder::ReorderOrderedListView(void)
 	sqlObject = new SqlObject(ideaStatement, "33");
 	sqlObject->PrepareSql("select ideaid from ideatable where ismp=0 and mpid=? order by ordernumber");
 	sqlObject->BindValue(1, currentideaID);
+	sqlObject2 = new SqlObject(reorderStatement, "34");
 	while(sqlObject->StepSql() == SQLITE_ROW)
 	{
-		sqlObject2 = new SqlObject(reorderStatement, "34");
 		sqlObject2->PrepareSql("update ideatable set ordernumber=? where ideaid=?");
 		sqlObject2->BindValue(1, a);
 		sqlObject2->BindValue(2, sqlObject->ReturnInt(0));
 		sqlObject2->StepSql();
 		sqlObject2->ResetSql();
-		sqlObject2->FinalizeSql();
-		sqlObject2->CloseSql();
+		sqlObject2->ClearBindings();
 		a++;
 	}
 	sqlObject->FinalizeSql();
+	sqlObject2->FinalizeSql();
 	sqlObject->CloseSql();
+	sqlObject2->CloseSql();
 	/*
 	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaid from ideatable where ismp=0 and mpid=? order by ordernumber", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql statement was prepared
@@ -521,6 +523,7 @@ void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 	sqlObject->BindValue(2, item->ReturnID());
 	sqlObject->StepSql();
 	sqlObject->ResetSql();
+	sqlObject->ClearBindings();
 	if(newOrderNumber == 0)
 	{
 		sqlObject->BindValue(1, (item2->ReturnOrderNumber() + 1));
