@@ -423,9 +423,9 @@ void MPBuilder::ReorderOrderedListView(void)
 {
 	int a = 1;
 	sqlObject = new SqlObject(ideaStatement, "33");
+	sqlObject2 = new SqlObject(reorderStatement, "34");
 	sqlObject->PrepareSql("select ideaid from ideatable where ismp=0 and mpid=? order by ordernumber");
 	sqlObject->BindValue(1, currentideaID);
-	sqlObject2 = new SqlObject(reorderStatement, "34");
 	while(sqlObject->StepSql() == SQLITE_ROW)
 	{
 		sqlObject2->PrepareSql("update ideatable set ordernumber=? where ideaid=?");
@@ -437,8 +437,8 @@ void MPBuilder::ReorderOrderedListView(void)
 		a++;
 	}
 	sqlObject->FinalizeSql();
-	sqlObject2->FinalizeSql();
 	sqlObject->CloseSql();
+	sqlObject2->FinalizeSql();
 	sqlObject2->CloseSql();
 	/*
 	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaid from ideatable where ismp=0 and mpid=? order by ordernumber", -1, &ideaStatement, NULL);
