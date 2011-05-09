@@ -386,8 +386,8 @@ void MPBuilder::PopulateBuilderListViews(void)
 		sqlObject->BindValue(1, currentideaID);
 		while(sqlObject->StepSql() == SQLITE_ROW)
 		{
-			BString tmpString = sqlite3_mprintf("%d. %s", sqlObject->ReturnInt(4), sqlObject->ReturnText(0));
-			orderedThoughtListView->AddItem(new IdeaStringItem(tmpString, sqlObject->ReturnText(1), sqlObject->ReturnInt(2), sqlObject->ReturnInt(3), sqlObject->ReturnInt(4), sqlObject->ReturnInt(5)));
+			BString tmperString = sqlite3_mprintf("%d. %s", sqlObject->ReturnInt(4), sqlObject->ReturnText(0));
+			orderedThoughtListView->AddItem(new IdeaStringItem(tmperString, sqlObject->ReturnText(1), sqlObject->ReturnInt(2), sqlObject->ReturnInt(3), sqlObject->ReturnInt(4), sqlObject->ReturnInt(5)));
 		}
 		sqlObject->FinalizeSql();
 		sqlObject->CloseSql();
@@ -430,14 +430,12 @@ void MPBuilder::ReorderOrderedListView(void)
 		sqlObject2->PrepareSql("update ideatable set ordernumber=? where ideaid=?");
 		sqlObject2->BindValue(1, a);
 		sqlObject2->BindValue(2, sqlObject->ReturnInt(0));
-		if(sqlObject2->StepSql() == SQLITE_DONE)
-		{
-			sqlObject2->ResetSql();
-			a++;
-		}
+		sqlObject2->StepSql();
+		sqlObject2->ResetSql();
+		sqlObject2->FinalizeSql();
+		sqlObject2->CloseSql();
+		a++;
 	}
-	sqlObject2->FinalizeSql();
-	sqlObject2->CloseSql();
 	sqlObject->FinalizeSql();
 	sqlObject->CloseSql();
 	/*
@@ -521,7 +519,7 @@ void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 	sqlObject->PrepareSql("update ideatable set ordernumber=? where ideaid=?");
 	sqlObject->BindValue(1, item2->ReturnOrderNumber());
 	sqlObject->BindValue(2, item->ReturnID());
-	sqlObject->StepSql()
+	sqlObject->StepSql();
 	sqlObject->ResetSql();
 	if(newOrderNumber == 0)
 	{
@@ -539,7 +537,6 @@ void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 	sqlObject->StepSql();
 	sqlObject->FinalizeSql();
 	sqlObject->CloseSql();
-	}
 	/*
 	sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ordernumber=? where ideaid=?", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql statement was prepared
