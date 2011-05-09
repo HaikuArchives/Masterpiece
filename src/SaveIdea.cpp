@@ -27,12 +27,14 @@ SaveIdea::SaveIdea(const BMessage &msg, const BMessenger &msgr, float mainX, flo
 	MoveTo(mainX, mainY); // move to window position
 	
 	currentideaID = currentID; // make current idea id available to 
+	/*
 	//mpdb = OpenSqliteDB(); // open db
 	if(mpdb == NULL) // if db failed
 	{
 		eAlert = new ErrorAlert("1.14 Sql Error: Sql DB was not opened properly.");
 		eAlert->Launch();
 	}
+	*/
 }
 void SaveIdea::MessageReceived(BMessage* msg)
 {
@@ -41,13 +43,13 @@ void SaveIdea::MessageReceived(BMessage* msg)
 		case SAVE_IDEA: // save thought name to sql
 			if(currentideaID > 0)
 			{
-				/*
-				sqlObject = new SqlObject(mpdb, ideaStatement, "15");
+				sqlObject = new SqlObject(ideaStatement, "15");
 				sqlObject->PrepareSql("update ideatable set ideaname = ? where ideaid = ?");
 				sqlObject->BindValue(1, titleText->Text());
 				sqlObject->BindValue(2, currentideaID);
 				sqlObject->StepSql();
 				sqlObject->FinalizeSql();
+				sqlObject->CloseSql();
 				updatetitleMessage.MakeEmpty();
 				updatetitleMessage.AddString("updatetitle", titleText->Text());
 				updatetitleMessenger.SendMessage(&updatetitleMessage);
