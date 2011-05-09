@@ -162,6 +162,7 @@ void MPLauncher::PopulateLauncherListViews(void)
 {
 	openMasterpieceListView->MakeEmpty();
 	openThoughtListView->MakeEmpty();
+	/*
 	sqlObject = new SqlObject(mpdb, ideaStatement, "5");
 	sqlObject->PrepareSql("select ideaname, ideaid from ideatable where ismp = 1");
 	while(sqlObject->StepSql() == SQLITE_ROW)
@@ -175,4 +176,5 @@ void MPLauncher::PopulateLauncherListViews(void)
 		openThoughtListView->AddItem(new IdeaStringItem(sqlObject->ReturnText(0), sqlObject->ReturnInt(1)));
 	}
 	sqlObject->FinalizeSql();
+	*/
 }

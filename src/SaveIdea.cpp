@@ -41,6 +41,7 @@ void SaveIdea::MessageReceived(BMessage* msg)
 		case SAVE_IDEA: // save thought name to sql
 			if(currentideaID > 0)
 			{
+				/*
 				sqlObject = new SqlObject(mpdb, ideaStatement, "15");
 				sqlObject->PrepareSql("update ideatable set ideaname = ? where ideaid = ?");
 				sqlObject->BindValue(1, titleText->Text());
@@ -50,6 +51,7 @@ void SaveIdea::MessageReceived(BMessage* msg)
 				updatetitleMessage.MakeEmpty();
 				updatetitleMessage.AddString("updatetitle", titleText->Text());
 				updatetitleMessenger.SendMessage(&updatetitleMessage);
+				*/
 			}
 			else
 			{

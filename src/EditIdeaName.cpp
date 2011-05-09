@@ -37,6 +37,7 @@ EditIdeaName::EditIdeaName(const BMessage &msg, const BMessenger &msgr, float ma
 	}
 	else // sql was successful, find the current title and populate in the titletext-settext
 	{
+		/*
 		sqlObject = new SqlObject(mpdb, ideaStatement, "22");
 		sqlObject->PrepareSql("select ideaname from ideatable where ideaid = ?");
 		sqlObject->BindValue(1, currentideaID);
@@ -44,6 +45,7 @@ EditIdeaName::EditIdeaName(const BMessage &msg, const BMessenger &msgr, float ma
 		{
 			titleText->SetText(sqlObject->ReturnText(0));
 		}
+		*/
 	}
 }
 void EditIdeaName::MessageReceived(BMessage* msg)
@@ -53,6 +55,7 @@ void EditIdeaName::MessageReceived(BMessage* msg)
 		case UPDATE_IDEA_NAME: // save thought name to sql
 			if(currentideaID > 0)
 			{
+				/*
 				sqlObject->PrepareSql("update ideatable set ideaname = ? where ideaid = ?");
 				sqlObject->BindValue(1, titleText->Text());
 				sqlObject->BindValue(2, currentideaID);
@@ -61,6 +64,7 @@ void EditIdeaName::MessageReceived(BMessage* msg)
 				updatetitleMessage.MakeEmpty();
 				updatetitleMessage.AddString("updatetitle", titleText->Text());  // prepare message with idea name
 				updatetitleMessenger.SendMessage(&updatetitleMessage); // send message with prepare name to editor
+				*/
 			}
 			else
 			{

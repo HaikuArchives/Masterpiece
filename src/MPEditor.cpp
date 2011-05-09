@@ -29,11 +29,13 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	if(currentideaID != -1) // if id has a real value
 	{
 		// Pull data from db and populate thoughtview with it
+		/*
 		sqlObject = new SqlObject(mpdb, ideaStatement, "7");
 		sqlObject->PrepareSql("select ideatext from ideatable where ideaid = ?");
 		sqlObject->BindValue(1, currentideaID);
 		sqlObject->StepSql();
 		editorTextView->SetText(sqlObject->ReturnText(0));
+		*/
 	}
 }
 void MPEditor::MessageReceived(BMessage* msg)

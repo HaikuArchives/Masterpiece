@@ -114,12 +114,14 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
+				/*
 				sqlObject = new SqlObject(mpdb, ideaStatement, "38");
 				sqlObject->PrepareSql("update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?");
 				sqlObject->BindValue(1, item->ReturnID());
 				sqlObject->StepSql();
 				sqlObject->FinalizeSql();
 				//sqlite3_finalize(ideaStatement); // finish with sql statement
+				*/
 				ReorderOrderedListView(); // reorder orderedlistview items for mp
 				PopulateBuilderListViews(); // update listviews' items
 			}

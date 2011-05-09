@@ -15,7 +15,7 @@ void		DisplayError(const char* errorNumber, const char* errorType, const char* e
 class SqlObject
 {
 	public:
-								SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* openType);
+								SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* openType, const char* errorNumber);
 								~SqlObject(void);
 				void			PrepareSql(const char* sqlQuery);
 				void			BindValue(int bindPlace, int bindValue);
