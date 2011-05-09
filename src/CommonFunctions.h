@@ -16,6 +16,7 @@ class SqlObject
 {
 	public:
 								SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber);
+								SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber, sqlite3* openDB);
 								~SqlObject(void);
 				void			PrepareSql(const char* sqlQuery);
 				void			BindValue(int bindPlace, int bindValue);
@@ -35,6 +36,7 @@ class SqlObject
 				void			ResetSql(void);
 				void			FinalizeSql(void);
 				void			CloseSql(void);
+				sqlite3*		ReturnSqlDB(void);
 	private:
 				sqlite3*		sqldb;
 				const char*		sqlquery;

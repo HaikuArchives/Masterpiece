@@ -65,7 +65,12 @@ void DisplayError(const char* errorNumber, const char* errorType, const char* er
 	ealert = new ErrorAlert(tmpString);
 	ealert->Launch();
 }
-
+SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber, sqlite3* openDB)
+{
+	sqldb = openDB;
+	sqlstatement = sqlStatement;
+	errornumber = errorNumber;
+}
 SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber)
 {
 	sqldb = NULL;
@@ -238,4 +243,8 @@ void SqlObject::CloseSql(void)
 	{
 		DisplayError(errornumber, "CLOSE", "BUSY");
 	}
+}
+sqlite3* SqlObject::ReturnSqlDB(void)
+{
+	return sqldb;
 }
