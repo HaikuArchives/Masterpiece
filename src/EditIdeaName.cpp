@@ -76,7 +76,6 @@ void EditIdeaName::MessageReceived(BMessage* msg)
 				updatetitleMessage.MakeEmpty();
 				updatetitleMessage.AddString("updatetitle", titleText->Text());  // prepare message with idea name
 				updatetitleMessenger.SendMessage(&updatetitleMessage); // send message with prepare name to editor
-				*/
 			}
 			else
 			{

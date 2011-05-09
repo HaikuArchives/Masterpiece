@@ -53,7 +53,6 @@ void SaveIdea::MessageReceived(BMessage* msg)
 				updatetitleMessage.MakeEmpty();
 				updatetitleMessage.AddString("updatetitle", titleText->Text());
 				updatetitleMessenger.SendMessage(&updatetitleMessage);
-				*/
 			}
 			else
 			{
