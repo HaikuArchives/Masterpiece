@@ -66,14 +66,13 @@ void DisplayError(const char* errorNumber, const char* errorType, const char* er
 	ealert->Launch();
 }
 
-SqlObject::SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* openType, const char* errorNumber)
+SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber)
 {
-	sqldb = sqlDB;
+	sqldb = NULL;
 	sqlstatement = sqlStatement;
 	errornumber = errorNumber;
 	char*		sqlErrMsg;
 	int			sqlValue;
-	sqlite3* 	opendb;
 	BString		tmpString;
 	sqlErrMsg = 0;
 	app_info info;
@@ -83,7 +82,7 @@ SqlObject::SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* ope
 	BString tmpPath = path.Path();
 	tmpPath += "/MasterPiece.db";
 	sqlValue = sqlite3_open_v2(tmpPath, &sqldb, SQLITE_OPEN_READWRITE, NULL); // open db
-	if(sqlite3_errcode(opendb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure
+	if(sqlite3_errcode(sqldb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure
 	{
 		sqlValue = sqlite3_open_v2(tmpPath, &sqldb, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL); 
 		if(sqlite3_errcode(sqldb) == 0) // sqlite_ok
@@ -100,7 +99,7 @@ SqlObject::SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* ope
 			DisplayError("1.0", "OPEN", sqlite3_errmsg(sqldb));
 		}
 	}
-	else if(sqlite3_errcode(opendb) == 0) // sqlite_OK, it exists
+	else if(sqlite3_errcode(sqldb) == 0) // sqlite_OK, it exists
 	{
 		//no error, so i will return opendb at end;
 	}
@@ -108,6 +107,7 @@ SqlObject::SqlObject(sqlite3* sqlDB, sqlite3_stmt* sqlStatement, const char* ope
 	{
 		DisplayError("1.2", "OPEN", sqlite3_errmsg(sqldb));
 	}
+	sqlite3_free(sqlErrMsg);
 }
 void SqlObject::PrepareSql(const char* sqlQuery)
 {

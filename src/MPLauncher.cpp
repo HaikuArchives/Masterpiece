@@ -153,8 +153,8 @@ void MPLauncher::MessageReceived(BMessage* msg)
 }
 bool MPLauncher::QuitRequested(void)
 {
-	sqlite3_free(sqlErrMsg); // free up sql
-	sqlite3_close(mpdb); // close db
+	//sqlite3_free(sqlErrMsg); // free up sql
+	//sqlite3_close(mpdb); // close db
 	be_app->PostMessage(B_QUIT_REQUESTED); // exit application
 	return true;
 }
@@ -162,6 +162,23 @@ void MPLauncher::PopulateLauncherListViews(void)
 {
 	openMasterpieceListView->MakeEmpty();
 	openThoughtListView->MakeEmpty();
+	sqlObject = new SqlObject(ideaStatement, "5");
+	sqlObject->PrepareSql("select ideaname, ideaid from ideatable where ismp = 1");
+	while(sqlObject->StepSql() == SQLITE_ROW)
+	{
+		openMasterpieceListView->AddItem(new IdeaStringItem(sqlObject->ReturnText(0), sqlObject->ReturnInt(1)));
+	}
+	sqlObject->FinalizeSql();
+	sqlObject->CloseSql();
+	
+	sqlObject = new SqlObject(ideaStatement, "6");
+	sqlObject->PrepareSql("select ideaname, ideaid from ideatable where ismp = 0");
+	while(sqlObject->StepSql() == SQLITE_ROW)
+	{
+		openThoughtListView->AddItem(new IdeaStringItem(sqlObject->ReturnText(0), sqlObject->ReturnInt(1)));
+	}
+	sqlObject->FinalizeSql();
+	sqlObject->CloseSql();
 	/*
 	sqlObject = new SqlObject(mpdb, ideaStatement, "5");
 	sqlObject->PrepareSql("select ideaname, ideaid from ideatable where ismp = 1");
