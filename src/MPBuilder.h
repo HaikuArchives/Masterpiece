@@ -79,6 +79,7 @@ private:
 		float			xPos;
 		float			yPos;
 		SqlObject*		sqlObject;
+		SqlObject*		sqlObject2;
 };
 
 #endif

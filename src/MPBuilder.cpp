@@ -361,6 +361,16 @@ void MPBuilder::PopulateBuilderListViews(void)
 	sqlite3_finalize(ideaStatement); // finish with sql statement
 	if(currentideaID != -1) // if id has a real value...
 	{
+		sqlObject = new SqlObject(ideaStatement, "23");
+		sqlObject->PrepareSql("select ideaname, ideatext, ismp, mpid, ordernumber, ideaid from ideatable where ismp=0 and mpid=? order by ordernumber");
+		sqlObject->BindValue(1, currentideaID);
+		while(sqlObject->StepSql() == SQLITE_ROW)
+		{
+			orderedThoughtListView->AddItem(new IdeaStringItem(sqlite3_mprintf("%d, %s", sqlite3_column_int(ideaStatement, 4), sqlite3_column_text(ideaStatement, 0)), sqlObject->ReturnText(1), sqlObject->ReturnInt(2), sqlObject->ReturnInt(3), sqlObject->ReturnInt(4), sqlObject->ReturnInt(5)));
+		}
+		sqlObject->FinalizeSql();
+		sqlObject->CloseSql();
+		/*
 		// populate the ordered list items from here with the information from passed id...
 		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideatext, ismp, mpid, ordernumber, ideaid from ideatable where ismp=0 and mpid=? order by ordernumber", -1, &ideaStatement, NULL);
 		if(sqlValue == SQLITE_OK) // sql statement was prepared
@@ -384,11 +394,22 @@ void MPBuilder::PopulateBuilderListViews(void)
 			eAlert->Launch();
 		}
 		sqlite3_finalize(ideaStatement); // finish with sql statement
+		*/
 	}
 }
 void MPBuilder::ReorderOrderedListView(void)
 {
 	int a = 1;
+	sqlObject = new SqlObject(ideaStatement, "33");
+	sqlObject->PrepareSql("select ideaid from ideatable where ismp=0 and mpid=? order by ordernumber");
+	sqlObject->BindValue(1, currentideaID);
+	while(sqlObject->StepSql() == SQLITE_ROW)
+	{
+		sqlObject2 = new SqlObject(reorderStatement, "34");
+		sqlObject2->PrepareSql("update ideatable set ordernumber=? where ideaid=?");
+		sqlObject2->BindValue(1, a);
+	}
+	/*
 	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaid from ideatable where ismp=0 and mpid=? order by ordernumber", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql statement was prepared
 	{
@@ -446,6 +467,7 @@ void MPBuilder::ReorderOrderedListView(void)
 	}
 	sqlite3_finalize(ideaStatement); // finish with sql statement
 	sqlite3_finalize(reorderStatement); // finish with sql statement
+	*/
 }
 void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 {
