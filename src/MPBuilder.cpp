@@ -345,6 +345,15 @@ void MPBuilder::PopulateBuilderListViews(void)
 {
 	availableThoughtListView->MakeEmpty();
 	orderedThoughtListView->MakeEmpty();
+	sqlObject = new SqlObject(ideaStatement, "30");
+	sqlObject->PrepareSql("select ideaname, ideaid, ideatext from ideatable where ismp = 0 and mpid is null");
+	while(sqlObject->StepSql() == SQLITE_ROW)
+	{
+		availableThoughtListView->AddItem(new IdeaStringItem(sqlObject->ReturnText(0), sqlObject->ReturnText(2), sqlObject->ReturnInt(1)));
+	}
+	sqlObject->FinalizeSql();
+	sqlObject->CloseSql();
+	/*
 	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid, ideatext from ideatable where ismp = 0 and mpid is null", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql statement was prepared
 	{
@@ -359,6 +368,7 @@ void MPBuilder::PopulateBuilderListViews(void)
 		eAlert->Launch();
 	}
 	sqlite3_finalize(ideaStatement); // finish with sql statement
+	*/
 	if(currentideaID != -1) // if id has a real value...
 	{
 		sqlObject = new SqlObject(ideaStatement, "23");
@@ -408,7 +418,17 @@ void MPBuilder::ReorderOrderedListView(void)
 		sqlObject2 = new SqlObject(reorderStatement, "34");
 		sqlObject2->PrepareSql("update ideatable set ordernumber=? where ideaid=?");
 		sqlObject2->BindValue(1, a);
+		sqlObject2->BindValue(2, sqlObject->ReturnInt(0));
+		if(sqlObject2->StepSql() == SQLITE_DONE)
+		{
+			sqlObject2->ResetSql();
+			a++;
+		}
 	}
+	sqlObject2->FinalizeSql();
+	sqlObject2->CloseSql();
+	sqlObject->FinalizeSql();
+	sqlObject->CloseSql();
 	/*
 	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaid from ideatable where ismp=0 and mpid=? order by ordernumber", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql statement was prepared
@@ -486,6 +506,31 @@ void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 	{
 		item2 = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(newOrderNumber));
 	}
+	sqlObject = new SqlObject(ideaStatement, "40");
+	sqlObject->PrepareSql("update ideatable set ordernumber=? where ideaid=?");
+	sqlObject->BindValue(1, item2->ReturnOrderNumber());
+	sqlObject->BindValue(2, item->ReturnID());
+	if(sqlObject->StepSql() == SQLITE_DONE)
+	{
+		sqlObject->ResetSql();
+		if(newOrderNumber == 0)
+		{
+			sqlObject->BindValue(1, (item2->ReturnOrderNumber()+1));
+		}
+		else if(newOrderNumber == (orderedThoughtListView->CountItems() - 1))
+		{
+			sqlObject->BindValue(1, (item2->ReturnOrderNumber() - 1));
+		}
+		else
+		{
+			sqlObject->BindValue(1, item->ReturnOrderNumber());
+		}
+		sqlObject->BindValue(2, item2->ReturnID());
+		sqlObject->StepSql();
+		sqlObject->FinalizeSql();
+		sqlObject->CloseSql();
+	}
+	/*
 	sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ordernumber=? where ideaid=?", -1, &ideaStatement, NULL);
 	if(sqlValue == SQLITE_OK) // sql statement was prepared
 	{
@@ -557,6 +602,7 @@ void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 		eAlert->Launch();
 	}
 	sqlite3_finalize(ideaStatement); // finalize the sql statement
+	*/
 	ReorderOrderedListView(); // reorder orderedlistview items for mp
 	PopulateBuilderListViews(); // update listviews' items
 	orderedThoughtListView->Select(newOrderNumber); // highlight the newly moved item
