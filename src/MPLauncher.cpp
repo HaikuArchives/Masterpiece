@@ -48,21 +48,9 @@ MPLauncher::MPLauncher(void)
 		.Add(new BScrollView("scroll_thoughtlist", openThoughtListView,  B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 2, 3, 2, 3)
 		.SetInsets(5, 5, 5, 2)
 	);
-
-	//mpdb = OpenSqliteDB(); // open sqldb
-	/*
-	if(mpdb == NULL)
-	{
-		eAlert = new ErrorAlert("1.4. Sql Error: SQL DB was not opened properly.");
-		eAlert->Launch();
-	}
-	else  // populate listview's here...
-	{
-	}
-	*/
-	PopulateLauncherListViews();
-	openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP));
-	openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT));
+	PopulateLauncherListViews(); // populate listview's here
+	openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP)); // double click action
+	openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT)); // double click action
 }
 void MPLauncher::MessageReceived(BMessage* msg)
 {
