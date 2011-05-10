@@ -438,7 +438,7 @@ void MPBuilder::ReorderOrderedListView(void)
 	}
 	sqlObject2->FinalizeSql();
 	sqlObject->FinalizeSql();
-	sqlObject->CloseSql();
+	//sqlObject->CloseSql();
 	//sqlObject2->FinalizeSql();
 	//sqlObject2->CloseSql();
 	/*

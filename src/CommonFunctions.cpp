@@ -239,9 +239,12 @@ void SqlObject::FinalizeSql(void)
 }
 void SqlObject::CloseSql(void)
 {
-	if(sqlite3_close(sqldb) != SQLITE_OK)
+	sqlcode = sqlite3_close(sqldb);
+	if(sqlcode != SQLITE_OK)
 	{
-		DisplayError(errornumber, "CLOSE", "BUSY");
+		if(sqlcode == SQLITE_BUSY) DisplayError(errornumber, "CLOSE", "BUSY");
+		else if(sqlcode == SQLITE_ERROR) DisplayError(errornumber, "CLOSE", "ERROR");
+		else DisplayError(errornumber, "CLOSE", "OTHER");
 	}
 }
 sqlite3* SqlObject::ReturnSqlDB(void)
