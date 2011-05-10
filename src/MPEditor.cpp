@@ -19,14 +19,6 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	);
 	
 	currentideaID = ideaID; // pass current idea id selected to editor window for use
-	/*
-//	mpdb = OpenSqliteDB(); // open mpdb db
-	if(mpdb == NULL) // if db doesn't exist
-	{
-		eAlert = new ErrorAlert("1.6 Sql Error: Sql DB was not opened properly.");
-		eAlert->Launch();
-	}
-	*/
 	if(currentideaID != -1) // if id has a real value
 	{
 		sqlObject = new SqlObject(ideaStatement, "7");
@@ -36,14 +28,6 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 		editorTextView->SetText(sqlObject->ReturnText(0));
 		sqlObject->FinalizeSql();
 		sqlObject->CloseSql();
-		// Pull data from db and populate thoughtview with it
-		/*
-		sqlObject = new SqlObject(mpdb, ideaStatement, "7");
-		sqlObject->PrepareSql("select ideatext from ideatable where ideaid = ?");
-		sqlObject->BindValue(1, currentideaID);
-		sqlObject->StepSql();
-		editorTextView->SetText(sqlObject->ReturnText(0));
-		*/
 	}
 }
 void MPEditor::MessageReceived(BMessage* msg)
@@ -85,35 +69,6 @@ void MPEditor::MessageReceived(BMessage* msg)
 				sqlObject->StepSql();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
-				/*
-				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ideatext = ? where ideaid = ?", -1, &ideaStatement, NULL);
-				if(sqlValue == SQLITE_OK) // sql statement was prepared properly
-				{
-					if(sqlite3_bind_text(ideaStatement, 1, editorTextView->Text(), -1, SQLITE_TRANSIENT) == SQLITE_OK) // bind was successful
-					{
-						if(sqlite3_bind_int(ideaStatement, 2, currentideaID) == SQLITE_OK) // bind was successful
-						{
-							sqlite3_step(ideaStatement); // execute update statement
-							//sqlite3_finalize(ideaStatement); // finish the statement
-						}
-						else
-						{
-							eAlert = new ErrorAlert("1.12 Sql Error: Sql Bind failed.");
-							eAlert->Launch();
-						}
-					}
-					else
-					{
-						eAlert = new ErrorAlert("1.11 Sql Error: Sql Bind failed.");
-						eAlert->Launch();
-					}
-				}
-				else
-				{
-					eAlert = new ErrorAlert("1.13 Sql Error: Sql Prepare failed.");
-					eAlert->Launch();
-				}
-				*/
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
