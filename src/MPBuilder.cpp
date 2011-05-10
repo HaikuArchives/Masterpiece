@@ -37,22 +37,6 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	);
 	
 	currentideaID = ideaID; // pass current idea id selected to builder window to use
-	/*
-	//mpdb = OpenSqliteDB(); // open mpdb db
-	if(mpdb == NULL) // if db doesn't exist
-	{
-		eAlert = new ErrorAlert("1.21 Sql Error: Sql DB was not opened properly");
-		eAlert->Launch();
-	}
-	else
-	{
-		PopulateBuilderListViews();
-		availableThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_AVAIL_TEXT));
-		availableThoughtListView->SetInvocationMessage(new BMessage(AVAIL_THOUGHT_EDITOR));
-		orderedThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_ORDER_TEXT));
-		orderedThoughtListView->SetInvocationMessage(new BMessage(ORDER_THOUGHT_EDITOR));
-	}
-	*/
 	PopulateBuilderListViews();
 	availableThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_AVAIL_TEXT));
 	availableThoughtListView->SetInvocationMessage(new BMessage(AVAIL_THOUGHT_EDITOR));
@@ -70,58 +54,14 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
 				int totalItems = orderedThoughtListView->CountItems() + 1;
-				sqlObject = new SqlObject(ideaStatement, "28");
-				sqlObject->PrepareSql("update ideatable set mpid=?, ordernumber=? where ideaid=?");
-				sqlObject->BindValue(1, currentideaID);
-				sqlObject->BindValue(2, totalItems);
-				sqlObject->BindValue(3, item->ReturnID());
-				sqlObject->StepSql();
-				sqlObject->FinalizeSql();
-				sqlObject->CloseSql();
-				/*
-				sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set mpid=?, ordernumber=? where ideaid=?", -1, &ideaStatement, NULL);
-				if(sqlValue == SQLITE_OK) // sql statement was prepared
-				{
-					if(sqlite3_bind_int(ideaStatement, 1, currentideaID) == SQLITE_OK) // sql bind successful
-					{
-						if(sqlite3_bind_int(ideaStatement, 2, (orderedThoughtListView->CountItems()+1)) == SQLITE_OK) // sql bind successful
-						{
-							if(sqlite3_bind_int(ideaStatement, 3, item->ReturnID()) == SQLITE_OK) // sql bind successful
-							{
-								if(sqlite3_step(ideaStatement) == SQLITE_DONE) // execute the update statement
-								{
-								}
-								else
-								{
-									eAlert = new ErrorAlert("1.37 Sql Error: Move Right Update Execution Failed.");
-									eAlert->Launch();
-								}
-							}
-							else
-							{
-								eAlert = new ErrorAlert("1.28 Sql Error: Move Right Bind 3 Failed");
-								eAlert->Launch();
-							}
-						}
-						else
-						{
-							eAlert = new ErrorAlert("1.27 Sql Error: Move Right Bind 2 Failed");
-							eAlert->Launch();
-						}
-					}
-					else
-					{
-						eAlert = new ErrorAlert("1.26 Sql Error: Move Right Bind 1 Failed");
-						eAlert->Launch();
-					}
-				}
-				else // sql update failed
-				{
-					eAlert = new ErrorAlert("1.25 Sql Error: Move Right Update Prepare Failed");
-					eAlert->Launch();
-				}
-				sqlite3_finalize(ideaStatement); // finish with sql statement
-				*/
+				sqlObject = new SqlObject(ideaStatement, "28"); // open sqldb
+				sqlObject->PrepareSql("update ideatable set mpid=?, ordernumber=? where ideaid=?"); // prepare statement
+				sqlObject->BindValue(1, currentideaID); // bind
+				sqlObject->BindValue(2, totalItems); // bind
+				sqlObject->BindValue(3, item->ReturnID()); // bind
+				sqlObject->StepSql(); // execute update statement
+				sqlObject->FinalizeSql(); // finalize sql
+				sqlObject->CloseSql(); // close sql
 				PopulateBuilderListViews(); // update listviews' items
 			}
 			break;
@@ -131,12 +71,12 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				IdeaStringItem* item;
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
-				sqlObject = new SqlObject(ideaStatement, "38");
-				sqlObject->PrepareSql("update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?");
-				sqlObject->BindValue(1, item->ReturnID());
-				sqlObject->StepSql();
-				sqlObject->FinalizeSql();
-				sqlObject->CloseSql();
+				sqlObject = new SqlObject(ideaStatement, "38"); // opendb
+				sqlObject->PrepareSql("update ideatable set mpid=NULL, ordernumber=NULL where ideaid=?"); // prepare
+				sqlObject->BindValue(1, item->ReturnID()); // bind
+				sqlObject->StepSql(); // execute update
+				sqlObject->FinalizeSql(); // finalize
+				sqlObject->CloseSql(); // close
 				ReorderOrderedListView(); // reorder orderedlistview items for mp
 				PopulateBuilderListViews(); // update listviews' items
 			}
@@ -364,22 +304,6 @@ void MPBuilder::PopulateBuilderListViews(void)
 	}
 	sqlObject->FinalizeSql();
 	sqlObject->CloseSql();
-	/*
-	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideaid, ideatext from ideatable where ismp = 0 and mpid is null", -1, &ideaStatement, NULL);
-	if(sqlValue == SQLITE_OK) // sql statement was prepared
-	{
-		while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
-		{
-			availableThoughtListView->AddItem(new IdeaStringItem(sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 0)), sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 2)),sqlite3_column_int(ideaStatement, 1)));
-		}
-	}
-	else // sql select failed
-	{
-		eAlert = new ErrorAlert("1.22 Sql Error: No Available Thoughts Exist. Please Create Some First.");
-		eAlert->Launch();
-	}
-	sqlite3_finalize(ideaStatement); // finish with sql statement
-	*/
 	if(currentideaID != -1) // if id has a real value...
 	{
 		sqlObject = new SqlObject(ideaStatement, "23");
@@ -392,31 +316,6 @@ void MPBuilder::PopulateBuilderListViews(void)
 		}
 		sqlObject->FinalizeSql();
 		sqlObject->CloseSql();
-		/*
-		// populate the ordered list items from here with the information from passed id...
-		sqlValue = sqlite3_prepare_v2(mpdb, "select ideaname, ideatext, ismp, mpid, ordernumber, ideaid from ideatable where ismp=0 and mpid=? order by ordernumber", -1, &ideaStatement, NULL);
-		if(sqlValue == SQLITE_OK) // sql statement was prepared
-		{
-			if(sqlite3_bind_int(ideaStatement, 1, currentideaID) == SQLITE_OK)
-			{
-				while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
-				{
-					orderedThoughtListView->AddItem(new IdeaStringItem(sqlite3_mprintf("%d. %s", sqlite3_column_int(ideaStatement, 4), sqlite3_column_text(ideaStatement, 0)), sqlite3_mprintf("%s", sqlite3_column_text(ideaStatement, 1)), sqlite3_column_int(ideaStatement, 2), sqlite3_column_int(ideaStatement, 3), sqlite3_column_int(ideaStatement, 4), sqlite3_column_int(ideaStatement, 5)));
-				}
-			}
-			else
-			{
-				eAlert = new ErrorAlert("1.24 Sql Error: Sql bind failed.");
-				eAlert->Launch();
-			}
-		}
-		else // sql select failed
-		{
-			eAlert = new ErrorAlert("1.23 Sql Error: No Ordered Thoughts Exist.  Please Add Some First.");
-			eAlert->Launch();
-		}
-		sqlite3_finalize(ideaStatement); // finish with sql statement
-		*/
 	}
 }
 void MPBuilder::ReorderOrderedListView(void)
@@ -438,68 +337,6 @@ void MPBuilder::ReorderOrderedListView(void)
 	}
 	sqlObject2->FinalizeSql();
 	sqlObject->FinalizeSql();
-	//sqlObject->CloseSql();
-	//sqlObject2->FinalizeSql();
-	//sqlObject2->CloseSql();
-	/*
-	sqlValue = sqlite3_prepare_v2(mpdb, "select ideaid from ideatable where ismp=0 and mpid=? order by ordernumber", -1, &ideaStatement, NULL);
-	if(sqlValue == SQLITE_OK) // sql statement was prepared
-	{
-		if(sqlite3_bind_int(ideaStatement, 1, currentideaID) == SQLITE_OK) // bind was successful
-		{
-			while(sqlite3_step(ideaStatement) == SQLITE_ROW) // step through the sql return values
-			{
-				sqlite3_prepare_v2(mpdb, "update ideatable set ordernumber=? where ideaid=?", -1, &reorderStatement, NULL);
-				if(sqlValue == SQLITE_OK) // sql statement was prepared
-				{
-					if(sqlite3_bind_int(reorderStatement, 1, a) == SQLITE_OK) // bind was successful
-					{
-						if(sqlite3_bind_int(reorderStatement, 2, sqlite3_column_int(ideaStatement, 0)) == SQLITE_OK) // bind was successful
-						{
-							if(sqlite3_step(reorderStatement) == SQLITE_DONE) // execute the update statement was successful
-							{
-								sqlite3_reset(reorderStatement);
-								a++;
-							}
-							else // sql update failed
-							{
-								eAlert = new ErrorAlert("1.36 Sql Error: OrderNumber Update Failed");
-								eAlert->Launch();
-							}
-						}
-						else // sql bind failed
-						{
-							eAlert = new ErrorAlert("1.35 Sql Error: No Idea ID Bound.");
-							eAlert->Launch();
-						}
-					}
-					else // sql bind failed
-					{
-						eAlert = new ErrorAlert("1.34 Sql Error: No Order Integer Bound.");
-						eAlert->Launch();
-					}
-				}
-				else // sql update was not prepared
-				{
-					eAlert = new ErrorAlert("1.33 Sql Error: OrderNumber Update did not prepare.");
-					eAlert->Launch();
-				}
-			}
-		}
-		else // sql bind failed
-		{
-			eAlert = new ErrorAlert("1.32 Sql Error: No Masterpiece ID Bound.");
-			eAlert->Launch();
-		}
-	}
-	else // sql select failed
-	{
-		eAlert = new ErrorAlert("1.31 Sql Error: No Ordered Thoughts Exist.  Please Add Some First.");
-		eAlert->Launch();
-	}
-	sqlite3_finalize(ideaStatement); // finish with sql statement
-	sqlite3_finalize(reorderStatement); // finish with sql statement
-	*/
 }
 void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 {
@@ -541,79 +378,6 @@ void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 	sqlObject->StepSql();
 	sqlObject->FinalizeSql();
 	sqlObject->CloseSql();
-	/*
-	sqlValue = sqlite3_prepare_v2(mpdb, "update ideatable set ordernumber=? where ideaid=?", -1, &ideaStatement, NULL);
-	if(sqlValue == SQLITE_OK) // sql statement was prepared
-	{
-		if(sqlite3_bind_int(ideaStatement, 1, item2->ReturnOrderNumber()) == SQLITE_OK) // sql bind successful
-		{
-			if(sqlite3_bind_int(ideaStatement, 2, item->ReturnID()) == SQLITE_OK) // sql bind successful
-			{
-				if(sqlite3_step(ideaStatement) == SQLITE_DONE) // execute the update statement succesfully
-				{
-					sqlite3_reset(ideaStatement); // reset ideastatement for new bindings
-					if(newOrderNumber == 0)
-					{
-						bindValue = sqlite3_bind_int(ideaStatement, 1, (item2->ReturnOrderNumber()+1)); // move next to first
-					}
-					else if(newOrderNumber == (orderedThoughtListView->CountItems() - 1))
-					{
-						bindValue = sqlite3_bind_int(ideaStatement, 1, (item2->ReturnOrderNumber()-1)); // move next to last
-					}
-					else
-					{
-						bindValue = sqlite3_bind_int(ideaStatement, 1, item->ReturnOrderNumber()); // swap with item
-					}
-					if(bindValue == SQLITE_OK) // sql bind successful
-					{
-						if(sqlite3_bind_int(ideaStatement, 2, item2->ReturnID()) == SQLITE_OK) // sql bind successful
-						{
-							if(sqlite3_step(ideaStatement) == SQLITE_DONE) // execute update succesfully
-							{
-							}
-							else // sql update failed
-							{
-								eAlert = new ErrorAlert("1.40 Sql Error: Move Down 2 Update Execution Failed");
-								eAlert->Launch();
-							}
-						}
-						else // sql bind 2 failed
-						{
-							eAlert = new ErrorAlert("1.41 Sql Error: Move Down 2 Bind 2 Failed.");
-							eAlert->Launch();
-						}
-					}
-					else // sql bind 1 failed
-					{
-						eAlert = new ErrorAlert("1.42 Sql Error: Move Down 2 Bind 1 Failed");
-						eAlert->Launch();
-					}
-				}
-				else // sql update failed
-				{
-					eAlert = new ErrorAlert("1.43 Sql Error: Move Down 1 Update Execution Failed.");
-					eAlert->Launch();
-				}
-			}
-			else // sql bind 2 failed
-			{
-				eAlert = new ErrorAlert("1.44 Sql Error: Move Down 1 Bind 2 Failed");
-				eAlert->Launch();
-			}
-		}
-		else // sql bind 1 failed
-		{
-			eAlert = new ErrorAlert("1.45 Sql Error: Move Down 1 Bind 1 Failed.");
-			eAlert->Launch();
-		}
-	}
-	else // sql update failed
-	{
-		eAlert = new ErrorAlert("1.52 Sql Error: Move Down 1 Update Prepare Failed");
-		eAlert->Launch();
-	}
-	sqlite3_finalize(ideaStatement); // finalize the sql statement
-	*/
 	ReorderOrderedListView(); // reorder orderedlistview items for mp
 	PopulateBuilderListViews(); // update listviews' items
 	orderedThoughtListView->Select(newOrderNumber); // highlight the newly moved item
