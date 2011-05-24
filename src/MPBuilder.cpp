@@ -47,6 +47,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 {
 	switch(msg->what)
 	{
+		case MENU_NEW_MP: // open new untitled thought
+			break;
 		case MOVE_RIGHT: // add item to ordered list
 			selected = availableThoughtListView->CurrentSelection(); // selected list item value
 			if(selected >= 0) // if something is selected
