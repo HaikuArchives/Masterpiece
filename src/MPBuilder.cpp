@@ -48,6 +48,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
+			tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "Masterpiece Editor - untitled", -1);
+			tmpEditor->Show();
 			break;
 		case MENU_EDT_MP: // edit mp name
 			break;
