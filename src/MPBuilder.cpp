@@ -49,6 +49,20 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	{
 		case MENU_NEW_MP: // open new untitled thought
 			break;
+		case MENU_EDT_MP: // edit mp name
+			break;
+		case MENU_SAV_MP: // save mp information
+			break;
+		case MENU_PRV_MP: // preview masterpiece
+			break;
+		case MENU_PUB_MP: // publish masterpiece
+			break;
+		case MENU_HLP_MP: // help topics
+			break;
+		case MENU_KEY_MP: // keyboard reference
+			break;
+		case MENU_ABT_MP: // about window
+			break;
 		case MOVE_RIGHT: // add item to ordered list
 			selected = availableThoughtListView->CurrentSelection(); // selected list item value
 			if(selected >= 0) // if something is selected
