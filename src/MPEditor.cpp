@@ -55,7 +55,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				xPos = (r.right - r.left) / 2; // find xpos for window
 				yPos = (r.bottom - r.top) / 2; // find ypos for window
 				saveIdea = new SaveIdea(BMessage(UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlObject->ReturnLastInsertRowID());
-				// possibly try currentideaID = sqlObject->ReturnLastInsertRowID();
+				currentideaID = sqlObject->ReturnLastInsertRowID();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
 				saveIdea->Show(); // show save window to name the untitled thought
