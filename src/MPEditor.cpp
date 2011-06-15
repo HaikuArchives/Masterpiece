@@ -48,7 +48,6 @@ void MPEditor::MessageReceived(BMessage* msg)
 		case MENU_SAV_THT: // save current idea progress
 			if(currentideaID == -1) // if its untitled insert new thought, then show saveidea to apply a name...
 			{
-				//sqlObject = new SqlObject(mpdb, ideaStatement, "8");
 				sqlObject = new SqlObject(ideaStatement, "8");
 				sqlObject->PrepareSql("insert into ideatable (ideaname, ideatext, ismp) values('untitled', ?, 0)");
 				sqlObject->BindValue(1, editorTextView->Text());
@@ -56,6 +55,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				xPos = (r.right - r.left) / 2; // find xpos for window
 				yPos = (r.bottom - r.top) / 2; // find ypos for window
 				saveIdea = new SaveIdea(BMessage(UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlObject->ReturnLastInsertRowID());
+				// possibly try currentideaID = sqlObject->ReturnLastInsertRowID();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
 				saveIdea->Show(); // show save window to name the untitled thought
