@@ -132,8 +132,14 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			}
 			break;
 		case DELETE_THT:
+			// need to call sql to delete the selected item...
+			IdeaStringItem* item;
+			item = dynamic_cast<IdeaStringItem*>(openThoughtListView->ItemAt(openThoughtListView->CurrentSelection());
+			
+			PopulateLauncherListViews();
 			break;
 		case DELETE_MP:
+			PopulateLauncherListViews();
 			break;
 		case SHOW_LAUNCHER:  // once finished with editor or builder, call to show this launcher
 			if(msg->FindInt64("showLauncher", &showLauncher) == B_OK) // message was found
