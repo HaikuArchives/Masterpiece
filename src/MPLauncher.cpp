@@ -13,7 +13,7 @@
 #include "MPLauncher.h"
 
 MPLauncher::MPLauncher(void)
-	:	BWindow(BRect(100, 100, 650, 400), "MasterPiece Launcher", B_TITLED_WINDOW,  B_NOT_H_RESIZABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
+	:	BWindow(BRect(100, 100, 670, 400), "MasterPiece Launcher", B_TITLED_WINDOW,  B_NOT_H_RESIZABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
 {
 	// mplauncher is the main window of the application
 	
@@ -39,7 +39,7 @@ MPLauncher::MPLauncher(void)
 		.Add(BSpaceLayoutItem::CreateGlue(), 1, 0)
 		.Add(thoughtStringView, 2, 0)
 		.Add(BSpaceLayoutItem::CreateGlue(), 3, 0)
-		.Add(BSpaceLayoutItem::CreateGlue(), 4, 0)
+		.Add(BSpaceLayoutItem::CreateGlue(), 4, 0, 2, 1)
 		.Add(newMasterpieceButton, 0, 1)
 		.Add(delMasterpieceButton, 1, 1)
 		.Add(BSpaceLayoutItem::CreateGlue(), 1, 0)
