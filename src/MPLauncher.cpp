@@ -20,7 +20,7 @@ MPLauncher::MPLauncher(void)
 	// gui control initialization
 	mainGroup = new BGroupLayout(B_HORIZONTAL, 0.0);
 	newThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_THT), B_FOLLOW_NONE, B_WILL_DRAW);
-	newMasterpieceButton = new BButton(BRect(10, 10, 90, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
+	newMasterpieceButton = new BButton(BRect(0, 10, 80, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	delThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Delete Selected...", new BMessage(DELETE_THT), B_FOLLOW_NONE, B_WILL_DRAW);
 	delMasterpieceButton = new BButton(BRect(10, 10, 90, 35), NULL, "Delete Selected...", new BMessage(DELETE_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	delThoughtButton->SetEnabled(false);
@@ -118,10 +118,18 @@ void MPLauncher::MessageReceived(BMessage* msg)
 		case SELECT_EXIST_MP:
 			if(openMasterpieceListView->CurrentSelection() >= 0)
 			{
-				
+				openThoughtListView->DeselectAll();
+				delMasterpieceButton->SetEnabled(true);
+				delThoughtButton->SetEnabled(false);
 			}
 			break;
 		case SELECT_EXIST_THT:
+			if(openThoughtListView->CurrentSelection() >= 0)
+			{
+				openMasterpieceListView->DeselectAll();
+				delThoughtButton->SetEnabled(true);
+				delMasterpieceButton->SetEnabled(false);
+			}
 			break;
 		case DELETE_THT:
 			break;
