@@ -21,6 +21,8 @@ MPLauncher::MPLauncher(void)
 	mainGroup = new BGroupLayout(B_HORIZONTAL, 0.0);
 	newThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_THT), B_FOLLOW_NONE, B_WILL_DRAW);
 	newMasterpieceButton = new BButton(BRect(10, 10, 90, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
+	delThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Delete Selected...", new BMessage(DELETE_THT), B_FOLLOW_NONE, B_WILL_DRAW);
+	delMasterpieceButton = new BButton(BRect(10, 10, 90, 35), NULL, "Delete Selected...", new BMessage(DELETE_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	thoughtStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Work on a Thought");
 	masterpieceStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Work on a Masterpiece");
 	openMasterpieceStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Open an Existing...");
@@ -38,8 +40,10 @@ MPLauncher::MPLauncher(void)
 		.Add(thoughtStringView, 2, 0)
 		.Add(BSpaceLayoutItem::CreateGlue(), 3, 0)
 		.Add(newMasterpieceButton, 0, 1)
+		.Add(delMasterpieceButton, 1, 1)
 		.Add(BSpaceLayoutItem::CreateGlue(), 1, 0)
 		.Add(newThoughtButton, 2, 1)
+		.Add(delThoughtButton, 3, 1)
 		.Add(openMasterpieceStringView, 0, 2)
 		.Add(BSpaceLayoutItem::CreateGlue(), 1, 2)
 		.Add(openThoughtStringView, 2, 2)

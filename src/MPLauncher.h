@@ -30,6 +30,8 @@
 #define	CREATE_NEW_THT		'cntt'
 #define	OPEN_EXISTING_MP	'oemp'
 #define	OPEN_EXISTING_THT	'oett'
+#define DELETE_THT			'delt'
+#define DELETE_MP			'delm'
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 
 class MPLauncher : public BWindow
@@ -45,6 +47,8 @@ private:
 		BGroupLayout*	mainGroup;
 		BButton*		newMasterpieceButton;
 		BButton*		newThoughtButton;
+		BButton*		delThoughtButton;
+		BButton*		delMasterpieceButton;
 		BListView*		openThoughtListView;
 		BListView*		openMasterpieceListView;
 		BStringView*	thoughtStringView;
