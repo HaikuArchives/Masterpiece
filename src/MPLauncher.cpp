@@ -56,6 +56,8 @@ MPLauncher::MPLauncher(void)
 		.SetInsets(5, 5, 5, 2)
 	);
 	PopulateLauncherListViews(); // populate listview's here
+	openMasterpieceListView->SetSelectionMessage(new BMessage(SELECT_EXIST_MP)); // single click action
+	openThoughtListView->SetSelectionMessage(new BMessage(SELECT_EXIST_THT)); // single click action
 	openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP)); // double click action
 	openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT)); // double click action
 }
@@ -112,6 +114,18 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				mpEditor->Show();
 				this->Hide();
 			}
+			break;
+		case SELECT_EXIST_MP:
+			if(openMasterpieceListView->CurrentSelection() >= 0)
+			{
+				
+			}
+			break;
+		case SELECT_EXIST_THT:
+			break;
+		case DELETE_THT:
+			break;
+		case DELETE_MP:
 			break;
 		case SHOW_LAUNCHER:  // once finished with editor or builder, call to show this launcher
 			if(msg->FindInt64("showLauncher", &showLauncher) == B_OK) // message was found

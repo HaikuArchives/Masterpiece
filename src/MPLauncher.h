@@ -28,6 +28,8 @@
 
 #define CREATE_NEW_MP		'cnmp'
 #define	CREATE_NEW_THT		'cntt'
+#define SELECT_EXIST_MP		'semp'
+#define	SELECT_EXIST_THT	'sett'
 #define	OPEN_EXISTING_MP	'oemp'
 #define	OPEN_EXISTING_THT	'oett'
 #define DELETE_THT			'delt'
