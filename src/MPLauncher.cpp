@@ -132,13 +132,25 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			}
 			break;
 		case DELETE_THT:
-			// need to call sql to delete the selected item...
 			IdeaStringItem* item;
-			item = dynamic_cast<IdeaStringItem*>(openThoughtListView->ItemAt(openThoughtListView->CurrentSelection());
-			
+			item = dynamic_cast<IdeaStringItem*>(openThoughtListView->ItemAt(openThoughtListView->CurrentSelection()));
+			sqlObject = new SqlObject(ideaStatement, "7"); // open sqldb
+			sqlObject->PrepareSql("delete from ideatable where ideaid = ?"); // prepare sql
+			sqlObject->BindValue(1, item->ReturnID());
+			sqlObject->StepSql();
+			sqlObject->FinalizeSql();
+			sqlObject->CloseSql();
 			PopulateLauncherListViews();
 			break;
 		case DELETE_MP:
+			IdeaStringItem* mpitem;
+			mpitem = dynamic_cast<IdeaStringItem*>(openMasterpieceListView->ItemAt(openMasterpieceListView->CurrentSelection()));
+			sqlObject = new SqlObject(ideaStatement, "7"); // open sqldb
+			sqlObject->PrepareSql("delete from ideatable where ideaid = ?"); // prepare sql
+			sqlObject->BindValue(1, item->ReturnID());
+			sqlObject->StepSql();
+			sqlObject->FinalizeSql();
+			sqlObject->CloseSql();		
 			PopulateLauncherListViews();
 			break;
 		case SHOW_LAUNCHER:  // once finished with editor or builder, call to show this launcher
