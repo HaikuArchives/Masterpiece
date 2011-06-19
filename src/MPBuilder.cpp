@@ -166,6 +166,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				eAlert = new ErrorAlert("4.13 Builder Error: No Idea is selected to move to the bottom.");
 				eAlert->Launch();
 			}
+			break;
+		case DELETE_THT:
+			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
 			if(availableThoughtListView->CurrentSelection() >= 0)
 			{
