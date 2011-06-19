@@ -235,6 +235,13 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				builderTextView->SetText(item->ReturnText());
 			}
 			deleteButton->SetEnabled(true);
+			// need to do the following:
+			// 1.  get selected item, whether it is the orderedThought or availableThought
+			// 2.  delete selected item
+			// 3.  disable delete button..
+			// 4.  reorder orderedthoughtlistview
+			// 5.  reload availablethoughtlistview
+			// 6.  ???
 			break;
 		case ORDER_THOUGHT_EDITOR:
 			selected = orderedThoughtListView->CurrentSelection(); // list item value
