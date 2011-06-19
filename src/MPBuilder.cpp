@@ -19,6 +19,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
+	deleteButton->SetEnabled(false);
 	// gui layout builder
 	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
 	backView->AddChild(BGridLayoutBuilder()
@@ -189,6 +190,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				leftButton->SetEnabled(false); // disable left button
 				rightButton->SetEnabled(true); // enable right button
 			}
+			deleteButton->SetEnabled(true);
 			break;
 		case DISPLAY_ORDER_TEXT: // display preview text from item id
 			if(orderedThoughtListView->CurrentSelection() >= 0)
@@ -232,6 +234,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
 				builderTextView->SetText(item->ReturnText());
 			}
+			deleteButton->SetEnabled(true);
 			break;
 		case ORDER_THOUGHT_EDITOR:
 			selected = orderedThoughtListView->CurrentSelection(); // list item value
