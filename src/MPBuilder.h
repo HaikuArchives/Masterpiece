@@ -33,7 +33,7 @@
 #define	MOVE_UP					'mvup' // move up
 #define MOVE_DOWN				'mvdn' // move down
 #define MOVE_BOTTOM				'mvbt' // move bottom
-#define DELETE_THT				'dtht' // delete thought
+#define DELETE_BUILDER_THT		'dtht' // delete thought
 #define DISPLAY_AVAIL_TEXT		'davt' // display available text for selected item
 #define DISPLAY_ORDER_TEXT		'dort' // display ordered text for selected item
 #define ORDER_THOUGHT_EDITOR	'oted' // open ordered thought editor

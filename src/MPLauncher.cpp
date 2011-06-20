@@ -21,7 +21,7 @@ MPLauncher::MPLauncher(void)
 	mainGroup = new BGroupLayout(B_HORIZONTAL, 0.0);
 	newThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_THT), B_FOLLOW_NONE, B_WILL_DRAW);
 	newMasterpieceButton = new BButton(BRect(0, 10, 80, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW);
-	delThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Delete Selected...", new BMessage(DELETE_THT), B_FOLLOW_NONE, B_WILL_DRAW);
+	delThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Delete Selected...", new BMessage(DELETE_LAUNCHER_THT), B_FOLLOW_NONE, B_WILL_DRAW);
 	delMasterpieceButton = new BButton(BRect(10, 10, 90, 35), NULL, "Delete Selected...", new BMessage(DELETE_MP), B_FOLLOW_NONE, B_WILL_DRAW);
 	delThoughtButton->SetEnabled(false);
 	delMasterpieceButton->SetEnabled(false);
@@ -131,7 +131,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				delMasterpieceButton->SetEnabled(false);
 			}
 			break;
-		case DELETE_THT:
+		case DELETE_LAUNCHER_THT:
 			IdeaStringItem* item;
 			item = dynamic_cast<IdeaStringItem*>(openThoughtListView->ItemAt(openThoughtListView->CurrentSelection()));
 			sqlObject = new SqlObject(ideaStatement, "7"); // open sqldb

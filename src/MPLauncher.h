@@ -32,7 +32,7 @@
 #define	SELECT_EXIST_THT	'sett'
 #define	OPEN_EXISTING_MP	'oemp'
 #define	OPEN_EXISTING_THT	'oett'
-#define DELETE_THT			'delt'
+#define DELETE_LAUNCHER_THT	'delt'
 #define DELETE_MP			'delm'
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 
