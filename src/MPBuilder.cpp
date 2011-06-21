@@ -189,8 +189,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				bottomButton->SetEnabled(false); // disable bottom button
 				leftButton->SetEnabled(false); // disable left button
 				rightButton->SetEnabled(true); // enable right button
+				deleteButton->SetEnabled(true);
 			}
-			deleteButton->SetEnabled(true);
 			break;
 		case DISPLAY_ORDER_TEXT: // display preview text from item id
 			if(orderedThoughtListView->CurrentSelection() >= 0)
