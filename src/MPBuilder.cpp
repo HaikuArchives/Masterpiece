@@ -171,6 +171,23 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			break;
 		case DELETE_BUILDER_THT:
+			if(availableThoughtListView->CurrentSelection() >= 0 && orderedThoughtListView->CurrentSelection() < 0)
+			{
+				selected = availableThoughtListView->CurrentSelection();
+				printf(" available selected: %d", selected);
+			}
+			if(orderedThoughtListView->CurrentSelection() >= 0 && availableThoughtListView->CurrentSelection() < 0)
+			{
+				selected = orderedThoughtListView->CurrentSelection();
+				printf(" ordered selected: %d", selected);
+			}
+			// need to do the following:
+			// 1.  get selected item, whether it is the orderedThought or availableThought
+			// 2.  delete selected item
+			// 3.  disable delete button..
+			// 4.  reorder orderedthoughtlistview
+			// 5.  reload availablethoughtlistview
+			// 6.  ???
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
 			if(availableThoughtListView->CurrentSelection() >= 0)
@@ -235,13 +252,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				builderTextView->SetText(item->ReturnText());
 			}
 			deleteButton->SetEnabled(true);
-			// need to do the following:
-			// 1.  get selected item, whether it is the orderedThought or availableThought
-			// 2.  delete selected item
-			// 3.  disable delete button..
-			// 4.  reorder orderedthoughtlistview
-			// 5.  reload availablethoughtlistview
-			// 6.  ???
 			break;
 		case ORDER_THOUGHT_EDITOR:
 			selected = orderedThoughtListView->CurrentSelection(); // list item value
