@@ -122,6 +122,11 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				delMasterpieceButton->SetEnabled(true);
 				delThoughtButton->SetEnabled(false);
 			}
+			else
+			{
+				delMasterpieceButton->SetEnabled(false);
+				//delThoughtButton->SetEnabled(false);
+			}
 			break;
 		case SELECT_EXIST_THT:
 			if(openThoughtListView->CurrentSelection() >= 0)
@@ -129,6 +134,11 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				openMasterpieceListView->DeselectAll();
 				delThoughtButton->SetEnabled(true);
 				delMasterpieceButton->SetEnabled(false);
+			}
+			else
+			{
+				//delMasterpieceButton->SetEnabled(false);
+				delThoughtButton->SetEnabled(false);
 			}
 			break;
 		case DELETE_LAUNCHER_THT:
