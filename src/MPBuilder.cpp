@@ -171,16 +171,23 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			break;
 		case DELETE_BUILDER_THT:
+			IdeaStringItem* deleteItem;
 			if(availableThoughtListView->CurrentSelection() >= 0 && orderedThoughtListView->CurrentSelection() < 0)
 			{
 				selected = availableThoughtListView->CurrentSelection();
-				printf(" available selected: %d", selected);
+				deleteItem = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
 			}
 			if(orderedThoughtListView->CurrentSelection() >= 0 && availableThoughtListView->CurrentSelection() < 0)
 			{
 				selected = orderedThoughtListView->CurrentSelection();
-				printf(" ordered selected: %d", selected);
+				deleteItem = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
 			}
+			sqlObject = new SqlObject(ideaStatement, "31");
+			sqlObject->PrepareSql("delete from ideatable where ideaid = ?");
+			sqlObject->BindValue(1, deleteItem->ReturnID());
+			sqlObject->StepSql();
+			sqlObject->FinalizeSql();
+			sqlObject->CloseSql();
 			// need to do the following:
 			// 1.  get selected item, whether it is the orderedThought or availableThought
 			// 2.  delete selected item
@@ -188,6 +195,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			// 4.  reorder orderedthoughtlistview
 			// 5.  reload availablethoughtlistview
 			// 6.  ???
+			ReorderOrderedListView(); // reorder orderedlistview items for mp
+			PopulateBuilderListViews(); // update listviews' items
+			deleteButton->SetEnabled(false);
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
 			if(availableThoughtListView->CurrentSelection() >= 0)

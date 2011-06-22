@@ -157,7 +157,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			mpitem = dynamic_cast<IdeaStringItem*>(openMasterpieceListView->ItemAt(openMasterpieceListView->CurrentSelection()));
 			sqlObject = new SqlObject(ideaStatement, "7"); // open sqldb
 			sqlObject->PrepareSql("delete from ideatable where ideaid = ?"); // prepare sql
-			sqlObject->BindValue(1, item->ReturnID());
+			sqlObject->BindValue(1, mpitem->ReturnID());
 			sqlObject->StepSql();
 			sqlObject->FinalizeSql();
 			sqlObject->CloseSql();		
