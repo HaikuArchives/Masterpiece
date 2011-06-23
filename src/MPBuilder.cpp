@@ -55,6 +55,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			tmpEditor->Show();
 			break;
 		case MENU_EDT_MP: // edit mp name
+			// work on mp edit name next
 			break;
 		case MENU_SAV_MP: // save mp information
 			break;
