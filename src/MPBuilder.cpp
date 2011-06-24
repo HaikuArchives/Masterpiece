@@ -48,6 +48,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 }
 void MPBuilder::MessageReceived(BMessage* msg)
 {
+	BRect r(Bounds());
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -56,6 +57,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		case MENU_EDT_MP: // edit mp name
 			// work on mp edit name next
+			xPos = (r.right - r.left) / 2; // find xpos for window
+			yPos = (r.bottom - r.top) / 2; // find ypos for window
+			editIdeaName = new EditIdeaName(BMessage(MP_UPDATE_TITLE), BMessenger(this), xPos, yPos, currentideaID);
+			editIdeaName->Show();
 			break;
 		case MENU_SAV_MP: // save mp information
 			break;
@@ -322,6 +327,18 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				eAlert = new ErrorAlert("4.5 Builder Error: Message Variable was not found.");
 				eAlert->Launch();
+			}
+			break;
+		case MP_UPDATE_TITLE: // update title with the name from the editideawindow
+			if(msg->FindString("updatetitle", &updateTitle) == B_OK) // updated title exists in variable
+			{
+				tmpString = "Masterpiece Builder - ";
+				tmpString += updateTitle;
+				this->SetTitle(tmpString);
+			}
+			else
+			{
+				eAlert = new ErrorAlert("4.2 Builder Error: Message not found"); // message variable not found
 			}
 			break;
 		default:
