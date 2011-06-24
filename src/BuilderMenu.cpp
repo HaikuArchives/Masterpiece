@@ -6,7 +6,7 @@ BuilderMenu::BuilderMenu()
 	// initialize menu and menuitems
 	helpMenu = new BMenu("Help");
 	newMasterMenuItem = new BMenuItem("New Thought", new BMessage(MENU_NEW_MP));
-	editMPTitleMenuItem = new BMenuItem("Edit Thought Name", new BMessage(MENU_EDT_MP));
+	editMPTitleMenuItem = new BMenuItem("Edit Masterpiece Name", new BMessage(MENU_EDT_MP));
 	saveMasterMenuItem = new BMenuItem("Save Progress", new  BMessage(MENU_SAV_MP));
 	previewMenuItem = new BMenuItem("Preview", new BMessage(MENU_PRV_MP));
 	publishMenuItem = new BMenuItem("Publish", new BMessage(MENU_PUB_MP));

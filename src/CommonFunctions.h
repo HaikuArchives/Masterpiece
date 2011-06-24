@@ -9,8 +9,7 @@
 
 #include "ErrorAlert.h"
 
-//sqlite3*	OpenSqliteDB(void);
-void		DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
+void	DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
 
 class SqlObject
 {
