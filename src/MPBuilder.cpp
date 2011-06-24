@@ -56,13 +56,14 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			tmpEditor->Show();
 			break;
 		case MENU_EDT_MP: // edit mp name
-			// work on mp edit name next
 			xPos = (r.right - r.left) / 2; // find xpos for window
 			yPos = (r.bottom - r.top) / 2; // find ypos for window
 			editIdeaName = new EditIdeaName(BMessage(MP_UPDATE_TITLE), BMessenger(this), xPos, yPos, currentideaID);
 			editIdeaName->Show();
 			break;
 		case MENU_SAV_MP: // save mp information
+			// save the mini editor window
+			//if(currentideaID == -1) // if its untitled insert new thought
 			break;
 		case MENU_PRV_MP: // preview masterpiece
 			break;
