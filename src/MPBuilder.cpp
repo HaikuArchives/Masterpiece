@@ -100,9 +100,11 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				else
 				{
 					// error cause nothing was selected for this save to occur and be called.
+					eAlert = new ErrorAlert("4.15 Not an Item from Either List of Ideas.");
+					eAlert->Launch();
 				}
 			}
-			else // already exists, just update ideatext and save new information
+			else
 			{
 				eAlert = new ErrorAlert("4.14 No Selected Idea to Save.");
 				eAlert->Launch();
