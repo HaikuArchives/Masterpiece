@@ -268,10 +268,13 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				availableThoughtListView->DeselectAll();
 			}
 			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
-			IdeaStringItem* item;
-			item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
-			builderTextView->SetText(item->ReturnText());
-			deleteButton->SetEnabled(true);
+			if(selected >= 0)
+			{
+				IdeaStringItem* item;
+				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
+				builderTextView->SetText(item->ReturnText());
+				deleteButton->SetEnabled(true);
+			}
 			if(selected == 0) // if its top item
 			{
 				topButton->SetEnabled(false); // disable top button
