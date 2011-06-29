@@ -77,12 +77,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				saveItem = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
 			}
 			
-			if(selected < 0) // if its untitled insert new thought, then show saveidea to apply a name...
-			{
-				eAlert = new ErrorAlert("4.14 No Selected Idea to Save.");
-				eAlert->Launch();
-			}
-			else // already exists, just update ideatext and save new information
+			if(selected >= 0) // if its untitled insert new thought, then show saveidea to apply a name...
 			{
 				sqlObject = new SqlObject(ideaStatement, "9");
 				sqlObject->PrepareSql("update ideatable set ideatext = ? where ideaid = ?");
@@ -91,6 +86,12 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				sqlObject->StepSql();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
+				PopulateBuilderListViews();
+			}
+			else // already exists, just update ideatext and save new information
+			{
+				eAlert = new ErrorAlert("4.14 No Selected Idea to Save.");
+				eAlert->Launch();
 			}
 			break;
 		case MENU_PRV_MP: // preview masterpiece
@@ -253,6 +254,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				availableThoughtListView->DeselectAll();
 			}
 			selected = orderedThoughtListView->CurrentSelection(); // selected list item value
+			IdeaStringItem* item;
+			item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
+			builderTextView->SetText(item->ReturnText());
+			deleteButton->SetEnabled(true);
 			if(selected == 0) // if its top item
 			{
 				topButton->SetEnabled(false); // disable top button
@@ -261,9 +266,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				bottomButton->SetEnabled(true); // disable bottom button
 				leftButton->SetEnabled(true); // disable left button
 				rightButton->SetEnabled(false); // enable right button
-				IdeaStringItem* item;
-				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
-				builderTextView->SetText(item->ReturnText());
 			}
 			if(selected > 0 && selected == (orderedThoughtListView->CountItems() - 1)) // if something is selected
 			{
@@ -273,9 +275,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				bottomButton->SetEnabled(false); // disable bottom button
 				leftButton->SetEnabled(true); // disable left button
 				rightButton->SetEnabled(false); // enable right button
-				IdeaStringItem* item;
-				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
-				builderTextView->SetText(item->ReturnText());
 			}
 			if(selected > 0 && selected < (orderedThoughtListView->CountItems() - 1))
 			{
@@ -285,11 +284,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				bottomButton->SetEnabled(true); // disable bottom button
 				leftButton->SetEnabled(true); // disable left button
 				rightButton->SetEnabled(false); // enable right button
-				IdeaStringItem* item;
-				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
-				builderTextView->SetText(item->ReturnText());
 			}
-			deleteButton->SetEnabled(true);
 			break;
 		case ORDER_THOUGHT_EDITOR:
 			selected = orderedThoughtListView->CurrentSelection(); // list item value
