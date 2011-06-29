@@ -63,7 +63,34 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		case MENU_SAV_MP: // save mp information
 			// save the mini editor window
-			//if(currentideaID == -1) // if its untitled insert new thought
+			if(currentideaID == -1) // if its untitled insert new thought, then show saveidea to apply a name...
+			{
+				eAlert = new ErrorAlert("4.14 No Selected Idea to Save.");
+				eAlert->Launch();
+				/*
+				sqlObject = new SqlObject(ideaStatement, "8");
+				sqlObject->PrepareSql("insert into ideatable (ideaname, ideatext, ismp) values('untitled', ?, 0)");
+				sqlObject->BindValue(1, editorTextView->Text());
+				sqlObject->StepSql();
+				xPos = (r.right - r.left) / 2; // find xpos for window
+				yPos = (r.bottom - r.top) / 2; // find ypos for window
+				saveIdea = new SaveIdea(BMessage(UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlObject->ReturnLastInsertRowID());
+				currentideaID = sqlObject->ReturnLastInsertRowID();
+				sqlObject->FinalizeSql();
+				sqlObject->CloseSql();
+				saveIdea->Show(); // show save window to name the untitled thought
+				*/
+			}
+			else // already exists, just update ideatext and save new information
+			{
+				sqlObject = new SqlObject(ideaStatement, "9");
+				sqlObject->PrepareSql("update ideatable set ideatext = ? where ideaid = ?");
+				sqlObject->BindValue(1, builderTextView->Text());
+				sqlObject->BindValue(2, currentideaID);
+				sqlObject->StepSql();
+				sqlObject->FinalizeSql();
+				sqlObject->CloseSql();
+			}
 			break;
 		case MENU_PRV_MP: // preview masterpiece
 			break;
