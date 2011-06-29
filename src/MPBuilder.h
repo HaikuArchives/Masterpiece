@@ -78,6 +78,7 @@ private:
 		int				currentideaID;
 		int				selected;
 		int				bindValue;
+		int				availorderBit;
 		float			xPos;
 		float			yPos;
 		SqlObject*		sqlObject;

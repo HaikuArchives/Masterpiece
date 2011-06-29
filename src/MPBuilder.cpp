@@ -66,18 +66,20 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			
 			// need to get the current ideaid from the selected item...
 			IdeaStringItem* saveItem;
+			availorderBit = -1;
 			if(availableThoughtListView->CurrentSelection() >= 0 && orderedThoughtListView->CurrentSelection() < 0)
 			{
 				selected = availableThoughtListView->CurrentSelection();
 				saveItem = dynamic_cast<IdeaStringItem*>(availableThoughtListView->ItemAt(selected));
+				availorderBit = 0;
 			}
 			if(orderedThoughtListView->CurrentSelection() >= 0 && availableThoughtListView->CurrentSelection() < 0)
 			{
 				selected = orderedThoughtListView->CurrentSelection();
 				saveItem = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
+				availorderBit = 1;
 			}
-			
-			if(selected >= 0) // if its untitled insert new thought, then show saveidea to apply a name...
+			if(selected >= 0)
 			{
 				sqlObject = new SqlObject(ideaStatement, "9");
 				sqlObject->PrepareSql("update ideatable set ideatext = ? where ideaid = ?");
@@ -87,6 +89,18 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
 				PopulateBuilderListViews();
+				if(availorderBit == 0)
+				{
+					availableThoughtListView->Select(selected);
+				}
+				else if(availorderBit == 1)
+				{
+					orderedThoughtListView->Select(selected);
+				}
+				else
+				{
+					// error cause nothing was selected for this save to occur and be called.
+				}
 			}
 			else // already exists, just update ideatext and save new information
 			{
