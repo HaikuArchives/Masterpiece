@@ -25,7 +25,7 @@
 class MPPreview : public BWindow
 {
 public:
-						MPPreview(BString windowTitle, int ideaID);
+						MPPreview(int ideaID);
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
 private:
