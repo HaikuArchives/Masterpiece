@@ -35,6 +35,7 @@ private:
 		char*			sqlErrMsg;
 		BString			tmpString;
 		BString			rawText;
+		BString			parsedText;
 		int				sqlValue;
 		int				currentideaID;
 		float			xPos;

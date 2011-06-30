@@ -35,6 +35,7 @@ MPPreview::MPPreview(int ideaID)
 			tmpText = "MasterPiece Preview - ";
 			tmpText += sqlObject->ReturnText(1);
 			this->SetTitle(tmpText);
+			parsedText = IdeaParser(rawText, previewTextView);
 			// parse rawText here....
 			// ParseRawText(rawText, previewTextView);
 			/*
