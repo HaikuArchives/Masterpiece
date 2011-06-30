@@ -7,6 +7,10 @@ MPPreview::MPPreview(BString windowTitle, int ideaID)
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
 	previewTextView = new BTextView(r, NULL, r, B_FOLLOW_ALL, B_WILL_DRAW);	
+	previewTextView->SetStylable(true);
+	previewTextView->MakeEditable(false);
+	previewTextView->MakeSelectable(false);
+	previewTextView->MakeResizable(true);
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
