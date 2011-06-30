@@ -42,6 +42,7 @@ private:
 		char*			sqlErrMsg;
 		BString			tmpString;
 		//BString			updateTitle;
+		BString			rawText;
 		int				sqlValue;
 		int				currentideaID;
 		float			xPos;
