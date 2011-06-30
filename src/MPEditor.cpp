@@ -73,6 +73,10 @@ void MPEditor::MessageReceived(BMessage* msg)
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
 			printf("save data to tmp file, export to python html one and open data in preview window or webpositive");
+			tmpText = "MasterPiece Preview - ";
+			tmpText += "get thought titile";
+			mpPreview = new MPPreview(tmpText, currentideaID);
+			mpPreview->Show();
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
 			printf("save data, open publish to window, export to python and save as name in publish window");

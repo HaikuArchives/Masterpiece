@@ -16,6 +16,7 @@ DEPENDENCY=	/HaikuData/Projects/masterpiece/BuilderMenu.h
 SOURCEFILE=MPEditor.cpp
 DEPENDENCY=	/HaikuData/Projects/masterpiece/MPEditor.h|/HaikuData/Projects/masterpiece/ErrorAlert.h
 SOURCEFILE=MPPreview.cpp
+DEPENDENCY=/boot/home/Projects/masterpiece/MPPreview.h|/boot/home/Projects/masterpiece/ErrorAlert.h|/boot/home/Projects/masterpiece/CommonFunctions.h
 SOURCEFILE=EditorMenu.cpp
 DEPENDENCY=	/HaikuData/Projects/masterpiece/EditorMenu.h
 SOURCEFILE=SaveIdea.cpp

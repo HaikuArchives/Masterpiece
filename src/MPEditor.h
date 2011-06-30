@@ -20,6 +20,7 @@
 #include "EditorMenu.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"
+#include "MPPreview.h"
 #include "CommonFunctions.h"
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
@@ -37,6 +38,7 @@ private:
 		BMessenger		launcherMessenger;
 		BTextView*		editorTextView;
 		MPEditor*		tmpEditor;
+		MPPreview*		mpPreview;
 		ErrorAlert*		eAlert;
 		SaveIdea*		saveIdea;
 		EditIdeaName*	editIdeaName;
@@ -45,6 +47,7 @@ private:
 		char*			sqlErrMsg;
 		BString			tmpString;
 		BString			updateTitle;
+		BString			tmpText;
 		int				sqlValue;
 		int				currentideaID;
 		float			xPos;
