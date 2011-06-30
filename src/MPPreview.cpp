@@ -30,6 +30,11 @@ MPPreview::MPPreview(int ideaID)
 		if(sqlObject->ReturnInt(2) == 0) // thought was selected to preview
 		{
 			rawText = sqlObject->ReturnText(0);
+			previewTextView->SetText(rawText);
+			BString tmpText;
+			tmpText = "MasterPiece Preview - ";
+			tmpText += sqlObject->ReturnText(1);
+			this->SetTitle(tmpText);
 			// parse rawText here....
 			// ParseRawText(rawText, previewTextView);
 			/*
@@ -40,11 +45,6 @@ MPPreview::MPPreview(int ideaID)
 				}
 			*/
 			// display text in previewTextView such as...
-			previewTextView->SetText(rawText);
-			BString tmpText;
-			tmpText = "MasterPiece Preview - ";
-			tmpText += sqlObject->ReturnText(1);
-			this->SetTitle(tmpText);
 		}
 		else if(sqlObject->ReturnInt(2) == 1) // masterpiece was selected to preview
 		{
@@ -55,6 +55,10 @@ MPPreview::MPPreview(int ideaID)
 		sqlObject->FinalizeSql();
 		sqlObject->CloseSql();
 	}
+}
+BString MPPreview::IdeaParser(BString inputText, BTextView displayTextView)
+{
+	// create parser here
 }
 void MPPreview::MessageReceived(BMessage* msg)
 {

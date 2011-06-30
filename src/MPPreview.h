@@ -19,29 +19,21 @@
 #include "ErrorAlert.h"
 #include "CommonFunctions.h"
 
-//#define SHOW_LAUNCHER		'lnch' // show mp launcher window
-//#define UPDATE_TITLE		'uttl' // update title...
-
 class MPPreview : public BWindow
 {
 public:
 						MPPreview(int ideaID);
+		BString			IdeaParser(BString inputText, BTextView displayTextView)
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
 private:
 		BView*			backView;
-		//BMessage		launcherMessage;
-		//BMessenger		launcherMessenger;
 		BTextView*		previewTextView;
-		//MPEditor*		tmpEditor;
 		ErrorAlert*		eAlert;
-		//SaveIdea*		saveIdea;
-		//EditIdeaName*	editIdeaName;
 		sqlite3*		mpdb;
 		sqlite3_stmt*	ideaStatement;
 		char*			sqlErrMsg;
 		BString			tmpString;
-		//BString			updateTitle;
 		BString			rawText;
 		int				sqlValue;
 		int				currentideaID;
