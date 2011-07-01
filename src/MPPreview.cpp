@@ -88,10 +88,13 @@ theTextView->GetFontAndColor(&font, &sameProperties);
 theTextView->SetFontAndColor(&font, B_FONT_ALL, &redColor);
 
 */
-BString MPPreview::IdeaParser(BString inputText, BTextView displayTextView)
+BString MPPreview::IdeaParser(BString inputText, BTextView* displayTextView)
 {
+	displayTextView->GetFontAndColor(&parseFont, &sameProperties);
+	parseFont.SetSize(24.0);
+	displayTextView->SetFontAndColor(&parseFont, B_FONT_ALL);
 	// create parser here
-	
+	return "done";
 }
 void MPPreview::MessageReceived(BMessage* msg)
 {
