@@ -15,6 +15,7 @@
 #include <GridLayoutBuilder.h>
 #include <TextView.h>
 #include <ScrollView.h>
+#include <pcrecpp.h> // regex library to do my parsing...
 
 #include "ErrorAlert.h"
 #include "CommonFunctions.h"
