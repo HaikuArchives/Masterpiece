@@ -36,6 +36,8 @@ private:
 		BString			tmpString;
 		BString			rawText;
 		BString			parsedText;
+		BFont			parseFont;
+		uint32			sameProperties;
 		int				sqlValue;
 		int				currentideaID;
 		float			xPos;

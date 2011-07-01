@@ -37,6 +37,7 @@ MPPreview::MPPreview(int ideaID)
 			this->SetTitle(tmpText);
 			parsedText = IdeaParser(rawText, previewTextView);
 			// parse rawText here....
+			// getfontandcolor, store it, modify it, then setfontandcolor
 			// ParseRawText(rawText, previewTextView);
 			/*
 				{
@@ -57,9 +58,40 @@ MPPreview::MPPreview(int ideaID)
 		sqlObject->CloseSql();
 	}
 }
+/*
+void GetFontAndColor(BFont     *font,
+                     uint32    *sameProperties,
+                     rgb_color *color = NULL,
+                     bool      *sameColor = NULL)
+
+void SetFontAndColor(const BFont *font,
+                     uint32      properties = B_FONT_ALL,
+                     rgb_color   *color = NULL)
+
+
+BFont   font;
+uint32  sameProperties;
+theTextView->GetFontAndColor(&font, &sameProperties);
+font.SetSize(24.0);
+theTextView->SetFontAndColor(&font, B_FONT_ALL);
+
+BFont theBigFont(be_plain_font);
+theBigFont.SetSize(48.0);
+theBigFont.SetRotation(-45.0);
+theBigFont.SetShear(120.0);
+theTextView->SetFontAndColor(&theBigFont, B_FONT_SIZE);
+
+BFont      font;
+uint32     sameProperties;
+rgb_color  redColor = {255, 0, 0, 255};
+theTextView->GetFontAndColor(&font, &sameProperties);
+theTextView->SetFontAndColor(&font, B_FONT_ALL, &redColor);
+
+*/
 BString MPPreview::IdeaParser(BString inputText, BTextView displayTextView)
 {
 	// create parser here
+	
 }
 void MPPreview::MessageReceived(BMessage* msg)
 {
