@@ -23,7 +23,7 @@ class MPPreview : public BWindow
 {
 public:
 						MPPreview(int ideaID);
-		BString			IdeaParser(BString inputText, BTextView* displayTextView);
+		void			IdeaParser(BString inputText, BTextView* displayTextView);
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
 private:
@@ -40,6 +40,8 @@ private:
 		uint32			sameProperties;
 		int				sqlValue;
 		int				currentideaID;
+		int32			startPos;
+		int32			endPos;
 		float			xPos;
 		float			yPos;
 		SqlObject*		sqlObject;

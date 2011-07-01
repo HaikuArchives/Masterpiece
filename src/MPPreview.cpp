@@ -9,7 +9,7 @@ MPPreview::MPPreview(int ideaID)
 	previewTextView = new BTextView(r, NULL, r, B_FOLLOW_ALL, B_WILL_DRAW);	
 	previewTextView->SetStylable(true);
 	previewTextView->MakeEditable(false);
-	previewTextView->MakeSelectable(false);
+	previewTextView->MakeSelectable(true);
 	previewTextView->MakeResizable(true);
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
@@ -35,7 +35,7 @@ MPPreview::MPPreview(int ideaID)
 			tmpText = "MasterPiece Preview - ";
 			tmpText += sqlObject->ReturnText(1);
 			this->SetTitle(tmpText);
-			parsedText = IdeaParser(rawText, previewTextView);
+			IdeaParser(rawText, previewTextView);
 			// parse rawText here....
 			// getfontandcolor, store it, modify it, then setfontandcolor
 			// ParseRawText(rawText, previewTextView);
@@ -88,13 +88,15 @@ theTextView->GetFontAndColor(&font, &sameProperties);
 theTextView->SetFontAndColor(&font, B_FONT_ALL, &redColor);
 
 */
-BString MPPreview::IdeaParser(BString inputText, BTextView* displayTextView)
+void MPPreview::IdeaParser(BString inputText, BTextView* displayTextView)
 {
+	displayTextView->SelectAll();
+	displayTextView->GetSelection(&startPos, &endPos);
 	displayTextView->GetFontAndColor(&parseFont, &sameProperties);
 	parseFont.SetSize(24.0);
-	displayTextView->SetFontAndColor(&parseFont, B_FONT_ALL);
+	displayTextView->SetFontAndColor(startPos, endPos, &parseFont, B_FONT_SIZE);
 	// create parser here
-	return "done";
+	//return displayTextView;
 }
 void MPPreview::MessageReceived(BMessage* msg)
 {
