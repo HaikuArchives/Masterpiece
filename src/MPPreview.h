@@ -6,6 +6,7 @@
 #include <sqlite3.h>
 #include <Application.h>
 #include <String.h>
+#include <string.h>
 #include <ScrollView.h>
 #include <Messenger.h>
 #include <Message.h>
@@ -34,6 +35,7 @@ private:
 		sqlite3*		mpdb;
 		sqlite3_stmt*	ideaStatement;
 		char*			sqlErrMsg;
+		BString			reTester;
 		BString			tmpString;
 		BString			rawText;
 		BString			parsedText;
