@@ -117,10 +117,18 @@ void MPPreview::IdeaParser(BString inputText, BTextView* displayTextView)
 	
 	// TEST REGEX PARSER
 	
-	// 1.  it seems to do this, i will need to copy the string from the textview
-	// 2.  split the string into substrings based on the parsing...
-	// 3.  get the start/finish offsets of the string based on the parsing
-	// 4.  then do the style applications to the selected string lengths based on parser values
+	// 1.  it seems to do this, i will need to copy the entire string from the textview
+	// 2.  split the string into substrings based on the parsing... (possibly capture the length)
+	// 2.4 strlen to get the length.
+	// 2.5 get the length, then use offset=0 + length for each substring as i go...
+	// 3.  add the formatting requirements to the substrings based on the parsing
+	// 3.  use InsertText(text, length, offset, runs) to add the formatted text
+	
+	// EXAMPLE TEXT "Test of some *bold* text and more *bold* text."
+	
+	// ACTUAL REGEX PARSER TEST
+	
+	// 1.  use global replace to search for a pattern in the textview string
 }
 void MPPreview::MessageReceived(BMessage* msg)
 {
