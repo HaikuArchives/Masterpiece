@@ -116,6 +116,11 @@ void MPPreview::IdeaParser(BString inputText, BTextView* displayTextView)
 	*/
 	
 	// TEST REGEX PARSER
+	
+	// 1.  it seems to do this, i will need to copy the string from the textview
+	// 2.  split the string into substrings based on the parsing...
+	// 3.  get the start/finish offsets of the string based on the parsing
+	// 4.  then do the style applications to the selected string lengths based on parser values
 }
 void MPPreview::MessageReceived(BMessage* msg)
 {
