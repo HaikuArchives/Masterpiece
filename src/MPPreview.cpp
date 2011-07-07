@@ -95,18 +95,25 @@ void MPPreview::IdeaParser(BString inputText, BTextView* displayTextView)
 	displayTextView->GetFontAndColor(&parseFont, &sameProperties);
 	parseFont.SetSize(24.0);
 	displayTextView->SetFontAndColor(startPos, endPos, &parseFont, B_FONT_SIZE);
+	
 	// create parser here
 	//return displayTextView;
 	
 	// TEST REGEX PARSER - this works and handles the parser conversion from BString to C string and back...
+	/*
 	string s;
 	int i;
 	pcrecpp::RE re("(\\w+):(\\d+)");
-	re.FullMatch("ruby:1234", &s, &i);
+	re.FullMatch("ruby:1234 ruby:123", &s, &i);
 	printf("\r\n%d\r\n", i);
 	reTester = s.c_str();
 	eAlert = new ErrorAlert(reTester);
 	eAlert->Launch();
+	s = "yabba dabba doo";
+	pcrecpp::RE("b+").GlobalReplace("d", &s);
+	eAlert = new ErrorAlert(s.c_str());
+	eAlert->Launch();
+	*/
 	
 	// TEST REGEX PARSER
 }
