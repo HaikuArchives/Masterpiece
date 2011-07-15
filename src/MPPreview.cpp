@@ -129,11 +129,11 @@ void MPPreview::IdeaParser(BString inputText, BTextView* displayTextView)
 	// ACTUAL REGEX PARSER TEST
 	
 	// 1.  use global replace to search for a pattern in the textview string
-	string s;
-	s = "Test of some |bold| text and more |bold| text.";
-	pcrecpp::RE("\|[^\|]*\|").GlobalReplace("bb", &s);
-	eAlert = new ErrorAlert(s.c_str());
-	eAlert->Launch();
+	//string s;
+	//s = "Test of some |bold| text and more |bold| text.";
+	//pcrecpp::RE("\|[^\|]*\|").GlobalReplace("bb", &s);
+	//eAlert = new ErrorAlert(s.c_str());
+	//eAlert->Launch();
 }
 void MPPreview::MessageReceived(BMessage* msg)
 {
