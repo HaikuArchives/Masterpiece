@@ -73,8 +73,10 @@ void MPEditor::MessageReceived(BMessage* msg)
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
 			printf("save data to tmp file, export to python html one and open data in preview window or webpositive");
-			mpPreview = new MPPreview(currentideaID);
-			mpPreview->Show();
+			// AM NO LONGER WRITING A FULL BLOWN PARSER AND DISPLAYER IN A TEXTVIEW.  IF I DO THAT, I HAVE WRITTEN A FULL BLOWN WORD PROCESSOR.
+			// WILL SIMPLY USE THE PREVIEWER TO PREVIEW IN HTML WITH WEBPOSITIVE.
+			//mpPreview = new MPPreview(currentideaID);
+			//mpPreview->Show();
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
 			printf("save data, open publish to window, export to python and save as name in publish window");
