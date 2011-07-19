@@ -79,6 +79,12 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// FORK/EXEC IN POSIX LINUX WILL RUN AN APP FROM C++.  HAVE TO RESEARCH THIS.
 			//mpPreview = new MPPreview(currentideaID);
 			//mpPreview->Show();
+			
+			Py_Initialize();
+			PyRun_SimpleString("from time import time,ctime\n"
+								"print 'Today is', ctime(time())\n");
+			Py_Finalize();
+			
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
 			printf("save data, open publish to window, export to python and save as name in publish window");
