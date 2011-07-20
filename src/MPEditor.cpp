@@ -79,7 +79,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// FORK/EXEC IN POSIX LINUX WILL RUN AN APP FROM C++.  HAVE TO RESEARCH THIS.
 			//mpPreview = new MPPreview(currentideaID);
 			//mpPreview->Show();
-			
+			system("/boot/apps/WebPositive www.google.com");
 			Py_Initialize();
 			PyRun_SimpleString("from time import time,ctime\n"
 								"print 'Today is', ctime(time())\n");
