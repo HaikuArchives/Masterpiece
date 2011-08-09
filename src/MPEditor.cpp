@@ -121,6 +121,19 @@ void MPEditor::MessageReceived(BMessage* msg)
 		}
 	}
 }
+void MPEditor::KeyDown(const char *bytes, int32 numBytes)
+{
+	switch(*bytes)
+	{
+		case B_F1_KEY:
+			launcherMessage.MakeEmpty();
+			launcherMessage.AddInt64("showLauncher", 1);
+			launcherMessenger.SendMessage(&launcherMessage);
+			
+		default:
+			break;
+	}
+}
 bool MPEditor::QuitRequested(void)
 {
 	// on quit, show launcher by sending message
