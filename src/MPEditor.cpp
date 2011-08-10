@@ -112,6 +112,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			else // 
 			{
 				eAlert = new ErrorAlert("3.1 Editor Error: Message not found."); // message variable not found
+				eAlert->Launch();
 			}
 			break;
 		default:
@@ -121,19 +122,42 @@ void MPEditor::MessageReceived(BMessage* msg)
 		}
 	}
 }
+/* moved to view class where the function exists...
+// attempt at keydown functionality.
 void MPEditor::KeyDown(const char *bytes, int32 numBytes)
 {
-	switch(*bytes)
+	if(bytes[0] == B_FUNCTION_KEY)
 	{
-		case B_F1_KEY:
-			launcherMessage.MakeEmpty();
-			launcherMessage.AddInt64("showLauncher", 1);
-			launcherMessenger.SendMessage(&launcherMessage);
+		BMessage *msg = CurrentMessage();
+		if(msg)
+		{
+			int32 key;
+			msg->FindInt32("key", &key);
+			switch(key)
+			{
+				case B_F1_KEY:
+					eAlert = new ErrorAlert("F1 Pressed");
+					eAlert->Launch();
+					break;
+			}
+		}
+	}
+	else
+	{
+		switch(*bytes)
+		{
+			//new BMessage(B_QUIT_REQUESTED);
+			//launcherMessage.MakeEmpty();
+			//launcherMessage.AddInt64("showLauncher", 1);
+			//launcherMessenger.SendMessage(&launcherMessage);
+			//break;
 			
-		default:
-			break;
+			default:
+				break;
+		}
 	}
 }
+*/
 bool MPEditor::QuitRequested(void)
 {
 	// on quit, show launcher by sending message
