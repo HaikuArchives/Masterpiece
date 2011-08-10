@@ -4,6 +4,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	:	BWindow(BRect(100, 100, 900, 700), windowTitle, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), launcherMessage(msg), launcherMessenger(msgr)
 {
 	// initialize controls
+	AddShortcut(B_TAB, B_COMMAND_KEY, new BMessage(END_EDIT_VIEW));
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
 	availableThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
@@ -384,6 +385,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				eAlert = new ErrorAlert("4.2 Builder Error: Message not found"); // message variable not found
 			}
+			break;
+		case END_EDIT_VIEW:
+			printf("give focus to another element\n");
+			availableThoughtListView->MakeFocus(true);
 			break;
 		default:
 		{

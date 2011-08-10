@@ -40,6 +40,7 @@
 #define DISPLAY_ORDER_TEXT		'dort' // display ordered text for selected item
 #define ORDER_THOUGHT_EDITOR	'oted' // open ordered thought editor
 #define AVAIL_THOUGHT_EDITOR	'ated' // open available thought editor
+#define END_EDIT_VIEW			'eedt' // end edit view
 
 class MPBuilder : public BWindow
 {
