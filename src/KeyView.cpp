@@ -7,14 +7,14 @@ KeyView::KeyView(BRect frame, const char* name)
 }
 void KeyView::KeyDown(const char *bytes, int32 numBytes)
 {
-	printf("a key is pressed\n");
+	//printf("a key is pressed\n");
 	BMessage *msg = Window()->CurrentMessage();
 	if(numBytes == 1)
 	{
 		switch(bytes[0])
 		{
 			case B_FUNCTION_KEY:
-				printf("Function Key Pressed\n");
+				//printf("Function Key Pressed\n");
 				if(msg)
 				{
 					int32 key;
@@ -22,14 +22,14 @@ void KeyView::KeyDown(const char *bytes, int32 numBytes)
 					switch(key)
 					{
 						case B_F1_KEY:
-							printf("F1 Pressed\n");
+							//printf("F1 Pressed\n");
 							break;
 					}
 				}
 				break;
 			
 			case B_ESCAPE:
-				printf("escape key pressed\n");
+				//printf("escape key pressed\n");
 				break;
 				
 			default:

@@ -22,6 +22,10 @@ void KeyListView::KeyDown(const char *bytes, int32 numBytes)
 					{
 						case B_F1_KEY:
 							printf("F1 Pressed\n");
+							if(modifiers() | B_COMMAND_KEY)
+							{
+								printf("modifier command also pressed\n");
+							}
 							break;
 					}
 				}
@@ -29,6 +33,22 @@ void KeyListView::KeyDown(const char *bytes, int32 numBytes)
 			
 			case B_ESCAPE:
 				printf("escape key pressed\n");
+				if(modifiers() | B_COMMAND_KEY)
+				{
+					printf("modifier command also pressed\n");
+				}
+				break;
+			
+			case 'u':
+				printf("u is pressed\n");
+				if(modifiers() | B_COMMAND_KEY)
+				{
+					printf("modifier command also pressed\n");
+				}
+				else if(modifiers() | B_OPTION_KEY)
+				{
+					printf("alt ?\n");
+				}
 				break;
 				
 			default:
