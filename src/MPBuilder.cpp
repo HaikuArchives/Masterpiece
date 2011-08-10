@@ -5,6 +5,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 {
 	// initialize controls
 	AddShortcut(B_TAB, B_COMMAND_KEY, new BMessage(END_EDIT_VIEW));
+	AddShortcut('q', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
 	availableThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
