@@ -18,6 +18,9 @@ MPLauncher::MPLauncher(void)
 	// mplauncher is the main window of the application
 	
 	// gui control initialization
+	AddShortcut('m', 0, new BMessage(CREATE_NEW_MP));
+	AddShortcut('t', 0, new BMessage(CREATE_NEW_THT));
+	AddShortcut('d', 0, new BMessage(START_DELETE));
 	mainGroup = new BGroupLayout(B_HORIZONTAL, 0.0);
 	newThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_THT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	newMasterpieceButton = new BButton(BRect(0, 10, 80, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
@@ -189,6 +192,16 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			{
 				eAlert = new ErrorAlert("2.2 Launcher Error: Message Variable was not found.");
 				eAlert->Launch();
+			}
+			break;
+		case START_DELETE:
+			if(delThoughtButton->IsEnabled() == true)
+			{
+				new BMessage(DELETE_LAUNCHER_THT);
+			}
+			if(delMasterpieceButton->IsEnabled() == true)
+			{
+				new BMessage(DELETE_MP);
 			}
 			break;
 		default:

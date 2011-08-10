@@ -35,6 +35,7 @@
 #define DELETE_LAUNCHER_THT	'delt'
 #define DELETE_MP			'delm'
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
+#define START_DELETE		'sdel' // start delete chooser
 
 class MPLauncher : public BWindow
 {
