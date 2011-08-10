@@ -8,7 +8,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
 	editorTextView = new BTextView(r, NULL, r, B_FOLLOW_ALL, B_WILL_DRAW);	
-	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
+	backView = new KeyView(Bounds(), "backview");
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
 	// gui layout builder

@@ -8,7 +8,7 @@
 class KeyView : public BView
 {
 public:
-						KeyView(BRect frame);
+						KeyView(BRect frame, const char* name);
 		virtual void 	KeyDown(const char *bytes, int32 numBytes);
 
 private:

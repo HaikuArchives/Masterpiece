@@ -16,6 +16,7 @@
 #include <TextView.h>
 #include <ScrollView.h>
 
+#include "KeyView.h"
 #include "ErrorAlert.h"
 #include "EditorMenu.h"
 #include "SaveIdea.h"
@@ -34,7 +35,7 @@ public:
 		bool			QuitRequested(void);
 		//virtual void	KeyDown(const char *bytes, int32 numBytes);
 private:
-		BView*			backView;
+		KeyView*		backView;
 		BMessage		launcherMessage;
 		BMessenger		launcherMessenger;
 		BTextView*		editorTextView;
