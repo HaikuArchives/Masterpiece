@@ -33,7 +33,6 @@ public:
 						MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID);
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
-		//virtual void	KeyDown(const char *bytes, int32 numBytes);
 private:
 		KeyView*		backView;
 		BMessage		launcherMessage;

@@ -7,7 +7,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	// initialize controls
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
-	editorTextView = new BTextView(r, NULL, r, B_FOLLOW_ALL, B_WILL_DRAW);	
+	editorTextView = new BTextView(r, NULL, r, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);	
 	backView = new KeyView(Bounds(), "backview");
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
@@ -122,42 +122,6 @@ void MPEditor::MessageReceived(BMessage* msg)
 		}
 	}
 }
-/* moved to view class where the function exists...
-// attempt at keydown functionality.
-void MPEditor::KeyDown(const char *bytes, int32 numBytes)
-{
-	if(bytes[0] == B_FUNCTION_KEY)
-	{
-		BMessage *msg = CurrentMessage();
-		if(msg)
-		{
-			int32 key;
-			msg->FindInt32("key", &key);
-			switch(key)
-			{
-				case B_F1_KEY:
-					eAlert = new ErrorAlert("F1 Pressed");
-					eAlert->Launch();
-					break;
-			}
-		}
-	}
-	else
-	{
-		switch(*bytes)
-		{
-			//new BMessage(B_QUIT_REQUESTED);
-			//launcherMessage.MakeEmpty();
-			//launcherMessage.AddInt64("showLauncher", 1);
-			//launcherMessenger.SendMessage(&launcherMessage);
-			//break;
-			
-			default:
-				break;
-		}
-	}
-}
-*/
 bool MPEditor::QuitRequested(void)
 {
 	// on quit, show launcher by sending message

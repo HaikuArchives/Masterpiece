@@ -1,7 +1,7 @@
 #include "KeyListView.h"
 
 KeyListView::KeyListView(BRect frame)
-	:	BListView(frame, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW)
+	:	BListView(frame, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE)
 {
 }
 void KeyListView::KeyDown(const char *bytes, int32 numBytes)
