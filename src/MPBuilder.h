@@ -18,6 +18,7 @@
 #include <TextView.h>
 
 #include "KeyView.h"
+#include "KeyListView.h"
 #include "ErrorAlert.h"
 #include "BuilderMenu.h"
 #include "SaveIdea.h"
@@ -55,7 +56,7 @@ private:
 		BMessage		launcherMessage;
 		BMessenger		launcherMessenger;
 		BListView*		availableThoughtListView;
-		BListView*		orderedThoughtListView;
+		KeyListView*	orderedThoughtListView;
 		BTextView*		builderTextView;
 		BButton*		rightButton;
 		BButton*		leftButton;
