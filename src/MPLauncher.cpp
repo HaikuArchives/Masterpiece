@@ -197,11 +197,11 @@ void MPLauncher::MessageReceived(BMessage* msg)
 		case START_DELETE:
 			if(delThoughtButton->IsEnabled() == true)
 			{
-				new BMessage(DELETE_LAUNCHER_THT);
+				PostMessage(DELETE_LAUNCHER_THT, this);
 			}
 			if(delMasterpieceButton->IsEnabled() == true)
 			{
-				new BMessage(DELETE_MP);
+				PostMessage(DELETE_MP, this);
 			}
 			break;
 		default:

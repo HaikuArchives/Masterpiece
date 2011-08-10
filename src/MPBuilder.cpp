@@ -64,8 +64,21 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			editIdeaName->Show();
 			break;
 		case MENU_SAV_MP: // save mp information
+			// need to save a untitled mp.
+			if(currentideaID == -1) // save the mp first.
+			{
+				sqlObject = new SqlObject(ideaStatement, "8");
+				sqlObject->PrepareSql("insert into ideatable(ideaname, ismp) values('untitled', 1)");
+				sqlObject->StepSql();
+				xPos = (r.right - r.left) / 2; // find xpos for window
+				yPos = (r.bottom - r.top) / 2; // find ypos for window
+				saveIdea = new SaveIdea(BMessage(MP_UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlObject->ReturnLastInsertRowID());
+				currentideaID = sqlObject->ReturnLastInsertRowID();
+				sqlObject->FinalizeSql();
+				sqlObject->CloseSql();
+				saveIdea->Show();
+			}
 			// save the mini editor window
-			
 			// need to get the current ideaid from the selected item...
 			IdeaStringItem* saveItem;
 			availorderBit = -1;
@@ -101,9 +114,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				}
 				else
 				{
+					// No Big Deal cause a new MP was being saved.
 					// error cause nothing was selected for this save to occur and be called.
-					eAlert = new ErrorAlert("4.15 Not an Item from Either List of Ideas.");
-					eAlert->Launch();
+					//eAlert = new ErrorAlert("4.15 Not an Item from Either List of Ideas.");
+					//eAlert->Launch();
 				}
 			}
 			else
