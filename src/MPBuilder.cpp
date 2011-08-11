@@ -6,6 +6,12 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	// initialize controls
 	AddShortcut(B_TAB, B_COMMAND_KEY, new BMessage(END_EDIT_VIEW));
 	AddShortcut('q', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
+	AddShortcut('n', B_COMMAND_KEY, new BMessage(MENU_NEW_MP));
+	AddShortcut('e', B_COMMAND_KEY, new BMessage(MENU_EDT_MP));
+	AddShortcut('s', B_COMMAND_KEY, new BMessage(MENU_SAV_MP));
+	AddShortcut('r', B_COMMAND_KEY, new BMessage(MENU_PRV_MP));
+	AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_MP));
+	AddShortcut('k', B_COMMAND_KEY, new BMessage(MENU_KEY_MP));
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
 	availableThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
