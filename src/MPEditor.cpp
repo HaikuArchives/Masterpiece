@@ -4,6 +4,12 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	:	BWindow(BRect(100, 100, 900, 700), windowTitle, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), launcherMessage(msg), launcherMessenger(msgr)
 {
 	AddShortcut('q', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
+	AddShortcut('n', B_COMMAND_KEY, new BMessage(MENU_NEW_THT));
+	AddShortcut('e', B_COMMAND_KEY, new BMessage(MENU_EDT_THT));
+	AddShortcut('s', B_COMMAND_KEY, new BMessage(MENU_SAV_THT));
+	AddShortcut('r', B_COMMAND_KEY, new BMessage(MENU_PRV_THT));
+	AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_THT));
+	AddShortcut('k', B_COMMAND_KEY, new BMessage(MENU_KEY_THT));
 	// initialize controls
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
