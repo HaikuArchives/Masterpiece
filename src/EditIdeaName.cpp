@@ -5,13 +5,15 @@ EditIdeaName::EditIdeaName(const BMessage &msg, const BMessenger &msgr, float ma
 	:	BWindow(BRect(0, 0, 358, 60), "Edit Name", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), updatetitleMessage(msg), updatetitleMessenger(msgr)
 {
 	// initialize controls
-	AddShortcut('c', B_COMMAND_KEY, new BMessage(CANCEL_IDEA_NAME));
 	AddShortcut(B_TAB, B_COMMAND_KEY, new BMessage(END_EDIT_IDEA));
+	AddShortcut(B_ENTER, B_COMMAND_KEY, new BMessage(UPDATE_IDEA_NAME));
+	AddShortcut(B_ESCAPE, B_COMMAND_KEY, new BMessage(CANCEL_IDEA_NAME));
 	SetDefaultButton(saveButton);
 	BRect textFrame(0, 0, 300, 10);
 	titleText = new BTextView(textFrame, NULL, textFrame, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
 	titleText->MakeResizable(false);
 	titleText->SetWordWrap(false);
+	titleText->DisallowChar(B_ENTER);
 	titleString = new BStringView(BRect(10, 10, 200, 30), NULL, "Enter Thought Title:");
 	saveButton = new BButton(BRect(190, 50, 270, 75), NULL, "Save", new BMessage(UPDATE_IDEA_NAME));
 	cancelButton = new BButton(BRect(190, 50, 270, 75), NULL, "Cancel", new BMessage(CANCEL_IDEA_NAME));
