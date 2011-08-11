@@ -5,8 +5,11 @@ EditIdeaName::EditIdeaName(const BMessage &msg, const BMessenger &msgr, float ma
 	:	BWindow(BRect(0, 0, 358, 60), "Edit Name", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), updatetitleMessage(msg), updatetitleMessenger(msgr)
 {
 	// initialize controls
+	AddShortcut('c', B_COMMAND_KEY, new BMessage(CANCEL_IDEA_NAME));
+	AddShortcut(B_TAB, B_COMMAND_KEY, new BMessage(END_EDIT_IDEA));
+	SetDefaultButton(saveButton);
 	BRect textFrame(0, 0, 300, 10);
-	titleText = new BTextView(textFrame, NULL, textFrame, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
+	titleText = new BTextView(textFrame, NULL, textFrame, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
 	titleText->MakeResizable(false);
 	titleText->SetWordWrap(false);
 	titleString = new BStringView(BRect(10, 10, 200, 30), NULL, "Enter Thought Title:");
@@ -66,6 +69,9 @@ void EditIdeaName::MessageReceived(BMessage* msg)
 			break;
 		case CANCEL_IDEA_NAME: // cancel without saving name
 			this->Close();
+			break;
+		case END_EDIT_IDEA:
+			cancelButton->MakeFocus(true);
 			break;
 		default:
 			BWindow::MessageReceived(msg);

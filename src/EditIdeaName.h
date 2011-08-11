@@ -21,6 +21,7 @@
 #define UPDATE_IDEA_NAME	'save' // save button
 #define	CANCEL_IDEA_NAME	'can'  // cancel save
 #define UPDATE_TITLE		'uttl' // update title...
+#define END_EDIT_IDEA		'eeid' // tab from editor to next button
 
 class EditIdeaName : public BWindow
 {
