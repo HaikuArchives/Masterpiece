@@ -25,7 +25,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	downButton = new BButton(BRect(10, 10, 90, 35), NULL, "DOWN", new BMessage(MOVE_DOWN), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	bottomButton = new BButton(BRect(10, 10, 90, 35), NULL, "BOTTOM", new BMessage(MOVE_BOTTOM), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	deleteButton = new BButton(BRect(10, 10, 90, 35), NULL, "DELETE", new BMessage(DELETE_BUILDER_THT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
-	backView = new KeyView(Bounds(), "backview");
+	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
 	deleteButton->SetEnabled(false);

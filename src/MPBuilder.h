@@ -17,7 +17,6 @@
 #include <stdio.h>
 #include <TextView.h>
 
-#include "KeyView.h"
 #include "KeyListView.h"
 #include "ErrorAlert.h"
 #include "BuilderMenu.h"
@@ -52,7 +51,7 @@ public:
 		void			ReorderOrderedListView(void);
 		void			ModifyOrderedItems(int curOrderNumber, int newOrderNumber);
 private:
-		KeyView*		backView;
+		BView*			backView;
 		BGroupLayout*	mainGroup;
 		BMessage		launcherMessage;
 		BMessenger		launcherMessenger;

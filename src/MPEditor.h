@@ -16,7 +16,6 @@
 #include <TextView.h>
 #include <ScrollView.h>
 
-#include "KeyView.h"
 #include "ErrorAlert.h"
 #include "EditorMenu.h"
 #include "SaveIdea.h"
@@ -34,7 +33,7 @@ public:
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
 private:
-		KeyView*		backView;
+		BView*			backView;
 		BMessage		launcherMessage;
 		BMessenger		launcherMessenger;
 		BTextView*		editorTextView;
