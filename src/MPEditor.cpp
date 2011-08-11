@@ -100,6 +100,12 @@ void MPEditor::MessageReceived(BMessage* msg)
 			printf("open help topic window");
 			break;
 		case MENU_KEY_THT: // open keyboard reference window
+			xPos = (r.right - r.left) / 2; // find xpos for window
+			yPos = (r.bottom - r.top) / 2; // find ypos for window		
+			helperWindow = new HelperWindows(BRect(xPos, yPos, 670, 500), "Keyboard Shortcuts");
+			helperWindow->AddText(BRect(10, 10, 200, 25), "1", "Close the Window :: ALT+q");
+			helperWindow->AddText(BRect(10, 35, 200, 60), "2", "New Thought :: ALT+n");
+			helperWindow->Show();
 			printf("open keyboard reference window");
 			break;
 		case MENU_MRK_THT: // open markup reference window

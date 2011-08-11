@@ -20,6 +20,7 @@
 #include "EditorMenu.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"
+#include "HelperWindows.h"
 #include "CommonFunctions.h"
 #include "/boot/common/include/python2.6/Python.h"
 
@@ -41,6 +42,7 @@ private:
 		ErrorAlert*		eAlert;
 		SaveIdea*		saveIdea;
 		EditIdeaName*	editIdeaName;
+		HelperWindows*	helperWindow;
 		sqlite3*		mpdb;
 		sqlite3_stmt*	ideaStatement;
 		char*			sqlErrMsg;
