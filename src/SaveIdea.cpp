@@ -4,10 +4,15 @@ SaveIdea::SaveIdea(const BMessage &msg, const BMessenger &msgr, float mainX, flo
 	:	BWindow(BRect(0, 0, 358, 60), "Save As", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), updatetitleMessage(msg), updatetitleMessenger(msgr)
 {
 	// initialize controls
+	AddShortcut(B_TAB, B_COMMAND_KEY, new BMessage(END_SAVE_IDEA));
+	AddShortcut(B_ENTER, B_COMMAND_KEY, new BMessage(SAVE_IDEA));
+	AddShortcut(B_ESCAPE, B_COMMAND_KEY, new BMessage(CANCEL_SAVE));
+	SetDefaultButton(saveButton);
 	BRect textFrame(0, 0, 300, 10);
 	titleText = new BTextView(textFrame, NULL, textFrame, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW);
 	titleText->MakeResizable(false);
 	titleText->SetWordWrap(false);
+	titleText->DisallowChar(B_ENTER);
 	titleString = new BStringView(BRect(10, 10, 200, 30), NULL, "Enter Thought Title:");
 	saveButton = new BButton(BRect(190, 50, 270, 75), NULL, "Save", new BMessage(SAVE_IDEA));
 	cancelButton = new BButton(BRect(190, 50, 270, 75), NULL, "Cancel", new BMessage(CANCEL_SAVE));
@@ -55,6 +60,9 @@ void SaveIdea::MessageReceived(BMessage* msg)
 			break;
 		case CANCEL_SAVE: // cancel without saving name
 			this->Close();
+			break;
+		case END_SAVE_IDEA:
+			cancelButton->MakeFocus(true);
 			break;
 		default:
 			BWindow::MessageReceived(msg);
