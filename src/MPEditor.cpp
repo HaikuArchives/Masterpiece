@@ -40,6 +40,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 void MPEditor::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
+	FILE *fp = NULL;
 	switch(msg->what)
 	{
 		case MENU_NEW_THT: // open another untitled editor window
@@ -79,18 +80,11 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
+			// runs python code and creates tmp.html.  webpositive won't open it though but that's another issue
+			if(!(fp = fopen("./converters/rst2html.py", "r"))) printf("Error");
 			Py_Initialize();
-			PyRun_SimpleString("from time import time,ctime\n"
-								"print 'Today is', ctime(time())\n");
-			Py_Finalize();
-			//printf("save data to tmp file, export to python html one and open data in preview window or webpositive\n\n");
-			// AM NO LONGER WRITING A FULL BLOWN PARSER AND DISPLAYER IN A TEXTVIEW.  IF I DO THAT, I HAVE WRITTEN A FULL BLOWN WORD PROCESSOR.
-			// WILL SIMPLY USE THE PREVIEWER TO PREVIEW IN HTML WITH WEBPOSITIVE.
-			
-			// FORK/EXEC IN POSIX LINUX WILL RUN AN APP FROM C++.  HAVE TO RESEARCH THIS.
-			//mpPreview = new MPPreview(currentideaID);
-			//mpPreview->Show();
-			system("/boot/apps/WebPositive/WebPositive file:///boot/home/Projects/masterpiece/test.html &");
+			PyRun_SimpleFile(fp, "rst2html.py tmp.tht tmp.html");
+			system("/boot/apps/WebPositive/WebPositive file:///boot/home/Projects/masterpiece/tmp.html &");
 			
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
