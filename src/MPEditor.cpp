@@ -86,7 +86,12 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// LOOK AT DOCUTILS CORE.PY FOR CALLING PYTHON COMMANDS.
 			// LOOK AT http://docs.python.org/faq/extending.html FOR REFERENCE TO CALLING FUNCTIONS FROM SOURCE...
 			// POSSIBLY PUT ALL THOUGHTS INTO A STRING.  THEN CALL THE PYTHON CMD ON THEM, THEN OUTPUT THEM TO A FILE...
-		
+			
+			Python py();
+			//py.run_file("./converters/rst2html.py tmp.tht tmp.html");
+			//py.run_string("print hello");
+			py.load("./converters/rst2html.py");
+			
 			// runs python code and creates tmp.html.  webpositive won't open it though but that's another issue
 			// determine current app directory and then make the string this way
 			//if(!(fp = fopen("./converters/rst2html.py", "r"))) printf("Error");
