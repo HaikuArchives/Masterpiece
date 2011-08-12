@@ -10,6 +10,7 @@
 #include "ErrorAlert.h"
 
 void	DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
+BString	GetAppDirPath(void);
 
 class SqlObject
 {

@@ -11,6 +11,14 @@ void DisplayError(const char* errorNumber, const char* errorType, const char* er
 	ealert = new ErrorAlert(tmpString);
 	ealert->Launch();
 }
+BString GetAppDirPath(void)
+{
+	app_info info;
+	be_app->GetAppInfo(&info);
+	BPath path(&info.ref);
+	path.GetParent(&path);
+	return path.Path();
+}
 SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber, sqlite3* openDB)
 {
 	sqldb = openDB;
@@ -26,11 +34,7 @@ SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber)
 	int			sqlValue;
 	BString		tmpString;
 	sqlErrMsg = 0;
-	app_info info;
-	be_app->GetAppInfo(&info);
-	BPath path(&info.ref);
-	path.GetParent(&path);
-	BString tmpPath = path.Path();
+	BString tmpPath = GetAppDirPath();
 	tmpPath += "/MasterPiece.db";
 	sqlValue = sqlite3_open_v2(tmpPath, &sqldb, SQLITE_OPEN_READWRITE, NULL); // open db
 	if(sqlite3_errcode(sqldb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure
