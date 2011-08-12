@@ -25,6 +25,7 @@
 #include "CommonFunctions.h"
 #include "MPEditor.h"
 #include "IdeaStringItem.h"
+#include "HelperWindows.h"
 
 #define SHOW_LAUNCHER			'lnch' // show mp launcher window
 #define MP_UPDATE_TITLE			'uttl' // update title
@@ -69,6 +70,7 @@ private:
 		ErrorAlert*		eAlert;
 		SaveIdea*		saveIdea;
 		EditIdeaName*	editIdeaName;
+		HelperWindows*	helperWindow;
 		sqlite3*		mpdb;
 		sqlite3_stmt*	ideaStatement;
 		sqlite3_stmt*	reorderStatement;
