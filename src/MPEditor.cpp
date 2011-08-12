@@ -41,6 +41,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
 	FILE *fp = NULL;
+	BString tmpPath;
 	switch(msg->what)
 	{
 		case MENU_NEW_THT: // open another untitled editor window
@@ -83,9 +84,21 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// runs python code and creates tmp.html.  webpositive won't open it though but that's another issue
 			// determine current app directory and then make the string this way
 			if(!(fp = fopen("./converters/rst2html.py", "r"))) printf("Error");
+			PyObject* glb, loc;
+			PyObject** args;
+			loc = PyDict_New();
+			glb = PyDict_New();
+			PyDict_SetItemString(glb, "__builtins__", PyEval_GetBuiltins());
 			Py_Initialize();
-			PyRun_SimpleFile(fp, "rst2html.py tmp.tht tmp.html");
-			system("/boot/apps/WebPositive/WebPositive file:///boot/home/Projects/masterpiece/tmp.html &");
+			PyRun_File(fp, 
+			//PyEval_EvalCodeEx(fp, glb, loc
+			//PyRun_SimpleFileFlags(fp, "rst2html.py", "tmp.tht", "tmp.html");
+			//PyRun_SimpleString("./converters/rst2html.py tmp.tht tmp.html");
+			Py_Finalize();
+			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
+			tmpPath += GetAppDirPath();
+			tmpPath += "/tmp.html &";
+			system(tmpPath);
 			
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
