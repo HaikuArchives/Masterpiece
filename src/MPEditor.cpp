@@ -81,6 +81,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
 			// runs python code and creates tmp.html.  webpositive won't open it though but that's another issue
+			// determine current app directory and then make the string this way
 			if(!(fp = fopen("./converters/rst2html.py", "r"))) printf("Error");
 			Py_Initialize();
 			PyRun_SimpleFile(fp, "rst2html.py tmp.tht tmp.html");
