@@ -327,7 +327,7 @@ pyembed::Python::create_args(const Arg_map& args)
   return tuple;
 }
 
-static bool cleared = false;
+//static bool cleared = false;
 
 PyObject*
 pyembed::Python::make_call(const std::string& func_name,
@@ -390,7 +390,7 @@ make_map_from_dict(PyObject* dict, pyembed::String_map& out)
       PyObject* key;
       PyObject* value;
       int pos = 0;
-      while (PyDict_Next(dict, &pos, &key, &value)) 
+      while (PyDict_Next(dict, (Py_ssize_t*)&pos, &key, &value)) 
 	out[to_string(key)] = to_string(value);
     }
 }
