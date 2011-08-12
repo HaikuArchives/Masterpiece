@@ -1,11 +1,14 @@
 #ifndef MPEDITOR_H
 #define MPEDITOR_H
 
+#include "/boot/common/include/python2.6/Python.h"
+
 #include <Window.h>
 #include <View.h>
 #include <sqlite3.h>
 #include <Application.h>
 #include <String.h>
+#include <string.h>
 #include <ScrollView.h>
 #include <Messenger.h>
 #include <Message.h>
@@ -16,14 +19,12 @@
 #include <TextView.h>
 #include <ScrollView.h>
 
-#include "pyembed.h"
 #include "ErrorAlert.h"
 #include "EditorMenu.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"
 #include "HelperWindows.h"
 #include "CommonFunctions.h"
-#include "/boot/common/include/python2.6/Python.h"
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 #define UPDATE_TITLE		'uttl' // update title...

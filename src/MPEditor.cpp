@@ -1,7 +1,5 @@
 #include "MPEditor.h"
 
-using namespace pyembed;
-
 MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID)
 	:	BWindow(BRect(100, 100, 900, 700), windowTitle, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), launcherMessage(msg), launcherMessenger(msgr)
 {
@@ -86,11 +84,36 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// LOOK AT DOCUTILS CORE.PY FOR CALLING PYTHON COMMANDS.
 			// LOOK AT http://docs.python.org/faq/extending.html FOR REFERENCE TO CALLING FUNCTIONS FROM SOURCE...
 			// POSSIBLY PUT ALL THOUGHTS INTO A STRING.  THEN CALL THE PYTHON CMD ON THEM, THEN OUTPUT THEM TO A FILE...
-			
-			Python py();
-			//py.run_file("./converters/rst2html.py tmp.tht tmp.html");
-			//py.run_string("print hello");
-			py.load("./converters/rst2html.py");
+			PyObject *pName, *pModule, *pDict, *pFunc, *pValue, *pArgs;
+			pName = PyString_FromString("docutils.core");
+			pModule = PyImport_Import(pName);
+			pDict = PyModule_GetDict(pModule);
+			pFunc = PyDict_GetItemString(pDict, "publish_string");
+			if(PyCallable_Check(pFunc))
+			{
+				string outString;
+				pArgs = PyTuple_New(3);
+				PyTuple_SetItem(pArgs, 0, PyString_FromString("*bolder*"));
+				PyTuple_SetItem(pArgs, 1, PyString_FromString(outString));
+				PyTuple_SetItem(pArgs, 2, PyString_FromString("xhtml"));
+				pValue = PyObject_CallObject(pFunc, NULL);
+			}
+			else
+			{
+				PyErr_Print();
+			}
+			Py_DECREF(pModule);
+			Py_DECREF(pName);
+			PyFinalize();
+			/*
+			publish_string(source, source_path=None, destination_path=None,
+                   reader=None, reader_name='standalone',
+                   parser=None, parser_name='restructuredtext',
+                   writer=None, writer_name='pseudoxml',
+                   settings=None, settings_spec=None,
+                   settings_overrides=None, config_section=None,
+                   enable_exit_status=None):			*/
+            // publish_string(stringVar, destVar, writer_name='xhtml');
 			
 			// runs python code and creates tmp.html.  webpositive won't open it though but that's another issue
 			// determine current app directory and then make the string this way
