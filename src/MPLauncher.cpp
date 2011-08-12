@@ -63,6 +63,7 @@ MPLauncher::MPLauncher(void)
 	openThoughtListView->SetSelectionMessage(new BMessage(SELECT_EXIST_THT)); // single click action
 	openMasterpieceListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_MP)); // double click action
 	openThoughtListView->SetInvocationMessage(new BMessage(OPEN_EXISTING_THT)); // double click action
+	newMasterpieceButton->MakeFocus(true);
 }
 void MPLauncher::MessageReceived(BMessage* msg)
 {
