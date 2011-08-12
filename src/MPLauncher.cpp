@@ -129,7 +129,6 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			else
 			{
 				delMasterpieceButton->SetEnabled(false);
-				//delThoughtButton->SetEnabled(false);
 			}
 			break;
 		case SELECT_EXIST_THT:
@@ -141,7 +140,6 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			}
 			else
 			{
-				//delMasterpieceButton->SetEnabled(false);
 				delThoughtButton->SetEnabled(false);
 			}
 			break;
