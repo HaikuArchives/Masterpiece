@@ -81,20 +81,24 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
+			// LOOK AT DOCUTILS CORE.PY FOR CALLING PYTHON COMMANDS.
+			// LOOK AT http://docs.python.org/faq/extending.html FOR REFERENCE TO CALLING FUNCTIONS FROM SOURCE...
+			// POSSIBLY PUT ALL THOUGHTS INTO A STRING.  THEN CALL THE PYTHON CMD ON THEM, THEN OUTPUT THEM TO A FILE...
+		
 			// runs python code and creates tmp.html.  webpositive won't open it though but that's another issue
 			// determine current app directory and then make the string this way
-			if(!(fp = fopen("./converters/rst2html.py", "r"))) printf("Error");
-			PyObject* glb, loc;
-			PyObject** args;
-			loc = PyDict_New();
-			glb = PyDict_New();
-			PyDict_SetItemString(glb, "__builtins__", PyEval_GetBuiltins());
-			Py_Initialize();
-			PyRun_File(fp, 
+			//if(!(fp = fopen("./converters/rst2html.py", "r"))) printf("Error");
+			//PyObject* glb, loc;
+			//PyObject** args;
+			//loc = PyDict_New();
+			//glb = PyDict_New();
+			//PyDict_SetItemString(glb, "__builtins__", PyEval_GetBuiltins());
+			//Py_Initialize();
+			//PyRun_File(fp, 
 			//PyEval_EvalCodeEx(fp, glb, loc
 			//PyRun_SimpleFileFlags(fp, "rst2html.py", "tmp.tht", "tmp.html");
 			//PyRun_SimpleString("./converters/rst2html.py tmp.tht tmp.html");
-			Py_Finalize();
+			//Py_Finalize();
 			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
