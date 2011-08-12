@@ -16,6 +16,7 @@
 #include <TextView.h>
 #include <ScrollView.h>
 
+#include "pyembed.h"
 #include "ErrorAlert.h"
 #include "EditorMenu.h"
 #include "SaveIdea.h"
