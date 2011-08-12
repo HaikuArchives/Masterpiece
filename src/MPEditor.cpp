@@ -79,7 +79,11 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
-			printf("save data to tmp file, export to python html one and open data in preview window or webpositive\n\n");
+			Py_Initialize();
+			PyRun_SimpleString("from time import time,ctime\n"
+								"print 'Today is', ctime(time())\n");
+			Py_Finalize();
+			//printf("save data to tmp file, export to python html one and open data in preview window or webpositive\n\n");
 			// AM NO LONGER WRITING A FULL BLOWN PARSER AND DISPLAYER IN A TEXTVIEW.  IF I DO THAT, I HAVE WRITTEN A FULL BLOWN WORD PROCESSOR.
 			// WILL SIMPLY USE THE PREVIEWER TO PREVIEW IN HTML WITH WEBPOSITIVE.
 			
@@ -87,10 +91,6 @@ void MPEditor::MessageReceived(BMessage* msg)
 			//mpPreview = new MPPreview(currentideaID);
 			//mpPreview->Show();
 			system("/boot/apps/WebPositive/WebPositive file:///boot/home/Projects/masterpiece/test.html &");
-			Py_Initialize();
-			PyRun_SimpleString("from time import time,ctime\n"
-								"print 'Today is', ctime(time())\n");
-			Py_Finalize();
 			
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
