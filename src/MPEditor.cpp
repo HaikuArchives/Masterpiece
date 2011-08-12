@@ -91,12 +91,12 @@ void MPEditor::MessageReceived(BMessage* msg)
 			pFunc = PyDict_GetItemString(pDict, "publish_string");
 			if(PyCallable_Check(pFunc))
 			{
-				string outString;
+				BString outString;
 				pArgs = PyTuple_New(3);
 				PyTuple_SetItem(pArgs, 0, PyString_FromString("*bolder*"));
 				PyTuple_SetItem(pArgs, 1, PyString_FromString(outString));
 				PyTuple_SetItem(pArgs, 2, PyString_FromString("xhtml"));
-				pValue = PyObject_CallObject(pFunc, NULL);
+				pValue = PyObject_CallObject(pFunc, pArgs);
 			}
 			else
 			{
@@ -104,7 +104,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			Py_DECREF(pModule);
 			Py_DECREF(pName);
-			PyFinalize();
+			//PyFinalize();
+
 			/*
 			publish_string(source, source_path=None, destination_path=None,
                    reader=None, reader_name='standalone',

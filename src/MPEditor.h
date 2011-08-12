@@ -13,6 +13,7 @@
 #include <Messenger.h>
 #include <Message.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <GroupLayout.h>
 #include <SpaceLayoutItem.h>
 #include <GridLayoutBuilder.h>
