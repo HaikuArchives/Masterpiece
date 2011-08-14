@@ -84,6 +84,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// LOOK AT DOCUTILS CORE.PY FOR CALLING PYTHON COMMANDS.
 			// LOOK AT http://docs.python.org/faq/extending.html FOR REFERENCE TO CALLING FUNCTIONS FROM SOURCE...
 			// POSSIBLY PUT ALL THOUGHTS INTO A STRING.  THEN CALL THE PYTHON CMD ON THEM, THEN OUTPUT THEM TO A FILE...
+			
+			/*
 			PyObject *pName, *pModule, *pDict, *pFunc, *pValue, *pArgs;
 			pName = PyString_FromString("docutils.core");
 			pModule = PyImport_Import(pName);
@@ -105,6 +107,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			Py_DECREF(pModule);
 			Py_DECREF(pName);
 			//PyFinalize();
+			*/
 
 			/*
 			publish_string(source, source_path=None, destination_path=None,
@@ -130,6 +133,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			//PyRun_SimpleFileFlags(fp, "rst2html.py", "tmp.tht", "tmp.html");
 			//PyRun_SimpleString("./converters/rst2html.py tmp.tht tmp.html");
 			//Py_Finalize();
+			
 			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
