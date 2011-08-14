@@ -12,6 +12,13 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	AddShortcut('r', B_COMMAND_KEY, new BMessage(MENU_PRV_MP));
 	AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_MP));
 	AddShortcut('k', B_COMMAND_KEY, new BMessage(MENU_KEY_MP));
+	AddShortcut(B_RIGHT_ARROW, B_COMMAND_KEY, new BMessage(MOVE_RIGHT));
+	AddShortcut(B_LEFT_ARROW, B_COMMAND_KEY, new BMessage(MOVE_LEFT));
+	AddShortcut(B_UP_ARROW, B_COMMAND_KEY, new BMessage(MOVE_UP));
+	AddShortcut(B_DOWN_ARROW, B_COMMAND_KEY, new BMessage(MOVE_DOWN));
+	AddShortcut(B_HOME, B_COMMAND_KEY, new BMessage(MOVE_TOP));
+	AddShortcut(B_END, B_COMMAND_KEY, new BMessage(MOVE_BOTTOM));
+	AddShortcut('d', B_COMMAND_KEY, new BMessage(DELETE_BUILDER_THT));
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
 	availableThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
@@ -201,8 +208,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			else // no item was selected
 			{
-				eAlert = new ErrorAlert("4.7 Builder Error: No Idea is selected to move up.");
-				eAlert->Launch();
+				// this is not an error worth passing.
+				//eAlert = new ErrorAlert("4.7 Builder Error: No Idea is selected to move up.");
+				//eAlert->Launch();
 			}
 			break;
 		case MOVE_DOWN:
@@ -218,8 +226,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			else // no item was selected
 			{
-				eAlert = new ErrorAlert("4.9 Builder Error: No Idea is selected to move down.");
-				eAlert->Launch();
+				// this is not an error worth passing.
+				//eAlert = new ErrorAlert("4.9 Builder Error: No Idea is selected to move down.");
+				//eAlert->Launch();
 			}
 			break;
 		case MOVE_TOP:
@@ -235,8 +244,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			else // no item was selected
 			{
-				eAlert = new ErrorAlert("4.11 Builder Error: No Idea is selected to move to top.");
-				eAlert->Launch();
+				// this is not an error worth passing
+				//eAlert = new ErrorAlert("4.11 Builder Error: No Idea is selected to move to top.");
+				//eAlert->Launch();
 			}
 			break;
 		case MOVE_BOTTOM:
@@ -252,8 +262,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			else // no item was selected
 			{
-				eAlert = new ErrorAlert("4.13 Builder Error: No Idea is selected to move to the bottom.");
-				eAlert->Launch();
+				// this is not an error worth passing
+				//eAlert = new ErrorAlert("4.13 Builder Error: No Idea is selected to move to the bottom.");
+				//eAlert->Launch();
 			}
 			break;
 		case DELETE_BUILDER_THT:
