@@ -133,6 +133,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			//PyRun_SimpleFileFlags(fp, "rst2html.py", "tmp.tht", "tmp.html");
 			//PyRun_SimpleString("./converters/rst2html.py tmp.tht tmp.html");
 			//Py_Finalize();
+			system("python /boot/common/bin/rst2html.py tmp.tht tmp.html");
 			
 			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
 			tmpPath += GetAppDirPath();
