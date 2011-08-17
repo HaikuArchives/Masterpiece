@@ -149,17 +149,28 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// PYEMBED TEST
 			try
 			{
-				py.run_string("print 'Hello world'");
+				Arg_map args;
+				//args["*ladida*"] = Py_string;
+				//BString ret = "";
+				//py.run_string("print 'Hello world'");
+				py.load("docutils");
+				//py.call("simple");
+				py.call("publish_string");
+				//py.call("publish_string", args);
+				//std::cout << ret;
 			}
 			catch(Python_exception ex)
 			{
 				printf("Python error: %s\n", ex.what());
 			}
 			
+			// uncomment this later when python is working
+			/*
 			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
 			system(tmpPath);
+			*/
 			
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
