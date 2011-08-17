@@ -1,5 +1,7 @@
 #include "MPEditor.h"
 
+using namespace pyembed;
+
 MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID)
 	:	BWindow(BRect(100, 100, 900, 700), windowTitle, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), launcherMessage(msg), launcherMessenger(msgr)
 {
@@ -41,6 +43,12 @@ void MPEditor::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
 	//FILE *fp = NULL;
+	//int argc = NULL;
+	BApplication* app = new BApplication();
+	static int argc = app->GetGlobalArgc();
+	static char** argv = app->GetGlobalArgv();
+	//char** argv = NULL;
+	Python py(argc, argv);	
 	BString tmpPath;
 	switch(msg->what)
 	{
@@ -81,6 +89,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
+		
+		
 			// LOOK AT DOCUTILS CORE.PY FOR CALLING PYTHON COMMANDS.
 			// LOOK AT http://docs.python.org/faq/extending.html FOR REFERENCE TO CALLING FUNCTIONS FROM SOURCE...
 			// POSSIBLY PUT ALL THOUGHTS INTO A STRING.  THEN CALL THE PYTHON CMD ON THEM, THEN OUTPUT THEM TO A FILE...
@@ -133,8 +143,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 			//PyRun_SimpleFileFlags(fp, "rst2html.py", "tmp.tht", "tmp.html");
 			//PyRun_SimpleString("./converters/rst2html.py tmp.tht tmp.html");
 			//Py_Finalize();
-			system("python /boot/common/bin/rst2html.py tmp.tht tmp.html");
 			
+			// PYEMBED TEST
+			py.run_string("print 'Hello world'");
 			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
