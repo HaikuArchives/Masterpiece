@@ -5,6 +5,8 @@
  * Copyright (C) 2006 Mindteck.
  * @author Vijay Mathew Pandyalakal
  * @date 08 May, 2006
+ 
+ * modified 08/17/11 by Pasquale J. Rinaldi, Jr.
  */
 
 #include <iostream>
