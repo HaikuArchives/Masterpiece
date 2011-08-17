@@ -66,7 +66,6 @@ private:
 		int				selected;
 		int64			showLauncher;
 		BString			tmpString;
-		
 		MPBuilder*		mpBuilder;
 		MPEditor*		mpEditor;
 		SqlObject*		sqlObject;

@@ -10,13 +10,8 @@
 class App : public BApplication
 {
 public:
-							App(int aargc, char** aargv);
-			static int		GetGlobalArgc(void);
-			static char**	GetGlobalArgv(void);
-			BApplication*	GetThisApp(void);
+							App(void);
 private:
-			static int 		global_argc;
-			static char** 	global_argv;
 };
 
 #endif

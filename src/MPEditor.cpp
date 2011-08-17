@@ -44,11 +44,13 @@ void MPEditor::MessageReceived(BMessage* msg)
 	BRect r(Bounds());
 	//FILE *fp = NULL;
 	//int argc = NULL;
-	BApplication* app = new BApplication();
-	static int argc = app->GetGlobalArgc();
-	static char** argv = app->GetGlobalArgv();
+	//int argc = 2;
+	//char** argv = ;
 	//char** argv = NULL;
-	Python py(argc, argv);	
+	int argc = 1;
+	char* argvv = "ladida";
+	char** argv = &argvv;
+	Python py(argc, argv);
 	BString tmpPath;
 	switch(msg->what)
 	{
@@ -145,7 +147,15 @@ void MPEditor::MessageReceived(BMessage* msg)
 			//Py_Finalize();
 			
 			// PYEMBED TEST
-			py.run_string("print 'Hello world'");
+			try
+			{
+				py.run_string("print 'Hello world'");
+			}
+			catch(Python_exception ex)
+			{
+				printf("Python error: %s\n", ex.what());
+			}
+			
 			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
