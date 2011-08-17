@@ -42,11 +42,6 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 void MPEditor::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
-	//FILE *fp = NULL;
-	//int argc = NULL;
-	//int argc = 2;
-	//char** argv = ;
-	//char** argv = NULL;
 	int argc = 1;
 	char* argvv = "ladida";
 	char** argv = &argvv;
@@ -91,86 +86,20 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
-		
-		
-			// LOOK AT DOCUTILS CORE.PY FOR CALLING PYTHON COMMANDS.
-			// LOOK AT http://docs.python.org/faq/extending.html FOR REFERENCE TO CALLING FUNCTIONS FROM SOURCE...
-			// POSSIBLY PUT ALL THOUGHTS INTO A STRING.  THEN CALL THE PYTHON CMD ON THEM, THEN OUTPUT THEM TO A FILE...
-			
-			/*
-			PyObject *pName, *pModule, *pDict, *pFunc, *pValue, *pArgs;
-			pName = PyString_FromString("docutils.core");
-			pModule = PyImport_Import(pName);
-			pDict = PyModule_GetDict(pModule);
-			pFunc = PyDict_GetItemString(pDict, "publish_string");
-			if(PyCallable_Check(pFunc))
-			{
-				BString outString;
-				pArgs = PyTuple_New(3);
-				PyTuple_SetItem(pArgs, 0, PyString_FromString("*bolder*"));
-				PyTuple_SetItem(pArgs, 1, PyString_FromString(outString));
-				PyTuple_SetItem(pArgs, 2, PyString_FromString("xhtml"));
-				pValue = PyObject_CallObject(pFunc, pArgs);
-			}
-			else
-			{
-				PyErr_Print();
-			}
-			Py_DECREF(pModule);
-			Py_DECREF(pName);
-			//PyFinalize();
-			*/
-
-			/*
-			publish_string(source, source_path=None, destination_path=None,
-                   reader=None, reader_name='standalone',
-                   parser=None, parser_name='restructuredtext',
-                   writer=None, writer_name='pseudoxml',
-                   settings=None, settings_spec=None,
-                   settings_overrides=None, config_section=None,
-                   enable_exit_status=None):			*/
-            // publish_string(stringVar, destVar, writer_name='xhtml');
-			
-			// runs python code and creates tmp.html.  webpositive won't open it though but that's another issue
-			// determine current app directory and then make the string this way
-			//if(!(fp = fopen("./converters/rst2html.py", "r"))) printf("Error");
-			//PyObject* glb, loc;
-			//PyObject** args;
-			//loc = PyDict_New();
-			//glb = PyDict_New();
-			//PyDict_SetItemString(glb, "__builtins__", PyEval_GetBuiltins());
-			//Py_Initialize();
-			//PyRun_File(fp, 
-			//PyEval_EvalCodeEx(fp, glb, loc
-			//PyRun_SimpleFileFlags(fp, "rst2html.py", "tmp.tht", "tmp.html");
-			//PyRun_SimpleString("./converters/rst2html.py tmp.tht tmp.html");
-			//Py_Finalize();
-			
-			// PYEMBED TEST
+			// NEED TO WRITE THOUGHTS TO A TMP.THT FILE
 			try
 			{
-				Arg_map args;
-				//args["*ladida*"] = Py_string;
-				//BString ret = "";
-				//py.run_string("print 'Hello world'");
-				py.load("docutils");
-				//py.call("simple");
-				py.call("publish_string");
-				//py.call("publish_string", args);
-				//std::cout << ret;
+				py.run_file("preview.py");
 			}
 			catch(Python_exception ex)
 			{
 				printf("Python error: %s\n", ex.what());
 			}
 			
-			// uncomment this later when python is working
-			/*
 			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
 			system(tmpPath);
-			*/
 			
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
