@@ -1,7 +1,6 @@
 #ifndef MPEDITOR_H
 #define MPEDITOR_H
 
-//#include "/boot/common/include/python2.6/Python.h"
 #include "pyembed.h"
 
 #include <Window.h>
@@ -54,7 +53,6 @@ private:
 		BString			tmpString;
 		BString			updateTitle;
 		BString			tmpText;
-		//BFile			previewFile;
 		int				sqlValue;
 		int				currentideaID;
 		float			xPos;

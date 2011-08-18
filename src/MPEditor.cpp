@@ -48,7 +48,6 @@ void MPEditor::MessageReceived(BMessage* msg)
 	Python py(argc, argv);
 	BString tmpPath;
 	BFile previewFile;
-	//char testString[] = "*ladida*";
 	
 	switch(msg->what)
 	{

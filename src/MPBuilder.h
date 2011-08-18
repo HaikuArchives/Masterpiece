@@ -1,6 +1,8 @@
 #ifndef MPBUILDER_H
 #define MPBUILDER_H
 
+#include "pyembed.h"
+
 #include <Window.h>
 #include <View.h>
 #include <sqlite3.h>
@@ -16,6 +18,7 @@
 #include <Message.h>
 #include <stdio.h>
 #include <TextView.h>
+#include <File.h>
 
 #include "KeyListView.h"
 #include "ErrorAlert.h"

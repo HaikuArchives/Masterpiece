@@ -1,5 +1,7 @@
 #include "MPBuilder.h"
 
+using namespace pyembed;
+
 MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID)
 	:	BWindow(BRect(100, 100, 900, 700), windowTitle, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), launcherMessage(msg), launcherMessenger(msgr)
 {
@@ -65,6 +67,13 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 void MPBuilder::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
+	int argc = 1;
+	char* argvv = "ladida";
+	char** argv = &argvv;
+	Python py(argc, argv);
+	BString tmpPath;
+	BString mpData;
+	BFile previewFile;
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -141,6 +150,35 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_MP: // preview masterpiece
+			IdeaStringItem* previewItem;
+			mpData = "";
+			for(int32 i = 0; i < orderedThoughtListView->CountItems(); i++)
+			{
+				previewItem = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(i));
+				mpData += previewItem->ReturnText();
+			}
+			tmpPath = GetAppDirPath();
+			tmpPath += "/tmp.tht";
+			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+			if(previewFile.InitCheck() != B_OK)
+			{
+				printf("Couldn't write file\n");
+			}
+			previewFile.Write(mpData, strlen(mpData));
+			previewFile.Unset();
+			try
+			{
+				py.run_file("preview.py");
+			}
+			catch(Python_exception ex)
+			{
+				printf("Python error: %s\n", ex.what());
+			}
+			
+			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
+			tmpPath += GetAppDirPath();
+			tmpPath += "/tmp.html &";
+			system(tmpPath);
 			// NEED TO GET ALL THOUGHTS IN ORDER AND WRITE TO A FILE.
 			// THEN CALL PYTHON SCRIPT, THEN CALL WEBPOSITIVE
 			/*
