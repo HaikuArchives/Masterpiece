@@ -47,6 +47,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 	char** argv = &argvv;
 	Python py(argc, argv);
 	BString tmpPath;
+	BFile previewFile;
+	//char testString[] = "*ladida*";
+	
 	switch(msg->what)
 	{
 		case MENU_NEW_THT: // open another untitled editor window
@@ -86,7 +89,16 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
-			// NEED TO WRITE THOUGHTS TO A TMP.THT FILE
+			// NEED TO COPY THOUGHT STRING AND WRITE THAT...
+			tmpPath = GetAppDirPath();
+			tmpPath += "/tmp.tht";
+			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+			if(previewFile.InitCheck() != B_OK)
+			{
+				printf("Couldn't write file\n");
+			}
+			previewFile.Write(editorTextView->Text(), strlen(editorTextView->Text()));
+			previewFile.Unset();
 			try
 			{
 				py.run_file("preview.py");

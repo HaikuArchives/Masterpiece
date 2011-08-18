@@ -20,6 +20,7 @@
 #include <GridLayoutBuilder.h>
 #include <TextView.h>
 #include <ScrollView.h>
+#include <File.h>
 
 #include "ErrorAlert.h"
 #include "EditorMenu.h"
@@ -53,6 +54,7 @@ private:
 		BString			tmpString;
 		BString			updateTitle;
 		BString			tmpText;
+		//BFile			previewFile;
 		int				sqlValue;
 		int				currentideaID;
 		float			xPos;
