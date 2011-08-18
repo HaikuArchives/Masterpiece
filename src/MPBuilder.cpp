@@ -141,6 +141,32 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_MP: // preview masterpiece
+			// NEED TO GET ALL THOUGHTS IN ORDER AND WRITE TO A FILE.
+			// THEN CALL PYTHON SCRIPT, THEN CALL WEBPOSITIVE
+			/*
+			tmpPath = GetAppDirPath();
+			tmpPath += "/tmp.tht";
+			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+			if(previewFile.InitCheck() != B_OK)
+			{
+				printf("Couldn't write file\n");
+			}
+			previewFile.Write(editorTextView->Text(), strlen(editorTextView->Text()));
+			previewFile.Unset();
+			try
+			{
+				py.run_file("preview.py");
+			}
+			catch(Python_exception ex)
+			{
+				printf("Python error: %s\n", ex.what());
+			}
+			
+			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
+			tmpPath += GetAppDirPath();
+			tmpPath += "/tmp.html &";
+			system(tmpPath);
+			*/
 			break;
 		case MENU_PUB_MP: // publish masterpiece
 			break;

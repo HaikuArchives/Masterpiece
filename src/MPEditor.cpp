@@ -89,7 +89,6 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
-			// NEED TO COPY THOUGHT STRING AND WRITE THAT...
 			tmpPath = GetAppDirPath();
 			tmpPath += "/tmp.tht";
 			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
