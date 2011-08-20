@@ -12,7 +12,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	AddShortcut('e', B_COMMAND_KEY, new BMessage(MENU_EDT_MP));
 	AddShortcut('s', B_COMMAND_KEY, new BMessage(MENU_SAV_MP));
 	AddShortcut('r', B_COMMAND_KEY, new BMessage(MENU_PRV_MP));
-	AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_MP));
+	//AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_MP));
 	AddShortcut('k', B_COMMAND_KEY, new BMessage(MENU_KEY_MP));
 	AddShortcut(B_RIGHT_ARROW, B_COMMAND_KEY, new BMessage(MOVE_RIGHT));
 	AddShortcut(B_LEFT_ARROW, B_COMMAND_KEY, new BMessage(MOVE_LEFT));
@@ -179,35 +179,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
 			system(tmpPath);
-			// NEED TO GET ALL THOUGHTS IN ORDER AND WRITE TO A FILE.
-			// THEN CALL PYTHON SCRIPT, THEN CALL WEBPOSITIVE
-			/*
-			tmpPath = GetAppDirPath();
-			tmpPath += "/tmp.tht";
-			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
-			if(previewFile.InitCheck() != B_OK)
-			{
-				printf("Couldn't write file\n");
-			}
-			previewFile.Write(editorTextView->Text(), strlen(editorTextView->Text()));
-			previewFile.Unset();
-			try
-			{
-				py.run_file("preview.py");
-			}
-			catch(Python_exception ex)
-			{
-				printf("Python error: %s\n", ex.what());
-			}
-			
-			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
-			tmpPath += GetAppDirPath();
-			tmpPath += "/tmp.html &";
-			system(tmpPath);
-			*/
 			break;
-		case MENU_PUB_MP: // publish masterpiece
-			break;
+		//case MENU_PUB_MP: // publish masterpiece
+			//break;
 		case MENU_HLP_MP: // help topics
 			break;
 		case MENU_KEY_MP: // keyboard reference
