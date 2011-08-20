@@ -11,12 +11,14 @@ BuilderMenu::BuilderMenu()
 	previewMenuItem = new BMenuItem("Preview", new BMessage(MENU_PRV_MP));
 	publishMenu = new BMenu("Publish As...");
 	pdfMenuItem = new BMenuItem("PDF", new BMessage(MENU_PDF_MP), 'p', B_SHIFT_KEY);
-	htmlMenuItem = new BMenuItem("HTML", new BMessage(MENU_HTM_MP), 'h', B_SHIFT_KEY);
+	htmMenuItem = new BMenuItem("HTML", new BMessage(MENU_HTM_MP), 'h', B_SHIFT_KEY);
 	xmlMenuItem = new BMenuItem("XML", new BMessage(MENU_XML_MP), 'x', B_SHIFT_KEY);
 	odtMenuItem = new BMenuItem("ODT", new BMessage(MENU_ODT_MP), 'o', B_SHIFT_KEY);
+	texMenuItem = new BMenuItem("LATEX", new BMessage(MENU_TEX_MP), 'l', B_SHIFT_KEY);
 	keyboardRefMenuItem = new BMenuItem("Keyboard Reference", new BMessage(MENU_KEY_MP));
 	helpTopicsMenuItem = new BMenuItem("Help Topics", new BMessage(MENU_HLP_MP));
 	aboutMenuItem = new BMenuItem("About", new BMessage(MENU_ABT_MP));
+	pdfMenuItem->SetEnabled(false);
 	
 	//layout helpMenu
 	helpMenu->AddItem(keyboardRefMenuItem);
@@ -26,8 +28,9 @@ BuilderMenu::BuilderMenu()
 	
 	//layout publishMenu
 	publishMenu->AddItem(odtMenuItem);
+	publishMenu->AddItem(texMenuItem);
 	publishMenu->AddItem(xmlMenuItem);
-	publishMenu->AddItem(htmlMenuItem);
+	publishMenu->AddItem(htmMenuItem);
 	publishMenu->AddItem(pdfMenuItem);
 	
 	//layout menubar
