@@ -24,8 +24,8 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
 	availableThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
-	//orderedThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
-	orderedThoughtListView = new KeyListView(BRect(10, 10, 100, 30));
+	orderedThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
+	//orderedThoughtListView = new KeyListView(BRect(10, 10, 100, 30));
 	builderTextView = new BTextView(BRect(0, 0, r.right, 100), NULL, BRect(10, 10, r.right, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 	rightButton = new BButton(BRect(10, 10, 90, 35), NULL, ">", new BMessage(MOVE_RIGHT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	leftButton = new BButton(BRect(10, 10, 90, 35), NULL, "<", new BMessage(MOVE_LEFT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
@@ -180,6 +180,18 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			tmpPath += "/tmp.html &";
 			system(tmpPath);
 			break;
+		// MIGHT WANT TO CREATE THE PY SCRIPT TO RUN BASED ON THE MP FILE NAME OR POPUP A SAVE DIALOG.
+		// IF WE DO THE SAVE DIALOG, THEN MIGHT AS WELL ALLOW ONE PUBLISH BUTTON AND DROP DOWN FOR FILE TYPE
+		case MENU_PDF_MP:	// publish pdf
+			break;
+		case MENU_HTM_MP:	// publish html
+			break;
+		case MENU_XML_MP:	// publish xml
+			break;
+		case MENU_ODT_MP:	// publish odt
+			break;
+		case MENU_TEX_MP:	// publish latex
+			break;
 		//case MENU_PUB_MP: // publish masterpiece
 			//break;
 		case MENU_HLP_MP: // help topics
@@ -193,8 +205,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			helperWindow->AddText(BRect(10, 60, 200, 75), "3", "Edit Masterpiece Name :: ALT + e");
 			helperWindow->AddText(BRect(10, 85, 200, 100), "4", "Save Progress :: ALT + s");
 			helperWindow->AddText(BRect(10, 110, 200, 125), "5", "Preview Masterpiece :: ALT + r");
-			helperWindow->AddText(BRect(10, 135, 200, 150), "6", "Publish Masterpiece :: ALT + p");
-			helperWindow->AddText(BRect(10, 160, 230, 175), "7", "View Keyboard Shortcuts :: ALT + k");
+			//helperWindow->AddText(BRect(10, 135, 200, 150), "6", "Publish Masterpiece :: ALT + p");
+			//helperWindow->AddText(BRect(10, 160, 230, 175), "7", "View Keyboard Shortcuts :: ALT + k");
 			helperWindow->Show();
 			break;
 		case MENU_ABT_MP: // about window
