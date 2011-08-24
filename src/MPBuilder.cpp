@@ -194,14 +194,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		*/
 		case MENU_PUB_MP: // publish masterpiece
-			if(!publishPanel)
-			{
-				BMessenger msgr(this);
-				//BEntry entry(GetAppDirPath());
-				//entry_ref ref;
-				//entry.GetRef(&ref);
-				publishPanel = new BFilePanel(B_OPEN_PANEL, &msgr);
-			}
+			publishPanel = new BFilePanel(B_OPEN_PANEL);
 			publishPanel->Show();
 			break;
 		case MENU_HLP_MP: // help topics
