@@ -3,18 +3,6 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 	:	BFilePanel(B_SAVE_PANEL)
 	//	BFilePanel(B_SAVE_PANEL, BMessenger*, const entry_ref*, long unsigned int, bool, BMessage*, BRefFilter*, bool, bool)
 {
-	publishTypeMenu = new BMenu("Type");
-	publishTypeMenu->AddItem(new BMenuItem("HTML", new BMessage(PUBLISH_TYPE)));
-	publishTypeMenu->AddItem(new BMenuItem("LaTeX", new BMessage(PUBLISH_TYPE)));
-	publishTypeMenu->SetLabelFromMarked(true);
-	publishTypeMenu->ItemAt(0)->SetMarked(true);
-	/*
-	how to position item below something.
-	r = fTargetText->Frame();
-	r.OffsetBy(0,r.Height() + 10.0);
-	*/
-	publishTypeMenuField = new BMenuField(BRect(10, 10, 100, 40), "pubtype", "File Type:", publishTypeMenu, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
-	publishTypeMenuField->SetDivider(publishTypeMenuField->StringWidth("File Type:") + 5.0);
 	BWindow *w;
 	w = Window();
 	if(w->Lock())
@@ -37,7 +25,19 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			fCurrentDirBtn->SetTarget(*target);
 			
 			parentview = cancelBtn->Parent();
-			//parentview->AddChild(fCurrentDirBtn);
+			
+			publishTypeMenu = new BMenu("Type");
+			publishTypeMenu->AddItem(new BMenuItem("HTML", new BMessage(PUBLISH_TYPE)));
+			publishTypeMenu->AddItem(new BMenuItem("LaTeX", new BMessage(PUBLISH_TYPE)));
+			publishTypeMenu->SetLabelFromMarked(true);
+			publishTypeMenu->ItemAt(0)->SetMarked(true);
+			/*
+			how to position item below something.
+			r = fTargetText->Frame();
+			r.OffsetBy(0,r.Height() + 10.0);
+			*/
+			publishTypeMenuField = new BMenuField(BRect(10, 10, 100, 40), "pubtype", "File Type:", publishTypeMenu, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+			publishTypeMenuField->SetDivider(publishTypeMenuField->StringWidth("File Type:") + 5.0);
 			parentview->AddChild(publishTypeMenuField);
 			
 			entry_ref ref;
