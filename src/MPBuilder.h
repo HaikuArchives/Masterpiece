@@ -20,7 +20,7 @@
 #include <TextView.h>
 #include <File.h>
 #include <Entry.h>
-#include <FilePanel.h>
+//#include <FilePanel.h>
 
 #include "ErrorAlert.h"
 #include "BuilderMenu.h"
@@ -30,6 +30,7 @@
 #include "MPEditor.h"
 #include "IdeaStringItem.h"
 #include "HelperWindows.h"
+#include "PublishFilePanel.h"
 
 #define SHOW_LAUNCHER			'lnch' // show mp launcher window
 #define MP_UPDATE_TITLE			'uttl' // update title
@@ -70,7 +71,8 @@ private:
 		BButton*		downButton;
 		BButton*		bottomButton;
 		BButton*		deleteButton;
-		BFilePanel*		publishPanel;
+		//BFilePanel*		publishPanel;
+		PublishFilePanel*	publishPanel;
 		MPEditor*		tmpEditor;
 		ErrorAlert*		eAlert;
 		SaveIdea*		saveIdea;

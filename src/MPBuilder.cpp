@@ -194,7 +194,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		*/
 		case MENU_PUB_MP: // publish masterpiece
-			publishPanel = new BFilePanel(B_OPEN_PANEL);
+			publishPanel = new PublishFilePanel(new BMessenger(this));
+			//publishPanel = new BFilePanel(B_OPEN_PANEL);
 			publishPanel->Show();
 			break;
 		case MENU_HLP_MP: // help topics
