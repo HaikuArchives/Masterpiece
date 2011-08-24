@@ -20,15 +20,17 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			btnrect = cancelBtn->Frame();
 			btnrect.right = btnrect.left - 10;
 			btnrect.left = btnrect.right - charWidth - 40;
-			fCurrentDirBtn = new BButton(btnrect, "current dir button", "Select Current Directory", NULL, B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+			//fCurrentDirBtn = new BButton(btnrect, "current dir button", "Select Current Directory", NULL, B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
 			
-			fCurrentDirBtn->SetTarget(*target);
-			
+			//fCurrentDirBtn->SetTarget(*target);
 			parentview = cancelBtn->Parent();
 			
 			publishTypeMenu = new BMenu("Type");
 			publishTypeMenu->AddItem(new BMenuItem("HTML", new BMessage(PUBLISH_TYPE)));
 			publishTypeMenu->AddItem(new BMenuItem("LaTeX", new BMessage(PUBLISH_TYPE)));
+			publishTypeMenu->AddItem(new BMenuItem("ODT", new BMessage(PUBLISH_TYPE)));
+			publishTypeMenu->AddItem(new BMenuItem("PDF", new BMessage(PUBLISH_TYPE)));
+			publishTypeMenu->AddItem(new BMenuItem("XML", new BMessage(PUBLISH_TYPE)));
 			publishTypeMenu->SetLabelFromMarked(true);
 			publishTypeMenu->ItemAt(0)->SetMarked(true);
 			/*
@@ -36,15 +38,17 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			r = fTargetText->Frame();
 			r.OffsetBy(0,r.Height() + 10.0);
 			*/
-			publishTypeMenuField = new BMenuField(BRect(10, 10, 100, 40), "pubtype", "File Type:", publishTypeMenu, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+			publishTypeMenuField = new BMenuField(btnrect, "pubtype", "File Type:", publishTypeMenu, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 			publishTypeMenuField->SetDivider(publishTypeMenuField->StringWidth("File Type:") + 5.0);
+			//publishTypeMenuField->SetTarget(*target);
 			parentview->AddChild(publishTypeMenuField);
-			
+			SetMessage(new BMessage(PUBLISH_TYPE));
+			SetTarget(*target);
 			entry_ref ref;
 			BMessage* msg = new BMessage('slct');
 			GetPanelDirectory(&ref);
 			msg->AddRef("refs", &ref);
-			fCurrentDirBtn->SetMessage(msg);
+			//fCurrentDirBtn->SetMessage(msg);
 		}
 		
 		w->Unlock();
@@ -53,6 +57,7 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 
 void PublishFilePanel::SelectionChanged()
 {
+	/*
   BWindow* wind;
 
   wind = Window();
@@ -70,6 +75,7 @@ void PublishFilePanel::SelectionChanged()
 
     wind->Unlock();
   }
+  */
 }
 /*
 class TDirFilter : public BRefFilter {

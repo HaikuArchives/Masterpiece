@@ -20,7 +20,6 @@
 #include <TextView.h>
 #include <File.h>
 #include <Entry.h>
-//#include <FilePanel.h>
 
 #include "ErrorAlert.h"
 #include "BuilderMenu.h"
@@ -71,7 +70,6 @@ private:
 		BButton*		downButton;
 		BButton*		bottomButton;
 		BButton*		deleteButton;
-		//BFilePanel*		publishPanel;
 		PublishFilePanel*	publishPanel;
 		MPEditor*		tmpEditor;
 		ErrorAlert*		eAlert;

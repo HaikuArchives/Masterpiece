@@ -195,8 +195,11 @@ void MPBuilder::MessageReceived(BMessage* msg)
 		*/
 		case MENU_PUB_MP: // publish masterpiece
 			publishPanel = new PublishFilePanel(new BMessenger(this));
-			//publishPanel = new BFilePanel(B_OPEN_PANEL);
 			publishPanel->Show();
+			// CAPTURE THE FILEPANEL RETURN MESSAGE INFORMATION AND DO WHAT NEEDS TO BE DONE...
+			break;
+		case PUBLISH_TYPE:
+			printf("publish information: \n");
 			break;
 		case MENU_HLP_MP: // help topics
 			break;
@@ -209,8 +212,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			helperWindow->AddText(BRect(10, 60, 200, 75), "3", "Edit Masterpiece Name :: ALT + e");
 			helperWindow->AddText(BRect(10, 85, 200, 100), "4", "Save Progress :: ALT + s");
 			helperWindow->AddText(BRect(10, 110, 200, 125), "5", "Preview Masterpiece :: ALT + r");
-			//helperWindow->AddText(BRect(10, 135, 200, 150), "6", "Publish Masterpiece :: ALT + p");
-			//helperWindow->AddText(BRect(10, 160, 230, 175), "7", "View Keyboard Shortcuts :: ALT + k");
+			helperWindow->AddText(BRect(10, 135, 200, 150), "6", "Publish Masterpiece :: ALT + p");
+			helperWindow->AddText(BRect(10, 160, 230, 175), "7", "View Keyboard Shortcuts :: ALT + k");
 			helperWindow->Show();
 			break;
 		case MENU_ABT_MP: // about window

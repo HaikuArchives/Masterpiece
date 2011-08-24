@@ -11,14 +11,15 @@
 #include <MenuField.h>
 #include <Menu.h>
 #include <MenuItem.h>
+#include <stdio.h>
 
 #define PUBLISH_TYPE	'ptyp'
 
 class PublishFilePanel : public BFilePanel
 {
 	public:
-		PublishFilePanel(BMessenger* target);
-		void SelectionChanged();
+				PublishFilePanel(BMessenger* target);
+		void	SelectionChanged();
 		
 	private:
 		// popupmenu item as a dropdown selector
