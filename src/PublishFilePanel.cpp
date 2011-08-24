@@ -1,7 +1,7 @@
 #include "PublishFilePanel.h"
 
-PublishFilePanel::PublishFilePanel(BMessenger* target, BRefFilter* filter)
-	:	BFilePanel(B_OPEN_PANEL, target, NULL, B_DIRECTORY_NODE, false, NULL, filter)
+PublishFilePanel::PublishFilePanel(BMessenger* target)
+	:	BFilePanel(B_OPEN_PANEL, target, NULL, B_DIRECTORY_NODE, false, NULL, NULL)
 {
 	BWindow *w;
 	w = Window();
@@ -40,7 +40,7 @@ PublishFilePanel::PublishFilePanel(BMessenger* target, BRefFilter* filter)
 
 void PublishFilePanel::SelectionChanged()
 {
-  BWindow *wind;
+  BWindow* wind;
 
   wind = Window();
 
@@ -51,14 +51,14 @@ void PublishFilePanel::SelectionChanged()
 
     //  modify the btn's msg
 
-    BMessage *msg = new BMessage('slct');
+    BMessage* msg = new BMessage('slct');
     msg->AddRef("refs",&currRef);
     fCurrentDirBtn->SetMessage(msg);
 
     wind->Unlock();
   }
 }
-
+/*
 class TDirFilter : public BRefFilter {
 
 public:
@@ -79,3 +79,4 @@ TDirFilter::Filter(const entry_ref* e, BNode* n,
   else
     return false;
 }
+*/

@@ -7,11 +7,13 @@
 #include <Button.h>
 #include <Window.h>
 #include <View.h>
+#include <Path.h>
+#include <Roster.h>
 
 class PublishFilePanel : public BFilePanel
 {
 	public:
-		PublishFilePanel(BMessenger* target, BRefFilter* filter=NULL);
+		PublishFilePanel(BMessenger* target);
 		void SelectionChanged();
 		
 	private:
