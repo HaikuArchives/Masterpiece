@@ -12,7 +12,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	AddShortcut('e', B_COMMAND_KEY, new BMessage(MENU_EDT_MP));
 	AddShortcut('s', B_COMMAND_KEY, new BMessage(MENU_SAV_MP));
 	AddShortcut('r', B_COMMAND_KEY, new BMessage(MENU_PRV_MP));
-	//AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_MP));
+	AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_MP));
 	AddShortcut('k', B_COMMAND_KEY, new BMessage(MENU_KEY_MP));
 	AddShortcut(B_RIGHT_ARROW, B_COMMAND_KEY, new BMessage(MOVE_RIGHT));
 	AddShortcut(B_LEFT_ARROW, B_COMMAND_KEY, new BMessage(MOVE_LEFT));
@@ -25,7 +25,6 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	r.bottom = r.bottom - 50;
 	availableThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 	orderedThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
-	//orderedThoughtListView = new KeyListView(BRect(10, 10, 100, 30));
 	builderTextView = new BTextView(BRect(0, 0, r.right, 100), NULL, BRect(10, 10, r.right, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 	rightButton = new BButton(BRect(10, 10, 90, 35), NULL, ">", new BMessage(MOVE_RIGHT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	leftButton = new BButton(BRect(10, 10, 90, 35), NULL, "<", new BMessage(MOVE_LEFT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
@@ -34,7 +33,6 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	downButton = new BButton(BRect(10, 10, 90, 35), NULL, "DOWN", new BMessage(MOVE_DOWN), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	bottomButton = new BButton(BRect(10, 10, 90, 35), NULL, "BOTTOM", new BMessage(MOVE_BOTTOM), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	deleteButton = new BButton(BRect(10, 10, 90, 35), NULL, "DELETE", new BMessage(DELETE_BUILDER_THT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
-	publishPanel = new BFilePanel(B_SAVE_PANEL);
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
@@ -196,6 +194,14 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		*/
 		case MENU_PUB_MP: // publish masterpiece
+			if(!publishPanel)
+			{
+				BMessenger msgr(this);
+				//BEntry entry(GetAppDirPath());
+				//entry_ref ref;
+				//entry.GetRef(&ref);
+				publishPanel = new BFilePanel(B_OPEN_PANEL, &msgr);
+			}
 			publishPanel->Show();
 			break;
 		case MENU_HLP_MP: // help topics

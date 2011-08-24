@@ -19,9 +19,9 @@
 #include <stdio.h>
 #include <TextView.h>
 #include <File.h>
+#include <Entry.h>
 #include <FilePanel.h>
 
-//#include "KeyListView.h"
 #include "ErrorAlert.h"
 #include "BuilderMenu.h"
 #include "SaveIdea.h"
@@ -62,7 +62,6 @@ private:
 		BMessenger		launcherMessenger;
 		BListView*		availableThoughtListView;
 		BListView*		orderedThoughtListView;
-		//KeyListView*	orderedThoughtListView;
 		BTextView*		builderTextView;
 		BButton*		rightButton;
 		BButton*		leftButton;
