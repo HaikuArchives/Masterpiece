@@ -3,6 +3,24 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 	:	BFilePanel(B_SAVE_PANEL)
 	//	BFilePanel(B_SAVE_PANEL, BMessenger*, const entry_ref*, long unsigned int, bool, BMessage*, BRefFilter*, bool, bool)
 {
+	publishTypeMenu = new BMenu("publish");
+	publishTypeMenu->AddItem(new BMenuItem("HTML"));
+	// initialize MenuField here
+	/*
+BMenuField(BRect frame,
+           const char* name,
+           const char* label,
+           BMenu* menu,
+           uint32 resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP,
+           uint32 flags = B_WILL_DRAW | B_NAVIGABLE);
+BMenuField(BRect frame,
+           const char* name,
+           const char* label,
+           BMenu* menu,
+           bool fixedSize,
+           uint32 resizingMode = B_FOLLOW_LEFT | B_FOLLOW_TOP,
+           uint32 flags = B_WILL_DRAW | B_NAVIGABLE);
+	*/
 	BWindow *w;
 	w = Window();
 	if(w->Lock())

@@ -8,6 +8,9 @@
 #include <View.h>
 #include <Path.h>
 #include <Roster.h>
+#include <MenuField.h>
+#include <Menu.h>
+#include <MenuItem.h>
 
 class PublishFilePanel : public BFilePanel
 {
@@ -17,6 +20,8 @@ class PublishFilePanel : public BFilePanel
 		
 	private:
 		// popupmenu item as a dropdown selector
+		BMenuField*	publishTypeMenuField;
+		BMenu*		publishTypeMenu;
 		BButton* fCurrentDirBtn;
 };
 #endif
