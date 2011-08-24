@@ -1,6 +1,6 @@
 #ifndef PUBLISHFILEPANEL_H
 #define PUBLISHFILEPANEL_H
-
+/*
 #include <Message.h>
 #include <Messenger.h>
 #include <FilePanel.h>
@@ -20,5 +20,5 @@ class PublishFilePanel : public BFilePanel
 		// popupmenu item as a dropdown selector
 		BButton* fCurrentDirBtn;
 };
-
+*/
 #endif

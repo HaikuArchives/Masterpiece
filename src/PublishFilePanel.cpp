@@ -1,7 +1,8 @@
 #include "PublishFilePanel.h"
-
+/*
 PublishFilePanel::PublishFilePanel(BMessenger* target)
-	:	BFilePanel(B_OPEN_PANEL, target, NULL, B_DIRECTORY_NODE, false, NULL, NULL)
+	:	BFilePanel(B_OPEN_PANEL, NULL, NULL, B_DIRECTORY_NODE, false, NULL, false, true)
+	//	BFilePanel(B_SAVE_PANEL, BMessenger*, const entry_ref*, long unsigned int, bool, BMessage*, BRefFilter*, bool, bool)
 {
 	BWindow *w;
 	w = Window();

@@ -24,6 +24,7 @@ DEPENDENCY=/boot/home/Projects/masterpiece/MPBuilder.h|/boot/home/Projects/maste
 SOURCEFILE=MPEditor.cpp
 DEPENDENCY=/boot/home/Projects/masterpiece/MPEditor.h|/boot/home/Projects/masterpiece/pyembed.h|/boot/home/Projects/masterpiece/ErrorAlert.h|/boot/home/Projects/masterpiece/EditorMenu.h|/boot/home/Projects/masterpiece/SaveIdea.h|/boot/home/Projects/masterpiece/CommonFunctions.h|/boot/home/Projects/masterpiece/EditIdeaName.h|/boot/home/Projects/masterpiece/HelperWindows.h
 SOURCEFILE=PublishFilePanel.cpp
+DEPENDENCY=/HaikuData/Projects/masterpiece/PublishFilePanel.cpp|/HaikuData/Projects/masterpiece/PublishFilePanel.h
 SOURCEFILE=pyembed.cpp
 DEPENDENCY=/boot/home/Projects/masterpiece/pyembed.h
 SOURCEFILE=MPLauncher.cpp

@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <TextView.h>
 #include <File.h>
+#include <FilePanel.h>
 
 //#include "KeyListView.h"
 #include "ErrorAlert.h"
@@ -70,6 +71,7 @@ private:
 		BButton*		downButton;
 		BButton*		bottomButton;
 		BButton*		deleteButton;
+		BFilePanel*		publishPanel;
 		MPEditor*		tmpEditor;
 		ErrorAlert*		eAlert;
 		SaveIdea*		saveIdea;

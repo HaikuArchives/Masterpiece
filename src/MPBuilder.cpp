@@ -34,6 +34,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	downButton = new BButton(BRect(10, 10, 90, 35), NULL, "DOWN", new BMessage(MOVE_DOWN), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	bottomButton = new BButton(BRect(10, 10, 90, 35), NULL, "BOTTOM", new BMessage(MOVE_BOTTOM), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	deleteButton = new BButton(BRect(10, 10, 90, 35), NULL, "DELETE", new BMessage(DELETE_BUILDER_THT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
+	publishPanel = new BFilePanel(B_SAVE_PANEL);
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
@@ -182,6 +183,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		// MIGHT WANT TO CREATE THE PY SCRIPT TO RUN BASED ON THE MP FILE NAME OR POPUP A SAVE DIALOG.
 		// IF WE DO THE SAVE DIALOG, THEN MIGHT AS WELL ALLOW ONE PUBLISH BUTTON AND DROP DOWN FOR FILE TYPE
+		/*
 		case MENU_PDF_MP:	// publish pdf
 			break;
 		case MENU_HTM_MP:	// publish html
@@ -192,8 +194,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		case MENU_TEX_MP:	// publish latex
 			break;
-		//case MENU_PUB_MP: // publish masterpiece
-			//break;
+		*/
+		case MENU_PUB_MP: // publish masterpiece
+			publishPanel->Show();
+			break;
 		case MENU_HLP_MP: // help topics
 			break;
 		case MENU_KEY_MP: // keyboard reference
