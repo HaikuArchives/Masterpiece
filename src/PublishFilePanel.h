@@ -12,6 +12,8 @@
 #include <Menu.h>
 #include <MenuItem.h>
 
+#define PUBLISH_TYPE	'ptyp'
+
 class PublishFilePanel : public BFilePanel
 {
 	public:

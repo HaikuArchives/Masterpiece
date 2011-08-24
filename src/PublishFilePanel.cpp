@@ -4,7 +4,10 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 	//	BFilePanel(B_SAVE_PANEL, BMessenger*, const entry_ref*, long unsigned int, bool, BMessage*, BRefFilter*, bool, bool)
 {
 	publishTypeMenu = new BMenu("publish");
-	publishTypeMenu->AddItem(new BMenuItem("HTML"));
+	publishTypeMenu->AddItem(new BMenuItem("HTML", new BMessage(PUBLISH_TYPE)));
+	publishTypeMenu->AddItem(new BMenuItem("LaTeX", new BMessage(PUBLISH_TYPE)));
+	publishTypeMenuField = new BMenuField(BRect(10, 10, 100, 40), "pubtype", "File Type", publishTypeMenu, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	
 	// initialize MenuField here
 	/*
 BMenuField(BRect frame,
@@ -43,7 +46,8 @@ BMenuField(BRect frame,
 			fCurrentDirBtn->SetTarget(*target);
 			
 			parentview = cancelBtn->Parent();
-			parentview->AddChild(fCurrentDirBtn);
+			//parentview->AddChild(fCurrentDirBtn);
+			parentview->AddChild(publishTypeMenuField);
 			
 			entry_ref ref;
 			BMessage* msg = new BMessage('slct');
