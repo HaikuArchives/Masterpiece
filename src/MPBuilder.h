@@ -90,6 +90,10 @@ private:
 		int				availorderBit;
 		float			xPos;
 		float			yPos;
+		BEntry			entry;
+		BPath			path;
+		entry_ref		ref;
+		const char*		name;
 		SqlObject*		sqlObject;
 		SqlObject*		sqlObject2;
 };

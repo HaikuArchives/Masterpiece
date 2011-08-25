@@ -73,11 +73,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString tmpPath;
 	BString mpData;
 	BFile previewFile;
-	BEntry entry;
-	BPath path;
-	FILE* f;
-	entry_ref ref;
-	const char* name;
+	//FILE* f;
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -203,7 +199,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			publishPanel->Show();
 			// CAPTURE THE FILEPANEL RETURN MESSAGE INFORMATION AND DO WHAT NEEDS TO BE DONE...
 			break;
+		/*
 		case B_SAVE_REQUESTED:
+			publishPanel->Hide();
 			if(msg->FindString("name", &name) == B_OK)
 			{
 				printf("default save message: %s\n", name);
@@ -215,10 +213,40 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				printf("default directory ref found: %s\n", path.Path());
 				path.Append(name);
 			}
+			if(msg->FindString("pubext", &name) == B_OK)
+			{
+				printf("pub ext: %s\n", name);
+			}
+			else
+			{
+				printf("pub ext failed\n");
+			}
 			break;
+		*/
+		/*
 		case PUBLISH_TYPE:
 			printf("publish information: \n");
+			if(msg->FindString("name", &name) == B_OK)
+			{
+				printf("default save message: %s\n", name);
+			}
+			if(msg->FindRef("directory", &ref) == B_OK)
+			{
+				entry.SetTo(&ref);
+				entry.GetPath(&path);
+				printf("default directory ref found: %s\n", path.Path());
+				path.Append(name);
+			}
+			if(msg->FindString("pubext", &name) == B_OK)
+			{
+				printf("pub ext: %s\n", name);
+			}
+			else
+			{
+				printf("pub ext failed\n");
+			}
 			break;
+		*/
 		case MENU_HLP_MP: // help topics
 			break;
 		case MENU_KEY_MP: // keyboard reference

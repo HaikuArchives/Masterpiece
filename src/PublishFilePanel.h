@@ -13,18 +13,21 @@
 #include <MenuItem.h>
 #include <stdio.h>
 
-#define PUBLISH_TYPE	'ptyp'
+#define PUBLISH_TYPE 'ptyp'
 
 class PublishFilePanel : public BFilePanel
 {
 	public:
 				PublishFilePanel(BMessenger* target);
+				//~PublishFilePanel(void);
 		void	SelectionChanged();
 		
 	private:
 		// popupmenu item as a dropdown selector
 		BMenuField*	publishTypeMenuField;
 		BMenu*		publishTypeMenu;
-		BButton* fCurrentDirBtn;
+		BButton* 	fCurrentDirBtn;
+		BMessage* 	msg;
+		//entry_ref 	ref;
 };
 #endif
