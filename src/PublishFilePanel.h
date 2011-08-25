@@ -19,15 +19,11 @@ class PublishFilePanel : public BFilePanel
 {
 	public:
 				PublishFilePanel(BMessenger* target);
-				//~PublishFilePanel(void);
-		void	SelectionChanged();
 		
 	private:
 		// popupmenu item as a dropdown selector
 		BMenuField*	publishTypeMenuField;
 		BMenu*		publishTypeMenu;
-		BButton* 	fCurrentDirBtn;
-		BMessage* 	msg;
-		//entry_ref 	ref;
+		//BMessage*	pubMsg;
 };
 #endif

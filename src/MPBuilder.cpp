@@ -73,7 +73,11 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString tmpPath;
 	BString mpData;
 	BFile previewFile;
-	//FILE* f;
+	BEntry entry;
+	BPath path;
+	entry_ref ref;
+	const char* name;
+	FILE* f;
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -201,7 +205,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		/*
 		case B_SAVE_REQUESTED:
-			publishPanel->Hide();
 			if(msg->FindString("name", &name) == B_OK)
 			{
 				printf("default save message: %s\n", name);
@@ -213,6 +216,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				printf("default directory ref found: %s\n", path.Path());
 				path.Append(name);
 			}
+			/*
 			if(msg->FindString("pubext", &name) == B_OK)
 			{
 				printf("pub ext: %s\n", name);
@@ -221,10 +225,11 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				printf("pub ext failed\n");
 			}
+			//
 			break;
 		*/
-		/*
 		case PUBLISH_TYPE:
+			publishPanel->Hide();
 			printf("publish information: \n");
 			if(msg->FindString("name", &name) == B_OK)
 			{
@@ -246,7 +251,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				printf("pub ext failed\n");
 			}
 			break;
-		*/
 		case MENU_HLP_MP: // help topics
 			break;
 		case MENU_KEY_MP: // keyboard reference
@@ -545,6 +549,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 }
 bool MPBuilder::QuitRequested(void)
 {
+	delete publishPanel;
 	// on quit, show launcher with message
 	launcherMessage.MakeEmpty();
 	launcherMessage.AddInt64("showLauncher", 1);
