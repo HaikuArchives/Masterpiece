@@ -1,6 +1,6 @@
 #include "PublishFilePanel.h"
 PublishFilePanel::PublishFilePanel(BMessenger* target)
-	:	BFilePanel(B_SAVE_PANEL)
+	:	BFilePanel(B_SAVE_PANEL, target, NULL, B_FILE_NODE, false)
 	//	BFilePanel(B_SAVE_PANEL, BMessenger*, const entry_ref*, long unsigned int, bool, BMessage*, BRefFilter*, bool, bool)
 {
 	BWindow *w;
@@ -19,7 +19,7 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			charWidth = cancelBtn->StringWidth("Select Current Directory");
 			btnrect = cancelBtn->Frame();
 			btnrect.right = btnrect.left - 10;
-			btnrect.left = btnrect.right - charWidth - 40;
+			btnrect.left = btnrect.right - charWidth - 0;
 			//fCurrentDirBtn = new BButton(btnrect, "current dir button", "Select Current Directory", NULL, B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
 			
 			//fCurrentDirBtn->SetTarget(*target);
@@ -40,14 +40,13 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			*/
 			publishTypeMenuField = new BMenuField(btnrect, "pubtype", "File Type:", publishTypeMenu, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 			publishTypeMenuField->SetDivider(publishTypeMenuField->StringWidth("File Type:") + 5.0);
-			//publishTypeMenuField->SetTarget(*target);
 			parentview->AddChild(publishTypeMenuField);
-			SetMessage(new BMessage(PUBLISH_TYPE));
-			SetTarget(*target);
+			//SetMessage(new BMessage(PUBLISH_TYPE));
+			//SetTarget(*target);
 			entry_ref ref;
-			BMessage* msg = new BMessage('slct');
+			//BMessage* msg = new BMessage('slct');
 			GetPanelDirectory(&ref);
-			msg->AddRef("refs", &ref);
+			//msg->AddRef("refs", &ref);
 			//fCurrentDirBtn->SetMessage(msg);
 		}
 		

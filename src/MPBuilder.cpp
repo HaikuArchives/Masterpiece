@@ -73,6 +73,11 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString tmpPath;
 	BString mpData;
 	BFile previewFile;
+	BEntry entry;
+	BPath path;
+	FILE* f;
+	entry_ref ref;
+	const char* name;
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -197,6 +202,19 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			publishPanel = new PublishFilePanel(new BMessenger(this));
 			publishPanel->Show();
 			// CAPTURE THE FILEPANEL RETURN MESSAGE INFORMATION AND DO WHAT NEEDS TO BE DONE...
+			break;
+		case B_SAVE_REQUESTED:
+			if(msg->FindString("name", &name) == B_OK)
+			{
+				printf("default save message: %s\n", name);
+			}
+			if(msg->FindRef("directory", &ref) == B_OK)
+			{
+				entry.SetTo(&ref);
+				entry.GetPath(&path);
+				printf("default directory ref found: %s\n", path.Path());
+				path.Append(name);
+			}
 			break;
 		case PUBLISH_TYPE:
 			printf("publish information: \n");
