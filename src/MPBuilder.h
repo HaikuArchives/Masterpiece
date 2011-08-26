@@ -71,13 +71,12 @@ private:
 		BButton*			downButton;
 		BButton*			bottomButton;
 		BButton*			deleteButton;
-	//BEntry entry;
-	//BPath path;
-	//entry_ref ref;
-	const char* name;
-	//FILE* f;
+		BEntry				entry;
+		BPath 				path;
+		entry_ref 			ref;
+		const char* 		name;
+		//FILE* 			f;
 		PublishFilePanel* publishPanel;
-	//BMessenger* tag;
 		MPEditor*			tmpEditor;
 		ErrorAlert*			eAlert;
 		SaveIdea*			saveIdea;
