@@ -65,7 +65,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 }
 MPBuilder::~MPBuilder()
 {
-	delete publishPanel;
+	//delete publishPanel;
 }
 void MPBuilder::MessageReceived(BMessage* msg)
 {
@@ -248,6 +248,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				printf("pub ext failed\n");
 			}
+			delete publishPanel;
+			//delete publishPanel->pubMsg;
 			break;
 		case MENU_HLP_MP: // help topics
 			break;

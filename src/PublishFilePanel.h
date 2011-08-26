@@ -19,11 +19,12 @@ class PublishFilePanel : public BFilePanel
 {
 	public:
 				PublishFilePanel(BMessenger* target);
+				~PublishFilePanel();
 		
 	private:
 		// popupmenu item as a dropdown selector
 		BMenuField*	publishTypeMenuField;
 		BMenu*		publishTypeMenu;
-		//BMessage*	pubMsg;
+		BMessage*	pubMsg;
 };
 #endif
