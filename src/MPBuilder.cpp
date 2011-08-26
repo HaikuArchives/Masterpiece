@@ -198,7 +198,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		*/
 		case MENU_PUB_MP: // publish masterpiece
-			publishPanel = new PublishFilePanel(new BMessenger(this));
+      BMessenger tag(this);
+			publishPanel = new PublishFilePanel(&tag);
 			publishPanel->Show();
 			// CAPTURE THE FILEPANEL RETURN MESSAGE INFORMATION AND DO WHAT NEEDS TO BE DONE...
 			break;
