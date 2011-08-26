@@ -67,7 +67,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 MPBuilder::~MPBuilder()
 {
 	//delete &tag;
-	delete publishPanel;
+	//delete publishPanel;
 }
 void MPBuilder::MessageReceived(BMessage* msg)
 {
@@ -203,8 +203,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 		case MENU_PUB_MP: // publish masterpiece
 			if(!publishPanel)
 			{
-				BMessenger tagit(this);
-				publishPanel = new PublishFilePanel(&tagit);
+				//BMessenger tagit(this);
+				publishPanel = new PublishFilePanel(new BMessenger(this));
 			}
 			publishPanel->Show();
 			// CAPTURE THE FILEPANEL RETURN MESSAGE INFORMATION AND DO WHAT NEEDS TO BE DONE...

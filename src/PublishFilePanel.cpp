@@ -23,20 +23,22 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			parentview = cancelBtn->Parent();
 			pubMsg = new BMessage(PUBLISH_TYPE);
 			//BMessage* pubMsg = new BMessage(PUBLISH_TYPE);
-			pubMsg->AddString("pubext", "ladidaladida");
+			//pubMsg->AddString("pubext", "ladidaladida");
 			publishTypeMenu = new BMenu("Type");
 			publishTypeMenu->AddItem(new BMenuItem("HTML", pubMsg));
-			publishTypeMenu->AddItem(new BMenuItem("LaTeX", pubMsg));
+			//publishTypeMenu->AddItem(new BMenuItem("LaTeX", pubMsg));
+			/*
 			publishTypeMenu->AddItem(new BMenuItem("ODT", pubMsg));
 			publishTypeMenu->AddItem(new BMenuItem("PDF", pubMsg));
 			publishTypeMenu->AddItem(new BMenuItem("XML", pubMsg));
+			*/
 			publishTypeMenu->SetLabelFromMarked(true);
 			publishTypeMenu->ItemAt(0)->SetMarked(true);
 			publishTypeMenuField = new BMenuField(btnrect, "pubtype", "File Type:", publishTypeMenu, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 			publishTypeMenuField->SetDivider(publishTypeMenuField->StringWidth("File Type:") + 5.0);
 			parentview->AddChild(publishTypeMenuField);
 			//SetMessage(pubMsg);
-			SetTarget(*target);
+			//SetTarget(*target);
 		}
 		
 		w->Unlock();
@@ -44,5 +46,5 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 }
 PublishFilePanel::~PublishFilePanel()
 {
-	delete pubMsg;
+	//delete pubMsg;
 }
