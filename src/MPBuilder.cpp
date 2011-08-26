@@ -63,6 +63,10 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	orderedThoughtListView->SetSelectionMessage(new BMessage(DISPLAY_ORDER_TEXT));
 	orderedThoughtListView->SetInvocationMessage(new BMessage(ORDER_THOUGHT_EDITOR));
 }
+MPBuilder::~MPBuilder()
+{
+	delete publishPanel;
+}
 void MPBuilder::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
@@ -73,11 +77,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString tmpPath;
 	BString mpData;
 	BFile previewFile;
-	BEntry entry;
-	BPath path;
-	entry_ref ref;
-	const char* name;
-	FILE* f;
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -229,7 +228,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		*/
 		case PUBLISH_TYPE:
-			publishPanel->Hide();
 			printf("publish information: \n");
 			if(msg->FindString("name", &name) == B_OK)
 			{
@@ -549,7 +547,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 }
 bool MPBuilder::QuitRequested(void)
 {
-	delete publishPanel;
+	//delete publishPanel;
+	//delete &entry;
+	//delete &ref;
+	
 	// on quit, show launcher with message
 	launcherMessage.MakeEmpty();
 	launcherMessage.AddInt64("showLauncher", 1);
