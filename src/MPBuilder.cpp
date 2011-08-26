@@ -77,6 +77,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString tmpPath;
 	BString mpData;
 	BFile previewFile;
+	BMessenger tag(this);
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -198,7 +199,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		*/
 		case MENU_PUB_MP: // publish masterpiece
-      BMessenger tag(this);
 			publishPanel = new PublishFilePanel(&tag);
 			publishPanel->Show();
 			// CAPTURE THE FILEPANEL RETURN MESSAGE INFORMATION AND DO WHAT NEEDS TO BE DONE...
@@ -249,6 +249,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				printf("pub ext failed\n");
 			}
+			delete &tag;
 			delete publishPanel;
 			//delete publishPanel->pubMsg;
 			break;
