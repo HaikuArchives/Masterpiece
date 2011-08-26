@@ -248,6 +248,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				printf("default directory ref found: %s\n", path.Path());
 				path.Append(name);
 			}
+			*/
 			if(msg->FindString("pubext", &name) == B_OK)
 			{
 				printf("pub ext: %s\n", name);
@@ -256,7 +257,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				printf("pub ext failed\n");
 			}
-			*/
 			//delete &tag;
 			//delete publishPanel;
 			break;

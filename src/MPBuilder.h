@@ -74,7 +74,7 @@ private:
 	//BEntry entry;
 	//BPath path;
 	//entry_ref ref;
-	//const char* name;
+	const char* name;
 	//FILE* f;
 		PublishFilePanel* publishPanel;
 	//BMessenger* tag;
