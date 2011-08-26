@@ -1,6 +1,7 @@
 #include "PublishFilePanel.h"
 PublishFilePanel::PublishFilePanel(BMessenger* target)
-	:	BFilePanel(B_SAVE_PANEL, NULL, NULL, B_FILE_NODE, false)
+	:	BFilePanel(B_SAVE_PANEL)
+	//:	BFilePanel(B_SAVE_PANEL, target, NULL, B_FILE_NODE, false)
 {
 	BWindow *w;
 	w = Window();
@@ -20,7 +21,8 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			btnrect.right = btnrect.left - 10;
 			btnrect.left = btnrect.right - charWidth - 0;
 			parentview = cancelBtn->Parent();
-			BMessage* pubMsg = new BMessage(PUBLISH_TYPE);
+			pubMsg = new BMessage(PUBLISH_TYPE);
+			//BMessage* pubMsg = new BMessage(PUBLISH_TYPE);
 			pubMsg->AddString("pubext", "ladidaladida");
 			publishTypeMenu = new BMenu("Type");
 			publishTypeMenu->AddItem(new BMenuItem("HTML", pubMsg));
@@ -33,7 +35,7 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			publishTypeMenuField = new BMenuField(btnrect, "pubtype", "File Type:", publishTypeMenu, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 			publishTypeMenuField->SetDivider(publishTypeMenuField->StringWidth("File Type:") + 5.0);
 			parentview->AddChild(publishTypeMenuField);
-			SetMessage(pubMsg);
+			//SetMessage(pubMsg);
 			SetTarget(*target);
 		}
 		
@@ -42,5 +44,5 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 }
 PublishFilePanel::~PublishFilePanel()
 {
-	//delete pubMsg;
+	delete pubMsg;
 }

@@ -21,6 +21,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	AddShortcut(B_HOME, B_COMMAND_KEY, new BMessage(MOVE_TOP));
 	AddShortcut(B_END, B_COMMAND_KEY, new BMessage(MOVE_BOTTOM));
 	AddShortcut('d', B_COMMAND_KEY, new BMessage(DELETE_BUILDER_THT));
+	publishPanel = NULL;
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
 	availableThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
@@ -65,6 +66,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 }
 MPBuilder::~MPBuilder()
 {
+	//delete &tag;
 	//delete publishPanel;
 }
 void MPBuilder::MessageReceived(BMessage* msg)
@@ -77,7 +79,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString tmpPath;
 	BString mpData;
 	BFile previewFile;
-	BMessenger tag(this);
+	tag = new BMessenger(this);
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -199,7 +201,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		*/
 		case MENU_PUB_MP: // publish masterpiece
-			publishPanel = new PublishFilePanel(&tag);
+			if(!publishPanel)
+			{
+				publishPanel = new PublishFilePanel(tag);
+			}
 			publishPanel->Show();
 			// CAPTURE THE FILEPANEL RETURN MESSAGE INFORMATION AND DO WHAT NEEDS TO BE DONE...
 			break;
@@ -230,6 +235,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 		*/
 		case PUBLISH_TYPE:
 			printf("publish information: \n");
+			/*
 			if(msg->FindString("name", &name) == B_OK)
 			{
 				printf("default save message: %s\n", name);
@@ -249,9 +255,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				printf("pub ext failed\n");
 			}
-			delete &tag;
-			delete publishPanel;
-			//delete publishPanel->pubMsg;
+			*/
+			//delete &tag;
+			//delete publishPanel;
 			break;
 		case MENU_HLP_MP: // help topics
 			break;
