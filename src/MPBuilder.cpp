@@ -185,28 +185,17 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			break;
 		// MIGHT WANT TO CREATE THE PY SCRIPT TO RUN BASED ON THE MP FILE NAME OR POPUP A SAVE DIALOG.
 		// IF WE DO THE SAVE DIALOG, THEN MIGHT AS WELL ALLOW ONE PUBLISH BUTTON AND DROP DOWN FOR FILE TYPE
-		/*
-		case MENU_PDF_MP:	// publish pdf
-			break;
-		case MENU_HTM_MP:	// publish html
-			break;
-		case MENU_XML_MP:	// publish xml
-			break;
-		case MENU_ODT_MP:	// publish odt
-			break;
-		case MENU_TEX_MP:	// publish latex
-			break;
-		*/
 		case MENU_PUB_MP: // publish masterpiece
 			if(!publishPanel)
 			{
-				//BMessenger tagit(this);
 				publishPanel = new PublishFilePanel(new BMessenger(this));
 			}
 			publishPanel->Show();
-			// CAPTURE THE FILEPANEL RETURN MESSAGE INFORMATION AND DO WHAT NEEDS TO BE DONE...
 			break;
 		case PUBLISH_TYPE:
+			printf("publish_type message value: ");
+			printf(publishPanel->publishTypeMenu->FindMarked()->Label());
+			printf("\n");
 			printf("publish information: \n");
 			if(msg->FindString("name", &name) == B_OK)
 			{
@@ -218,14 +207,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				entry.GetPath(&path);
 				printf("default directory ref found: %s\n", path.Path());
 				path.Append(name);
-			}
-			if(msg->FindString("pubext", &name) == B_OK)
-			{
-				printf("pub ext: %s\n", name);
-			}
-			else
-			{
-				printf("pub ext failed\n");
 			}
 			break;
 		case MENU_HLP_MP: // help topics
