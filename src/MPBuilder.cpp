@@ -67,7 +67,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 MPBuilder::~MPBuilder()
 {
 	//delete &tag;
-	//delete publishPanel;
+	delete publishPanel;
 }
 void MPBuilder::MessageReceived(BMessage* msg)
 {
@@ -79,7 +79,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString tmpPath;
 	BString mpData;
 	BFile previewFile;
-	tag = new BMessenger(this);
+	//tag = new BMessenger(this);
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -203,7 +203,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 		case MENU_PUB_MP: // publish masterpiece
 			if(!publishPanel)
 			{
-				publishPanel = new PublishFilePanel(tag);
+				BMessenger tagit(this);
+				publishPanel = new PublishFilePanel(&tagit);
 			}
 			publishPanel->Show();
 			// CAPTURE THE FILEPANEL RETURN MESSAGE INFORMATION AND DO WHAT NEEDS TO BE DONE...

@@ -77,7 +77,7 @@ private:
 	const char* name;
 	FILE* f;
 	PublishFilePanel* publishPanel;
-	BMessenger* tag;
+	//BMessenger* tag;
 		MPEditor*			tmpEditor;
 		ErrorAlert*			eAlert;
 		SaveIdea*			saveIdea;
