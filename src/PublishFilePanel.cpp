@@ -26,7 +26,7 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			//pubMsg->AddString("pubext", "ladidaladida");
 			publishTypeMenu = new BMenu("Type");
 			publishTypeMenu->AddItem(new BMenuItem("HTML", pubMsg));
-			//publishTypeMenu->AddItem(new BMenuItem("LaTeX", pubMsg));
+			publishTypeMenu->AddItem(new BMenuItem("LaTeX", pubMsg));
 			/*
 			publishTypeMenu->AddItem(new BMenuItem("ODT", pubMsg));
 			publishTypeMenu->AddItem(new BMenuItem("PDF", pubMsg));
@@ -37,8 +37,8 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			publishTypeMenuField = new BMenuField(btnrect, "pubtype", "File Type:", publishTypeMenu, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 			publishTypeMenuField->SetDivider(publishTypeMenuField->StringWidth("File Type:") + 5.0);
 			parentview->AddChild(publishTypeMenuField);
-			//SetMessage(pubMsg);
-			//SetTarget(*target);
+			SetMessage(pubMsg);
+			SetTarget(*target);
 		}
 		
 		w->Unlock();
