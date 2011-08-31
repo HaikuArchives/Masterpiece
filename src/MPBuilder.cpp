@@ -193,6 +193,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			publishPanel->Show();
 			break;
 		case PUBLISH_TYPE:
+			// can probably build a string from the publish type to call the ("pub" + string + ".py") script.
 			printf("publish_type message value: ");
 			printf(publishPanel->publishTypeMenu->FindMarked()->Label());
 			printf("\n");
