@@ -23,8 +23,8 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			parentview = cancelBtn->Parent();
 			pubMsg = new BMessage(PUBLISH_TYPE);
 			publishTypeMenu = new BMenu("Type");
-			publishTypeMenu->AddItem(new BMenuItem("HTML", new BMessage(PUBLISH_TYPE)));
-			publishTypeMenu->AddItem(new BMenuItem("LaTeX", new BMessage(PUBLISH_TYPE)));
+			publishTypeMenu->AddItem(new BMenuItem("HTM", new BMessage(PUBLISH_TYPE)));
+			publishTypeMenu->AddItem(new BMenuItem("TEX", new BMessage(PUBLISH_TYPE)));
 			publishTypeMenu->AddItem(new BMenuItem("ODT", new BMessage(PUBLISH_TYPE)));
 			publishTypeMenu->AddItem(new BMenuItem("XML", new BMessage(PUBLISH_TYPE)));
 			publishTypeMenu->AddItem(new BMenuItem("PDF", new BMessage(PUBLISH_TYPE)));

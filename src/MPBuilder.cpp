@@ -76,6 +76,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	Python py(argc, argv);
 	BString tmpPath;
 	BString mpData;
+	BString scriptFile;
+	BString fileExt;
 	BFile previewFile;
 	switch(msg->what)
 	{
@@ -183,8 +185,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			tmpPath += "/tmp.html &";
 			system(tmpPath);
 			break;
-		// MIGHT WANT TO CREATE THE PY SCRIPT TO RUN BASED ON THE MP FILE NAME OR POPUP A SAVE DIALOG.
-		// IF WE DO THE SAVE DIALOG, THEN MIGHT AS WELL ALLOW ONE PUBLISH BUTTON AND DROP DOWN FOR FILE TYPE
 		case MENU_PUB_MP: // publish masterpiece
 			if(!publishPanel)
 			{
@@ -193,10 +193,41 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			publishPanel->Show();
 			break;
 		case PUBLISH_TYPE:
-			// can probably build a string from the publish type to call the ("pub" + string + ".py") script.
-			printf("publish_type message value: ");
-			printf(publishPanel->publishTypeMenu->FindMarked()->Label());
-			printf("\n");
+			// write all the data to a file...
+			IdeaStringItem* publishItem;
+			mpData = "";
+			for(int32 i = 0; i < orderedThoughtListView->CountItems(); i++)
+			{
+				publishItem = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(i));
+				mpData += publishItem->ReturnText();
+			}
+			tmpPath = GetAppDirPath();
+			tmpPath += "/tmppub.tht";
+			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+			if(previewFile.InitCheck() != B_OK)
+			{
+				printf("Couldn't write file\n");
+			}
+			previewFile.Write(mpData, strlen(mpData));
+			previewFile.Unset();
+			
+			// build the correct publish python script name...
+			fileExt = publishPanel->publishTypeMenu->FindMarked()->Label();
+			fileExt = fileExt.ToLower();
+			scriptFile = "pub";
+			scriptFile += fileExt;
+			scriptFile += ".py";
+			try
+			{
+				py.run_file(scriptFile.String());
+			}
+			catch(Python_exception ex)
+			{
+				printf("Python error: %s\n", ex.what());
+			}
+			
+			// now i need to get the finished file and mv/rename it to where the location and file are listed from
+			// the retrieved information
 			printf("publish information: \n");
 			if(msg->FindString("name", &name) == B_OK)
 			{
@@ -208,6 +239,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				entry.GetPath(&path);
 				printf("default directory ref found: %s\n", path.Path());
 				path.Append(name);
+				path.Append(".");
+				path.Append(fileExt);
 			}
 			break;
 		case MENU_HLP_MP: // help topics
