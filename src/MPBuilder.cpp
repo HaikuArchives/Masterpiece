@@ -83,6 +83,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BFile previewFile;
 	BEntry publishFile;
 	BDirectory publishDirectory;
+	status_t err;
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -251,8 +252,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				publishPath = path.Path();
 				publishPath.Append("/");
 				*/
-				publishPath = "./";
-				publishPath.Append(name);
+				publishPath = name;
+				//publishPath.Append(name);
 				publishPath.Append(".");
 				publishPath.Append(fileExt);
 				printf(publishPath);
@@ -268,8 +269,31 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				{
 					printf("publishdirectory %s\n", path.Path());
 					printf("successful directory set\n");
-					publishFile.MoveTo(&publishDirectory, NULL, true);
-					//publishFile.Rename(publishPath, true);
+					err = publishFile.MoveTo(&publishDirectory, NULL, true);
+					if(err == B_OK)
+					{
+						printf("function OK but didn't actually move it");
+					}
+					else if(err == B_NO_INIT)
+					{
+						printf("bloody failure no init %s\n", dirPath.String());
+					}
+					else if(err == B_ENTRY_NOT_FOUND)
+					{
+						printf("bloody failure not found %s\n", dirPath.String());
+					}
+					else if(err == B_FILE_EXISTS)
+					{
+						printf("bloody failure file exists %s\n", dirPath.String());
+					}
+					else if(err == B_BUSY)
+					{
+						printf("bloody falure busy %s\n", dirPath.String());
+					}
+					else
+					{
+						printf("no idea");
+					}
 				}
 				else
 				{
