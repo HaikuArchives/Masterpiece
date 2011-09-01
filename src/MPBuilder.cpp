@@ -74,11 +74,13 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	char* argvv = "ladida";
 	char** argv = &argvv;
 	Python py(argc, argv);
+	BString publishPath;
 	BString tmpPath;
 	BString mpData;
 	BString scriptFile;
 	BString fileExt;
 	BFile previewFile;
+	BEntry publishFile;
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -240,12 +242,14 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				entry.SetTo(&ref);
 				entry.GetPath(&path);
 				printf("default directory ref found: %s\n", path.Path());
-				tmpPath = path.Path();
-				tmpPath.Append("/");
-				tmpPath.Append(name);
-				tmpPath.Append(".");
-				tmpPath.Append(fileExt);
-				printf(tmpPath);
+				publishPath = path.Path();
+				publishPath.Append("/");
+				publishPath.Append(name);
+				publishPath.Append(".");
+				publishPath.Append(fileExt);
+				printf(publishPath);
+				//publishFile = new BEntry(tmpPath);
+				publishFile.SetTo(tmpPath);
 			}
 			// clean up the temporary files...
 			break;

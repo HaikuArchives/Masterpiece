@@ -75,7 +75,6 @@ private:
 		BPath 				path;
 		entry_ref 			ref;
 		const char* 		name;
-		//FILE* 			f;
 		PublishFilePanel* publishPanel;
 		MPEditor*			tmpEditor;
 		ErrorAlert*			eAlert;
