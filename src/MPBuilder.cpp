@@ -81,7 +81,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString fileExt;
 	BFile previewFile;
 	BEntry publishFile;
-	BDirectory* publishDirectory;
+	BDirectory publishDirectory;
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -250,6 +250,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				publishPath = path.Path();
 				publishPath.Append("/");
 				*/
+				publishPath = "./";
 				publishPath.Append(name);
 				publishPath.Append(".");
 				publishPath.Append(fileExt);
@@ -258,9 +259,19 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				publishFile.SetTo(tmpPath);
 				publishFile.Rename(publishPath, true);
 				printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
-				publishDirectory->SetTo(&ref);
-				//publishFile.MoveTo(publishDirectory, publishPath, true);
-				publishDirectory->Unset();
+				//entry.SetTo(&ref);
+				//entry.SetTo(&ref);
+				//entry.GetPath(&path);
+				if(publishDirectory.SetTo(&ref) == B_OK)
+				{
+					printf("successful directory set\n");
+					publishFile.MoveTo(&publishDirectory, publishPath, true);
+				}
+				else
+				{
+					printf("directory set failed");
+				}
+				//publishDirectory->Unset();
 			}
 			// clean up the temporary files...
 			break;
