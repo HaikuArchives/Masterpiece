@@ -79,6 +79,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString mpData;
 	BString scriptFile;
 	BString fileExt;
+	BString dirPath;
 	BFile previewFile;
 	BEntry publishFile;
 	BDirectory publishDirectory;
@@ -258,12 +259,14 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				publishFile.SetTo(tmpPath);
 				publishFile.Rename(publishPath, true);
 				printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
-				//entry.SetTo(&ref);
-				//entry.SetTo(&ref);
-				//entry.GetPath(&path);
-				if(publishDirectory.SetTo(&ref) == B_OK)
+				entry.SetTo(&ref);
+				entry.SetTo(&ref);
+				entry.GetPath(&path);
+				dirPath = path.Path();
+				dirPath += "/";				
+				if(publishDirectory.SetTo(dirPath) == B_OK)
 				{
-					//printf("publishdirectory %s\n", path.Path());
+					printf("publishdirectory %s\n", path.Path());
 					printf("successful directory set\n");
 					publishFile.MoveTo(&publishDirectory, NULL, true);
 					//publishFile.Rename(publishPath, true);
