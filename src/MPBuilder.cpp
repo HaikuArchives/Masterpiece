@@ -217,6 +217,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			scriptFile = "pub";
 			scriptFile += fileExt;
 			scriptFile += ".py";
+			printf(scriptFile);
+			printf("\n");
 			try
 			{
 				py.run_file(scriptFile.String());
