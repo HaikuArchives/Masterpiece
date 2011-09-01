@@ -81,7 +81,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString fileExt;
 	BFile previewFile;
 	BEntry publishFile;
-	//BDirectory* publishDirectory;
+	BDirectory* publishDirectory;
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -243,21 +243,24 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			if(msg->FindRef("directory", &ref) == B_OK)
 			{
+				/*
 				entry.SetTo(&ref);
 				entry.GetPath(&path);
 				printf("default directory ref found: %s\n", path.Path());
 				publishPath = path.Path();
 				publishPath.Append("/");
+				*/
 				publishPath.Append(name);
 				publishPath.Append(".");
 				publishPath.Append(fileExt);
 				printf(publishPath);
+				//entry.Unset();
 				publishFile.SetTo(tmpPath);
 				publishFile.Rename(publishPath, true);
 				printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
-				//publishDirectory->SetTo(publishPath);
+				publishDirectory->SetTo(&ref);
 				//publishFile.MoveTo(publishDirectory, publishPath, true);
-				//publishDirectory->Unset();
+				publishDirectory->Unset();
 			}
 			// clean up the temporary files...
 			break;
