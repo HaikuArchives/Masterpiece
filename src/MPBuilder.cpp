@@ -257,21 +257,22 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				printf(publishPath);
 				//entry.Unset();
 				publishFile.SetTo(tmpPath);
-				publishFile.Rename(publishPath, true);
+				//publishFile.Rename(publishPath, true);
 				printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
 				//entry.SetTo(&ref);
 				//entry.SetTo(&ref);
 				//entry.GetPath(&path);
-				if(publishDirectory.SetTo(&ref) == B_OK)
+				if(publishDirectory.SetTo() == B_OK)
 				{
+					//printf("publishdirectory %s\n", path.Path());
 					printf("successful directory set\n");
 					publishFile.MoveTo(&publishDirectory, publishPath, true);
+					//publishFile.Rename(publishPath, true);
 				}
 				else
 				{
 					printf("directory set failed");
 				}
-				//publishDirectory->Unset();
 			}
 			// clean up the temporary files...
 			break;
