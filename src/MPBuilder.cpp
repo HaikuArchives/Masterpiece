@@ -240,10 +240,14 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				entry.SetTo(&ref);
 				entry.GetPath(&path);
 				printf("default directory ref found: %s\n", path.Path());
-				path.Append(name);
-				path.Append(".");
-				path.Append(fileExt);
+				tmpPath = path.Path();
+				tmpPath.Append("/");
+				tmpPath.Append(name);
+				tmpPath.Append(".");
+				tmpPath.Append(fileExt);
+				printf(tmpPath);
 			}
+			// clean up the temporary files...
 			break;
 		case MENU_HLP_MP: // help topics
 			break;
