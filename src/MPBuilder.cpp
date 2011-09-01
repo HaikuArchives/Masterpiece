@@ -81,6 +81,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString fileExt;
 	BFile previewFile;
 	BEntry publishFile;
+	//BDirectory* publishDirectory;
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -221,6 +222,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			scriptFile += ".py";
 			printf(scriptFile);
 			printf("\n");
+			tmpPath = GetAppDirPath();
+			tmpPath += "/tmppub.";
+			tmpPath += fileExt;
 			try
 			{
 				py.run_file(scriptFile.String());
@@ -248,8 +252,12 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				publishPath.Append(".");
 				publishPath.Append(fileExt);
 				printf(publishPath);
-				//publishFile = new BEntry(tmpPath);
 				publishFile.SetTo(tmpPath);
+				publishFile.Rename(publishPath, true);
+				printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
+				//publishDirectory->SetTo(publishPath);
+				//publishFile.MoveTo(publishDirectory, publishPath, true);
+				//publishDirectory->Unset();
 			}
 			// clean up the temporary files...
 			break;
