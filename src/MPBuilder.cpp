@@ -245,15 +245,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			if(msg->FindRef("directory", &ref) == B_OK)
 			{
-				/*
-				entry.SetTo(&ref);
-				entry.GetPath(&path);
-				printf("default directory ref found: %s\n", path.Path());
-				publishPath = path.Path();
-				publishPath.Append("/");
-				*/
 				publishPath = name;
-				//publishPath.Append(name);
 				publishPath.Append(".");
 				publishPath.Append(fileExt);
 				printf(publishPath);
@@ -290,9 +282,15 @@ void MPBuilder::MessageReceived(BMessage* msg)
 					{
 						printf("bloody falure busy %s\n", dirPath.String());
 					}
+					else if(err == B_CROSS_DEVICE_LINK)
+					{
+						// create a real error for the end user, possibly just a catch all one that displays this issue.
+						// CREATE A BUG REPORT TO THE DEV'S ABOUT THIS CODE.
+						printf("failure due to crossing partitions which doesn't work for some reason.");
+					}
 					else
 					{
-						printf("no idea");
+						printf("no idea %s", strerror(err));
 					}
 				}
 				else
@@ -301,6 +299,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				}
 			}
 			// clean up the temporary files...
+			// NEED TO DELETE THE TMPPUB.THT FILE, THE OTHER FILE IS RENAMED AND MOVED ACCORDINGLY.
 			break;
 		case MENU_HLP_MP: // help topics
 			break;
