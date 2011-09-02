@@ -300,6 +300,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			// clean up the temporary files...
 			// NEED TO DELETE THE TMPPUB.THT FILE, THE OTHER FILE IS RENAMED AND MOVED ACCORDINGLY.
+			// BEntry.Remove()
 			break;
 		case MENU_HLP_MP: // help topics
 			break;
