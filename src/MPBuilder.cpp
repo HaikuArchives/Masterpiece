@@ -82,6 +82,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString dirPath; // user created directory path string
 	BFile previewFile; // tmppub.tht file
 	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
+	BEntry removeTmpFile; // tmp file that information that will be removed
 	BDirectory publishDirectory; // user generated directory
 	status_t err;
 	switch(msg->what)
@@ -208,6 +209,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			tmpPath = GetAppDirPath();
 			tmpPath += "/tmppub.tht";
+			removeTmpFile.SetTo(tmpPath);
 			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
 			if(previewFile.InitCheck() != B_OK)
 			{
@@ -274,8 +276,12 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				}
 			}
 			// clean up the temporary files...
-			// NEED TO DELETE THE TMPPUB.THT FILE, THE OTHER FILE IS RENAMED AND MOVED ACCORDINGLY.
-			// BEntry.Remove()
+			err = removeTmpFile.Remove();
+			if(err != B_OK)
+			{
+				eAlert = new ErrorAlert("4.14 Builder Error: Tmp File could not be removed due to: ", strerror(err));
+				eAlert->Launch();
+			}
 			break;
 		case MENU_HLP_MP: // help topics
 			break;
