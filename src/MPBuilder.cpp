@@ -74,15 +74,15 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	char* argvv = "ladida";
 	char** argv = &argvv;
 	Python py(argc, argv);
-	BString publishPath;
-	BString tmpPath;
-	BString mpData;
-	BString scriptFile;
-	BString fileExt;
-	BString dirPath;
-	BFile previewFile;
-	BEntry publishFile;
-	BDirectory publishDirectory;
+	BString publishPath; // user generated filename
+	BString tmpPath; // string path of the tmppub.tht file then string path of tmppub.ext file
+	BString mpData; // actual data of file
+	BString scriptFile; // python script file name
+	BString fileExt; // file extension of converted file
+	BString dirPath; // user created directory path string
+	BFile previewFile; // tmppub.tht file
+	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
+	BDirectory publishDirectory; // user generated directory
 	status_t err;
 	switch(msg->what)
 	{
@@ -252,45 +252,20 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				publishFile.SetTo(tmpPath);
 				publishFile.Rename(publishPath, true);
 				printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
-				entry.SetTo(&ref);
+				entry.SetTo(&ref); // directory where the file is to be saved as defined by user
 				entry.SetTo(&ref);
 				entry.GetPath(&path);
 				dirPath = path.Path();
 				dirPath += "/";				
-				if(publishDirectory.SetTo(dirPath) == B_OK)
+				if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
 				{
 					printf("publishdirectory %s\n", path.Path());
 					printf("successful directory set\n");
-					err = publishFile.MoveTo(&publishDirectory, NULL, true);
-					if(err == B_OK)
+					err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
+					if(err != B_OK)
 					{
-						printf("function OK but didn't actually move it");
-					}
-					else if(err == B_NO_INIT)
-					{
-						printf("bloody failure no init %s\n", dirPath.String());
-					}
-					else if(err == B_ENTRY_NOT_FOUND)
-					{
-						printf("bloody failure not found %s\n", dirPath.String());
-					}
-					else if(err == B_FILE_EXISTS)
-					{
-						printf("bloody failure file exists %s\n", dirPath.String());
-					}
-					else if(err == B_BUSY)
-					{
-						printf("bloody falure busy %s\n", dirPath.String());
-					}
-					else if(err == B_CROSS_DEVICE_LINK)
-					{
-						// create a real error for the end user, possibly just a catch all one that displays this issue.
-						// CREATE A BUG REPORT TO THE DEV'S ABOUT THIS CODE.
-						printf("failure due to crossing partitions which doesn't work for some reason.");
-					}
-					else
-					{
-						printf("no idea %s", strerror(err));
+						eAlert = new ErrorAlert("4.13 Builder Error: File could not be written due to: ", strerror(err));
+						eAlert->Launch();		
 					}
 				}
 				else
