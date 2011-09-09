@@ -110,7 +110,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
 			system(tmpPath);
-			
+			// delete the tmp file on exit. need to know when it happens, so try vfork, fork, spawn, waitpid.
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
 			printf("save data, open publish to window, export to python and save as name in publish window");

@@ -20,6 +20,7 @@
 #include <TextView.h>
 #include <ScrollView.h>
 #include <File.h>
+#include <Entry.h>
 
 #include "ErrorAlert.h"
 #include "EditorMenu.h"
@@ -27,6 +28,7 @@
 #include "EditIdeaName.h"
 #include "HelperWindows.h"
 #include "CommonFunctions.h"
+#include "PublishFilePanel.h"
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 #define UPDATE_TITLE		'uttl' // update title...
@@ -38,26 +40,31 @@ public:
 		void			MessageReceived(BMessage* msg);
 		bool			QuitRequested(void);
 private:
-		BView*			backView;
-		BMessage		launcherMessage;
-		BMessenger		launcherMessenger;
-		BTextView*		editorTextView;
-		MPEditor*		tmpEditor;
-		ErrorAlert*		eAlert;
-		SaveIdea*		saveIdea;
-		EditIdeaName*	editIdeaName;
-		HelperWindows*	helperWindow;
-		sqlite3*		mpdb;
-		sqlite3_stmt*	ideaStatement;
-		char*			sqlErrMsg;
-		BString			tmpString;
-		BString			updateTitle;
-		BString			tmpText;
-		int				sqlValue;
-		int				currentideaID;
-		float			xPos;
-		float			yPos;
-		SqlObject*		sqlObject;
+		BView*				backView;
+		BMessage			launcherMessage;
+		BMessenger			launcherMessenger;
+		BTextView*			editorTextView;
+		MPEditor*			tmpEditor;
+		ErrorAlert*			eAlert;
+		SaveIdea*			saveIdea;
+		EditIdeaName*		editIdeaName;
+		HelperWindows*		helperWindow;
+		sqlite3*			mpdb;
+		sqlite3_stmt*		ideaStatement;
+		char*				sqlErrMsg;
+		BString				tmpString;
+		BString				updateTitle;
+		BString				tmpText;
+		int					sqlValue;
+		int					currentideaID;
+		float				xPos;
+		float				yPos;
+		SqlObject*			sqlObject;
+		BEntry				entry;
+		BPath				path;
+		entry_ref			ref;
+		const char*			name;
+		PublishFilePanel*	pubEditorPanel;
 };
 
 
