@@ -110,6 +110,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
 			system(tmpPath);
+			// prior to closing the course, check for the tmp.tht and tmp.html files and delte them.
 			// delete the tmp file on exit. need to know when it happens, so try vfork, fork, spawn, waitpid.
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
