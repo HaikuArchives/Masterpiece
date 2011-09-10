@@ -19,6 +19,7 @@
 #include <Roster.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <Entry.h>
 
 #include "ErrorAlert.h"
 #include "MPBuilder.h"
@@ -69,6 +70,10 @@ private:
 		MPBuilder*		mpBuilder;
 		MPEditor*		mpEditor;
 		SqlObject*		sqlObject;
+		BEntry			removeTmpTht;
+		BEntry			removeTmpHtm;
+		BString			tmpPath;
+		status_t		err;
 };
 
 #endif

@@ -212,6 +212,38 @@ void MPLauncher::MessageReceived(BMessage* msg)
 }
 bool MPLauncher::QuitRequested(void)
 {
+	// Get and remove tmp.tht file
+	tmpPath = GetAppDirPath();
+	tmpPath += "/tmppub.tht";
+	removeTmpTht.SetTo(tmpPath);
+	err = removeTmpTht.Remove();
+	if(err == B_OK || err == B_ENTRY_NOT_FOUND)
+	{
+		// don't report to end user
+		printf("expected error: %s\n", strerror(err));
+	}
+	else
+	{
+		// report to end user
+		eAlert = new ErrorAlert("Error when cleaning up Temp Files prior to Exit: ", strerror(err));
+		eAlert->Launch();
+	}
+	// Get and remove tmp.html file
+	tmpPath = GetAppDirPath();
+	tmpPath += "/tmppub.html";
+	removeTmpHtm.SetTo(tmpPath);
+	err = removeTmpHtm.Remove();
+	if(err == B_OK || err == B_ENTRY_NOT_FOUND)
+	{
+		// don't report to end user
+		printf("expected error: %s\n", strerror(err));
+	}
+	else
+	{
+		// report to end user
+		eAlert = new ErrorAlert("Error when cleaning up Temp Files prior to Exit: ", strerror(err));
+		eAlert->Launch();
+	}
 	be_app->PostMessage(B_QUIT_REQUESTED); // exit application
 	return true;
 }
