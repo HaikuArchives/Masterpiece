@@ -13,6 +13,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_THT));
 	AddShortcut('k', B_COMMAND_KEY, new BMessage(MENU_KEY_THT));
 	// initialize controls
+	pubEditorPanel = NULL;
 	BRect r = Bounds();
 	r.bottom = r.bottom - 50;
 	editorTextView = new BTextView(r, NULL, r, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
