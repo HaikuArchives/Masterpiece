@@ -85,6 +85,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BEntry removeTmpFile; // tmp file that information that will be removed
 	BDirectory publishDirectory; // user generated directory
 	status_t err;
+	
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought

@@ -122,8 +122,87 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// delete the tmp file on exit. need to know when it happens, so try vfork, fork, spawn, waitpid.
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
-			printf("save data, open publish to window, export to python and save as name in publish window");
+			if(!publishPanel)
+			{
+				publishPanel = new PublishFilePanel(new BMessenger(this));
+			}
+			publishPanel->Show();
 			break;
+		case PUBLISH_TYPE:
+			// write data to a file
+			tmpPath = GetAppDirPath();
+			tmpPath += "/tmppub.tht";
+			removeTmpFile.SetTo(tmpPath);
+			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+			if(previewFile.InitCheck != B_OK)
+			{
+				printf("couldn't read file\n");
+			}
+			previewFile.Write(editorTextView->Text(), strlen(editorTextView->Text()));
+			previewFile.Unset();
+			
+			// build the correct publish python script name
+			fileExt = publishPanel->publishTypeMenu->FindMarked()->Label();
+			fileExt = fileExt.ToLower();
+			scriptFile = "pub";
+			scriptFile += fileExt;
+			scriptFile += ".py";
+			printf(scriptFile);
+			printf("\n");
+			tmpPath = GetAppDirPath();
+			tmpPath += "/tmppub.";
+			tmpPath += fileExt;
+			try
+			{
+				py.run_file(scriptFile.String());
+			}
+			catch(Python_exception ex)
+			{
+				printf("Python error: %s\n", ex.what());
+			}
+			
+			// now i need to get the finished file and mv/rename it to the correct location
+			if(msg->FindString("name", &name) == B_OK)
+			{
+				printf("default save message: %s\n", name);
+			}
+			if(msg->FindRef("directory", &ref) == B_OK)
+			{
+				publishPath = name;
+				publishPath.Append(".");
+				publishPath.Append(fileExt);
+				printf(publishPath);
+				publishFile.SetTo(tmpPath);
+				publishFile.Rename(publishPath, true);
+				printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
+				entry.SetTo(&ref); // directory where the file is to be saved as defined by user
+				entry.SetTo(&ref);
+				entry.GetPath(&path);
+				dirPath = path.Path();
+				dirPath += "/";				
+				if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
+				{
+					printf("publishdirectory %s\n", path.Path());
+					printf("successful directory set\n");
+					err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
+					if(err != B_OK)
+					{
+						eAlert = new ErrorAlert("4.13 Builder Error: File could not be written due to: ", strerror(err));
+						eAlert->Launch();		
+					}
+				}
+				else
+				{
+					printf("directory set failed");
+				}
+			}
+			// clean up the temporary files...
+			err = removeTmpFile.Remove();
+			if(err != B_OK)
+			{
+				eAlert = new ErrorAlert("4.14 Builder Error: Tmp File could not be removed due to: ", strerror(err));
+				eAlert->Launch();
+			}
 		case MENU_HLP_THT: // open help topic window
 			printf("open help topic window");
 			break;
