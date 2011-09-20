@@ -103,6 +103,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 			if(previewFile.InitCheck() != B_OK)
 			{
 				printf("Couldn't write file\n");
+				eAlert = new ErrorAlert("3.2 Editor Error: Couldn't Write TMP File.");
+				eAlert->Launch();
 			}
 			previewFile.Write(editorTextView->Text(), strlen(editorTextView->Text()));
 			previewFile.Unset();
@@ -113,14 +115,14 @@ void MPEditor::MessageReceived(BMessage* msg)
 			catch(Python_exception ex)
 			{
 				printf("Python error: %s\n", ex.what());
+				eAlert = new ErrorAlert("3.3 Editor Error: Python Issue - ", ex.what());
+				eAlert->Launch();
 			}
 			
 			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
 			system(tmpPath);
-			// prior to closing the course, check for the tmp.tht and tmp.html files and delte them.
-			// delete the tmp file on exit. need to know when it happens, so try vfork, fork, spawn, waitpid.
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
 			if(!pubEditorPanel)
@@ -138,6 +140,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 			if(previewFile.InitCheck() != B_OK)
 			{
 				printf("couldn't read file\n");
+				eAlert = new ErrorAlert("3.4 Editor Error: Couldn't Create Pub File.");
+				eAlert->Launch();
 			}
 			previewFile.Write(editorTextView->Text(), strlen(editorTextView->Text()));
 			previewFile.Unset();
@@ -160,6 +164,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 			catch(Python_exception ex)
 			{
 				printf("Python error: %s\n", ex.what());
+				eAlert = new ErrorAlert("3.5 Editor Error: Python Issue - ", ex.what());
+				eAlert->Launch();
 			}
 			
 			// now i need to get the finished file and mv/rename it to the correct location
