@@ -61,7 +61,7 @@ private:
 		BStringView*	openThoughtStringView;
 		sqlite3*		mpdb;
 		sqlite3_stmt*	ideaStatement;
-		ErrorAlert*		eAlert;
+		//ErrorAlert*		eAlert;
 		char*			sqlErrMsg;
 		int				sqlValue;
 		int				selected;
