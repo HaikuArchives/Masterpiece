@@ -6,11 +6,14 @@
 #include <Roster.h>
 #include <Path.h>
 #include <String.h>
+#include <Directory.h>
+#include <FindDirectory.h>
 
 #include "ErrorAlert.h"
 
 void	DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
 BString	GetAppDirPath(void);
+BString GetUserDirPath(void);
 
 class SqlObject
 {

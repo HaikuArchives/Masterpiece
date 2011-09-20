@@ -19,6 +19,13 @@ BString GetAppDirPath(void)
 	path.GetParent(&path);
 	return path.Path();
 }
+BString GetUserDirPath(void)
+{
+	BPath tmpUserPath;
+	status_t result = find_directory(B_USER_DIRECTORY, &tmpUserPath);
+	if(result == B_OK) return tmpUserPath.Path();
+	else return "-15";
+}
 SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber, sqlite3* openDB)
 {
 	sqldb = openDB;
@@ -30,39 +37,47 @@ SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber)
 	sqldb = NULL;
 	sqlstatement = sqlStatement;
 	errornumber = errorNumber;
-	char*		sqlErrMsg;
-	int			sqlValue;
-	BString		tmpString;
+	char* sqlErrMsg;
+	int	sqlValue;
+	BString tmpString;
 	sqlErrMsg = 0;
-	BString tmpPath = GetAppDirPath();
-	tmpPath += "/MasterPiece.db";
-	sqlValue = sqlite3_open_v2(tmpPath, &sqldb, SQLITE_OPEN_READWRITE, NULL); // open db
-	if(sqlite3_errcode(sqldb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure
+	BString tmpPath = GetAppDirPath(); // for testing purposes, use local one.
+	//BString tmpPath = GetUserDirPath(); // for publish purposes, use real location
+	if(tmpPath != "-15")
 	{
-		sqlValue = sqlite3_open_v2(tmpPath, &sqldb, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL); 
-		if(sqlite3_errcode(sqldb) == 0) // sqlite_ok
+		tmpPath += "/MasterPiece.db";
+		sqlValue = sqlite3_open_v2(tmpPath, &sqldb, SQLITE_OPEN_READWRITE, NULL); // open db
+		if(sqlite3_errcode(sqldb) == 14) // if error is SQLITE_CANTOPEN, then create db with structure
 		{
-			tmpString = "CREATE TABLE ideatable(ideaid integer primary key autoincrement, ideaname text, ideatext text, ismp integer, mpid integer, ordernumber integer);";
-			sqlValue = sqlite3_exec(sqldb, tmpString, NULL, NULL, &sqlErrMsg);
-			if(sqlValue != SQLITE_OK) // if sql was not successful
+			sqlValue = sqlite3_open_v2(tmpPath, &sqldb, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL); 
+			if(sqlite3_errcode(sqldb) == 0) // sqlite_ok
 			{
-				DisplayError("1.1", "OPEN", sqlErrMsg);
+				tmpString = "CREATE TABLE ideatable(ideaid integer primary key autoincrement, ideaname text, ideatext text, ismp integer, mpid integer, ordernumber integer);";
+				sqlValue = sqlite3_exec(sqldb, tmpString, NULL, NULL, &sqlErrMsg);
+				if(sqlValue != SQLITE_OK) // if sql was not successful
+				{
+					DisplayError("1.1", "OPEN", sqlErrMsg);
+				}
+			}
+			else // some kind of failure
+			{
+				DisplayError("1.0", "OPEN", sqlite3_errmsg(sqldb));
 			}
 		}
-		else // some kind of failure
+		else if(sqlite3_errcode(sqldb) == 0) // sqlite_OK, it exists
 		{
-			DisplayError("1.0", "OPEN", sqlite3_errmsg(sqldb));
+			//no error, so i will return opendb at end;
 		}
+		else // if error is not ok or not existing, then display error in alert
+		{
+			DisplayError("1.2", "OPEN", sqlite3_errmsg(sqldb));
+		}
+		sqlite3_free(sqlErrMsg);
 	}
-	else if(sqlite3_errcode(sqldb) == 0) // sqlite_OK, it exists
+	else
 	{
-		//no error, so i will return opendb at end;
+		DisplayError("1.0", "PATH", " to the User Directory not Found");
 	}
-	else // if error is not ok or not existing, then display error in alert
-	{
-		DisplayError("1.2", "OPEN", sqlite3_errmsg(sqldb));
-	}
-	sqlite3_free(sqlErrMsg);
 }
 void SqlObject::PrepareSql(const char* sqlQuery)
 {
