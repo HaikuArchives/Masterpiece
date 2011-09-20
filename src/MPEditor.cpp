@@ -46,8 +46,16 @@ void MPEditor::MessageReceived(BMessage* msg)
 	char* argvv = "ladida";
 	char** argv = &argvv;
 	Python py(argc, argv);
-	BString tmpPath;
-	BFile previewFile;
+	BString publishPath; // user generated filename
+	BString tmpPath; // string path of tmppub.tht file, then string path of tmppub.ext
+	BFile previewFile; // tmppub.tht file
+	BString scriptFile; // python script file name
+	BString fileExt; // file extension of converted file
+	BString dirPath; // user created directory path string
+	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
+	BEntry removeTmpFile; // tmp file that information that will be removed
+	BDirectory publishDirectory; // user generated directory
+	status_t err; // auto errors
 	
 	switch(msg->what)
 	{
