@@ -122,11 +122,11 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// delete the tmp file on exit. need to know when it happens, so try vfork, fork, spawn, waitpid.
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
-			if(!publishPanel)
+			if(!pubEditorPanel)
 			{
-				publishPanel = new PublishFilePanel(new BMessenger(this));
+				pubEditorPanel = new PublishFilePanel(new BMessenger(this));
 			}
-			publishPanel->Show();
+			pubEditorPanel->Show();
 			break;
 		case PUBLISH_TYPE:
 			// write data to a file
@@ -134,7 +134,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			tmpPath += "/tmppub.tht";
 			removeTmpFile.SetTo(tmpPath);
 			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
-			if(previewFile.InitCheck != B_OK)
+			if(previewFile.InitCheck() != B_OK)
 			{
 				printf("couldn't read file\n");
 			}
@@ -142,7 +142,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			previewFile.Unset();
 			
 			// build the correct publish python script name
-			fileExt = publishPanel->publishTypeMenu->FindMarked()->Label();
+			fileExt = pubEditorPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
 			scriptFile = "pub";
 			scriptFile += fileExt;
@@ -187,7 +187,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 					err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
 					if(err != B_OK)
 					{
-						eAlert = new ErrorAlert("4.13 Builder Error: File could not be written due to: ", strerror(err));
+						eAlert = new ErrorAlert("3.13 Editor Error: File could not be written due to: ", strerror(err));
 						eAlert->Launch();		
 					}
 				}
@@ -200,7 +200,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			err = removeTmpFile.Remove();
 			if(err != B_OK)
 			{
-				eAlert = new ErrorAlert("4.14 Builder Error: Tmp File could not be removed due to: ", strerror(err));
+				eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
 				eAlert->Launch();
 			}
 		case MENU_HLP_THT: // open help topic window
