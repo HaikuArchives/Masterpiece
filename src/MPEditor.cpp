@@ -171,17 +171,17 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// now i need to get the finished file and mv/rename it to the correct location
 			if(msg->FindString("name", &name) == B_OK)
 			{
-				printf("default save message: %s\n", name);
+				//printf("default save message: %s\n", name);
 			}
 			if(msg->FindRef("directory", &ref) == B_OK)
 			{
 				publishPath = name;
 				publishPath.Append(".");
 				publishPath.Append(fileExt);
-				printf(publishPath);
+				//printf(publishPath);
 				publishFile.SetTo(tmpPath);
 				publishFile.Rename(publishPath, true);
-				printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
+				//printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
 				entry.SetTo(&ref); // directory where the file is to be saved as defined by user
 				entry.SetTo(&ref);
 				entry.GetPath(&path);
@@ -189,8 +189,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 				dirPath += "/";				
 				if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
 				{
-					printf("publishdirectory %s\n", path.Path());
-					printf("successful directory set\n");
+					//printf("publishdirectory %s\n", path.Path());
+					//printf("successful directory set\n");
 					err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
 					if(err != B_OK)
 					{
@@ -200,7 +200,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 				}
 				else
 				{
-					printf("directory set failed");
+					eAlert = new ErrorAlert("3.6 Editor Error: Directory Set Failed");
+					eAlert->Launch();
+					//printf("directory set failed");
 				}
 			}
 			// clean up the temporary files...

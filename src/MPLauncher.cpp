@@ -221,7 +221,7 @@ bool MPLauncher::QuitRequested(void)
 	if(err == B_OK || err == B_ENTRY_NOT_FOUND)
 	{
 		// don't report to end user
-		printf("expected error: %s\n", strerror(err));
+		//printf("expected error: %s\n", strerror(err));
 	}
 	else
 	{
@@ -238,7 +238,7 @@ bool MPLauncher::QuitRequested(void)
 	if(err == B_OK || err == B_ENTRY_NOT_FOUND)
 	{
 		// don't report to end user
-		printf("expected error: %s\n", strerror(err));
+		//printf("expected error: %s\n", strerror(err));
 	}
 	else
 	{
