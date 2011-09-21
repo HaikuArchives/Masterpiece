@@ -102,7 +102,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
 			if(previewFile.InitCheck() != B_OK)
 			{
-				printf("Couldn't write file\n");
+				//printf("Couldn't write file\n");
 				eAlert = new ErrorAlert("3.2 Editor Error: Couldn't Write TMP File.");
 				eAlert->Launch();
 			}
@@ -114,7 +114,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			catch(Python_exception ex)
 			{
-				printf("Python error: %s\n", ex.what());
+				//printf("Python error: %s\n", ex.what());
 				eAlert = new ErrorAlert("3.3 Editor Error: Python Issue - ", ex.what());
 				eAlert->Launch();
 			}
@@ -139,7 +139,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
 			if(previewFile.InitCheck() != B_OK)
 			{
-				printf("couldn't read file\n");
+				//printf("couldn't read file\n");
 				eAlert = new ErrorAlert("3.4 Editor Error: Couldn't Create Pub File.");
 				eAlert->Launch();
 			}
@@ -163,7 +163,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			catch(Python_exception ex)
 			{
-				printf("Python error: %s\n", ex.what());
+				//printf("Python error: %s\n", ex.what());
 				eAlert = new ErrorAlert("3.5 Editor Error: Python Issue - ", ex.what());
 				eAlert->Launch();
 			}
