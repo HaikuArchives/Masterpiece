@@ -1,6 +1,6 @@
-#include "HelperWindows.h"
+#include "MarkupWindow.h"
 
-HelperWindows::HelperWindows(BRect frame, const char* title)
+MarkupWindow::MarkupWindow(BRect frame, const char* title)
 	:	BWindow(frame, title, B_TITLED_WINDOW, B_NOT_H_RESIZABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
 {
 	AddShortcut('q', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
@@ -9,11 +9,13 @@ HelperWindows::HelperWindows(BRect frame, const char* title)
 	backView->SetHighColor((rgb_color){0, 0, 0, 255});
 	AddChild(backView);
 }
-void HelperWindows::AddText(BRect tframe, const char* hname, const char* helptext)
+/*
+void MarkupWindow::AddText(BRect tframe, const char* hname, const char* helptext)
 {
 	backView->AddChild(new BStringView(tframe, hname, helptext));
 }
-bool HelperWindows::QuitRequested(void)
+*/
+bool MarkupWindow::QuitRequested(void)
 {
 	return true;
 }
