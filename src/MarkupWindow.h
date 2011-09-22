@@ -4,6 +4,10 @@
 #include <Window.h>
 #include <View.h>
 #include <StringView.h>
+#include <ScrollView.h>
+#include <ListView.h>
+#include <GroupLayout.h>
+#include <GridLayoutBuilder.h>
 #include <stdio.h>
 
 class MarkupWindow : public BWindow
