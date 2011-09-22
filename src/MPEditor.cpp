@@ -230,6 +230,10 @@ void MPEditor::MessageReceived(BMessage* msg)
 			printf("open keyboard reference window");
 			break;
 		case MENU_MRK_THT: // open markup reference window
+			xPos = (r.right - r.left) / 2; // find xpos for window
+			yPos = (r.bottom - r.top) / 2; // find ypos for window
+			markupWindow = new MarkupWindow(BRect(xPos, yPos, xPos + 600, yPos + 400), "Markup Reference");
+			markupWindow->Show();
 			printf("open markup reference window");
 			break;
 		case MENU_ABT_THT: // open about window
