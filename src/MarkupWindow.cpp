@@ -16,7 +16,8 @@ MarkupWindow::MarkupWindow(BRect frame, const char* title)
 	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
 	backView->AddChild(BGridLayoutBuilder()
 		.Add(new BScrollView("scroll_topic", topicListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 0, 1, 3)
-		.Add(new BScrollView("scroll_content", contentTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 1, 0, 1, 10)
+		.Add(new BScrollView("scroll_content", contentTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 1, 0, 5, 10)
+		.SetInsets(0, 0, 0, 0)
 	);
 }
 /*

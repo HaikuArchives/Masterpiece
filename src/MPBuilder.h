@@ -58,7 +58,6 @@ public:
 		void				ModifyOrderedItems(int curOrderNumber, int newOrderNumber);
 private:
 		BView*				backView;
-		//BGroupLayout*		mainGroup;
 		BMessage			launcherMessage;
 		BMessenger			launcherMessenger;
 		BListView*			availableThoughtListView;
