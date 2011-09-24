@@ -37,6 +37,7 @@ DEPENDENCY=/boot/home/Projects/masterpiece/HelperWindows.h
 SOURCEFILE=IdeaStringItem.cpp
 DEPENDENCY=/boot/home/Projects/masterpiece/IdeaStringItem.h
 SOURCEFILE=MarkupWindow.cpp
+DEPENDENCY=/boot/home/Projects/masterpiece/MarkupWindow.h|/boot/home/Projects/masterpiece/ErrorAlert.h
 SOURCEFILE=MPBuilder.cpp
 DEPENDENCY=/boot/home/Projects/masterpiece/MPBuilder.h|/boot/home/Projects/masterpiece/pyembed.h|/boot/home/Projects/masterpiece/ErrorAlert.h|/boot/home/Projects/masterpiece/BuilderMenu.h|/boot/home/Projects/masterpiece/SaveIdea.h|/boot/home/Projects/masterpiece/CommonFunctions.h|/boot/home/Projects/masterpiece/EditIdeaName.h|/boot/home/Projects/masterpiece/MPEditor.h|/boot/home/Projects/masterpiece/EditorMenu.h|/boot/home/Projects/masterpiece/HelperWindows.h|/boot/home/Projects/masterpiece/PublishFilePanel.h|/boot/home/Projects/masterpiece/IdeaStringItem.h
 SOURCEFILE=MPEditor.cpp

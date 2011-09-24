@@ -12,6 +12,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	AddShortcut('r', B_COMMAND_KEY, new BMessage(MENU_PRV_THT));
 	AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_THT));
 	AddShortcut('k', B_COMMAND_KEY, new BMessage(MENU_KEY_THT));
+	AddShortcut('m', B_COMMAND_KEY, new BMessage(MENU_MRK_THT));
 	// initialize controls
 	pubEditorPanel = NULL;
 	BRect r = Bounds();

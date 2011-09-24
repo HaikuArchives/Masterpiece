@@ -6,9 +6,12 @@
 #include <StringView.h>
 #include <ScrollView.h>
 #include <ListView.h>
+#include <TextView.h>
 #include <GroupLayout.h>
 #include <GridLayoutBuilder.h>
 #include <stdio.h>
+
+#include "ErrorAlert.h"
 
 class MarkupWindow : public BWindow
 {
@@ -20,6 +23,10 @@ public:
 		
 private:
 		BView*			backView;
+		//BGroupLayout*	mainGroup;
+		BListView*		topicListView;
+		BTextView*		contentTextView;
+		ErrorAlert*		eAlert;
 };
 
 #endif
