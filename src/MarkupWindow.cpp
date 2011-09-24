@@ -8,6 +8,8 @@ MarkupWindow::MarkupWindow(BRect frame, const char* title)
 	BRect r = Bounds();
 	topicListView = new BListView(BRect(10, 10, 30, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 	contentTextView = new BTextView(BRect(0, 0, r.right, 100), NULL, BRect(10, 10, r.right, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	contentTextView->SetWordWrap(true);
+	contentTextView->MakeEditable(false);
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	backView->SetHighColor((rgb_color){0, 0, 0, 255});
