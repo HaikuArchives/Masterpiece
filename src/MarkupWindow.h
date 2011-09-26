@@ -17,9 +17,7 @@ class MarkupWindow : public BWindow
 {
 public:
 				MarkupWindow(BRect frame, const char* title);
-		//void	AddText(BRect tframe, const char* hname, const char* helptext);
-		void	AddMarkupItem();
-		//void	AddMarkupItem(item name, document location, need reference to do it);
+		void	AddMarkupItem(BString topicString, BString contentString);
 		bool	QuitRequested(void);
 		
 private:
