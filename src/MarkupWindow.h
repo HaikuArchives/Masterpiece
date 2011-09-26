@@ -12,12 +12,13 @@
 #include <stdio.h>
 
 #include "ErrorAlert.h"
+#include "HelpStringItem.h"
 
 class MarkupWindow : public BWindow
 {
 public:
 				MarkupWindow(BRect frame, const char* title);
-		void	AddMarkupItem(BString topicString, BString contentString);
+		void	AddMarkupItem(BString topicstring, BString contentstring);
 		bool	QuitRequested(void);
 		
 private:

@@ -22,12 +22,10 @@ MarkupWindow::MarkupWindow(BRect frame, const char* title)
 		.SetInsets(0, 0, 0, 0)
 	);
 }
-/*
-void MarkupWindow::AddText(BRect tframe, const char* hname, const char* helptext)
+void MarkupWindow::AddMarkupItem(BString topicstring, BString contentstring)
 {
-	backView->AddChild(new BStringView(tframe, hname, helptext));
+	topicListView->AddItem(new HelpStringItem(topicstring, contentstring));
 }
-*/
 bool MarkupWindow::QuitRequested(void)
 {
 	return true;
