@@ -21,10 +21,27 @@ MarkupWindow::MarkupWindow(BRect frame, const char* title)
 		.Add(new BScrollView("scroll_content", contentTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 1, 0, 5, 10)
 		.SetInsets(0, 0, 0, 0)
 	);
+	topicListView->SetSelectionMessage(new BMessage(LOAD_CONTENT));
 }
 void MarkupWindow::AddMarkupItem(BString topicstring, BString contentstring)
 {
 	topicListView->AddItem(new HelpStringItem(topicstring, contentstring));
+}
+void MarkupWindow::MessageReceived(BMessage* msg)
+{
+	switch(msg->what)
+	{
+		case LOAD_CONTENT:
+			selected = 
+			// do stuff here to load file to the text window
+		break;
+		
+		default:
+		{
+			BWindow:MessageReceived(msg);
+			break;
+		}
+	}
 }
 bool MarkupWindow::QuitRequested(void)
 {

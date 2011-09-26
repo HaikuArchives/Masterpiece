@@ -234,6 +234,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			xPos = (r.right - r.left) / 2; // find xpos for window
 			yPos = (r.bottom - r.top) / 2; // find ypos for window
 			markupWindow = new MarkupWindow(BRect(xPos, yPos, xPos + 600, yPos + 400), "Markup Reference");
+			markupWindow->AddMarkupItem("Quick Reference", "reference.txt");
 			markupWindow->Show();
 			printf("open markup reference window");
 			break;
