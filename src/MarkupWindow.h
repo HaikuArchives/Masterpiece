@@ -13,6 +13,7 @@
 
 #include "ErrorAlert.h"
 #include "HelpStringItem.h"
+#include "CommonFunctions.h"
 
 #define LOAD_CONTENT	'ldct' // load content in window
 

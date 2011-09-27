@@ -32,8 +32,16 @@ void MarkupWindow::MessageReceived(BMessage* msg)
 	switch(msg->what)
 	{
 		case LOAD_CONTENT:
-			selected = 
-			// do stuff here to load file to the text window
+			selected = topicListView->CurrentSelection();
+			if(selected >= 0) // you selected something
+			{
+				HelpStringItem* item;
+				BString contentPath = GetAppDirPath();
+				item = dynamic_cast<HelpStringItem*>(topicListView->ItemAt(selected));
+				contentPath += "/";
+				contentPath += item->ReturnContent();
+				// read in the file contents here and display in the editor.
+			}
 		break;
 		
 		default:
