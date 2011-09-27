@@ -37,10 +37,23 @@ void MarkupWindow::MessageReceived(BMessage* msg)
 			{
 				HelpStringItem* item;
 				BString contentPath = GetAppDirPath();
+				BFile file;
 				item = dynamic_cast<HelpStringItem*>(topicListView->ItemAt(selected));
 				contentPath += "/";
 				contentPath += item->ReturnContent();
 				printf("contentpath: %s\n", contentPath.String());
+				if(file.SetTo(contentPath, B_READ_ONLY))
+				{
+					off_t length;
+					char* text;
+					file.GetSize(&length);
+					text = (char*) malloc(length);
+					if(text && (file.Read(text, length)) >= B_OK)
+					{
+						contentTextView->SetText(text, length);
+					}
+					free(text);
+				}
 				// read in the file contents here and display in the editor.
 			}
 			break;

@@ -13,6 +13,8 @@
 #include <GridLayoutBuilder.h>
 #include <String.h>
 #include <stdio.h>
+#include <File.h>
+#include <malloc.h>
 
 #include "ErrorAlert.h"
 #include "HelpStringItem.h"
