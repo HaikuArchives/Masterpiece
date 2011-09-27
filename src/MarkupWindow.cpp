@@ -42,7 +42,7 @@ void MarkupWindow::MessageReceived(BMessage* msg)
 				contentPath += "/";
 				contentPath += item->ReturnContent();
 				printf("contentpath: %s\n", contentPath.String());
-				if(file.SetTo(contentPath, B_READ_ONLY))
+				if(file.SetTo(contentPath, B_READ_ONLY) == B_OK)
 				{
 					off_t length;
 					char* text;
@@ -54,7 +54,6 @@ void MarkupWindow::MessageReceived(BMessage* msg)
 					}
 					free(text);
 				}
-				// read in the file contents here and display in the editor.
 			}
 			break;
 		
