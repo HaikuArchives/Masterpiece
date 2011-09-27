@@ -40,13 +40,14 @@ void MarkupWindow::MessageReceived(BMessage* msg)
 				item = dynamic_cast<HelpStringItem*>(topicListView->ItemAt(selected));
 				contentPath += "/";
 				contentPath += item->ReturnContent();
+				printf("contentpath: %s\n", contentPath.String());
 				// read in the file contents here and display in the editor.
 			}
-		break;
+			break;
 		
 		default:
 		{
-			BWindow:MessageReceived(msg);
+			BWindow::MessageReceived(msg);
 			break;
 		}
 	}
