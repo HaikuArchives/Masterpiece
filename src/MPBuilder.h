@@ -20,6 +20,7 @@
 #include <TextView.h>
 #include <File.h>
 #include <Entry.h>
+#include <malloc.h>
 
 #include "ErrorAlert.h"
 #include "BuilderMenu.h"

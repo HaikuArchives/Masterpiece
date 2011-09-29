@@ -292,6 +292,20 @@ void MPBuilder::MessageReceived(BMessage* msg)
 						{
 							BFile oldFile;
 							BFile newFile;
+							if(oldFile.SetTo(oldFilePath, B_READ_ONLY) == B_OK)
+							{
+								if(newFile.SetTo(newFilePath, B_WRITE_ONLY | B_CREATE_FILE | B_ERASE_FILE) == B_OK)
+								{
+									off_t length;
+									char* text;
+									oldFile.GetSize(&length);
+									text = (char*) malloc(length);
+									if(text && oldFile.Read(text, length)) >= B_OK) // write text to the newfile
+									{
+									}
+									free(text);
+								}
+							}
 						}
 						else
 						{
