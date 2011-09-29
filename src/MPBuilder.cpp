@@ -300,8 +300,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 									char* text;
 									oldFile.GetSize(&length);
 									text = (char*) malloc(length);
-									if(text && oldFile.Read(text, length)) >= B_OK) // write text to the newfile
+									if(text && oldFile.Read(text, length) >= B_OK) // write text to the newfile
 									{
+										newFile.Write(text, length);
 									}
 									free(text);
 								}
