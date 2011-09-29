@@ -83,6 +83,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BFile previewFile; // tmppub.tht file
 	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
 	BEntry removeTmpFile; // tmp file that information that will be removed
+	BString oldFilePath; // path to the renamed tmpfile
+	BString newFilePath; // path to the actual saved file
 	BDirectory publishDirectory; // user generated directory
 	status_t err;
 	
@@ -262,12 +264,23 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				//printf(publishPath);
 				publishFile.SetTo(tmpPath);
 				publishFile.Rename(publishPath, true);
+				oldFilePath = GetAppDirPath();
+				oldFilePath += "/";
+				oldFilePath += name;
+				oldFilePath += ".";
+				oldFilePath += fileExt;
 				//printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
 				entry.SetTo(&ref); // directory where the file is to be saved as defined by user
 				entry.SetTo(&ref);
 				entry.GetPath(&path);
 				dirPath = path.Path();
 				dirPath += "/";				
+				newFilePath = dirPath;
+				newFilePath += name;
+				newFilePath += ".";
+				newFilePath += fileExt;
+				printf("old file: %s\n", oldFilePath.String());
+				printf("new file: %s\n", newFilePath.String());
 				if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
 				{
 					//printf("publishdirectory %s\n", path.Path());
@@ -275,8 +288,16 @@ void MPBuilder::MessageReceived(BMessage* msg)
 					err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
 					if(err != B_OK)
 					{
-						eAlert = new ErrorAlert("4.13 Builder Error: File could not be written due to: ", strerror(err));
-						eAlert->Launch();		
+						if(err == B_CROSS_DEVICE_LINK)
+						{
+							BFile oldFile;
+							BFile newFile;
+						}
+						else
+						{
+							eAlert = new ErrorAlert("4.13 Builder Error: File could not be written due to: ", strerror(err));
+							eAlert->Launch();		
+						}
 					}
 				}
 				else
