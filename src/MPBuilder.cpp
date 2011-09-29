@@ -83,6 +83,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BFile previewFile; // tmppub.tht file
 	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
 	BEntry removeTmpFile; // tmp file that information that will be removed
+	BEntry removeOldFile; // remove old file once it was successfully copied to the new location
 	BString oldFilePath; // path to the renamed tmpfile
 	BString newFilePath; // path to the actual saved file
 	BDirectory publishDirectory; // user generated directory
@@ -307,6 +308,16 @@ void MPBuilder::MessageReceived(BMessage* msg)
 										{
 											eAlert = new ErrorAlert("4.13 Builder Error: File could not be written due to: ", strerror(err));
 											eAlert->Launch();		
+										}
+										else
+										{
+											removeOldFile.SetTo(oldFilePath);
+											err = removeOldFile.Remove();
+											if(err != B_OK)
+											{
+												eAlert = new ErrorAlert("4.14 Builder Error: Tmp File could not be removed due to: ", strerror(err));
+												eAlert->Launch();
+											}
 										}
 									}
 									free(text);

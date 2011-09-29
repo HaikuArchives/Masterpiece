@@ -56,6 +56,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 	BString dirPath; // user created directory path string
 	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
 	BEntry removeTmpFile; // tmp file that information that will be removed
+	BEntry removeOldFile; // tmp final file that will be removed from appdir
 	BDirectory publishDirectory; // user generated directory
 	BString oldFilePath; // path to the renamed tmpfile
 	BString newFilePath; // path to the actual saved file
@@ -227,6 +228,16 @@ void MPEditor::MessageReceived(BMessage* msg)
 										{
 											eAlert = new ErrorAlert("3.13 Editor Error: File could not be written due to: ", strerror(err));
 											eAlert->Launch();		
+										}
+										else
+										{
+											removeOldFile.SetTo(oldFilePath);
+											err = removeOldFile.Remove();
+											if(err != B_OK)
+											{
+												eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+												eAlert->Launch();
+											}
 										}
 									}
 									free(text);
