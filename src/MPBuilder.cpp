@@ -302,7 +302,12 @@ void MPBuilder::MessageReceived(BMessage* msg)
 									text = (char*) malloc(length);
 									if(text && oldFile.Read(text, length) >= B_OK) // write text to the newfile
 									{
-										newFile.Write(text, length);
+										err = newFile.Write(text, length);
+										if(err != B_OK)
+										{
+											eAlert = new ErrorAlert("4.13 Builder Error: File could not be written due to: ", strerror(err));
+											eAlert->Launch();		
+										}
 									}
 									free(text);
 								}
