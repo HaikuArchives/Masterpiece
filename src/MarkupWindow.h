@@ -11,6 +11,7 @@
 #include <TextView.h>
 #include <GroupLayout.h>
 #include <GridLayoutBuilder.h>
+#include <SpaceLayoutItem.h>
 #include <String.h>
 #include <stdio.h>
 #include <File.h>
