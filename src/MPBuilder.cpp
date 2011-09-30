@@ -304,7 +304,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 									if(text && oldFile.Read(text, length) >= B_OK) // write text to the newfile
 									{
 										err = newFile.Write(text, length);
-										if(err != B_OK)
+										if(err >= B_OK)
 										{
 											eAlert = new ErrorAlert("4.13 Builder Error: File could not be written due to: ", strerror(err));
 											eAlert->Launch();		
@@ -326,7 +326,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 						}
 						else
 						{
-							eAlert = new ErrorAlert("4.13 Builder Error: File could not be written due to: ", strerror(err));
+							eAlert = new ErrorAlert("4.15 Builder Error: File could not be written due to: ", strerror(err));
 							eAlert->Launch();		
 						}
 					}
