@@ -291,6 +291,10 @@ void MPEditor::MessageReceived(BMessage* msg)
 			printf("open markup reference window");
 			break;
 		case MENU_ABT_THT: // open about window
+			xPos = (r.right - r.left) / 2; // find xpos for window
+			yPos = (r.bottom - r.top) / 2; // find ypos for window
+			aboutWindow = new AboutWindow(BRect(xPos, yPos, xPos + 600, yPos + 400), "About MasterPiece");
+			aboutWindow->Show();
 			printf("open about window");
 			break;
 		case UPDATE_TITLE: // update title with the name from the saveidea window

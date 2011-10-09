@@ -23,6 +23,7 @@ SOURCEFILE=SaveIdea.h
 GROUP=Source Files
 EXPANDGROUP=yes
 SOURCEFILE=AboutWindow.cpp
+DEPENDENCY=/Data/Projects/masterpiece/AboutWindow.h|/Data/Projects/masterpiece/ErrorAlert.h|/Data/Projects/masterpiece/HelpStringItem.h|/Data/Projects/masterpiece/CommonFunctions.h
 SOURCEFILE=App.cpp
 DEPENDENCY=/boot/home/Projects/masterpiece/App.h|/boot/home/Projects/masterpiece/MPLauncher.h|/boot/home/Projects/masterpiece/ErrorAlert.h|/boot/home/Projects/masterpiece/MPBuilder.h|/boot/home/Projects/masterpiece/pyembed.h|/boot/home/Projects/masterpiece/BuilderMenu.h|/boot/home/Projects/masterpiece/SaveIdea.h|/boot/home/Projects/masterpiece/CommonFunctions.h|/boot/home/Projects/masterpiece/EditIdeaName.h|/boot/home/Projects/masterpiece/MPEditor.h|/boot/home/Projects/masterpiece/EditorMenu.h|/boot/home/Projects/masterpiece/HelperWindows.h|/boot/home/Projects/masterpiece/PublishFilePanel.h|/boot/home/Projects/masterpiece/IdeaStringItem.h
 SOURCEFILE=BuilderMenu.cpp

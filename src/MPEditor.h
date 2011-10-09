@@ -31,6 +31,7 @@
 #include "CommonFunctions.h"
 #include "PublishFilePanel.h"
 #include "MarkupWindow.h"
+#include "AboutWindow.h"
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 #define UPDATE_TITLE		'uttl' // update title...
@@ -52,6 +53,7 @@ private:
 		EditIdeaName*		editIdeaName;
 		HelperWindows*		helperWindow;
 		MarkupWindow*		markupWindow;
+		AboutWindow*		aboutWindow;
 		sqlite3*			mpdb;
 		sqlite3_stmt*		ideaStatement;
 		char*				sqlErrMsg;
