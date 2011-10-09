@@ -1,6 +1,6 @@
-#include "MarkupWindow.h"
+#include "AboutWindow.h"
 
-MarkupWindow::MarkupWindow(BRect frame, const char* title)
+AboutWindow::AboutWindow(BRect frame, const char* title)
 	:	BWindow(frame, title, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
 {
 	// initialize controls      s
@@ -23,11 +23,11 @@ MarkupWindow::MarkupWindow(BRect frame, const char* title)
 	);
 	topicListView->SetSelectionMessage(new BMessage(LOAD_CONTENT));
 }
-void MarkupWindow::AddMarkupItem(BString topicstring, BString contentstring)
+void AboutWindow::AddAboutItem(BString topicstring, BString contentstring)
 {
 	topicListView->AddItem(new HelpStringItem(topicstring, contentstring));
 }
-void MarkupWindow::MessageReceived(BMessage* msg)
+void AboutWindow::MessageReceived(BMessage* msg)
 {
 	switch(msg->what)
 	{
@@ -64,7 +64,7 @@ void MarkupWindow::MessageReceived(BMessage* msg)
 		}
 	}
 }
-bool MarkupWindow::QuitRequested(void)
+bool AboutWindow::QuitRequested(void)
 {
 	return true;
 }

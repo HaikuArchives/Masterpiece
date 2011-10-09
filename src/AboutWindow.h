@@ -1,5 +1,5 @@
-#ifndef MARKUPWINDOW_H
-#define MARKUPWINDOW_H
+#ifndef ABOUTWINDOW_H
+#define ABOUTWINDOW_H
 
 #include <Window.h>
 #include <Message.h>
@@ -23,12 +23,12 @@
 
 #define LOAD_CONTENT	'ldct' // load content in window
 
-class MarkupWindow : public BWindow
+class AboutWindow : public BWindow
 {
 public:
-				MarkupWindow(BRect frame, const char* title);
+				AboutWindow(BRect frame, const char* title);
 		void	MessageReceived(BMessage* msg);
-		void	AddMarkupItem(BString topicstring, BString contentstring);
+		void	AddAboutItem(BString topicstring, BString contentstring);
 		bool	QuitRequested(void);
 		
 private:
