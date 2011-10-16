@@ -13,12 +13,14 @@
 #include <SpaceLayoutItem.h>
 #include <String.h>
 #include <stdio.h>
+#include <Font.h>
 
 #include "ErrorAlert.h"
 #include "HelpStringItem.h"
 #include "CommonFunctions.h"
 
 #define LOAD_CONTENT	'ldct' // load content in window
+
 
 class AboutWindow : public BWindow
 {
