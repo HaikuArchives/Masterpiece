@@ -1,7 +1,7 @@
 #include "AboutWindow.h"
 
 AboutWindow::AboutWindow(BRect frame, const char* title)
-	:	BWindow(frame, title, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
+	:	BWindow(frame, title, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS | B_NOT_ZOOMABLE, B_CURRENT_WORKSPACE)
 {
 	// initialize controls      s
 	AddShortcut('q', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
@@ -16,7 +16,7 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	// gui layout builder
 	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
 	backView->AddChild(BGridLayoutBuilder()
-		.Add(new BScrollView("scroll_content", contentTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 2, 0, 6, 10)
+		.Add(new BScrollView("scroll_content", contentTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_NO_BORDER), 2, 0, 6, 10)
 		.SetInsets(0, 0, 0, 0)
 	);
 }
