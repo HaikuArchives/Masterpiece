@@ -6,9 +6,11 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	// initialize controls      s
 	AddShortcut('q', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
 	BRect r = Bounds();
-	contentTextView = new BTextView(BRect(0, 0, r.right, 100), NULL, BRect(10, 10, r.right, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
-	contentTextView->SetWordWrap(true);
-	contentTextView->MakeEditable(false);
+	creditView = new BTextView(BRect(0, 0, r.right, 100), NULL, BRect(10, 10, r.right, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	creditView->SetWordWrap(true);
+	creditView->MakeEditable(false);
+	creditView->SetInsets(5,5,5,5);
+	creditView->SetStylable(true);
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	backView->SetHighColor((rgb_color){0, 0, 0, 255});
@@ -16,9 +18,13 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	// gui layout builder
 	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
 	backView->AddChild(BGridLayoutBuilder()
-		.Add(new BScrollView("scroll_content", contentTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_NO_BORDER), 2, 0, 6, 10)
+		.Add(new BScrollView("scroll_content", creditView, B_FOLLOW_ALL_SIDES, 0, false, true, B_NO_BORDER), 2, 0, 6, 10)
 		.SetInsets(0, 0, 0, 0)
 	);
+	
+	// generate content here....
+	
+	
 }
 void AboutWindow::MessageReceived(BMessage* msg)
 {

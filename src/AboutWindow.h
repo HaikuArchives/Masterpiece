@@ -13,8 +13,6 @@
 #include <SpaceLayoutItem.h>
 #include <String.h>
 #include <stdio.h>
-#include <File.h>
-#include <malloc.h>
 
 #include "ErrorAlert.h"
 #include "HelpStringItem.h"
@@ -31,7 +29,7 @@ public:
 		
 private:
 		BView*			backView;
-		BTextView*		contentTextView;
+		BTextView*		creditView;
 		ErrorAlert*		eAlert;
 };
 
