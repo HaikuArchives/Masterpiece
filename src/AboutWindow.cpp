@@ -23,11 +23,11 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	);
 	// generate content here....
 	rgb_color darkGrey = {100, 100, 100, 255};
-	rgb_color darkBlack = {0, 0, 0, 255};
+	rgb_color darkBlack = {50, 50, 50, 255};
 	BFont font(be_bold_font);
-	font.SetSize(font.Size() + 4);
+	font.SetSize(font.Size() + 3);
 	creditView->SetFontAndColor(&font, B_FONT_ALL, &darkBlack);
-	creditView->Insert("Masterpiece\n");
+	creditView->Insert("Masterpiece\n\n");
 	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
 	creditView->Insert("Copyright 2010 - 2011 Pasquale J. Rinaldi, Jr.\n");
 	creditView->Insert("The copyright to the code is property of Pasquale J. Rinaldi, Jr.");
@@ -35,6 +35,11 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->Insert("Code that is written by me is licensed and distrubuted");
 	creditView->Insert(" under the MIT license.\nCopyrights for third party code is below.");
 	creditView->Insert("\n\n");
+	BFont font2(be_plain_font);
+	font2.SetFace(B_ITALIC_FACE);
+	font2.SetSize(be_bold_font->Size());
+	creditView->SetFontAndColor(&font2, B_FONT_ALL, &darkBlack);
+	creditView->Insert("Haiku Community\n\n");
 	/*
 	// need to do thanks to haiku community and developers especially whoever helped in emails.
 	// need to do python, pyembed, sqlite, docutils, rst2pdf
