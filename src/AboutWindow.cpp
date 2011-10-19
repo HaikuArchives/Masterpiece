@@ -26,6 +26,9 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	rgb_color darkBlack = {50, 50, 50, 255};
 	BFont font(be_bold_font);
 	font.SetSize(font.Size() + 3);
+	BFont font2(be_plain_font);
+	font2.SetFace(B_ITALIC_FACE);
+	font2.SetSize(be_bold_font->Size());
 	creditView->SetFontAndColor(&font, B_FONT_ALL, &darkBlack);
 	creditView->Insert("Masterpiece\n\n");
 	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
@@ -35,19 +38,17 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->Insert("Code that is written by me is licensed and distrubuted");
 	creditView->Insert(" under the MIT license.\nCopyrights for third party code is below.");
 	creditView->Insert("\n\n");
-	BFont font2(be_plain_font);
-	font2.SetFace(B_ITALIC_FACE);
-	font2.SetSize(be_bold_font->Size());
 	creditView->SetFontAndColor(&font2, B_FONT_ALL, &darkBlack);
 	creditView->Insert("Haiku Community\n\n");
-	/*
-	// need to do thanks to haiku community and developers especially whoever helped in emails.
-	// need to do python, pyembed, sqlite, docutils, rst2pdf
-	bold and italic
-	BFont font(be_bold_font);
-	//font.SetSize(be_bold_font->Size());
-	font.SetFace(B_BOLD_FACE | B_ITALIC_FACE);	
-	*/
+	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
+	creditView->Insert("I wish to thank all the haiku developers for making this OS a reality.");
+	creditView->Insert("I would also like to thank them for all their help as I wrote this program.\n");
+	creditView->Insert("I would like to specifically thank DarkWyrm, Axel, ...\n");
+	creditView->Insert("for their answering all my questions when asked.\n\n");
+	creditView->SetFontAndColor(&font2, B_FONT_ALL, &darkBlack);
+	creditView->Insert("Pyembed\n");
+	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
+	creditView->Insert("");
 }
 void AboutWindow::MessageReceived(BMessage* msg)
 {
