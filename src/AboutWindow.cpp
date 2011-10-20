@@ -49,6 +49,7 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->Insert("Pyembed\n");
 	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
 	creditView->Insert("");
+	// small change to register on laptop
 }
 void AboutWindow::MessageReceived(BMessage* msg)
 {
