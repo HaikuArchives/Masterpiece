@@ -6,7 +6,7 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	// initialize controls      s
 	AddShortcut('q', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
 	BRect r = Bounds();
-	creditView = new BTextView(BRect(0, 0, r.right, 100), NULL, BRect(10, 10, r.right, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	creditView = new BTextView(BRect(0, 0, r.right, 100), NULL, BRect(10, 10, r.right - 15, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 	creditView->SetWordWrap(true);
 	creditView->MakeEditable(false);
 	creditView->SetInsets(5,5,5,5);
@@ -42,8 +42,8 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->Insert("Haiku Community\n\n");
 	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
 	creditView->Insert("I wish to thank all the haiku developers for making this OS a reality.");
-	creditView->Insert("I would also like to thank them for all their help as I wrote this program.\n");
-	creditView->Insert("I would like to specifically thank DarkWyrm, Axel, ...\n");
+	creditView->Insert("I would also like to thank them for all their help as I wrote this program.");
+	creditView->Insert("I would like to specifically thank DarkWyrm, Axel, ...");
 	creditView->Insert("for their answering all my questions when asked.\n\n");
 	creditView->SetFontAndColor(&font2, B_FONT_ALL, &darkBlack);
 	creditView->Insert("Pyembed\n");
