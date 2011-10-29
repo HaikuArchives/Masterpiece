@@ -48,7 +48,8 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->SetFontAndColor(&font2, B_FONT_ALL, &darkBlack);
 	creditView->Insert("Pyembed\n");
 	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
-	creditView->Insert("");
+	creditView->Insert("I would like to thank ... for all the hard work he put into his Pyembed code.");
+	creditView->Insert("Copyright [year] by [name]\n Licenses: \n Source Code available on ");
 	// small change to register on laptop
 }
 void AboutWindow::MessageReceived(BMessage* msg)
