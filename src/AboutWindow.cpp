@@ -51,6 +51,7 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->Insert("I would like to thank ... for all the hard work he put into his Pyembed code.");
 	creditView->Insert("Copyright [year] by [name]\n Licenses: \n Source Code available on ");
 	// small change to register on laptop
+	// small change to register on laptop
 }
 void AboutWindow::MessageReceived(BMessage* msg)
 {
