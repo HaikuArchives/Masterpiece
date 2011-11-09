@@ -79,6 +79,9 @@ SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber)
 		DisplayError("1.0", "PATH", " to the User Directory not Found");
 	}
 }
+SqlObject::~SqlObject(void)
+{
+}
 void SqlObject::PrepareSql(const char* sqlQuery)
 {
 	sqlquery = sqlQuery;

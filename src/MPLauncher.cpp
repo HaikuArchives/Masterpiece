@@ -152,6 +152,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			sqlObject->StepSql();
 			sqlObject->FinalizeSql();
 			sqlObject->CloseSql();
+			delete sqlObject; // trying to free up memory where available
 			PopulateLauncherListViews();
 			break;
 		case DELETE_MP:
@@ -162,7 +163,8 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			sqlObject->BindValue(1, mpitem->ReturnID());
 			sqlObject->StepSql();
 			sqlObject->FinalizeSql();
-			sqlObject->CloseSql();		
+			sqlObject->CloseSql();
+			delete sqlObject; // trying to free up memory
 			PopulateLauncherListViews();
 			break;
 		case SHOW_LAUNCHER:  // once finished with editor or builder, call to show this launcher
@@ -270,4 +272,5 @@ void MPLauncher::PopulateLauncherListViews(void)
 	}
 	sqlObject->FinalizeSql(); // finalize sql
 	sqlObject->CloseSql(); // close sql
+	delete sqlObject; // trying to free up memory
 }
