@@ -40,6 +40,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 		editorTextView->SetText(sqlObject->ReturnText(0));
 		sqlObject->FinalizeSql();
 		sqlObject->CloseSql();
+		delete sqlObject;
 	}
 }
 void MPEditor::MessageReceived(BMessage* msg)
@@ -99,6 +100,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				sqlObject->StepSql();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
+				delete sqlObject;
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
