@@ -43,6 +43,7 @@ EditIdeaName::EditIdeaName(const BMessage &msg, const BMessenger &msgr, float ma
 	}
 	sqlObject->FinalizeSql();
 	sqlObject->CloseSql();
+	delete sqlObject;
 }
 void EditIdeaName::MessageReceived(BMessage* msg)
 {
@@ -58,6 +59,7 @@ void EditIdeaName::MessageReceived(BMessage* msg)
 				sqlObject->StepSql();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
+				delete sqlObject;
 				updatetitleMessage.MakeEmpty();
 				updatetitleMessage.AddString("updatetitle", titleText->Text());  // prepare message with idea name
 				updatetitleMessenger.SendMessage(&updatetitleMessage); // send message with prepare name to editor

@@ -47,6 +47,7 @@ void SaveIdea::MessageReceived(BMessage* msg)
 				sqlObject->StepSql();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
+				delete sqlObject;
 				updatetitleMessage.MakeEmpty();
 				updatetitleMessage.AddString("updatetitle", titleText->Text());
 				updatetitleMessenger.SendMessage(&updatetitleMessage);
