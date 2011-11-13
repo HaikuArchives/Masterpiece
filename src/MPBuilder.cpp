@@ -142,6 +142,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				sqlObject->StepSql();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
+				delete sqlObject();
 				PopulateBuilderListViews();
 				if(availorderBit == 0)
 				{
@@ -379,6 +380,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				sqlObject->StepSql(); // execute update statement
 				sqlObject->FinalizeSql(); // finalize sql
 				sqlObject->CloseSql(); // close sql
+				delete sqlObject;
 				PopulateBuilderListViews(); // update listviews' items
 			}
 			break;
@@ -394,6 +396,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				sqlObject->StepSql(); // execute update
 				sqlObject->FinalizeSql(); // finalize
 				sqlObject->CloseSql(); // close
+				delete sqlObject;
 				ReorderOrderedListView(); // reorder orderedlistview items for mp
 				PopulateBuilderListViews(); // update listviews' items
 			}
@@ -488,6 +491,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			sqlObject->StepSql();
 			sqlObject->FinalizeSql();
 			sqlObject->CloseSql();
+			delete sqlObject;
 			ReorderOrderedListView(); // reorder orderedlistview items for mp
 			PopulateBuilderListViews(); // update listviews' items
 			deleteButton->SetEnabled(false);
@@ -645,10 +649,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 }
 bool MPBuilder::QuitRequested(void)
 {
-	//delete publishPanel;
-	//delete &entry;
-	//delete &ref;
-	
 	// on quit, show launcher with message
 	launcherMessage.MakeEmpty();
 	launcherMessage.AddInt64("showLauncher", 1);
@@ -667,6 +667,7 @@ void MPBuilder::PopulateBuilderListViews(void)
 	}
 	sqlObject->FinalizeSql();
 	sqlObject->CloseSql();
+	delete sqlObject;
 	if(currentideaID != -1) // if id has a real value...
 	{
 		sqlObject = new SqlObject(ideaStatement, "23");
@@ -679,6 +680,7 @@ void MPBuilder::PopulateBuilderListViews(void)
 		}
 		sqlObject->FinalizeSql();
 		sqlObject->CloseSql();
+		delete sqlObject;
 	}
 }
 void MPBuilder::ReorderOrderedListView(void)
@@ -700,6 +702,8 @@ void MPBuilder::ReorderOrderedListView(void)
 	}
 	sqlObject2->FinalizeSql();
 	sqlObject->FinalizeSql();
+	delete sqlObject2;
+	delete sqlObject;
 }
 void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 {
@@ -741,6 +745,7 @@ void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 	sqlObject->StepSql();
 	sqlObject->FinalizeSql();
 	sqlObject->CloseSql();
+	delete sqlObject;
 	ReorderOrderedListView(); // reorder orderedlistview items for mp
 	PopulateBuilderListViews(); // update listviews' items
 	orderedThoughtListView->Select(newOrderNumber); // highlight the newly moved item
