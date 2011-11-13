@@ -114,6 +114,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				currentideaID = sqlObject->ReturnLastInsertRowID();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
+				delete sqlObject;
 				saveIdea->Show();
 			}
 			// save the mini editor window
