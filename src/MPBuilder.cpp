@@ -142,7 +142,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				sqlObject->StepSql();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
-				delete sqlObject();
+				delete sqlObject;
 				PopulateBuilderListViews();
 				if(availorderBit == 0)
 				{
