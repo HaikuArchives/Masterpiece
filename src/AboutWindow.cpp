@@ -46,10 +46,20 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->Insert("I would like to specifically thank DarkWyrm, Axel, ...");
 	creditView->Insert("for their answering all my questions when asked.\n\n");
 	creditView->SetFontAndColor(&font2, B_FONT_ALL, &darkBlack);
-	creditView->Insert("Pyembed\n");
+	creditView->Insert("Pyembed\n\n");
 	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
-	creditView->Insert("I would like to thank ... for all the hard work he put into his Pyembed code.");
-	creditView->Insert("Copyright [year] by [name]\n Licenses: \n Source Code available on ");
+	creditView->Insert("I would like to thank Vijay Mathew Pandyalakal for all the hard work he put into his Pyembed code.");
+	creditView->Insert("Copyright 2006 by Mindteck\n Licenses: BSD\n Source Code available on Code Project");
+	creditView->Insert("\n\n");
+	creditView->SetFontAndColor(&font2, B_FONT_ALL, &darkBlack);
+	creditView->Insert("SQLite\n\n");
+	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
+	creditView->Insert("I would like to thank all the developers of SQLite for all their hard work.");
+	creditView->Insert("The Source Code is available on www.sqlite.org and released to the public domain");
+	creditView->Insert("\n\n");
+	creditView->Insert("DocUtils
+	
+	
 	// sqlite, docutils, pyembed, 
 	// small change to register on laptop
 	// small change to register on laptop
