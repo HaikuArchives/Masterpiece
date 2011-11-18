@@ -58,6 +58,8 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->Insert("The Source Code is available on www.sqlite.org and released to the public domain");
 	creditView->Insert("\n\n");
 	//creditView->Insert("DocUtils
+	// can't find docutils license will look again.
+	// i think that's it for now...
 	
 	
 	// sqlite, docutils, pyembed, 
