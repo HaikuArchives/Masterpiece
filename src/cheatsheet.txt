@@ -6,7 +6,7 @@
 :Date: $Date: 2011-06-17 12:50:48 +0200 (Fre, 17 Jun 2011) $
 :Revision: $Revision: 7056 $
 :Description: This is a "docinfo block", or bibliographic field list
-
+:Modified by Pasquale J. Rinaldi, Jr. for inclusion in masterpiece reference
 Section Structure
 =================
 Section titles are underlined or overlined & underlined.
