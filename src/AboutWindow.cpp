@@ -57,7 +57,7 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->Insert("I would like to thank all the developers of SQLite for all their hard work.");
 	creditView->Insert("The Source Code is available on www.sqlite.org and released to the public domain");
 	creditView->Insert("\n\n");
-	creditView->Insert("DocUtils
+	//creditView->Insert("DocUtils
 	
 	
 	// sqlite, docutils, pyembed, 
