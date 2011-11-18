@@ -26,10 +26,19 @@ BString GetUserDirPath(void)
 	if(result == B_OK) return tmpUserPath.Path();
 	else return "-15";
 }
-bool GetExistingScripts(const char* scripttype)
+bool CheckExistingScripts(const char* scripttype)
 {
-	if() return 1;
-	else return 0;
+	int scriptExist = 0;
+	scripttype = scripttype.ToLower();
+	BFile testFile;
+	BString tmpPath = GetAppDirPath();
+	tmpPath += "/pub";
+	tmpPath += scripttype;
+	tmpPath += ".py";
+	testFile.SetTo(tmpPath, B_READ_ONLY);
+	if(testFile.InitCheck() == B_OK) scriptExist = 1;
+	testFile.Unset();
+	return scriptExist;
 }
 SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber, sqlite3* openDB)
 {
