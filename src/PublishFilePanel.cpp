@@ -35,6 +35,12 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			parentview->AddChild(publishTypeMenuField);
 			SetMessage(pubMsg);
 			SetTarget(*target);
+			// htm, odt, pdf, tex, xml
+			if(!CheckExistingScripts("htm")) publishTypeMenu->FindItem("HTM")->SetEnabled(false);
+			if(!CheckExistingScripts("pdf")) publishTypeMenu->FindItem("PDF")->SetEnabled(false);
+			if(!CheckExistingScripts("odt")) publishTypeMenu->FindItem("ODT")->SetEnabled(false);
+			if(!CheckExistingScripts("tex")) publishTypeMenu->FindItem("TEX")->SetEnabled(false);
+			if(!CheckExistingScripts("xml")) publishTypeMenu->FindItem("XML")->SetEnabled(false);
 		}
 		
 		w->Unlock();

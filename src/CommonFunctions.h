@@ -8,6 +8,7 @@
 #include <String.h>
 #include <Directory.h>
 #include <FindDirectory.h>
+#include <File.h>
 
 #include "ErrorAlert.h"
 

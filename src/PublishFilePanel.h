@@ -12,6 +12,7 @@
 #include <Menu.h>
 #include <MenuItem.h>
 #include <stdio.h>
+#include "CommonFunctions.h"
 
 #define PUBLISH_TYPE 'ptyp'
 

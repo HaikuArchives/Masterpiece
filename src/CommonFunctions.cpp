@@ -29,7 +29,6 @@ BString GetUserDirPath(void)
 bool CheckExistingScripts(const char* scripttype)
 {
 	int scriptExist = 0;
-	scripttype = scripttype.ToLower();
 	BFile testFile;
 	BString tmpPath = GetAppDirPath();
 	tmpPath += "/pub";
