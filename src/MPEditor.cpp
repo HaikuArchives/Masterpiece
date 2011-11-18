@@ -117,6 +117,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 			previewFile.Unset();
 			try
 			{
+				tmpPath = GetAppDirPath();
+				tmpPath += "/preview.py";
+				//py.run_file(tmpPath.String());
 				py.run_file("preview.py");
 			}
 			catch(Python_exception ex)
@@ -124,6 +127,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				//printf("Python error: %s\n", ex.what());
 				eAlert = new ErrorAlert("3.3 Editor Error: Python Issue - ", ex.what());
 				eAlert->Launch();
+				break;
 			}
 			
 			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
@@ -173,6 +177,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				//printf("Python error: %s\n", ex.what());
 				eAlert = new ErrorAlert("3.5 Editor Error: Python Issue - ", ex.what());
 				eAlert->Launch();
+				break;
 			}
 			
 			// now i need to get the finished file and mv/rename it to the correct location
@@ -268,6 +273,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
 				eAlert->Launch();
 			}
+			break;
 		case MENU_HLP_THT: // open help topic window
 			printf("open help topic window");
 			break;

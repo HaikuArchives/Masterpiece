@@ -193,6 +193,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				eAlert = new ErrorAlert("4.3 Builder Error: Python Issue - ", ex.what());
 				eAlert->Launch();
+				break;
 				//printf("Python error: %s\n", ex.what());
 			}
 			
@@ -249,6 +250,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				eAlert = new ErrorAlert("4.5 Builder Error: Python Issue - ", ex.what());
 				eAlert->Launch();
+				break;
 				//printf("Python error: %s\n", ex.what());
 			}
 			

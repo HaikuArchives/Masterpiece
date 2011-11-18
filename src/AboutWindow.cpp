@@ -43,7 +43,7 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
 	creditView->Insert("I wish to thank all the haiku developers for making this OS a reality.");
 	creditView->Insert("I would also like to thank them for all their help as I wrote this program.");
-	creditView->Insert("I would like to specifically thank DarkWyrm, Axel, ...");
+	creditView->Insert("I would like to specifically thank DarkWyrm, pulkomandy, Stephan Assmus and Axel Dorfler ");
 	creditView->Insert("for their answering all my questions when asked.\n\n");
 	creditView->SetFontAndColor(&font2, B_FONT_ALL, &darkBlack);
 	creditView->Insert("Pyembed\n\n");
@@ -57,14 +57,12 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->Insert("I would like to thank all the developers of SQLite for all their hard work.");
 	creditView->Insert("The Source Code is available on www.sqlite.org and released to the public domain");
 	creditView->Insert("\n\n");
-	//creditView->Insert("DocUtils
-	// can't find docutils license will look again.
-	// i think that's it for now...
-	
-	
-	// sqlite, docutils, pyembed, 
-	// small change to register on laptop
-	// small change to register on laptop
+	creditView->SetFontAndColor(&font2, B_FONT_ALL, &darkBlack);
+	creditView->Insert("Docutils Project\n\n");
+	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
+	creditView->Insert("I would like to the developers of Docutils and David Goodger for all the hard work put into this project.");
+	creditView->Insert(" This project forms the backbone of the publish functionality and wouldn't be possible without it.");
+	creditView->Insert(" The source code is available on docutils.sourceforge.net and released to the public domain.");
 }
 void AboutWindow::MessageReceived(BMessage* msg)
 {
