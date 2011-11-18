@@ -178,6 +178,12 @@ void MPEditor::MessageReceived(BMessage* msg)
 				//printf("Python error: %s\n", ex.what());
 				eAlert = new ErrorAlert("3.5 Editor Error: Python Issue - ", ex.what());
 				eAlert->Launch();
+				err = removeTmpFile.Remove();
+				if(err != B_OK)
+				{
+					eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+					eAlert->Launch();
+				}
 				break;
 			}
 			

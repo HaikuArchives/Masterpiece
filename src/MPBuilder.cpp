@@ -250,6 +250,12 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			{
 				eAlert = new ErrorAlert("4.5 Builder Error: Python Issue - ", ex.what());
 				eAlert->Launch();
+				err = removeTmpFile.Remove();
+				if(err != B_OK)
+				{
+					eAlert = new ErrorAlert("4.14 Builder Error: Tmp File could not be removed due to: ", strerror(err));
+					eAlert->Launch();
+				}
 				break;
 				//printf("Python error: %s\n", ex.what());
 			}
