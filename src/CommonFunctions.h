@@ -14,7 +14,7 @@
 void	DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
 BString	GetAppDirPath(void);
 BString GetUserDirPath(void);
-bool	GetExistingScripts(const char* scripttype);
+bool	CheckExistingScripts(const char* scripttype);
 
 class SqlObject
 {
