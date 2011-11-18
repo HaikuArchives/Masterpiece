@@ -89,6 +89,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				currentideaID = sqlObject->ReturnLastInsertRowID();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
+				delete sqlObject;
 				saveIdea->Show(); // show save window to name the untitled thought
 			}
 			else // already exists, just update ideatext and save new information
