@@ -7,6 +7,7 @@
 :Revision: $Revision: 7056 $
 :Description: This is a "docinfo block", or bibliographic field list
 :Modified by Pasquale J. Rinaldi, Jr. for inclusion in masterpiece reference
+
 Section Structure
 =================
 Section titles are underlined or overlined & underlined.
