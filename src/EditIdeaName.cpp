@@ -8,7 +8,6 @@ EditIdeaName::EditIdeaName(const BMessage &msg, const BMessenger &msgr, float ma
 	AddShortcut(B_TAB, B_COMMAND_KEY, new BMessage(END_EDIT_IDEA));
 	AddShortcut(B_ENTER, B_COMMAND_KEY, new BMessage(UPDATE_IDEA_NAME));
 	AddShortcut(B_ESCAPE, B_COMMAND_KEY, new BMessage(CANCEL_IDEA_NAME));
-	SetDefaultButton(saveButton);
 	BRect textFrame(0, 0, 300, 10);
 	titleText = new BTextView(textFrame, NULL, textFrame, B_FOLLOW_LEFT_RIGHT, B_WILL_DRAW | B_NAVIGABLE);
 	titleText->MakeResizable(false);
@@ -20,6 +19,7 @@ EditIdeaName::EditIdeaName(const BMessage &msg, const BMessenger &msgr, float ma
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
+	SetDefaultButton(saveButton);
 	
 	// gui layout builder
 	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
