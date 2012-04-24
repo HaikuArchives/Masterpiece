@@ -62,7 +62,7 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
 	creditView->Insert("I would like to the developers of Docutils and David Goodger for all the hard work put into this project.");
 	creditView->Insert(" This project forms the backbone of the publish functionality and wouldn't be possible without it.");
-	creditView->Insert(" The source code is available on docutils.sourceforge.net and released to the public domain.");
+	creditView->Insert(" The source code is available on docutils.sourceforge.net and released to the public domain..");
 }
 void AboutWindow::MessageReceived(BMessage* msg)
 {
