@@ -53,7 +53,8 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 		.Add(bottomButton, 4, 9)
 		.Add(deleteButton, 4, 10)
 		.Add(new BScrollView("scroll_ordered", orderedThoughtListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 5, 2, 5, 10)
-		.Add(new BScrollView("scroll_editor", builderTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 12, 10, 5)
+		.Add(new BStringView(BRect(10, 10, 200, 30), NULL, "Quick Edit"), 0, 12)
+		.Add(new BScrollView("scroll_editor", builderTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 13, 10, 5)
 		.SetInsets(0, 0, 0, 0)
 	);
 	
