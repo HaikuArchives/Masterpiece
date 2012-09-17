@@ -57,6 +57,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 		.Add(new BScrollView("scroll_editor", builderTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 13, 10, 5)
 		.SetInsets(0, 0, 0, 0)
 	);
+	// new textlabel
 	
 	currentideaID = ideaID; // pass current idea id selected to builder window to use
 	PopulateBuilderListViews();
