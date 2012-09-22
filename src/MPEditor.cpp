@@ -131,7 +131,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				break;
 			}
 			
-			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
+			tmpPath = "/boot/apps/WebPositive file://";
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
 			system(tmpPath);

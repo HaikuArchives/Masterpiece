@@ -199,7 +199,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				//printf("Python error: %s\n", ex.what());
 			}
 			
-			tmpPath = "/boot/apps/WebPositive/WebPositive file://";
+			tmpPath = "/boot/apps/WebPositive file://";
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
 			system(tmpPath);
