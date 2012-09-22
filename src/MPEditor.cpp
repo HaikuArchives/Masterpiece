@@ -169,22 +169,33 @@ void MPEditor::MessageReceived(BMessage* msg)
 			tmpPath = GetAppDirPath();
 			tmpPath += "/tmppub.";
 			tmpPath += fileExt;
-			try
+			if(fileExt == "pdf")
 			{
-				py.run_file(scriptFile.String());
+				tmpPath = "/boot/common/bin/rst2pdf ";
+				tmpPath += scriptFile;
+				tmpPath += " -o ";
+				tmpPath += GetAppDirPath();
+				tmpPath += "/tmppub.pdf";
 			}
-			catch(Python_exception ex)
+			else
 			{
-				//printf("Python error: %s\n", ex.what());
-				eAlert = new ErrorAlert("3.5 Editor Error: Python Issue - ", ex.what());
-				eAlert->Launch();
-				err = removeTmpFile.Remove();
-				if(err != B_OK)
+				try
 				{
-					eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
-					eAlert->Launch();
+					py.run_file(scriptFile.String());
 				}
-				break;
+				catch(Python_exception ex)
+				{
+					//printf("Python error: %s\n", ex.what());
+					eAlert = new ErrorAlert("3.5 Editor Error: Python Issue - ", ex.what());
+					eAlert->Launch();
+					err = removeTmpFile.Remove();
+					if(err != B_OK)
+					{
+						eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+						eAlert->Launch();
+					}
+					break;
+				}
 			}
 			
 			// now i need to get the finished file and mv/rename it to the correct location
