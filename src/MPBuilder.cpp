@@ -72,16 +72,21 @@ MPBuilder::~MPBuilder()
 void MPBuilder::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
+	/*
 	int argc = 1;
 	char* argvv = "ladida";
 	char** argv = &argvv;
 	Python py(argc, argv);
 	BString publishPath; // user generated filename
 	BString tmpPath; // string path of the tmppub.tht file then string path of tmppub.ext file
+	*/
 	BString mpData; // actual data of file
+	/*
 	BString scriptFile; // python script file name
 	BString runPath; // rst2pdf execute path
+	*/
 	BString fileExt; // file extension of converted file
+	/*
 	BString dirPath; // user created directory path string
 	BFile previewFile; // tmppub.tht file
 	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
@@ -91,7 +96,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString newFilePath; // path to the actual saved file
 	BDirectory publishDirectory; // user generated directory
 	status_t err;
-	
+	*/
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -195,6 +200,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				publishItem = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(i));
 				mpData += publishItem->ReturnText();
 			}
+			fileExt = publishPanel->publishTypeMenu->FindMarked()->Label();
+			fileExt = fileExt.ToLower();
+			ExecutePublish(msg, mpData, fileExt);
+			/*
 			tmpPath = GetAppDirPath();
 			tmpPath += "/tmppub.tht";
 			removeTmpFile.SetTo(tmpPath);
@@ -354,6 +363,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				eAlert = new ErrorAlert("4.14 Builder Error: Tmp File could not be removed due to: ", strerror(err));
 				eAlert->Launch();
 			}
+			*/
 			break;
 		case MENU_HLP_MP: // help topics
 			break;

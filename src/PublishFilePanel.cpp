@@ -15,6 +15,7 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 		{
 			BView* parentview;
 			float charWidth;
+			BEntry rst2pdfcheck("/boot/common/bin/rst2pdf");
 			
 			charWidth = cancelBtn->StringWidth("Select Current Directory");
 			btnrect = cancelBtn->Frame();
@@ -37,10 +38,10 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			SetTarget(*target);
 			// htm, odt, pdf, tex, xml
 			if(!CheckExistingScripts("htm")) publishTypeMenu->FindItem("HTM")->SetEnabled(false);
-			if(!CheckExistingScripts("pdf")) publishTypeMenu->FindItem("PDF")->SetEnabled(false);
 			if(!CheckExistingScripts("odt")) publishTypeMenu->FindItem("ODT")->SetEnabled(false);
 			if(!CheckExistingScripts("tex")) publishTypeMenu->FindItem("TEX")->SetEnabled(false);
 			if(!CheckExistingScripts("xml")) publishTypeMenu->FindItem("XML")->SetEnabled(false);
+			if(!rst2pdfcheck.Exists()) publishTypeMenu->FindItem("PDF")->SetEnabled(false);
 		}
 		
 		w->Unlock();

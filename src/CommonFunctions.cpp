@@ -77,6 +77,189 @@ void ExecutePreview(const char* tmpData)
 	system(tmpPath);
 }
 
+void ExecutePublish(BMessage* tmpMsg, const char* tmpData, const char* tmpExt)
+{
+	ErrorAlert* eAlert;
+	const char* name;
+	BEntry entry;
+	BPath path;
+	entry_ref ref;
+	int argc = 1;
+	char* argvv = "ladida";
+	char** argv = &argvv;
+	Python py(argc, argv);
+	BString publishPath; // user generated filename
+	BString tmpPath; // string path of tmppub.tht file, then string path of tmppub.ext
+	BFile previewFile; // tmppub.tht file
+	BString scriptFile; // python script file name
+	BString runPath; // rst2pdf execute path
+	BString dirPath; // user created directory path string
+	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
+	BEntry removeTmpFile; // tmp file that information that will be removed
+	BEntry removeOldFile; // tmp final file that will be removed from appdir
+	BDirectory publishDirectory; // user generated directory
+	BString oldFilePath; // path to the renamed tmpfile
+	BString newFilePath; // path to the actual saved file
+	status_t err; // auto errors
+	tmpPath = GetAppDirPath();
+	tmpPath += "/tmppub.tht";
+	removeTmpFile.SetTo(tmpPath);
+	previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+	if(previewFile.InitCheck() != B_OK)
+	{
+		//printf("couldn't read file\n");
+		eAlert = new ErrorAlert("3.4 Editor Error: Couldn't Create Pub File.");
+		eAlert->Launch();
+	}
+	previewFile.Write(tmpData, strlen(tmpData));
+	previewFile.Unset();
+
+	if(tmpExt == "pdf")
+	{
+		printf(" PDF RUN\n");
+		runPath = "/boot/common/bin/rst2pdf ";
+		runPath += GetAppDirPath();
+		runPath += "/tmppub.tht -o ";
+		runPath += GetAppDirPath();
+		runPath += "/tmppub.pdf";
+		//printf(tmpPath);
+		//printf("\n");
+		system(runPath);
+	}
+	else
+	{
+		printf(" NOT PDF RUN\n");
+			
+		// build the correct publish python script name
+		scriptFile = "pub";
+		scriptFile += tmpExt;
+		scriptFile += ".py";
+		printf(scriptFile);
+		printf("\n");
+		tmpPath = GetAppDirPath();
+		tmpPath += "/tmppub.";
+		tmpPath += tmpExt;
+		//printf(tmpExt);
+		//printf("\n");
+		try
+		{
+			py.run_file(scriptFile.String());
+		}
+		catch(Python_exception ex)
+		{
+			//printf("Python error: %s\n", ex.what());
+			eAlert = new ErrorAlert("3.5 Editor Error: Python Issue - ", ex.what());
+			eAlert->Launch();
+			err = removeTmpFile.Remove();
+			if(err != B_OK)
+			{
+				eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+				eAlert->Launch();
+			}
+		}
+	}
+	
+	// now i need to get the finished file and mv/rename it to the correct location
+	if(tmpMsg->FindString("name", &name) == B_OK)
+	{
+		//printf("default save message: %s\n", name);
+	}
+	if(tmpMsg->FindRef("directory", &ref) == B_OK)
+	{
+		tmpPath = GetAppDirPath();
+		tmpPath += "/tmppub.";
+		tmpPath += tmpExt;
+		printf(" Current tmppath: ");
+		printf(tmpPath);
+		printf("\n");
+		publishPath = name;
+		publishPath.Append(".");
+		publishPath.Append(tmpExt);
+		//printf(publishPath);
+		publishFile.SetTo(tmpPath);
+		publishFile.Rename(publishPath, true);
+		oldFilePath = GetAppDirPath();
+		oldFilePath += "/tmppub";
+		//oldFilePath += name;
+		oldFilePath += ".";
+		oldFilePath += tmpExt;
+		//printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
+		entry.SetTo(&ref); // directory where the file is to be saved as defined by user
+		entry.SetTo(&ref);
+		entry.GetPath(&path);
+		dirPath = path.Path();
+		dirPath += "/";				
+		newFilePath = dirPath;
+		newFilePath += name;
+		newFilePath += ".";
+		newFilePath += tmpExt;
+		printf("old file: %s\n", oldFilePath.String());
+		printf("new file: %s\n", newFilePath.String());
+		if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
+		{
+			//printf("publishdirectory %s\n", path.Path());
+			//printf("successful directory set\n");
+			err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
+			if(err != B_OK)
+			{
+				if(err == B_CROSS_DEVICE_LINK)
+				{
+					BFile oldFile;
+					BFile newFile;
+					if(oldFile.SetTo(oldFilePath, B_READ_ONLY) == B_OK)
+					{
+						if(newFile.SetTo(newFilePath, B_WRITE_ONLY | B_CREATE_FILE | B_ERASE_FILE) == B_OK)
+						{
+							off_t length;
+							char* text;
+							oldFile.GetSize(&length);
+							text = (char*) malloc(length);
+							if(text && oldFile.Read(text, length) >= B_OK) // write text to the newfile
+							{
+								err = newFile.Write(text, length);
+								if(err >= B_OK)
+								{
+									eAlert = new ErrorAlert("3.13 Editor Error: File could not be written due to: ", strerror(err));
+									eAlert->Launch();		
+								}
+								else
+								{
+									removeOldFile.SetTo(oldFilePath);
+									err = removeOldFile.Remove();
+									if(err != B_OK)
+									{
+										eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+										eAlert->Launch();
+									}
+								}
+							}
+							free(text);
+						}
+					}
+				}
+				else
+				{
+					eAlert = new ErrorAlert("3.15 Editor Error: File could not be written due to: ", strerror(err));
+					eAlert->Launch();		
+				}
+			}
+		}
+		else
+		{
+			eAlert = new ErrorAlert("3.6 Editor Error: Directory Set Failed");
+			eAlert->Launch();
+			//printf("directory set failed");
+		}
+	}
+	// clean up the temporary files...
+	err = removeTmpFile.Remove();
+	if(err != B_OK)
+	{
+		eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+		eAlert->Launch();
+	}
+}
+
 SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber, sqlite3* openDB)
 {
 	sqldb = openDB;

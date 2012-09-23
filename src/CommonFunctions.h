@@ -12,11 +12,16 @@
 #include <FindDirectory.h>
 #include <File.h>
 #include <Entry.h>
+#include <malloc.h>
+#include <string.h>
+#include <stdio.h>
+#include <Message.h>
 
 #include "ErrorAlert.h"
 
 void	DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
 void	ExecutePreview(const char* tmpData);
+void	ExecutePublish(BMessage* tmpMsg, const char* tmpData, const char* tmpExt);
 BString	GetAppDirPath(void);
 BString GetUserDirPath(void);
 bool	CheckExistingScripts(const char* scripttype);

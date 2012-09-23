@@ -46,6 +46,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 void MPEditor::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
+	/*
 	int argc = 1;
 	char* argvv = "ladida";
 	char** argv = &argvv;
@@ -55,7 +56,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 	BFile previewFile; // tmppub.tht file
 	BString scriptFile; // python script file name
 	BString runPath; // rst2pdf execute path
+	*/
 	BString fileExt; // file extension of converted file
+	/*
 	BString dirPath; // user created directory path string
 	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
 	BEntry removeTmpFile; // tmp file that information that will be removed
@@ -64,6 +67,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 	BString oldFilePath; // path to the renamed tmpfile
 	BString newFilePath; // path to the actual saved file
 	status_t err; // auto errors
+	*/
 	
 	switch(msg->what)
 	{
@@ -117,6 +121,10 @@ void MPEditor::MessageReceived(BMessage* msg)
 			break;
 		case PUBLISH_TYPE:
 			// write data to a file
+			fileExt = pubEditorPanel->publishTypeMenu->FindMarked()->Label();
+			fileExt = fileExt.ToLower();
+			ExecutePublish(msg, editorTextView->Text(), fileExt);
+			/*
 			tmpPath = GetAppDirPath();
 			tmpPath += "/tmppub.tht";
 			removeTmpFile.SetTo(tmpPath);
@@ -282,6 +290,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
 				eAlert->Launch();
 			}
+			*/
 			break;
 		case MENU_HLP_THT: // open help topic window
 			printf("open help topic window");

@@ -11,8 +11,8 @@
 #include <string.h>
 #include <ScrollView.h>
 #include <Messenger.h>
-#include <Message.h>
-#include <stdio.h>
+//#include <Message.h>
+//#include <stdio.h>
 #include <stdlib.h>
 #include <GroupLayout.h>
 #include <SpaceLayoutItem.h>
@@ -21,7 +21,7 @@
 #include <ScrollView.h>
 //#include <File.h>
 //#include <Entry.h>
-#include <malloc.h>
+//#include <malloc.h>
 
 #include "ErrorAlert.h"
 #include "EditorMenu.h"
@@ -65,10 +65,10 @@ private:
 		float				xPos;
 		float				yPos;
 		SqlObject*			sqlObject;
-		BEntry				entry;
-		BPath				path;
-		entry_ref			ref;
-		const char*			name;
+		//BEntry				entry;
+		//BPath				path;
+		//entry_ref			ref;
+		//const char*			name;
 		PublishFilePanel*	pubEditorPanel;
 };
 
