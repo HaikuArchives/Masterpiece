@@ -77,7 +77,7 @@ void ExecutePreview(const char* tmpData)
 	system(tmpPath);
 }
 
-void ExecutePublish(BMessage* tmpMsg, const char* tmpData, const char* tmpExt)
+void ExecutePublish(BMessage* tmpMsg, const char* tmpData, BString tmpExt)
 {
 	ErrorAlert* eAlert;
 	const char* name;
