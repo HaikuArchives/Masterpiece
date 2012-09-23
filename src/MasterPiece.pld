@@ -61,7 +61,6 @@ EXPANDGROUP=yes
 SOURCEFILE=preview.py
 SOURCEFILE=pubhtm.py
 SOURCEFILE=pubodt.py
-SOURCEFILE=pubpdf.py
 SOURCEFILE=pubtex.py
 SOURCEFILE=pubxml.py
 GROUP=Resources
