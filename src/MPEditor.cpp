@@ -215,6 +215,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			if(msg->FindRef("directory", &ref) == B_OK)
 			{
+				tmpPath = GetAppDirPath();
+				tmpPath += "/tmppub.";
+				tmpPath += fileExt;
 				printf(" Current tmppath: ");
 				printf(tmpPath);
 				printf("\n");
