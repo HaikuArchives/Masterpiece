@@ -54,6 +54,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 	BString tmpPath; // string path of tmppub.tht file, then string path of tmppub.ext
 	BFile previewFile; // tmppub.tht file
 	BString scriptFile; // python script file name
+	BString runPath; // rst2pdf execute path
 	BString fileExt; // file extension of converted file
 	BString dirPath; // user created directory path string
 	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
@@ -157,28 +158,37 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			previewFile.Write(editorTextView->Text(), strlen(editorTextView->Text()));
 			previewFile.Unset();
-			
-			// build the correct publish python script name
+
 			fileExt = pubEditorPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
-			scriptFile = "pub";
-			scriptFile += fileExt;
-			scriptFile += ".py";
-			printf(scriptFile);
-			printf("\n");
-			tmpPath = GetAppDirPath();
-			tmpPath += "/tmppub.";
-			tmpPath += fileExt;
+
 			if(fileExt == "pdf")
 			{
-				tmpPath = "/boot/common/bin/rst2pdf ";
-				tmpPath += scriptFile;
-				tmpPath += " -o ";
-				tmpPath += GetAppDirPath();
-				tmpPath += "/tmppub.pdf";
+				printf(" PDF RUN\n");
+				runPath = "/boot/common/bin/rst2pdf ";
+				runPath += GetAppDirPath();
+				runPath += "/tmppub.tht -o ";
+				runPath += GetAppDirPath();
+				runPath += "/tmppub.pdf";
+				//printf(tmpPath);
+				//printf("\n");
+				system(runPath);
 			}
 			else
 			{
+				printf(" NOT PDF RUN\n");
+			
+				// build the correct publish python script name
+				scriptFile = "pub";
+				scriptFile += fileExt;
+				scriptFile += ".py";
+				printf(scriptFile);
+				printf("\n");
+				tmpPath = GetAppDirPath();
+				tmpPath += "/tmppub.";
+				tmpPath += fileExt;
+				//printf(fileExt);
+				//printf("\n");
 				try
 				{
 					py.run_file(scriptFile.String());
@@ -205,6 +215,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			if(msg->FindRef("directory", &ref) == B_OK)
 			{
+				printf(" Current tmppath: ");
+				printf(tmpPath);
+				printf("\n");
 				publishPath = name;
 				publishPath.Append(".");
 				publishPath.Append(fileExt);
@@ -212,8 +225,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 				publishFile.SetTo(tmpPath);
 				publishFile.Rename(publishPath, true);
 				oldFilePath = GetAppDirPath();
-				oldFilePath += "/";
-				oldFilePath += name;
+				oldFilePath += "/tmppub";
+				//oldFilePath += name;
 				oldFilePath += ".";
 				oldFilePath += fileExt;
 				//printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
@@ -269,6 +282,10 @@ void MPEditor::MessageReceived(BMessage* msg)
 									free(text);
 								}
 							}
+						}
+						else if(err == B_NO_INIT)
+						{
+							
 						}
 						else
 						{
