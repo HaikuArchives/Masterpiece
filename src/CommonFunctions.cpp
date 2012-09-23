@@ -39,6 +39,10 @@ bool CheckExistingScripts(const char* scripttype)
 	testFile.Unset();
 	return scriptExist;
 }
+void ExecutePreview(const char* tmpData)
+{
+}
+
 SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber, sqlite3* openDB)
 {
 	sqldb = openDB;

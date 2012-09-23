@@ -177,6 +177,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				previewItem = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(i));
 				mpData += previewItem->ReturnText();
 			}
+			ExecutePreview(mpData);
+			/*
 			tmpPath = GetAppDirPath();
 			tmpPath += "/tmp.tht";
 			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
@@ -204,6 +206,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
 			system(tmpPath);
+			*/
 			break;
 		case MENU_PUB_MP: // publish masterpiece
 			if(!publishPanel)

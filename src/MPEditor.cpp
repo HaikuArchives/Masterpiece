@@ -106,6 +106,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
+			ExecutePreview("");
+			/*
 			tmpPath = GetAppDirPath();
 			tmpPath += "/tmp.tht";
 			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
@@ -119,9 +121,6 @@ void MPEditor::MessageReceived(BMessage* msg)
 			previewFile.Unset();
 			try
 			{
-				tmpPath = GetAppDirPath();
-				tmpPath += "/preview.py";
-				//py.run_file(tmpPath.String());
 				py.run_file("preview.py");
 			}
 			catch(Python_exception ex)
@@ -136,6 +135,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			tmpPath += GetAppDirPath();
 			tmpPath += "/tmp.html &";
 			system(tmpPath);
+			*/
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
 			if(!pubEditorPanel)

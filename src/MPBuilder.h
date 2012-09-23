@@ -5,9 +5,9 @@
 
 #include <Window.h>
 #include <View.h>
-#include <sqlite3.h>
+//#include <sqlite3.h>
 #include <Application.h>
-#include <String.h>
+//#include <String.h>
 #include <GroupLayout.h>
 #include <GridLayoutBuilder.h>
 #include <SpaceLayoutItem.h>
@@ -18,8 +18,8 @@
 #include <Message.h>
 #include <stdio.h>
 #include <TextView.h>
-#include <File.h>
-#include <Entry.h>
+//#include <File.h>
+//#include <Entry.h>
 #include <malloc.h>
 
 #include "ErrorAlert.h"

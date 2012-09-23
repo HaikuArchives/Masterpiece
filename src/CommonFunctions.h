@@ -9,10 +9,12 @@
 #include <Directory.h>
 #include <FindDirectory.h>
 #include <File.h>
+#include <Entry.h>
 
 #include "ErrorAlert.h"
 
 void	DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
+void	ExecutePreview(const char* tmpData);
 BString	GetAppDirPath(void);
 BString GetUserDirPath(void);
 bool	CheckExistingScripts(const char* scripttype);
