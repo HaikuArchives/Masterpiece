@@ -22,7 +22,7 @@
 //#include <Entry.h>
 #include <malloc.h>
 
-#include "ErrorAlert.h"
+//#include "ErrorAlert.h"
 #include "BuilderMenu.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"

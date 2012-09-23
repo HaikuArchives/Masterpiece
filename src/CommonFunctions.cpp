@@ -1,5 +1,7 @@
 #include "CommonFunctions.h"
 
+using namespace pyembed;
+
 void DisplayError(const char* errorNumber, const char* errorType, const char* errorValue)
 {
 	BString tmpString = errorNumber;
@@ -41,6 +43,38 @@ bool CheckExistingScripts(const char* scripttype)
 }
 void ExecutePreview(const char* tmpData)
 {
+	int argc = 1;
+	char* argvv = "ladida";
+	char** argv = &argvv;
+	Python py(argc, argv);
+	BString tmpPath; // string path of the tmppub.tht file then string path of tmppub.ext file
+	BFile previewFile; // tmppub.tht file
+	ErrorAlert* eAlert;
+	tmpPath = GetAppDirPath();
+	tmpPath += "/tmp.tht";
+	previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+	if(previewFile.InitCheck() != B_OK)
+	{
+		eAlert = new ErrorAlert("4.2 Builder Error: Couldn't Write TMP File.");
+		eAlert->Launch();
+		//printf("Couldn't write file\n");
+	}
+	previewFile.Write(tmpData, strlen(tmpData));
+	previewFile.Unset();
+	try
+	{
+		py.run_file("preview.py");
+	}
+	catch(Python_exception ex)
+	{
+		eAlert = new ErrorAlert("4.3 Builder Error: Python Issue - ", ex.what());
+		eAlert->Launch();
+	}
+	
+	tmpPath = "/boot/apps/WebPositive file://";
+	tmpPath += GetAppDirPath();
+	tmpPath += "/tmp.html &";
+	system(tmpPath);
 }
 
 SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber, sqlite3* openDB)

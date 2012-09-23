@@ -1,6 +1,8 @@
 #ifndef COMMONFUNCTIONS_H
 #define COMMONFUNCTIONS_H
 
+#include "pyembed.h"
+
 #include <sqlite3.h>
 #include <Application.h>
 #include <Roster.h>

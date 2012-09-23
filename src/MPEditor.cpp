@@ -106,36 +106,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
-			ExecutePreview("");
-			/*
-			tmpPath = GetAppDirPath();
-			tmpPath += "/tmp.tht";
-			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
-			if(previewFile.InitCheck() != B_OK)
-			{
-				//printf("Couldn't write file\n");
-				eAlert = new ErrorAlert("3.2 Editor Error: Couldn't Write TMP File.");
-				eAlert->Launch();
-			}
-			previewFile.Write(editorTextView->Text(), strlen(editorTextView->Text()));
-			previewFile.Unset();
-			try
-			{
-				py.run_file("preview.py");
-			}
-			catch(Python_exception ex)
-			{
-				//printf("Python error: %s\n", ex.what());
-				eAlert = new ErrorAlert("3.3 Editor Error: Python Issue - ", ex.what());
-				eAlert->Launch();
-				break;
-			}
-			
-			tmpPath = "/boot/apps/WebPositive file://";
-			tmpPath += GetAppDirPath();
-			tmpPath += "/tmp.html &";
-			system(tmpPath);
-			*/
+			ExecutePreview(editorTextView->Text());
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
 			if(!pubEditorPanel)

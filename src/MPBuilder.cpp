@@ -178,35 +178,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				mpData += previewItem->ReturnText();
 			}
 			ExecutePreview(mpData);
-			/*
-			tmpPath = GetAppDirPath();
-			tmpPath += "/tmp.tht";
-			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
-			if(previewFile.InitCheck() != B_OK)
-			{
-				eAlert = new ErrorAlert("4.2 Builder Error: Couldn't Write TMP File.");
-				eAlert->Launch();
-				//printf("Couldn't write file\n");
-			}
-			previewFile.Write(mpData, strlen(mpData));
-			previewFile.Unset();
-			try
-			{
-				py.run_file("preview.py");
-			}
-			catch(Python_exception ex)
-			{
-				eAlert = new ErrorAlert("4.3 Builder Error: Python Issue - ", ex.what());
-				eAlert->Launch();
-				break;
-				//printf("Python error: %s\n", ex.what());
-			}
-			
-			tmpPath = "/boot/apps/WebPositive file://";
-			tmpPath += GetAppDirPath();
-			tmpPath += "/tmp.html &";
-			system(tmpPath);
-			*/
 			break;
 		case MENU_PUB_MP: // publish masterpiece
 			if(!publishPanel)
