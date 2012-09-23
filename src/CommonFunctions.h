@@ -20,8 +20,8 @@
 #include "ErrorAlert.h"
 
 void	DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
-void	ExecutePreview(const char* tmpData);
-void	ExecutePublish(BMessage* tmpMsg, const char* tmpData, BString tmpExt);
+void	ExecutePreview(BString tmpData);
+void	ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt);
 BString	GetAppDirPath(void);
 BString GetUserDirPath(void);
 bool	CheckExistingScripts(const char* scripttype);

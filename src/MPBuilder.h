@@ -5,9 +5,7 @@
 
 #include <Window.h>
 #include <View.h>
-//#include <sqlite3.h>
 #include <Application.h>
-//#include <String.h>
 #include <GroupLayout.h>
 #include <GridLayoutBuilder.h>
 #include <SpaceLayoutItem.h>
@@ -15,14 +13,8 @@
 #include <ScrollView.h>
 #include <StringView.h>
 #include <Messenger.h>
-//#include <Message.h>
-//#include <stdio.h>
 #include <TextView.h>
-//#include <File.h>
-//#include <Entry.h>
-//#include <malloc.h>
 
-//#include "ErrorAlert.h"
 #include "BuilderMenu.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"
@@ -71,10 +63,6 @@ private:
 		BButton*			downButton;
 		BButton*			bottomButton;
 		BButton*			deleteButton;
-		//BEntry				entry;
-		//BPath 				path;
-		//entry_ref 			ref;
-		//const char* 		name;
 		PublishFilePanel*	publishPanel;
 		MPEditor*			tmpEditor;
 		ErrorAlert*			eAlert;

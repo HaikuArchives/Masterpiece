@@ -1,7 +1,5 @@
 #include "MPBuilder.h"
 
-using namespace pyembed;
-
 MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID)
 	:	BWindow(BRect(100, 100, 900, 700), windowTitle, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), launcherMessage(msg), launcherMessenger(msgr)
 {
@@ -72,31 +70,9 @@ MPBuilder::~MPBuilder()
 void MPBuilder::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
-	/*
-	int argc = 1;
-	char* argvv = "ladida";
-	char** argv = &argvv;
-	Python py(argc, argv);
-	BString publishPath; // user generated filename
-	BString tmpPath; // string path of the tmppub.tht file then string path of tmppub.ext file
-	*/
 	BString mpData; // actual data of file
-	/*
-	BString scriptFile; // python script file name
-	BString runPath; // rst2pdf execute path
-	*/
 	BString fileExt; // file extension of converted file
-	/*
-	BString dirPath; // user created directory path string
-	BFile previewFile; // tmppub.tht file
-	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
-	BEntry removeTmpFile; // tmp file that information that will be removed
-	BEntry removeOldFile; // remove old file once it was successfully copied to the new location
-	BString oldFilePath; // path to the renamed tmpfile
-	BString newFilePath; // path to the actual saved file
-	BDirectory publishDirectory; // user generated directory
-	status_t err;
-	*/
+
 	switch(msg->what)
 	{
 		case MENU_NEW_MP: // open new untitled thought
@@ -203,167 +179,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			fileExt = publishPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
 			ExecutePublish(msg, mpData, fileExt);
-			/*
-			tmpPath = GetAppDirPath();
-			tmpPath += "/tmppub.tht";
-			removeTmpFile.SetTo(tmpPath);
-			previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
-			if(previewFile.InitCheck() != B_OK)
-			{
-				eAlert = new ErrorAlert("4.4 Builder Error: Couldn't Create Pub File.");
-				eAlert->Launch();
-				//printf("Couldn't write file\n");
-			}
-			previewFile.Write(mpData, strlen(mpData));
-			previewFile.Unset();
-			
-			// build the correct publish python script name...
-			fileExt = publishPanel->publishTypeMenu->FindMarked()->Label();
-			fileExt = fileExt.ToLower();
-			
-			if(fileExt == "pdf")
-			{
-				printf(" PDF RUN\n");
-				runPath = "/boot/common/bin/rst2pdf ";
-				runPath += GetAppDirPath();
-				runPath += "/tmppub.tht -o ";
-				runPath += GetAppDirPath();
-				runPath += "/tmppub.pdf";
-				//printf(tmpPath);
-				//printf("\n");
-				system(runPath);
-			}
-			else
-			{
-				printf(" NOT PDF RUN\n");
-				scriptFile = "pub";
-				scriptFile += fileExt;
-				scriptFile += ".py";
-				printf(scriptFile);
-				printf("\n");
-				tmpPath = GetAppDirPath();
-				tmpPath += "/tmppub.";
-				tmpPath += fileExt;
-				try
-				{
-					py.run_file(scriptFile.String());
-				}
-				catch(Python_exception ex)
-				{
-					eAlert = new ErrorAlert("4.5 Builder Error: Python Issue - ", ex.what());
-					eAlert->Launch();
-					err = removeTmpFile.Remove();
-					if(err != B_OK)
-					{
-						eAlert = new ErrorAlert("4.14 Builder Error: Tmp File could not be removed due to: ", strerror(err));
-						eAlert->Launch();
-					}
-					break;
-					//printf("Python error: %s\n", ex.what());
-				}
-			}
-			// now i need to get the finished file and mv/rename it to where the location and file are listed from
-			// the retrieved information
-			printf("publish information: \n");
-			if(msg->FindString("name", &name) == B_OK)
-			{
-				//printf("default save message: %s\n", name);
-			}
-			if(msg->FindRef("directory", &ref) == B_OK)
-			{
-				tmpPath = GetAppDirPath();
-				tmpPath += "/tmppub.";
-				tmpPath += fileExt;
-				printf(" Current tmppath: ");
-				printf(tmpPath);
-				printf("\n");
-				publishPath = name;
-				publishPath.Append(".");
-				publishPath.Append(fileExt);
-				//printf(publishPath);
-				publishFile.SetTo(tmpPath);
-				publishFile.Rename(publishPath, true);
-				oldFilePath = GetAppDirPath();
-				oldFilePath += "/tmppub";
-				//oldFilePath += name;
-				oldFilePath += ".";
-				oldFilePath += fileExt;
-				//printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
-				entry.SetTo(&ref); // directory where the file is to be saved as defined by user
-				entry.SetTo(&ref);
-				entry.GetPath(&path);
-				dirPath = path.Path();
-				dirPath += "/";				
-				newFilePath = dirPath;
-				newFilePath += name;
-				newFilePath += ".";
-				newFilePath += fileExt;
-				printf("old file: %s\n", oldFilePath.String());
-				printf("new file: %s\n", newFilePath.String());
-				if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
-				{
-					//printf("publishdirectory %s\n", path.Path());
-					//printf("successful directory set\n");
-					err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
-					if(err != B_OK)
-					{
-						if(err == B_CROSS_DEVICE_LINK)
-						{
-							BFile oldFile;
-							BFile newFile;
-							if(oldFile.SetTo(oldFilePath, B_READ_ONLY) == B_OK)
-							{
-								if(newFile.SetTo(newFilePath, B_WRITE_ONLY | B_CREATE_FILE | B_ERASE_FILE) == B_OK)
-								{
-									off_t length;
-									char* text;
-									oldFile.GetSize(&length);
-									text = (char*) malloc(length);
-									if(text && oldFile.Read(text, length) >= B_OK) // write text to the newfile
-									{
-										err = newFile.Write(text, length);
-										if(err >= B_OK)
-										{
-											eAlert = new ErrorAlert("4.13 Builder Error: File could not be written due to: ", strerror(err));
-											eAlert->Launch();		
-										}
-										else
-										{
-											removeOldFile.SetTo(oldFilePath);
-											err = removeOldFile.Remove();
-											if(err != B_OK)
-											{
-												eAlert = new ErrorAlert("4.14 Builder Error: Tmp File could not be removed due to: ", strerror(err));
-												eAlert->Launch();
-											}
-										}
-									}
-									free(text);
-								}
-							}
-						}
-						else
-						{
-							eAlert = new ErrorAlert("4.15 Builder Error: File could not be written due to: ", strerror(err));
-							eAlert->Launch();		
-						}
-					}
-				}
-				else
-				{
-					eAlert = new ErrorAlert("4.6 Builder Error: Directory Set Failed");
-					eAlert->Launch();
-					//printf("directory set failed");
-				}
-			}
-			// clean up the temporary files...
-			err = removeTmpFile.Remove();
-			if(err != B_OK)
-			{
-				eAlert = new ErrorAlert("4.14 Builder Error: Tmp File could not be removed due to: ", strerror(err));
-				eAlert->Launch();
-			}
-			*/
 			break;
 		case MENU_HLP_MP: // help topics
 			break;

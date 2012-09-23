@@ -41,7 +41,7 @@ bool CheckExistingScripts(const char* scripttype)
 	testFile.Unset();
 	return scriptExist;
 }
-void ExecutePreview(const char* tmpData)
+void ExecutePreview(BString tmpData)
 {
 	int argc = 1;
 	char* argvv = "ladida";
@@ -77,7 +77,7 @@ void ExecutePreview(const char* tmpData)
 	system(tmpPath);
 }
 
-void ExecutePublish(BMessage* tmpMsg, const char* tmpData, BString tmpExt)
+void ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt)
 {
 	ErrorAlert* eAlert;
 	const char* name;
