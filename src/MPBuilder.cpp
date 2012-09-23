@@ -80,6 +80,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	BString tmpPath; // string path of the tmppub.tht file then string path of tmppub.ext file
 	BString mpData; // actual data of file
 	BString scriptFile; // python script file name
+	BString runPath; // rst2pdf execute path
 	BString fileExt; // file extension of converted file
 	BString dirPath; // user created directory path string
 	BFile previewFile; // tmppub.tht file
@@ -236,32 +237,48 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			// build the correct publish python script name...
 			fileExt = publishPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
-			scriptFile = "pub";
-			scriptFile += fileExt;
-			scriptFile += ".py";
-			printf(scriptFile);
-			printf("\n");
-			tmpPath = GetAppDirPath();
-			tmpPath += "/tmppub.";
-			tmpPath += fileExt;
-			try
-			{
-				py.run_file(scriptFile.String());
-			}
-			catch(Python_exception ex)
-			{
-				eAlert = new ErrorAlert("4.5 Builder Error: Python Issue - ", ex.what());
-				eAlert->Launch();
-				err = removeTmpFile.Remove();
-				if(err != B_OK)
-				{
-					eAlert = new ErrorAlert("4.14 Builder Error: Tmp File could not be removed due to: ", strerror(err));
-					eAlert->Launch();
-				}
-				break;
-				//printf("Python error: %s\n", ex.what());
-			}
 			
+			if(fileExt == "pdf")
+			{
+				printf(" PDF RUN\n");
+				runPath = "/boot/common/bin/rst2pdf ";
+				runPath += GetAppDirPath();
+				runPath += "/tmppub.tht -o ";
+				runPath += GetAppDirPath();
+				runPath += "/tmppub.pdf";
+				//printf(tmpPath);
+				//printf("\n");
+				system(runPath);
+			}
+			else
+			{
+				printf(" NOT PDF RUN\n");
+				scriptFile = "pub";
+				scriptFile += fileExt;
+				scriptFile += ".py";
+				printf(scriptFile);
+				printf("\n");
+				tmpPath = GetAppDirPath();
+				tmpPath += "/tmppub.";
+				tmpPath += fileExt;
+				try
+				{
+					py.run_file(scriptFile.String());
+				}
+				catch(Python_exception ex)
+				{
+					eAlert = new ErrorAlert("4.5 Builder Error: Python Issue - ", ex.what());
+					eAlert->Launch();
+					err = removeTmpFile.Remove();
+					if(err != B_OK)
+					{
+						eAlert = new ErrorAlert("4.14 Builder Error: Tmp File could not be removed due to: ", strerror(err));
+						eAlert->Launch();
+					}
+					break;
+					//printf("Python error: %s\n", ex.what());
+				}
+			}
 			// now i need to get the finished file and mv/rename it to where the location and file are listed from
 			// the retrieved information
 			printf("publish information: \n");
@@ -271,6 +288,12 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			if(msg->FindRef("directory", &ref) == B_OK)
 			{
+				tmpPath = GetAppDirPath();
+				tmpPath += "/tmppub.";
+				tmpPath += fileExt;
+				printf(" Current tmppath: ");
+				printf(tmpPath);
+				printf("\n");
 				publishPath = name;
 				publishPath.Append(".");
 				publishPath.Append(fileExt);
@@ -278,8 +301,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				publishFile.SetTo(tmpPath);
 				publishFile.Rename(publishPath, true);
 				oldFilePath = GetAppDirPath();
-				oldFilePath += "/";
-				oldFilePath += name;
+				oldFilePath += "/tmppub";
+				//oldFilePath += name;
 				oldFilePath += ".";
 				oldFilePath += fileExt;
 				//printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
