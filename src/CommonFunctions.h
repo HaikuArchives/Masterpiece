@@ -16,15 +16,26 @@
 #include <string.h>
 #include <stdio.h>
 #include <Message.h>
-
-#include "ErrorAlert.h"
+#include <Alert.h>
+#include <String.h>
 
 void	DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
+void	TmpCleanUp(BString tmpExt);
 void	ExecutePreview(BString tmpData);
 void	ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt);
 BString	GetAppDirPath(void);
 BString GetUserDirPath(void);
 bool	CheckExistingScripts(const char* scripttype);
+
+class ErrorAlert
+{
+public:
+				ErrorAlert(BString tmpText);
+				ErrorAlert(BString tmpText1, BString tmpText2);
+				~ErrorAlert(void);
+		int 	Launch(void);			
+		BAlert*	tmpAlert;
+};
 
 class SqlObject
 {

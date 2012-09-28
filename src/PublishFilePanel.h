@@ -1,5 +1,6 @@
 #ifndef PUBLISHFILEPANEL_H
 #define PUBLISHFILEPANEL_H
+
 #include <Message.h>
 #include <Messenger.h>
 #include <FilePanel.h>
@@ -12,6 +13,7 @@
 #include <Menu.h>
 #include <MenuItem.h>
 #include <stdio.h>
+
 #include "CommonFunctions.h"
 
 #define PUBLISH_TYPE 'ptyp'

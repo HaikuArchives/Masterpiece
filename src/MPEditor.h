@@ -16,7 +16,7 @@
 #include <TextView.h>
 #include <ScrollView.h>
 
-#include "ErrorAlert.h"
+//#include "ErrorAlert.h"
 #include "EditorMenu.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"

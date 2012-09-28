@@ -17,7 +17,7 @@
 #include <File.h>
 #include <malloc.h>
 
-#include "ErrorAlert.h"
+//#include "ErrorAlert.h"
 #include "HelpStringItem.h"
 #include "CommonFunctions.h"
 

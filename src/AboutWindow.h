@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <Font.h>
 
-#include "ErrorAlert.h"
 #include "HelpStringItem.h"
 #include "CommonFunctions.h"
 

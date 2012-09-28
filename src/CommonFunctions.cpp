@@ -41,6 +41,28 @@ bool CheckExistingScripts(const char* scripttype)
 	testFile.Unset();
 	return scriptExist;
 }
+void TmpCleanUp(BString tmpExt)
+{
+	// Get and remove tmp.tmpExt file
+	BString tmpPath = GetAppDirPath();
+	BEntry removeTmpFile;
+	tmpPath += "/tmp.";
+	tmpPath += tmpExt;
+	printf("tht path: %s\n", tmpPath.String());
+	removeTmpFile.SetTo(tmpPath);
+	status_t err = removeTmpFile.Remove();
+	if(err == B_OK || err == B_ENTRY_NOT_FOUND)
+	{
+		// don't report to end user
+		//printf("expected error: %s\n", strerror(err));
+	}
+	else
+	{
+		// report to end user
+		ErrorAlert* eAlert = new ErrorAlert("Error when cleaning up Temp Files prior to Exit: ", strerror(err));
+		eAlert->Launch();
+	}
+}
 void ExecutePreview(BString tmpData)
 {
 	int argc = 1;
@@ -258,6 +280,31 @@ void ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt)
 		eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
 		eAlert->Launch();
 	}
+}
+
+ErrorAlert::ErrorAlert(BString tmpText)
+{
+	tmpAlert = new BAlert("Error:", tmpText, "OK", NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
+	tmpAlert->MoveTo(350, 250);
+	tmpAlert->SetShortcut(0, B_ESCAPE);
+}
+
+ErrorAlert::ErrorAlert(BString tmpText1, BString tmpText2)
+{
+	BString tmpString = tmpText1;
+	tmpString += tmpText2;
+	tmpAlert = new BAlert("Error:", tmpString, "OK", NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
+	tmpAlert->MoveTo(350, 250);
+	tmpAlert->SetShortcut(0, B_ESCAPE);
+}
+
+ErrorAlert::~ErrorAlert(void)
+{
+}
+
+int ErrorAlert::Launch(void)
+{
+	return tmpAlert->Go(NULL);
 }
 
 SqlObject::SqlObject(sqlite3_stmt* sqlStatement, const char* errorNumber, sqlite3* openDB)

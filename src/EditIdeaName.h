@@ -15,7 +15,7 @@
 #include <StringView.h>
 #include <sqlite3.h>
 
-#include "ErrorAlert.h"
+//#include "ErrorAlert.h"
 #include "CommonFunctions.h"
 
 #define UPDATE_IDEA_NAME	'save' // save button

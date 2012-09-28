@@ -1,4 +1,5 @@
-#include "ErrorAlert.h"
+//#include "ErrorAlert.h"
+/*
 
 ErrorAlert::ErrorAlert(BString tmpText)
 {
@@ -24,3 +25,4 @@ int ErrorAlert::Launch(void)
 {
 	return tmpAlert->Go(NULL);
 }
+*/
