@@ -1,22 +1,6 @@
 #ifndef MPEDITOR_H
 #define MPEDITOR_H
 
-#include "pyembed.h"
-
-#include <Window.h>
-#include <View.h>
-#include <Application.h>
-#include <string.h>
-#include <ScrollView.h>
-#include <Messenger.h>
-#include <stdlib.h>
-#include <GroupLayout.h>
-#include <SpaceLayoutItem.h>
-#include <GridLayoutBuilder.h>
-#include <TextView.h>
-#include <ScrollView.h>
-
-//#include "ErrorAlert.h"
 #include "EditorMenu.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"

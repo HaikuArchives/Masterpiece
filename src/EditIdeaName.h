@@ -1,21 +1,6 @@
 #ifndef EDITIDEANAME_H
 #define EDITIDEANAME_H
 
-#include <Window.h>
-#include <View.h>
-#include <Button.h>
-#include <GroupLayout.h>
-#include <GridLayoutBuilder.h>
-#include <SpaceLayoutItem.h>
-#include <TextView.h>
-#include <stdio.h>
-#include <Message.h>
-#include <Messenger.h>
-#include <String.h>
-#include <StringView.h>
-#include <sqlite3.h>
-
-//#include "ErrorAlert.h"
 #include "CommonFunctions.h"
 
 #define UPDATE_IDEA_NAME	'save' // save button

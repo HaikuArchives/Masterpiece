@@ -1,28 +1,6 @@
 #ifndef MPLAUNCHER_H
 #define MPLAUNCHER_H
 
-/*
-#include <Window.h>
-#include <View.h>
-#include <sqlite3.h>
-#include <GroupLayout.h>
-#include <SpaceLayoutItem.h>
-#include <GridLayoutBuilder.h>
-#include <Button.h>
-#include <ListView.h>
-#include <ScrollView.h>
-#include <StringView.h>
-#include <Message.h>
-#include <Messenger.h>
-#include <Application.h>
-#include <String.h>
-#include <Path.h>
-#include <Roster.h>
-#include <stdio.h>
-#include <stdlib.h>
-//#include <Entry.h>
-*/
-//#include "ErrorAlert.h"
 #include "MPBuilder.h"
 #include "MPEditor.h"
 #include "CommonFunctions.h"

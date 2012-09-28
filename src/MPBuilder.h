@@ -1,20 +1,6 @@
 #ifndef MPBUILDER_H
 #define MPBUILDER_H
 
-#include "pyembed.h"
-
-#include <Window.h>
-#include <View.h>
-#include <Application.h>
-#include <GroupLayout.h>
-#include <GridLayoutBuilder.h>
-#include <SpaceLayoutItem.h>
-#include <ListView.h>
-#include <ScrollView.h>
-#include <StringView.h>
-#include <Messenger.h>
-#include <TextView.h>
-
 #include "BuilderMenu.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"

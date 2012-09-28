@@ -3,21 +3,33 @@
 
 #include "pyembed.h"
 
-#include <sqlite3.h>
-#include <Application.h>
-#include <Roster.h>
-#include <Path.h>
-#include <String.h>
-#include <Directory.h>
-#include <FindDirectory.h>
-#include <File.h>
-#include <Entry.h>
-#include <malloc.h>
-#include <string.h>
-#include <stdio.h>
-#include <Message.h>
 #include <Alert.h>
+#include <Application.h>
+#include <Button.h>
+#include <Directory.h>
+#include <Entry.h>
+#include <File.h>
+#include <FindDirectory.h>
+#include <Font.h>
+#include <GridLayoutBuilder.h>
+#include <GroupLayout.h>
+#include <ListView.h>
+#include <malloc.h>
+#include <Message.h>
+#include <Messenger.h>
+#include <Path.h>
+#include <Roster.h>
+#include <ScrollView.h>
+#include <SpaceLayoutItem.h>
+#include <sqlite3.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <String.h>
+#include <StringView.h>
+#include <TextView.h>
+#include <View.h>
+#include <Window.h>
 
 void	DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
 void	TmpCleanUp(BString tmpExt);
