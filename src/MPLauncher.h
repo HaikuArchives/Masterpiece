@@ -49,8 +49,6 @@ private:
 		MPBuilder*		mpBuilder;
 		MPEditor*		mpEditor;
 		SqlObject*		sqlObject;
-		//BString			tmpPath;
-		//status_t		err;
 };
 
 #endif

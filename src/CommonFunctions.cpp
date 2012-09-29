@@ -41,6 +41,14 @@ bool CheckExistingScripts(const char* scripttype)
 	testFile.Unset();
 	return scriptExist;
 }
+/*
+bool CheckPythonDep(BString tmpDep)
+{
+	// from docutils.core import publish_file
+	int depExist = 0;
+	return depExist;
+}
+*/
 void TmpCleanUp(BString tmpExt)
 {
 	// Get and remove tmp.tmpExt file
@@ -69,12 +77,21 @@ void ExecutePreview(BString tmpData)
 	char* argvv = "ladida";
 	char** argv = &argvv;
 	Python py(argc, argv);
-	BString tmpPath; // string path of the tmppub.tht file then string path of tmppub.ext file
+	BString tmpInPath; // string path of the tmppub.tht file then string path of tmppub.ext file
+	BString tmpOutPath;
+	BString pythonString;
 	BFile previewFile; // tmppub.tht file
 	ErrorAlert* eAlert;
-	tmpPath = GetAppDirPath();
-	tmpPath += "/tmp.tht";
-	previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+	tmpInPath = GetAppDirPath();
+	tmpInPath += "/tmp.tht";
+	tmpOutPath = GetAppDirPath();
+	tmpOutPath += "/tmp.html";
+	pythonString = "output = publish_file(source_path='";
+	pythonString += tmpInPath;
+	pythonString += "', destination_path='";
+	pythonString += tmpOutPath;
+	pythonString += "', writer_name='html')";
+	previewFile.SetTo(tmpInPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
 	if(previewFile.InitCheck() != B_OK)
 	{
 		eAlert = new ErrorAlert("4.2 Builder Error: Couldn't Write TMP File.");
@@ -85,7 +102,9 @@ void ExecutePreview(BString tmpData)
 	previewFile.Unset();
 	try
 	{
-		py.run_file("preview.py");
+		py.run_string("from docutils.core import publish_file");
+		py.run_string(pythonString.String());
+		//py.run_file("preview.py");
 	}
 	catch(Python_exception ex)
 	{
@@ -93,7 +112,7 @@ void ExecutePreview(BString tmpData)
 		eAlert->Launch();
 	}
 	
-	tmpPath = "/boot/apps/WebPositive file://";
+	BString tmpPath = "/boot/apps/WebPositive file://";
 	tmpPath += GetAppDirPath();
 	tmpPath += "/tmp.html &";
 	system(tmpPath);
@@ -144,8 +163,6 @@ void ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt)
 		runPath += "/tmppub.tht -o ";
 		runPath += GetAppDirPath();
 		runPath += "/tmppub.pdf";
-		//printf(tmpPath);
-		//printf("\n");
 		system(runPath);
 	}
 	else
