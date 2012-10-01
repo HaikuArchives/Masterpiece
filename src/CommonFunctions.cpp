@@ -28,27 +28,6 @@ BString GetUserDirPath(void)
 	if(result == B_OK) return tmpUserPath.Path();
 	else return "-15";
 }
-bool CheckExistingScripts(const char* scripttype)
-{
-	int scriptExist = 0;
-	BFile testFile;
-	BString tmpPath = GetAppDirPath();
-	tmpPath += "/pub";
-	tmpPath += scripttype;
-	tmpPath += ".py";
-	testFile.SetTo(tmpPath, B_READ_ONLY);
-	if(testFile.InitCheck() == B_OK) scriptExist = 1;
-	testFile.Unset();
-	return scriptExist;
-}
-/*
-bool CheckPythonDep(BString tmpDep)
-{
-	// from docutils.core import publish_file
-	int depExist = 0;
-	return depExist;
-}
-*/
 void TmpCleanUp(BString tmpExt)
 {
 	// Get and remove tmp.tmpExt file
@@ -130,9 +109,11 @@ void ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt)
 	char** argv = &argvv;
 	Python py(argc, argv);
 	BString publishPath; // user generated filename
-	BString tmpPath; // string path of tmppub.tht file, then string path of tmppub.ext
+	BString tmpInPath; // string path of tmppub.tht file, then string path of tmppub.ext
+	BString tmpOutPath;
+	BString pythonString;
 	BFile previewFile; // tmppub.tht file
-	BString scriptFile; // python script file name
+	//BString scriptFile; // python script file name
 	BString runPath; // rst2pdf execute path
 	BString dirPath; // user created directory path string
 	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
@@ -142,14 +123,36 @@ void ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt)
 	BString oldFilePath; // path to the renamed tmpfile
 	BString newFilePath; // path to the actual saved file
 	status_t err; // auto errors
-	tmpPath = GetAppDirPath();
-	tmpPath += "/tmppub.tht";
-	removeTmpFile.SetTo(tmpPath);
-	previewFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+	tmpInPath = GetAppDirPath();
+	tmpInPath += "/tmppub.tht";
+	tmpOutPath = GetAppDirPath();
+	tmpOutPath += "/tmppub.";
+	tmpOutPath += tmpExt;
+	pythonString = "output = publish_file(source_path='";
+	pythonString += tmpInPath;
+	pythonString += "', destination_path='";
+	pythonString += tmpOutPath;
+	pythonString += "', writer_name='";
+	if(tmpExt == "odt") pythonString += "odf_odt')";
+	else if(tmpExt == "tex") pythonString += "latex')";
+	else if(tmpExt == "htm") pythonString += "html')";
+	else if(tmpExt == "xml") pythonString += "xml')";
+	else if(tmpExt == "pdf")
+	{
+		// do nothing here.  there is no pythonstring to convert to pdf.
+		// but I want to account for any abnormalities that may arise
+		// if the wrong filetype is somehow selected.
+	}
+	else
+	{
+		eAlert = new ErrorAlert("4.3 Publish File Type Error: Invalid filetype.");
+		eAlert->Launch();
+	}
+	removeTmpFile.SetTo(tmpInPath);
+	previewFile.SetTo(tmpInPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
 	if(previewFile.InitCheck() != B_OK)
 	{
-		//printf("couldn't read file\n");
-		eAlert = new ErrorAlert("3.4 Editor Error: Couldn't Create Pub File.");
+		eAlert = new ErrorAlert("3.4 Editor Error: Couldn't Create Initial Publish File.");
 		eAlert->Launch();
 	}
 	previewFile.Write(tmpData, strlen(tmpData));
@@ -157,7 +160,6 @@ void ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt)
 
 	if(tmpExt == "pdf")
 	{
-		printf(" PDF RUN\n");
 		runPath = "/boot/common/bin/rst2pdf ";
 		runPath += GetAppDirPath();
 		runPath += "/tmppub.tht -o ";
@@ -168,7 +170,8 @@ void ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt)
 	else
 	{
 		printf(" NOT PDF RUN\n");
-			
+		
+		/*
 		// build the correct publish python script name
 		scriptFile = "pub";
 		scriptFile += tmpExt;
@@ -180,9 +183,12 @@ void ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt)
 		tmpPath += tmpExt;
 		//printf(tmpExt);
 		//printf("\n");
+		*/
 		try
 		{
-			py.run_file(scriptFile.String());
+			py.run_string("from docutils.core import publish_file");
+			py.run_string(pythonString.String());
+			//py.run_file(scriptFile.String());
 		}
 		catch(Python_exception ex)
 		{
@@ -205,24 +211,21 @@ void ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt)
 	}
 	if(tmpMsg->FindRef("directory", &ref) == B_OK)
 	{
-		tmpPath = GetAppDirPath();
-		tmpPath += "/tmppub.";
-		tmpPath += tmpExt;
+		tmpInPath = GetAppDirPath();
+		tmpInPath += "/tmppub.";
+		tmpInPath += tmpExt;
 		printf(" Current tmppath: ");
-		printf(tmpPath);
+		printf(tmpInPath);
 		printf("\n");
 		publishPath = name;
 		publishPath.Append(".");
 		publishPath.Append(tmpExt);
-		//printf(publishPath);
-		publishFile.SetTo(tmpPath);
+		publishFile.SetTo(tmpInPath);
 		publishFile.Rename(publishPath, true);
 		oldFilePath = GetAppDirPath();
 		oldFilePath += "/tmppub";
-		//oldFilePath += name;
 		oldFilePath += ".";
 		oldFilePath += tmpExt;
-		//printf("Tmp Path: %s\nPublishPath: %s\n", tmpPath.String(), publishPath.String());
 		entry.SetTo(&ref); // directory where the file is to be saved as defined by user
 		entry.SetTo(&ref);
 		entry.GetPath(&path);

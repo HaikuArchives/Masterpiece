@@ -16,6 +16,27 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			BView* parentview;
 			float charWidth;
 			BEntry rst2pdfcheck("/boot/common/bin/rst2pdf");
+			//BEntry docutilscheck("/boot/common/lib/python*/site-packages/docutils/core.py");
+			BVolumeRoster volRoster;
+			BVolume bootVolume;
+			volRoster.GetBootVolume(&bootVolume);
+			BString predicate("name=docutils");
+			BQuery query;
+			query.SetVolume(&bootVolume);
+			query.SetPredicate(predicate.String());
+			//query.PushAttr("name");
+			//query.PushString("core.py");
+			//query.PushOp(B_EQ);
+			if(query.Fetch() == B_OK)
+			{
+				printf("Results of query \"%s\":\n", predicate.String());
+				entry_ref ref;
+				BEntry entry;
+				BPath path;
+				while (query.GetNextEntry(&entry) == B_OK)
+				entry.GetPath(&path);
+					printf("\t%s\n", path.Path());
+			}
 			
 			charWidth = cancelBtn->StringWidth("Select Current Directory");
 			btnrect = cancelBtn->Frame();
@@ -37,11 +58,25 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			SetMessage(pubMsg);
 			SetTarget(*target);
 			// htm, odt, pdf, tex, xml
-			if(!CheckExistingScripts("htm")) publishTypeMenu->FindItem("HTM")->SetEnabled(false);
-			if(!CheckExistingScripts("odt")) publishTypeMenu->FindItem("ODT")->SetEnabled(false);
-			if(!CheckExistingScripts("tex")) publishTypeMenu->FindItem("TEX")->SetEnabled(false);
-			if(!CheckExistingScripts("xml")) publishTypeMenu->FindItem("XML")->SetEnabled(false);
-			if(!rst2pdfcheck.Exists()) publishTypeMenu->FindItem("PDF")->SetEnabled(false);
+			/*
+			if(!docutilscheck.Exists())
+			{
+				printf(" nope");
+				publishTypeMenu->FindItem("HTM")->SetEnabled(false);
+				publishTypeMenu->FindItem("ODT")->SetEnabled(false);
+				publishTypeMenu->FindItem("TEX")->SetEnabled(false);
+				publishTypeMenu->FindItem("XML")->SetEnabled(false);
+				if(!rst2pdfcheck.Exists()) publishTypeMenu->FindItem("PDF")->SetEnabled(false);
+			}
+			else
+			{
+				printf(" yup");
+			}
+			*/
+			//if(!CheckExistingScripts("htm")) publishTypeMenu->FindItem("HTM")->SetEnabled(false);
+			//if(!CheckExistingScripts("odt")) publishTypeMenu->FindItem("ODT")->SetEnabled(false);
+			//if(!CheckExistingScripts("tex")) publishTypeMenu->FindItem("TEX")->SetEnabled(false);
+			//if(!CheckExistingScripts("xml")) publishTypeMenu->FindItem("XML")->SetEnabled(false);
 		}
 		
 		w->Unlock();

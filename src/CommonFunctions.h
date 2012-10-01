@@ -37,7 +37,6 @@ void	ExecutePreview(BString tmpData);
 void	ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt);
 BString	GetAppDirPath(void);
 BString GetUserDirPath(void);
-bool	CheckExistingScripts(const char* scripttype);
 
 class ErrorAlert
 {
