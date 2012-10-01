@@ -16,17 +16,14 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			BView* parentview;
 			float charWidth;
 			BEntry rst2pdfcheck("/boot/common/bin/rst2pdf");
-			//BEntry docutilscheck("/boot/common/lib/python*/site-packages/docutils/core.py");
 			BVolumeRoster volRoster;
 			BVolume bootVolume;
 			volRoster.GetBootVolume(&bootVolume);
-			BString predicate("name=docutils");
+			BString predicate("name==\"*[cC][oO][rR][eE].[pP][yY]*\"");
 			BQuery query;
 			query.SetVolume(&bootVolume);
 			query.SetPredicate(predicate.String());
-			//query.PushAttr("name");
-			//query.PushString("core.py");
-			//query.PushOp(B_EQ);
+			// /boot/common/lib/python2.6/site-packages/docutils/core.py
 			if(query.Fetch() == B_OK)
 			{
 				printf("Results of query \"%s\":\n", predicate.String());
@@ -34,8 +31,10 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 				BEntry entry;
 				BPath path;
 				while (query.GetNextEntry(&entry) == B_OK)
-				entry.GetPath(&path);
+				{
+					entry.GetPath(&path);
 					printf("\t%s\n", path.Path());
+				}
 			}
 			
 			charWidth = cancelBtn->StringWidth("Select Current Directory");
