@@ -19,8 +19,9 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			BVolumeRoster volRoster;
 			BVolume bootVolume;
 			volRoster.GetBootVolume(&bootVolume);
-			BString predicate("name==\"*[cC][oO][rR][eE].[pP][yY]*\"");
+			BString predicate("name==\"*[cC][oO][rR][eE].[pP][yY]\"");
 			BQuery query;
+			BString spath;
 			query.SetVolume(&bootVolume);
 			query.SetPredicate(predicate.String());
 			// /boot/common/lib/python2.6/site-packages/docutils/core.py
@@ -33,7 +34,18 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 				while (query.GetNextEntry(&entry) == B_OK)
 				{
 					entry.GetPath(&path);
+					spath = path.Path();
 					printf("\t%s\n", path.Path());
+					if(spath.IFindFirst("/boot/common/lib"))
+					{
+						if(spath.IFindFirst("python"))
+						{
+							if(spath.IFindFirst("site-packages/docutils/core.py"))
+							{
+								printf("GOOD");
+							}
+						}
+					}
 				}
 			}
 			
