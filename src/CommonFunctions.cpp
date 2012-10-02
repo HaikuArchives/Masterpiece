@@ -113,7 +113,6 @@ void ExecutePublish(BMessage* tmpMsg, BString tmpData, BString tmpExt)
 	BString tmpOutPath;
 	BString pythonString;
 	BFile previewFile; // tmppub.tht file
-	//BString scriptFile; // python script file name
 	BString runPath; // rst2pdf execute path
 	BString dirPath; // user created directory path string
 	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath

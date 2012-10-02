@@ -25,29 +25,6 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			query.SetVolume(&bootVolume);
 			query.SetPredicate(predicate.String());
 			// /boot/common/lib/python2.6/site-packages/docutils/core.py
-			if(query.Fetch() == B_OK)
-			{
-				printf("Results of query \"%s\":\n", predicate.String());
-				entry_ref ref;
-				BEntry entry;
-				BPath path;
-				while (query.GetNextEntry(&entry) == B_OK)
-				{
-					entry.GetPath(&path);
-					spath = path.Path();
-					printf("\t%s\n", path.Path());
-					if(spath.IFindFirst("/boot/common/lib"))
-					{
-						if(spath.IFindFirst("python"))
-						{
-							if(spath.IFindFirst("site-packages/docutils/core.py"))
-							{
-								printf("GOOD");
-							}
-						}
-					}
-				}
-			}
 			
 			charWidth = cancelBtn->StringWidth("Select Current Directory");
 			btnrect = cancelBtn->Frame();
@@ -68,26 +45,36 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			parentview->AddChild(publishTypeMenuField);
 			SetMessage(pubMsg);
 			SetTarget(*target);
+			publishTypeMenu->FindItem("HTM")->SetEnabled(false);
+			publishTypeMenu->FindItem("ODT")->SetEnabled(false);
+			publishTypeMenu->FindItem("TEX")->SetEnabled(false);
+			publishTypeMenu->FindItem("XML")->SetEnabled(false);
+
 			// htm, odt, pdf, tex, xml
-			/*
-			if(!docutilscheck.Exists())
+			if(query.Fetch() == B_OK)
 			{
-				printf(" nope");
-				publishTypeMenu->FindItem("HTM")->SetEnabled(false);
-				publishTypeMenu->FindItem("ODT")->SetEnabled(false);
-				publishTypeMenu->FindItem("TEX")->SetEnabled(false);
-				publishTypeMenu->FindItem("XML")->SetEnabled(false);
-				if(!rst2pdfcheck.Exists()) publishTypeMenu->FindItem("PDF")->SetEnabled(false);
+				//printf("Results of query \"%s\":\n", predicate.String());
+				BEntry entry;
+				BPath path;
+
+				while (query.GetNextEntry(&entry) == B_OK)
+				{
+					entry.GetPath(&path);
+					spath = path.Path();
+					//printf("\t%s\n", path.Path());
+					spath.RemoveSet("123456789.");
+					if(spath == "/boot/common/lib/python/site-packages/docutils/corepy")
+					{
+						publishTypeMenu->FindItem("HTM")->SetEnabled(true);
+						publishTypeMenu->FindItem("ODT")->SetEnabled(true);
+						publishTypeMenu->FindItem("TEX")->SetEnabled(true);
+						publishTypeMenu->FindItem("XML")->SetEnabled(true);
+						//printf(spath);
+						break;
+					}
+				}
 			}
-			else
-			{
-				printf(" yup");
-			}
-			*/
-			//if(!CheckExistingScripts("htm")) publishTypeMenu->FindItem("HTM")->SetEnabled(false);
-			//if(!CheckExistingScripts("odt")) publishTypeMenu->FindItem("ODT")->SetEnabled(false);
-			//if(!CheckExistingScripts("tex")) publishTypeMenu->FindItem("TEX")->SetEnabled(false);
-			//if(!CheckExistingScripts("xml")) publishTypeMenu->FindItem("XML")->SetEnabled(false);
+			if(!rst2pdfcheck.Exists()) publishTypeMenu->FindItem("PDF")->SetEnabled(false);
 		}
 		
 		w->Unlock();
