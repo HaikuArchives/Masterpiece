@@ -32,7 +32,7 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->SetFontAndColor(&font, B_FONT_ALL, &darkBlack);
 	creditView->Insert("Masterpiece\n\n");
 	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
-	creditView->Insert("Copyright 2010 - 2011 Pasquale J. Rinaldi, Jr.\n");
+	creditView->Insert("Copyright 2010 - 2012 Pasquale J. Rinaldi, Jr.\n");
 	creditView->Insert("The copyright to the code is property of Pasquale J. Rinaldi, Jr.");
 	creditView->Insert(" or of the respective authors where expressly noted.\n");
 	creditView->Insert("Code that is written by me is licensed and distrubuted");
@@ -60,9 +60,15 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->SetFontAndColor(&font2, B_FONT_ALL, &darkBlack);
 	creditView->Insert("Docutils Project\n\n");
 	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
-	creditView->Insert("I would like to the developers of Docutils and David Goodger for all the hard work put into this project.");
+	creditView->Insert("I would like to thank the developers of Docutils and David Goodger for all the hard work put into this project.");
 	creditView->Insert(" This project forms the backbone of the publish functionality and wouldn't be possible without it.");
-	creditView->Insert(" The source code is available on docutils.sourceforge.net and released to the public domain..");
+	creditView->Insert(" The source code is available on docutils.sourceforge.net and released to the public domain.");
+	creditView->Insert("\n\n");
+	creditView->SetFontAndColor(&font2, B_FONT_ALL, &darkBlack);
+	creditView->Insert("Python Imaging Library\n\n");
+	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
+	creditView->Insert("I would like to thank the developers of the Python Imaging Library for all their hard work.");
+	creditView->Insert(" The source code is available on www.pythonware.com/products/pil/license.htm.");
 }
 void AboutWindow::MessageReceived(BMessage* msg)
 {
