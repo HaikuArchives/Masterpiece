@@ -14,7 +14,7 @@ class SqlTestCase :  public TestCase
 	
 	void testConstructor();
 	
-	//void testStringAssignment();
+	void testReturnValue();
 	
 	static Test *suite();
 
