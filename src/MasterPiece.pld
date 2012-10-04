@@ -55,6 +55,7 @@ SOURCEFILE=SaveIdea.cpp
 DEPENDENCY=/boot/home/Projects/masterpiece/SaveIdea.h|/boot/home/Projects/masterpiece/ErrorAlert.h|/boot/home/Projects/masterpiece/CommonFunctions.h|/boot/home/Projects/masterpiece/pyembed.h
 GROUP=Resources
 EXPANDGROUP=yes
+SOURCEFILE=cheatsheet.txt
 SOURCEFILE=Resources.rdef
 LOCALINCLUDE=boot/home/projects/MasterPiece/.
 SYSTEMINCLUDE=/boot/develop/headers/be

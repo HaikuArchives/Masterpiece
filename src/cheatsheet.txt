@@ -5,9 +5,9 @@
 :Author: David Goodger <goodger@python.org>
 :Date: $Date: 2011-06-17 12:50:48 +0200 (Fre, 17 Jun 2011) $
 :Revision: $Revision: 7056 $
-:Description: This is a "docinfo block", or obibliographic field list
+:Description: This is a "docinfo block", or bibliographic field list
 :Modified Date: 2011-11-22
-:Modified by Pasquale Rinaldi for inclusin in masterpiece reference
+:Modified by Pasquale Rinaldi for inclusion in help.
 
 Section Structure
 =================
