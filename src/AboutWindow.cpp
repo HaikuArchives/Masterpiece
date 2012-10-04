@@ -69,6 +69,13 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
 	creditView->Insert("I would like to thank the developers of the Python Imaging Library for all their hard work.");
 	creditView->Insert(" The source code is available on www.pythonware.com/products/pil/license.htm.");
+	creditView->Insert("\n\n");
+	creditView->SetFontAndColor(&font2, B_FONT_ALL, &darkBlack);
+	creditView->Insert("Rst2pdf\n\n");
+	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
+	creditView->Insert("I would like to thank the developers of Rst2pdf for all their hard work.  I would not have been able");
+	creditView->Insert(" convert rst2pdf without their hard work and efforts.  The source code and licensing is available on http://rst2pdf.ralsina.com.ar/handbook.html.");
+	creditView->Insert("\n\n");
 }
 void AboutWindow::MessageReceived(BMessage* msg)
 {
