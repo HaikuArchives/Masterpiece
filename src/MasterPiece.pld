@@ -68,6 +68,7 @@ LIBRARY=/boot/common/lib/liblayout.so
 LIBRARY=/boot/develop/lib/x86/libstdc++.r4.so
 LIBRARY=/boot/common/lib/libpython2.6.so
 LIBRARY=/boot/develop/lib/x86/libtracker.so
+LIBRARY=/boot/common/lib/libcppunit.a
 RUNARGS=
 CCDEBUG=yes
 CCPROFILE=no
