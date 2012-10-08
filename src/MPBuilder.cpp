@@ -21,6 +21,8 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	AddShortcut('d', B_COMMAND_KEY, new BMessage(DELETE_BUILDER_THT));
 	publishPanel = NULL;
 	BRect r = Bounds();
+	//r.right -= B_V_SCROLL_BAR_WIDTH;
+	r.bottom -= B_H_SCROLL_BAR_HEIGHT;
 	//r.bottom = r.bottom - 50;
 	availableThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 	orderedThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
@@ -35,7 +37,8 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	builderStatusBar = new BStringView(r, "statusbar", NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM);
 	builderStatusBar->SetFontSize(10.0);
 	builderMenuBar = new BuilderMenu(r);
-	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
+	backView = new BView(r, "backview", B_FOLLOW_ALL, B_WILL_DRAW);
+	//backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
 	deleteButton->SetEnabled(false);
@@ -56,7 +59,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 		.Add(new BScrollView("scroll_ordered", orderedThoughtListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 5, 2, 5, 10)
 		.Add(new BStringView(BRect(10, 10, 200, 30), NULL, "Quick Edit"), 0, 12)
 		.Add(new BScrollView("scroll_editor", builderTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 13, 10, 5)
-		.Add(builderStatusBar, 0, 19, 9, 1)
+		.Add(builderStatusBar, 0, 19)
 		.SetInsets(0, 0, 0, 0)
 	);
 	// new textlabel
