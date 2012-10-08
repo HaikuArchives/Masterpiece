@@ -35,6 +35,7 @@ public:
 		void				PopulateBuilderListViews(void);
 		void				ReorderOrderedListView(void);
 		void				ModifyOrderedItems(int curOrderNumber, int newOrderNumber);
+		void				SetStatusBar(const char* string);
 private:
 		BView*				backView;
 		BMessage			launcherMessage;
@@ -71,6 +72,8 @@ private:
 		float				yPos;
 		SqlObject*			sqlObject;
 		SqlObject*			sqlObject2;
+		BStringView*		builderStatusBar;
+		BuilderMenu*		builderMenuBar;
 };
 
 #endif

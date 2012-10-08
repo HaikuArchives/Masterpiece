@@ -16,7 +16,7 @@
 class BuilderMenu : public BMenuBar
 {
 public:
-						BuilderMenu();			// editor menu
+						BuilderMenu(BRect rect);// editor menu
 			BMenu*		helpMenu;				// help menu
 			BMenu*		publishMenu;			// publish as menu
 			BMenuItem*	newMasterMenuItem;		// new thought menu item

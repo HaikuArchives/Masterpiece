@@ -1,7 +1,7 @@
 #include "BuilderMenu.h"
 
-BuilderMenu::BuilderMenu()
-	:	BMenuBar(BRect(0, 0, 10, 20), "builderbar")
+BuilderMenu::BuilderMenu(BRect rect)
+	:	BMenuBar(rect, "builderbar")
 {
 	// initialize menu and menuitems
 	helpMenu = new BMenu("Help");
