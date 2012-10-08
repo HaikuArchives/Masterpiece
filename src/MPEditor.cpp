@@ -15,19 +15,55 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	// initialize controls
 	pubEditorPanel = NULL;
 	BRect r = Bounds();
+	r.bottom = 16;
+	editorMenuBar = new EditorMenu(r);
+	r.top = editorMenuBar->Frame().bottom + 1;
+	r.right -= B_V_SCROLL_BAR_WIDTH;
+	r.bottom -= B_H_SCROLL_BAR_HEIGHT;
 	r.bottom = r.bottom - 50;
 	editorTextView = new BTextView(r, NULL, r, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	r.top = r.bottom + 1;
+	r.bottom = Bounds().bottom;
+	editorStatusBar = new BStringView(r, "statusbar", NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM);
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
 	// gui layout builder
 	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
 	backView->AddChild(BGridLayoutBuilder()
-		.Add(new EditorMenu(), 0, 0)
-		.Add(new BScrollView("scroll_editor", editorTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 1)
-		.SetInsets(0, 0, 0, 0)
+		.Add(editorMenuBar, 0, 0)
+		.Add(new BScrollView("scroll_editor", editorTextView, B_FOLLOW_ALL, 0, false, true, B_FANCY_BORDER), 0, 1)
+		.Add(editorStatusBar, 0, 2)
 	);
+/*
+	BRect r(bounds);
 	
+	r.bottom = 16;
+	fMenuBar = new BMenuBar(r,"documentbar");
+	top->AddChild(fMenuBar);
+	
+	r = bounds;
+	r.top = fMenuBar->Frame().bottom + 1;
+	r.right -= B_V_SCROLL_BAR_WIDTH;
+	r.bottom -= B_H_SCROLL_BAR_HEIGHT;
+	
+	fProjectList = new ProjectList(fProject, r,"filelist",B_FOLLOW_ALL);
+	fProjectList->SetInvocationMessage(new BMessage(M_EDIT_FILE));
+	
+	BScrollView *scrollView = new BScrollView("scrollView",fProjectList,
+											B_FOLLOW_ALL,0,false,true);
+	top->AddChild(scrollView);
+	fProjectList->SetTarget(this);
+	
+	r.top = r.bottom + 1;
+	r.bottom = Bounds().bottom;
+	fStatusBar = new BStringView(r,"statusbar", NULL, B_FOLLOW_LEFT_RIGHT |
+														B_FOLLOW_BOTTOM);
+	top->AddChild(fStatusBar);
+	
+	fStatusBar->SetViewColor(235,235,235);
+	fStatusBar->SetFontSize(10.0);
+*/	
 	currentideaID = ideaID; // pass current idea id selected to editor window for use
 	if(currentideaID != -1) // if id has a real value
 	{

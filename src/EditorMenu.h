@@ -17,7 +17,7 @@
 class EditorMenu : public BMenuBar
 {
 public:
-						EditorMenu();			// editor menu
+						EditorMenu(BRect rect);	// editor menu
 			BMenu*		helpMenu;				// help menu
 			BMenuItem*	newThoughtMenuItem;		// new thought menu item
 			BMenuItem*	editThoughtMenuItem;	// edit thought menu item

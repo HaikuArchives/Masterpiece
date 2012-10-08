@@ -43,6 +43,8 @@ private:
 		float				yPos;
 		SqlObject*			sqlObject;
 		PublishFilePanel*	pubEditorPanel;
+		BStringView*		editorStatusBar;
+		EditorMenu*			editorMenuBar;
 };
 
 
