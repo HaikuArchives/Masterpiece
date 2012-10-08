@@ -15,11 +15,6 @@ Section titles are underlined or overlined & underlined.
 
 Body Elements
 =============
-Grid table:
 
-+---------------+---------------+
-| Paragraphs are flush-left,   | Literal block, preceded by "::":: |
-| sepearated by blank lines.   |                                   |
-|							   | Indented						   |
-|	Block quotes are indented.  | 								   |
-+
+Paragraphs are flush-left, separated by blank lines.
+
