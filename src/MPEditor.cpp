@@ -143,7 +143,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// write data to a file
 			fileExt = pubEditorPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
+			SetStatusBar("Working...");
 			ExecutePublish(msg, editorTextView->Text(), fileExt);
+			SetStatusBar("Publish Complete.");
 			break;
 		case MENU_HLP_THT: // open help topic window
 			printf("open help topic window");
@@ -204,4 +206,8 @@ bool MPEditor::QuitRequested(void)
 	launcherMessage.AddInt64("showLauncher", 1);
 	launcherMessenger.SendMessage(&launcherMessage);
 	return true;
+}
+void MPEditor::SetStatusBar(const char* string)
+{
+	editorStatusBar->SetText(string);
 }

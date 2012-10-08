@@ -19,6 +19,7 @@ public:
 							MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID);
 		void				MessageReceived(BMessage* msg);
 		bool				QuitRequested(void);
+		void				SetStatusBar(const char* string);
 private:
 		BView*				backView;
 		BMessage			launcherMessage;
