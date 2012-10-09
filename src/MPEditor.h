@@ -10,6 +10,8 @@
 #include "MarkupWindow.h"
 #include "AboutWindow.h"
 
+#include "/boot/develop/headers/posix/sys/wait.h"
+
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 #define UPDATE_TITLE		'uttl' // update title...
 
@@ -46,6 +48,9 @@ private:
 		PublishFilePanel*	pubEditorPanel;
 		BStringView*		editorStatusBar;
 		EditorMenu*			editorMenuBar;
+		pid_t				childpreview;
+		int					childreturnval;
+		int					childstatusval;
 };
 
 

@@ -42,35 +42,6 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 		.Add(editorStatusBar, 0, 2)
 	);
 	*/
-/*
-	BRect r(bounds);
-	
-	r.bottom = 16;
-	fMenuBar = new BMenuBar(r,"documentbar");
-	top->AddChild(fMenuBar);
-	
-	r = bounds;
-	r.top = fMenuBar->Frame().bottom + 1;
-	r.right -= B_V_SCROLL_BAR_WIDTH;
-	r.bottom -= B_H_SCROLL_BAR_HEIGHT;
-	
-	fProjectList = new ProjectList(fProject, r,"filelist",B_FOLLOW_ALL);
-	fProjectList->SetInvocationMessage(new BMessage(M_EDIT_FILE));
-	
-	BScrollView *scrollView = new BScrollView("scrollView",fProjectList,
-											B_FOLLOW_ALL,0,false,true);
-	top->AddChild(scrollView);
-	fProjectList->SetTarget(this);
-	
-	r.top = r.bottom + 1;
-	r.bottom = Bounds().bottom;
-	fStatusBar = new BStringView(r,"statusbar", NULL, B_FOLLOW_LEFT_RIGHT |
-														B_FOLLOW_BOTTOM);
-	top->AddChild(fStatusBar);
-	
-	fStatusBar->SetViewColor(235,235,235);
-	fStatusBar->SetFontSize(10.0);
-*/	
 	currentideaID = ideaID; // pass current idea id selected to editor window for use
 	if(currentideaID != -1) // if id has a real value
 	{
@@ -138,14 +109,33 @@ void MPEditor::MessageReceived(BMessage* msg)
 				pubEditorPanel = new PublishFilePanel(new BMessenger(this));
 			}
 			pubEditorPanel->Show();
+			SetStatusBar("Working...");			
 			break;
 		case PUBLISH_TYPE:
 			// write data to a file
 			fileExt = pubEditorPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
-			SetStatusBar("Working...");
-			ExecutePublish(msg, editorTextView->Text(), fileExt);
-			SetStatusBar("Publish Complete.");
+			childpreview = fork();
+			if(childpreview >= 0) // fork worked
+			{
+				if(childpreview == 0) // child process
+				{
+					ExecutePublish(msg, editorTextView->Text(), fileExt);
+					exit(0);
+				}
+				else // parent
+				{
+					wait(&childstatusval);
+					SetStatusBar("Publish Completed Successfully");
+				}
+			}
+			else // fork failed with -1
+			{
+				perror("fork");
+			}
+			//SetStatusBar("Working...");
+			//ExecutePublish(msg, editorTextView->Text(), fileExt);
+			//SetStatusBar("Publish Complete.");
 			break;
 		case MENU_HLP_THT: // open help topic window
 			printf("open help topic window");
