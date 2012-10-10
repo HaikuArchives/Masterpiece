@@ -48,9 +48,8 @@ private:
 		PublishFilePanel*	pubEditorPanel;
 		BStringView*		editorStatusBar;
 		EditorMenu*			editorMenuBar;
-		pid_t				childpreview;
-		int					childreturnval;
-		int					childstatusval;
+		pid_t				childpid;
+		int					childstatus;
 };
 
 

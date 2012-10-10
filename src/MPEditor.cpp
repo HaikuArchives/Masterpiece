@@ -101,7 +101,27 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
-			ExecutePreview(editorTextView->Text());
+			SetStatusBar("Previewing File");
+			childpid = fork();
+			if(childpid >= 0) // fork worked
+			{
+				if(childpid == 0) // child process
+				{
+					ExecutePreview(editorTextView->Text());
+					exit(0);
+				}
+				else // parent
+				{
+					wait(&childstatus);
+					SetStatusBar("Preview Completed Successfully")
+				}
+			}
+			else // fork failed with -1
+			{
+				// need to generate real error here.
+				perror("fork")
+			}
+			//ExecutePreview(editorTextView->Text());
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
 			if(!pubEditorPanel)
@@ -109,33 +129,31 @@ void MPEditor::MessageReceived(BMessage* msg)
 				pubEditorPanel = new PublishFilePanel(new BMessenger(this));
 			}
 			pubEditorPanel->Show();
-			SetStatusBar("Working...");			
+			SetStatusBar("Publishing File...");			
 			break;
 		case PUBLISH_TYPE:
 			// write data to a file
 			fileExt = pubEditorPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
-			childpreview = fork();
-			if(childpreview >= 0) // fork worked
+			childpid = fork();
+			if(childpid >= 0) // fork worked
 			{
-				if(childpreview == 0) // child process
+				if(childpid == 0) // child process
 				{
 					ExecutePublish(msg, editorTextView->Text(), fileExt);
 					exit(0);
 				}
 				else // parent
 				{
-					wait(&childstatusval);
+					wait(&childstatus);
 					SetStatusBar("Publish Completed Successfully");
 				}
 			}
 			else // fork failed with -1
 			{
+				// need to generate real error here
 				perror("fork");
 			}
-			//SetStatusBar("Working...");
-			//ExecutePublish(msg, editorTextView->Text(), fileExt);
-			//SetStatusBar("Publish Complete.");
 			break;
 		case MENU_HLP_THT: // open help topic window
 			printf("open help topic window");
