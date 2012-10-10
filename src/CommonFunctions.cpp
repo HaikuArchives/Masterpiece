@@ -65,9 +65,11 @@ void ExecutePreview(BString tmpData)
 	BString pythonString;
 	BFile previewFile; // tmppub.tht file
 	ErrorAlert* eAlert;
+	/*
 	//statusMessage.MakeEmpty();
 	//statusMessage.AddString("statusstring", "Generating Preview");
 	//statusMessenger.SendMessage(&statusMessage);
+	*/
 	/*
 	childpid = fork();
 	if(childpid >= 0) // fork worked
