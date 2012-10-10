@@ -101,7 +101,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
-			SetStatusBar("Previewing File");
+			SetStatusBar("Generating Preview...");
 			childpid = fork();
 			if(childpid >= 0) // fork worked
 			{
@@ -113,13 +113,13 @@ void MPEditor::MessageReceived(BMessage* msg)
 				else // parent
 				{
 					wait(&childstatus);
-					SetStatusBar("Preview Completed Successfully")
+					SetStatusBar("Preview Completed Successfully");
 				}
 			}
 			else // fork failed with -1
 			{
 				// need to generate real error here.
-				perror("fork")
+				perror("fork");
 			}
 			//ExecutePreview(editorTextView->Text());
 			break;
