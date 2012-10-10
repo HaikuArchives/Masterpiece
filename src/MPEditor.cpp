@@ -101,7 +101,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
-			SetStatusBar("Generating Preview...");
+			//SetStatusBar("Generating Preview...");
+			/*
 			childpid = fork();
 			if(childpid >= 0) // fork worked
 			{
@@ -121,7 +122,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 				// need to generate real error here.
 				perror("fork");
 			}
-			//ExecutePreview(editorTextView->Text());
+			*/
+			ExecutePreview(editorTextView->Text());
+			//SetStatusBar("Preview Completed Successfully");
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
 			if(!pubEditorPanel)
@@ -129,7 +132,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				pubEditorPanel = new PublishFilePanel(new BMessenger(this));
 			}
 			pubEditorPanel->Show();
-			SetStatusBar("Publishing File...");			
+			SetStatusBar("Publishing File...");
 			break;
 		case PUBLISH_TYPE:
 			// write data to a file
@@ -200,6 +203,19 @@ void MPEditor::MessageReceived(BMessage* msg)
 				eAlert->Launch();
 			}
 			break;
+		/*
+		case SET_STATUS: // get message and update statusbar
+			if(msg->FindString("statusstring", &tmpStatus) == B_OK)
+			{
+				SetStatusBar(tmpStatus);
+			}
+			else
+			{
+				eAlert = new ErrorAlert("3.1 Editor Error: Message not found.");
+				eAlert->Launch();
+			}
+			break;
+		*/
 		default:
 		{
 			BWindow::MessageReceived(msg);

@@ -31,6 +31,8 @@
 #include <View.h>
 #include <Window.h>
 
+#define SET_STATUS	'stst' // set status for builder/editor window
+
 void	DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
 void	TmpCleanUp(BString tmpExt);
 void	ExecutePreview(BString tmpData);

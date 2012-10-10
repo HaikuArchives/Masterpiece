@@ -10,10 +10,11 @@
 #include "MarkupWindow.h"
 #include "AboutWindow.h"
 
-#include "/boot/develop/headers/posix/sys/wait.h"
+#include <sys/wait.h>
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 #define UPDATE_TITLE		'uttl' // update title...
+#define SET_STATUS			'stst' // set status for builder editor window
 
 class MPEditor : public BWindow
 {

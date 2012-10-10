@@ -52,6 +52,10 @@ void TmpCleanUp(BString tmpExt)
 }
 void ExecutePreview(BString tmpData)
 {
+	//BMessage statusMessage;
+	//BMessenger statusMessenger;
+	//pid_t childpid;
+	//int	childstatus;
 	int argc = 1;
 	char* argvv = "ladida";
 	char** argv = &argvv;
@@ -61,6 +65,65 @@ void ExecutePreview(BString tmpData)
 	BString pythonString;
 	BFile previewFile; // tmppub.tht file
 	ErrorAlert* eAlert;
+	//statusMessage.MakeEmpty();
+	//statusMessage.AddString("statusstring", "Generating Preview");
+	//statusMessenger.SendMessage(&statusMessage);
+	/*
+	childpid = fork();
+	if(childpid >= 0) // fork worked
+	{
+		if(childpid == 0) // child process
+		{
+			tmpInPath = GetAppDirPath();
+			tmpInPath += "/tmp.tht";
+			tmpOutPath = GetAppDirPath();
+			tmpOutPath += "/tmp.html";
+			pythonString = "output = publish_file(source_path='";
+			pythonString += tmpInPath;
+			pythonString += "', destination_path='";
+			pythonString += tmpOutPath;
+			pythonString += "', writer_name='html')";
+			previewFile.SetTo(tmpInPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+			if(previewFile.InitCheck() != B_OK)
+			{
+				eAlert = new ErrorAlert("4.2 Builder Error: Couldn't Write TMP File.");
+				eAlert->Launch();
+				//printf("Couldn't write file\n");
+			}
+			previewFile.Write(tmpData, strlen(tmpData));
+			previewFile.Unset();
+			try
+			{
+				py.run_string("from docutils.core import publish_file");
+				py.run_string(pythonString.String());
+				//py.run_file("preview.py");
+			}
+			catch(Python_exception ex)
+			{
+				eAlert = new ErrorAlert("4.3 Builder Error: Python Issue - ", ex.what());
+				eAlert->Launch();
+			}
+			
+			BString tmpPath = "/boot/apps/WebPositive file://";
+			tmpPath += GetAppDirPath();
+			tmpPath += "/tmp.html &";
+			system(tmpPath);
+			exit(0);
+		}
+		else // parent
+		{
+			wait(&childstatus);
+			//statusMessage.MakeEmpty();
+			//statusMessage.AddString("statusstring", "Preview Completed Successfully");
+			//statusMessenger.SendMessage(&statusMessage);
+		}
+	}
+	else // fork failed with -1
+	{
+		// need to generate real error here.
+		perror("Fork");
+	}
+	*/
 	tmpInPath = GetAppDirPath();
 	tmpInPath += "/tmp.tht";
 	tmpOutPath = GetAppDirPath();
