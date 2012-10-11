@@ -1,5 +1,7 @@
 #include "MPEditor.h"
 
+using namespace pyembed;
+
 MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID)
 	:	BWindow(BRect(100, 100, 900, 700), windowTitle, B_DOCUMENT_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), launcherMessage(msg), launcherMessenger(msgr)
 {
@@ -58,8 +60,9 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 void MPEditor::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
-	BString fileExt; // file extension of converted file
 	thread_id previewThread;
+	thread_id publishThread;
+	//int32 publishCode = 63;
 	
 	switch(msg->what)
 	{
@@ -102,49 +105,13 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
-			//SetStatusBar("Generating Preview...");
-			/*
-			childpid = fork();
-			if(childpid >= 0) // fork worked
-			{
-				if(childpid == 0) // child process
-				{
-					ExecutePreview(editorTextView->Text());
-					exit(0);
-				}
-				else // parent
-				{
-					wait(&childstatus);
-					SetStatusBar("Preview Completed Successfully");
-				}
-			}
-			else // fork failed with -1
-			{
-				// need to generate real error here.
-				perror("fork");
-			}
-			*/
 			previewThread = spawn_thread(PreviewThread, "preview thread", B_NORMAL_PRIORITY, (void*)this);
 			if(previewThread >= 0) // successful
 			{
-				SetStatusBar("Start");
+				SetStatusBar("Generating Preview...");
 				UpdateIfNeeded();
 				resume_thread(previewThread);
 			}
-			/*
-			thread_id backupThread = spawn_thread(BackupThread,"project backup thread",
-												B_NORMAL_PRIORITY, this);
-			if (backupThread >= 0)
-			{
-				fStatusBar->SetText(TR("Backing up project"));
-				UpdateIfNeeded();
-				
-				SetMenuLock(true);
-				resume_thread(backupThread);
-			}
-			*/
-			//ExecutePreview(editorTextView->Text());
-			//SetStatusBar("Preview Completed Successfully");
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
 			if(!pubEditorPanel)
@@ -152,35 +119,23 @@ void MPEditor::MessageReceived(BMessage* msg)
 				pubEditorPanel = new PublishFilePanel(new BMessenger(this));
 			}
 			pubEditorPanel->Show();
-			SetStatusBar("Publishing File...");
+			//SetStatusBar("Publishing File...");
 			break;
 		case PUBLISH_TYPE:
 			// write data to a file
 			fileExt = pubEditorPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
-			ExecutePublish(msg, editorTextView->Text(), fileExt);
-			SetStatusBar("Publish Completed Successfully");
-			/*
-			childpid = fork();
-			if(childpid >= 0) // fork worked
+			editorMessage = msg;
+			publishThread = spawn_thread(PublishThread, "publish thread", B_NORMAL_PRIORITY, (void*)this);
+			//send_data(publishThread, publishCode, (void*) msg, strlen(msg));
+			if(publishThread >= 0) // successful
 			{
-				if(childpid == 0) // child process
-				{
-					ExecutePublish(msg, editorTextView->Text(), fileExt);
-					exit(0);
-				}
-				else // parent
-				{
-					wait(&childstatus);
-					SetStatusBar("Publish Completed Successfully");
-				}
+				SetStatusBar("Publishing File...");
+				UpdateIfNeeded();
+				resume_thread(publishThread);
 			}
-			else // fork failed with -1
-			{
-				// need to generate real error here
-				perror("fork");
-			}
-			*/
+			//ExecutePublish(msg, editorTextView->Text(), fileExt);
+			//SetStatusBar("Publish Completed Successfully");
 			break;
 		case MENU_HLP_THT: // open help topic window
 			printf("open help topic window");
@@ -227,19 +182,6 @@ void MPEditor::MessageReceived(BMessage* msg)
 				eAlert->Launch();
 			}
 			break;
-		/*
-		case SET_STATUS: // get message and update statusbar
-			if(msg->FindString("statusstring", &tmpStatus) == B_OK)
-			{
-				SetStatusBar(tmpStatus);
-			}
-			else
-			{
-				eAlert = new ErrorAlert("3.1 Editor Error: Message not found.");
-				eAlert->Launch();
-			}
-			break;
-		*/
 		default:
 		{
 			BWindow::MessageReceived(msg);
@@ -259,26 +201,6 @@ void MPEditor::SetStatusBar(const char* string)
 {
 	editorStatusBar->SetText(string);
 }
-/*
- * Spawn thread reference from paladin.  can use this to test and see if it works...
- * Will work on tonight if I get a chance and see how it goes.
- */
-/*
-		case M_BACKUP_PROJECT:
-		{
-			thread_id backupThread = spawn_thread(BackupThread,"project backup thread",
-												B_NORMAL_PRIORITY, this);
-			if (backupThread >= 0)
-			{
-				fStatusBar->SetText(TR("Backing up project"));
-				UpdateIfNeeded();
-				
-				SetMenuLock(true);
-				resume_thread(backupThread);
-			}
-			break;
-		}
-*/
 int32 MPEditor::PreviewThread(void* data)
 {
 	MPEditor* parent = (MPEditor*)data;
@@ -286,39 +208,201 @@ int32 MPEditor::PreviewThread(void* data)
 	ExecutePreview(parent->editorTextView->Text());
 
 	parent->Lock();
-	parent->SetStatusBar("Test");
+	parent->SetStatusBar("Preview Completed Successfully");
 	parent->Unlock();
 	
 	return 0;
 }
-/*
-int32
-ProjectWindow::BackupThread(void *data)
+int32 MPEditor::PublishThread(void* data)
 {
-	ProjectWindow *parent = (ProjectWindow*)data;
-	Project *proj = parent->fProject;
+	MPEditor* parent = (MPEditor*) data;
+	ErrorAlert* eAlert;
+	const char* name;
+	BEntry entry;
+	BPath path;
+	entry_ref ref;
+	int argc = 1;
+	char* argvv = "ladida";
+	char** argv = &argvv;
+	Python py(argc, argv);
+	BString publishPath; // user generated filename
+	BString tmpInPath; // string path of tmppub.tht file, then string path of tmppub.ext
+	BString tmpOutPath;
+	BString pythonString;
+	BFile previewFile; // tmppub.tht file
+	BString runPath; // rst2pdf execute path
+	BString dirPath; // user created directory path string
+	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
+	BEntry removeTmpFile; // tmp file that information that will be removed
+	BEntry removeOldFile; // tmp final file that will be removed from appdir
+	BDirectory publishDirectory; // user generated directory
+	BString oldFilePath; // path to the renamed tmpfile
+	BString newFilePath; // path to the actual saved file
+	status_t err; // auto errors
+	tmpInPath = GetAppDirPath();
+	tmpInPath += "/tmppub.tht";
+	tmpOutPath = GetAppDirPath();
+	tmpOutPath += "/tmppub.";
+	tmpOutPath += parent->fileExt;
+	pythonString = "output = publish_file(source_path='";
+	pythonString += tmpInPath;
+	pythonString += "', destination_path='";
+	pythonString += tmpOutPath;
+	pythonString += "', writer_name='";
+	if(parent->fileExt == "odt") pythonString += "odf_odt')";
+	else if(parent->fileExt == "tex") pythonString += "latex')";
+	else if(parent->fileExt == "htm") pythonString += "html')";
+	else if(parent->fileExt == "xml") pythonString += "xml')";
+	else if(parent->fileExt == "pdf")
+	{
+		// do nothing here.  there is no pythonstring to convert to pdf.
+		// but I want to account for any abnormalities that may arise
+		// if the wrong filetype is somehow selected.
+	}
+	else
+	{
+		eAlert = new ErrorAlert("4.3 Publish File Type Error: Invalid filetype.");
+		eAlert->Launch();
+	}
+	removeTmpFile.SetTo(tmpInPath);
+	previewFile.SetTo(tmpInPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+	if(previewFile.InitCheck() != B_OK)
+	{
+		eAlert = new ErrorAlert("3.4 Editor Error: Couldn't Create Initial Publish File.");
+		eAlert->Launch();
+	}
+	previewFile.Write(parent->editorTextView->Text(), strlen(parent->editorTextView->Text()));
+	previewFile.Unset();
+
+	if(parent->fileExt == "pdf")
+	{
+		runPath = "/boot/common/bin/rst2pdf ";
+		runPath += GetAppDirPath();
+		runPath += "/tmppub.tht -o ";
+		runPath += GetAppDirPath();
+		runPath += "/tmppub.pdf";
+		system(runPath);
+	}
+	else // not PDF run
+	{
+		try
+		{
+			py.run_string("from docutils.core import publish_file");
+			py.run_string(pythonString.String());
+		}
+		catch(Python_exception ex)
+		{
+			eAlert = new ErrorAlert("3.5 Editor Error: Python Issue - ", ex.what());
+			eAlert->Launch();
+			err = removeTmpFile.Remove();
+			if(err != B_OK)
+			{
+				eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+				eAlert->Launch();
+			}
+		}
+	}
 	
-	char timestamp[32];
-	time_t t = real_time_clock();
-	strftime(timestamp,32,"_%Y-%m-%d-%H%M%S",localtime(&t));
-	
-	BPath folder(proj->GetPath().GetFolder());
-	BPath folderparent;
-	folder.GetParent(&folderparent);
-	
-	BString command = "cd '";
-	command << folderparent.Path() << "'; ";
-	command << "zip -9 -r -y '"
-			<< gBackupPath.GetFullPath() << "/"
-			<< proj->GetName() << timestamp << "' '"
-			<< folder.Leaf() << "' -x *.o";
-	
-	system(command.String());
-	
+	// now i need to get the finished file and mv/rename it to the correct location
+	if(parent->editorMessage->FindString("name", &name) == B_OK)
+	{
+		printf("default save message: %s\n", name);
+	}
+	else
+	{
+		printf("no string name\n\n");
+	}
+	if(parent->editorMessage->FindRef("directory", &ref) == B_OK)
+	{
+		tmpInPath = GetAppDirPath();
+		tmpInPath += "/tmppub.";
+		tmpInPath += parent->fileExt;
+		printf(" Current tmppath: ");
+		printf(tmpInPath);
+		printf("\n");
+		publishPath = name;
+		publishPath.Append(".");
+		publishPath.Append(parent->fileExt);
+		publishFile.SetTo(tmpInPath);
+		publishFile.Rename(publishPath, true);
+		oldFilePath = GetAppDirPath();
+		oldFilePath += "/tmppub";
+		oldFilePath += ".";
+		oldFilePath += parent->fileExt;
+		entry.SetTo(&ref); // directory where the file is to be saved as defined by user
+		entry.SetTo(&ref);
+		entry.GetPath(&path);
+		dirPath = path.Path();
+		dirPath += "/";				
+		newFilePath = dirPath;
+		newFilePath += name;
+		newFilePath += ".";
+		newFilePath += parent->fileExt;
+		printf("old file: %s\n", oldFilePath.String());
+		printf("new file: %s\n", newFilePath.String());
+		if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
+		{
+			err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
+			if(err != B_OK)
+			{
+				if(err == B_CROSS_DEVICE_LINK)
+				{
+					BFile oldFile;
+					BFile newFile;
+					if(oldFile.SetTo(oldFilePath, B_READ_ONLY) == B_OK)
+					{
+						if(newFile.SetTo(newFilePath, B_WRITE_ONLY | B_CREATE_FILE | B_ERASE_FILE) == B_OK)
+						{
+							off_t length;
+							char* text;
+							oldFile.GetSize(&length);
+							text = (char*) malloc(length);
+							if(text && oldFile.Read(text, length) >= B_OK) // write text to the newfile
+							{
+								err = newFile.Write(text, length);
+								if(err >= B_OK)
+								{
+									eAlert = new ErrorAlert("3.13 Editor Error: File could not be written due to: ", strerror(err));
+									eAlert->Launch();		
+								}
+								else
+								{
+									removeOldFile.SetTo(oldFilePath);
+									err = removeOldFile.Remove();
+									if(err != B_OK)
+									{
+										eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+										eAlert->Launch();
+									}
+								}
+							}
+							free(text);
+						}
+					}
+				}
+				else
+				{
+					eAlert = new ErrorAlert("3.15 Editor Error: File could not be written due to: ", strerror(err));
+					eAlert->Launch();		
+				}
+			}
+		}
+		else
+		{
+			eAlert = new ErrorAlert("3.6 Editor Error: Directory Set Failed");
+			eAlert->Launch();
+		}
+	}
+	// clean up the temporary files...
+	err = removeTmpFile.Remove();
+	if(err != B_OK)
+	{
+		eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+		eAlert->Launch();
+	}
 	parent->Lock();
-	parent->fStatusBar->SetText("");
-	parent->SetMenuLock(false);
+	parent->SetStatusBar("Publish Completed Successfully");
 	parent->Unlock();
 	
 	return 0;
-}*/
+}

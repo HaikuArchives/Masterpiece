@@ -185,7 +185,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			fileExt = publishPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
-			ExecutePublish(msg, mpData, fileExt);
+			//ExecutePublish(msg, mpData, fileExt);
 			break;
 		case MENU_HLP_MP: // help topics
 			break;

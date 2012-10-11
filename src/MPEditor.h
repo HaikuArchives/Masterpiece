@@ -14,7 +14,6 @@
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 #define UPDATE_TITLE		'uttl' // update title...
-#define SET_STATUS			'stst' // set status for builder editor window
 
 class MPEditor : public BWindow
 {
@@ -49,9 +48,11 @@ private:
 		PublishFilePanel*	pubEditorPanel;
 		BStringView*		editorStatusBar;
 		EditorMenu*			editorMenuBar;
-		pid_t				childpid;
-		int					childstatus;
 		static int32		PreviewThread(void* data);
+		static int32		PublishThread(void* data);
+		BString				fileExt; // file extension of converted file
+		BMessage*			editorMessage;
+		
 };
 
 
