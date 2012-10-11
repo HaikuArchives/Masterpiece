@@ -49,7 +49,6 @@ private:
 		static int32		PreviewThread(void* data); // preview thread
 		static int32		PublishThread(void* data); // publish thread
 		BString				fileExt; // file extension of converted file
-		//BMessage*			editorMessage; // local msg available to mpeditor
 		entry_ref			pubRef; // publish ref entry value
 		BString				pubName;  // publish file name
 		
