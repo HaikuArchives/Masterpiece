@@ -126,6 +126,22 @@ void MPEditor::MessageReceived(BMessage* msg)
 			fileExt = pubEditorPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
 			editorMessage = msg;
+			if(msg->FindString("name", &pubName) == B_OK)
+			{
+				printf("default save message: %s\n", pubName);
+			}
+			else
+			{
+				printf("no string name\n\n");
+			}
+			if(msg->FindRef("directory", &pubRef) == B_OK)
+			{
+				printf("ref entry found\n");
+			}
+			else
+			{
+				printf("ref entry not found\n");
+			}
 			publishThread = spawn_thread(PublishThread, "publish thread", B_NORMAL_PRIORITY, (void*)this);
 			//send_data(publishThread, publishCode, (void*) msg, strlen(msg));
 			if(publishThread >= 0) // successful
@@ -217,10 +233,8 @@ int32 MPEditor::PublishThread(void* data)
 {
 	MPEditor* parent = (MPEditor*) data;
 	ErrorAlert* eAlert;
-	const char* name;
 	BEntry entry;
 	BPath path;
-	entry_ref ref;
 	int argc = 1;
 	char* argvv = "ladida";
 	char** argv = &argvv;
@@ -303,96 +317,85 @@ int32 MPEditor::PublishThread(void* data)
 		}
 	}
 	
-	// now i need to get the finished file and mv/rename it to the correct location
-	if(parent->editorMessage->FindString("name", &name) == B_OK)
+	tmpInPath = GetAppDirPath();
+	tmpInPath += "/tmppub.";
+	tmpInPath += parent->fileExt;
+	printf(" Current tmppath: ");
+	printf(tmpInPath);
+	printf("\n");
+	publishPath = parent->pubName;
+	publishPath.Append(".");
+	publishPath.Append(parent->fileExt);
+	publishFile.SetTo(tmpInPath);
+	publishFile.Rename(publishPath, true);
+	oldFilePath = GetAppDirPath();
+	oldFilePath += "/tmppub";
+	oldFilePath += ".";
+	oldFilePath += parent->fileExt;
+	entry.SetTo(&(parent->pubRef)); // directory where the file is to be saved as defined by user
+	entry.SetTo(&(parent->pubRef));
+	entry.GetPath(&path);
+	dirPath = path.Path();
+	dirPath += "/";				
+	newFilePath = dirPath;
+	newFilePath += parent->pubName;
+	newFilePath += ".";
+	newFilePath += parent->fileExt;
+	printf("old file: %s\n", oldFilePath.String());
+	printf("new file: %s\n", newFilePath.String());
+	if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
 	{
-		printf("default save message: %s\n", name);
+		err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
+		if(err != B_OK)
+		{
+			if(err == B_CROSS_DEVICE_LINK)
+			{
+				BFile oldFile;
+				BFile newFile;
+				if(oldFile.SetTo(oldFilePath, B_READ_ONLY) == B_OK)
+				{
+					if(newFile.SetTo(newFilePath, B_WRITE_ONLY | B_CREATE_FILE | B_ERASE_FILE) == B_OK)
+					{
+						off_t length;
+						char* text;
+						oldFile.GetSize(&length);
+						text = (char*) malloc(length);
+						if(text && oldFile.Read(text, length) >= B_OK) // write text to the newfile
+						{
+							err = newFile.Write(text, length);
+							if(err >= B_OK)
+							{
+								eAlert = new ErrorAlert("3.13 Editor Error: File could not be written due to: ", strerror(err));
+								eAlert->Launch();		
+							}
+							else
+							{
+								removeOldFile.SetTo(oldFilePath);
+								err = removeOldFile.Remove();
+								if(err != B_OK)
+								{
+									eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+									eAlert->Launch();
+								}
+							}
+						}
+						free(text);
+					}
+				}
+			}
+			else
+			{
+				eAlert = new ErrorAlert("3.15 Editor Error: File could not be written due to: ", strerror(err));
+				eAlert->Launch();		
+			}
+		}
 	}
 	else
 	{
-		printf("no string name\n\n");
+		eAlert = new ErrorAlert("3.6 Editor Error: Directory Set Failed");
+		eAlert->Launch();
 	}
-	if(parent->editorMessage->FindRef("directory", &ref) == B_OK)
-	{
-		tmpInPath = GetAppDirPath();
-		tmpInPath += "/tmppub.";
-		tmpInPath += parent->fileExt;
-		printf(" Current tmppath: ");
-		printf(tmpInPath);
-		printf("\n");
-		publishPath = name;
-		publishPath.Append(".");
-		publishPath.Append(parent->fileExt);
-		publishFile.SetTo(tmpInPath);
-		publishFile.Rename(publishPath, true);
-		oldFilePath = GetAppDirPath();
-		oldFilePath += "/tmppub";
-		oldFilePath += ".";
-		oldFilePath += parent->fileExt;
-		entry.SetTo(&ref); // directory where the file is to be saved as defined by user
-		entry.SetTo(&ref);
-		entry.GetPath(&path);
-		dirPath = path.Path();
-		dirPath += "/";				
-		newFilePath = dirPath;
-		newFilePath += name;
-		newFilePath += ".";
-		newFilePath += parent->fileExt;
-		printf("old file: %s\n", oldFilePath.String());
-		printf("new file: %s\n", newFilePath.String());
-		if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
-		{
-			err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
-			if(err != B_OK)
-			{
-				if(err == B_CROSS_DEVICE_LINK)
-				{
-					BFile oldFile;
-					BFile newFile;
-					if(oldFile.SetTo(oldFilePath, B_READ_ONLY) == B_OK)
-					{
-						if(newFile.SetTo(newFilePath, B_WRITE_ONLY | B_CREATE_FILE | B_ERASE_FILE) == B_OK)
-						{
-							off_t length;
-							char* text;
-							oldFile.GetSize(&length);
-							text = (char*) malloc(length);
-							if(text && oldFile.Read(text, length) >= B_OK) // write text to the newfile
-							{
-								err = newFile.Write(text, length);
-								if(err >= B_OK)
-								{
-									eAlert = new ErrorAlert("3.13 Editor Error: File could not be written due to: ", strerror(err));
-									eAlert->Launch();		
-								}
-								else
-								{
-									removeOldFile.SetTo(oldFilePath);
-									err = removeOldFile.Remove();
-									if(err != B_OK)
-									{
-										eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
-										eAlert->Launch();
-									}
-								}
-							}
-							free(text);
-						}
-					}
-				}
-				else
-				{
-					eAlert = new ErrorAlert("3.15 Editor Error: File could not be written due to: ", strerror(err));
-					eAlert->Launch();		
-				}
-			}
-		}
-		else
-		{
-			eAlert = new ErrorAlert("3.6 Editor Error: Directory Set Failed");
-			eAlert->Launch();
-		}
-	}
+
 	// clean up the temporary files...
 	err = removeTmpFile.Remove();
 	if(err != B_OK)
