@@ -53,8 +53,7 @@ private:
 		BString				fileExt; // file extension of converted file
 		BMessage*			editorMessage;
 		entry_ref			pubRef; // publish ref entry value
-		const char*			pubName;  // publish file name
-		BString				pubNameString; // publish file name string
+		BString				pubName;  // publish file name
 		
 };
 

@@ -16,7 +16,6 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	AddShortcut('a', B_COMMAND_KEY, new BMessage(MENU_ABT_THT));
 	// initialize controls
 	pubEditorPanel = NULL;
-	pubName = NULL;
 	BRect r = Bounds();
 	r.bottom = 16;
 	editorMenuBar = new EditorMenu(r);
@@ -63,7 +62,6 @@ void MPEditor::MessageReceived(BMessage* msg)
 	BRect r(Bounds());
 	thread_id previewThread;
 	thread_id publishThread;
-	//int32 publishCode = 63;
 	
 	switch(msg->what)
 	{
@@ -129,32 +127,30 @@ void MPEditor::MessageReceived(BMessage* msg)
 			editorMessage = msg;
 			if(msg->FindString("name", &pubName) == B_OK)
 			{
-				pubNameString = pubName;
-				printf("default save message: %s\n", pubName);
-				printf("default name string: %s\n\n", pubNameString.String());
+				printf("default save message: %s\n", pubName.String());
 			}
 			else
 			{
+				eAlert = new ErrorAlert("3.1 Editor Error: Message not found."); // message variable not found
+				eAlert->Launch();
 				printf("no string name\n\n");
 			}
 			if(msg->FindRef("directory", &pubRef) == B_OK)
 			{
-				printf("ref entry found\n");
 			}
 			else
 			{
+				eAlert = new ErrorAlert("3.1 Editor Error: Directory Reference not found."); // message variable not found
+				eAlert->Launch();
 				printf("ref entry not found\n");
 			}
 			publishThread = spawn_thread(PublishThread, "publish thread", B_NORMAL_PRIORITY, (void*)this);
-			//send_data(publishThread, publishCode, (void*) msg, strlen(msg));
 			if(publishThread >= 0) // successful
 			{
 				SetStatusBar("Publishing File...");
 				UpdateIfNeeded();
 				resume_thread(publishThread);
 			}
-			//ExecutePublish(msg, editorTextView->Text(), fileExt);
-			//SetStatusBar("Publish Completed Successfully");
 			break;
 		case MENU_HLP_THT: // open help topic window
 			printf("open help topic window");
@@ -326,8 +322,8 @@ int32 MPEditor::PublishThread(void* data)
 	printf(" Current tmppath: ");
 	printf(tmpInPath);
 	printf("\n");
-	printf("Current file name: %s\n\n", parent->pubNameString.String());
-	publishPath = parent->pubNameString.String();
+	printf("Current file name: %s\n\n", parent->pubName.String());
+	publishPath = parent->pubName;
 	publishPath.Append(".");
 	publishPath.Append(parent->fileExt);
 	publishFile.SetTo(tmpInPath);
@@ -342,7 +338,7 @@ int32 MPEditor::PublishThread(void* data)
 	dirPath = path.Path();
 	dirPath += "/";				
 	newFilePath = dirPath;
-	newFilePath += parent->pubNameString.String();
+	newFilePath += parent->pubName;
 	newFilePath += ".";
 	newFilePath += parent->fileExt;
 	printf("old file: %s\n", oldFilePath.String());
