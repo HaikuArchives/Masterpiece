@@ -16,6 +16,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	AddShortcut('a', B_COMMAND_KEY, new BMessage(MENU_ABT_THT));
 	// initialize controls
 	pubEditorPanel = NULL;
+	pubName = NULL;
 	BRect r = Bounds();
 	r.bottom = 16;
 	editorMenuBar = new EditorMenu(r);
@@ -128,7 +129,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 			editorMessage = msg;
 			if(msg->FindString("name", &pubName) == B_OK)
 			{
+				pubNameString = pubName;
 				printf("default save message: %s\n", pubName);
+				printf("default name string: %s\n\n", pubNameString.String());
 			}
 			else
 			{
@@ -323,7 +326,8 @@ int32 MPEditor::PublishThread(void* data)
 	printf(" Current tmppath: ");
 	printf(tmpInPath);
 	printf("\n");
-	publishPath = parent->pubName;
+	printf("Current file name: %s\n\n", parent->pubNameString.String());
+	publishPath = parent->pubNameString.String();
 	publishPath.Append(".");
 	publishPath.Append(parent->fileExt);
 	publishFile.SetTo(tmpInPath);
@@ -338,7 +342,7 @@ int32 MPEditor::PublishThread(void* data)
 	dirPath = path.Path();
 	dirPath += "/";				
 	newFilePath = dirPath;
-	newFilePath += parent->pubName;
+	newFilePath += parent->pubNameString.String();
 	newFilePath += ".";
 	newFilePath += parent->fileExt;
 	printf("old file: %s\n", oldFilePath.String());

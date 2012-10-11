@@ -54,6 +54,7 @@ private:
 		BMessage*			editorMessage;
 		entry_ref			pubRef; // publish ref entry value
 		const char*			pubName;  // publish file name
+		BString				pubNameString; // publish file name string
 		
 };
 
