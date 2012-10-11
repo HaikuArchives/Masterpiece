@@ -10,7 +10,7 @@
 #include "MarkupWindow.h"
 #include "AboutWindow.h"
 
-#include <sys/wait.h>
+//#include <sys/wait.h>
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 #define UPDATE_TITLE		'uttl' // update title...
@@ -51,6 +51,7 @@ private:
 		EditorMenu*			editorMenuBar;
 		pid_t				childpid;
 		int					childstatus;
+		static int32		PreviewThread(void* data);
 };
 
 

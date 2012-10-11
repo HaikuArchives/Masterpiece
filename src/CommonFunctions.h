@@ -30,6 +30,7 @@
 #include <TextView.h>
 #include <View.h>
 #include <Window.h>
+#include <OS.h>
 
 #define SET_STATUS	'stst' // set status for builder/editor window
 

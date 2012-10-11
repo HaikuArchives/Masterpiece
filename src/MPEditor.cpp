@@ -59,6 +59,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
 	BString fileExt; // file extension of converted file
+	thread_id previewThread;
 	
 	switch(msg->what)
 	{
@@ -123,7 +124,26 @@ void MPEditor::MessageReceived(BMessage* msg)
 				perror("fork");
 			}
 			*/
-			ExecutePreview(editorTextView->Text());
+			previewThread = spawn_thread(PreviewThread, "preview thread", B_NORMAL_PRIORITY, (void*)this);
+			if(previewThread >= 0) // successful
+			{
+				SetStatusBar("Start");
+				UpdateIfNeeded();
+				resume_thread(previewThread);
+			}
+			/*
+			thread_id backupThread = spawn_thread(BackupThread,"project backup thread",
+												B_NORMAL_PRIORITY, this);
+			if (backupThread >= 0)
+			{
+				fStatusBar->SetText(TR("Backing up project"));
+				UpdateIfNeeded();
+				
+				SetMenuLock(true);
+				resume_thread(backupThread);
+			}
+			*/
+			//ExecutePreview(editorTextView->Text());
 			//SetStatusBar("Preview Completed Successfully");
 			break;
 		case MENU_PUB_THT: // publish thought by opening publish window
@@ -138,6 +158,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// write data to a file
 			fileExt = pubEditorPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
+			ExecutePublish(msg, editorTextView->Text(), fileExt);
+			SetStatusBar("Publish Completed Successfully");
+			/*
 			childpid = fork();
 			if(childpid >= 0) // fork worked
 			{
@@ -157,6 +180,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				// need to generate real error here
 				perror("fork");
 			}
+			*/
 			break;
 		case MENU_HLP_THT: // open help topic window
 			printf("open help topic window");
@@ -235,3 +259,66 @@ void MPEditor::SetStatusBar(const char* string)
 {
 	editorStatusBar->SetText(string);
 }
+/*
+ * Spawn thread reference from paladin.  can use this to test and see if it works...
+ * Will work on tonight if I get a chance and see how it goes.
+ */
+/*
+		case M_BACKUP_PROJECT:
+		{
+			thread_id backupThread = spawn_thread(BackupThread,"project backup thread",
+												B_NORMAL_PRIORITY, this);
+			if (backupThread >= 0)
+			{
+				fStatusBar->SetText(TR("Backing up project"));
+				UpdateIfNeeded();
+				
+				SetMenuLock(true);
+				resume_thread(backupThread);
+			}
+			break;
+		}
+*/
+int32 MPEditor::PreviewThread(void* data)
+{
+	MPEditor* parent = (MPEditor*)data;
+
+	ExecutePreview(parent->editorTextView->Text());
+
+	parent->Lock();
+	parent->SetStatusBar("Test");
+	parent->Unlock();
+	
+	return 0;
+}
+/*
+int32
+ProjectWindow::BackupThread(void *data)
+{
+	ProjectWindow *parent = (ProjectWindow*)data;
+	Project *proj = parent->fProject;
+	
+	char timestamp[32];
+	time_t t = real_time_clock();
+	strftime(timestamp,32,"_%Y-%m-%d-%H%M%S",localtime(&t));
+	
+	BPath folder(proj->GetPath().GetFolder());
+	BPath folderparent;
+	folder.GetParent(&folderparent);
+	
+	BString command = "cd '";
+	command << folderparent.Path() << "'; ";
+	command << "zip -9 -r -y '"
+			<< gBackupPath.GetFullPath() << "/"
+			<< proj->GetName() << timestamp << "' '"
+			<< folder.Leaf() << "' -x *.o";
+	
+	system(command.String());
+	
+	parent->Lock();
+	parent->fStatusBar->SetText("");
+	parent->SetMenuLock(false);
+	parent->Unlock();
+	
+	return 0;
+}*/
