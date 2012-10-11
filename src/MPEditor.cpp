@@ -1,6 +1,6 @@
 #include "MPEditor.h"
 
-using namespace pyembed;
+//using namespace pyembed;
 
 MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTitle, int ideaID)
 	:	BWindow(BRect(100, 100, 900, 700), windowTitle, B_DOCUMENT_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE), launcherMessage(msg), launcherMessenger(msgr)
@@ -124,7 +124,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// write data to a file
 			fileExt = pubEditorPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
-			editorMessage = msg;
+			//editorMessage = msg;
 			if(msg->FindString("name", &pubName) == B_OK)
 			{
 				printf("default save message: %s\n", pubName.String());
@@ -231,6 +231,9 @@ int32 MPEditor::PreviewThread(void* data)
 int32 MPEditor::PublishThread(void* data)
 {
 	MPEditor* parent = (MPEditor*) data;
+	
+	ExecutePublish(parent->editorTextView->Text(), parent->fileExt, parent->pubRef, parent->pubName);
+	/*
 	ErrorAlert* eAlert;
 	BEntry entry;
 	BPath path;
@@ -403,6 +406,7 @@ int32 MPEditor::PublishThread(void* data)
 		eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
 		eAlert->Launch();
 	}
+	*/
 	parent->Lock();
 	parent->SetStatusBar("Publish Completed Successfully");
 	parent->Unlock();

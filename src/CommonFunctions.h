@@ -32,11 +32,12 @@
 #include <Window.h>
 #include <OS.h>
 
-#define SET_STATUS	'stst' // set status for builder/editor window
+//#define SET_STATUS	'stst' // set status for builder/editor window
 
 void	DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
 void	TmpCleanUp(BString tmpExt);
 void	ExecutePreview(BString tmpData);
+void	ExecutePublish(BString tmpData, BString tmpExt, entry_ref tmpRef, BString tmpName);
 BString	GetAppDirPath(void);
 BString GetUserDirPath(void);
 

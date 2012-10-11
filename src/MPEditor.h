@@ -10,8 +10,6 @@
 #include "MarkupWindow.h"
 #include "AboutWindow.h"
 
-//#include <sys/wait.h>
-
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 #define UPDATE_TITLE		'uttl' // update title...
 
@@ -48,10 +46,10 @@ private:
 		PublishFilePanel*	pubEditorPanel;
 		BStringView*		editorStatusBar;
 		EditorMenu*			editorMenuBar;
-		static int32		PreviewThread(void* data);
-		static int32		PublishThread(void* data);
+		static int32		PreviewThread(void* data); // preview thread
+		static int32		PublishThread(void* data); // publish thread
 		BString				fileExt; // file extension of converted file
-		BMessage*			editorMessage;
+		//BMessage*			editorMessage; // local msg available to mpeditor
 		entry_ref			pubRef; // publish ref entry value
 		BString				pubName;  // publish file name
 		

@@ -96,6 +96,182 @@ void ExecutePreview(BString tmpData)
 	system(tmpPath);
 }
 
+void ExecutePublish(BString tmpData, BString tmpExt, entry_ref tmpRef, BString tmpName)
+{
+	ErrorAlert* eAlert;
+	BEntry entry;
+	BPath path;
+	int argc = 1;
+	char* argvv = "ladida";
+	char** argv = &argvv;
+	Python py(argc, argv);
+	BString publishPath; // user generated filename
+	BString tmpInPath; // string path of tmppub.tht file, then string path of tmppub.ext
+	BString tmpOutPath;
+	BString pythonString;
+	BFile previewFile; // tmppub.tht file
+	BString runPath; // rst2pdf execute path
+	BString dirPath; // user created directory path string
+	BEntry publishFile; // file that is renamed to the new user generated filename from tmppath
+	BEntry removeTmpFile; // tmp file that information that will be removed
+	BEntry removeOldFile; // tmp final file that will be removed from appdir
+	BDirectory publishDirectory; // user generated directory
+	BString oldFilePath; // path to the renamed tmpfile
+	BString newFilePath; // path to the actual saved file
+	status_t err; // auto errors
+	tmpInPath = GetAppDirPath();
+	tmpInPath += "/tmppub.tht";
+	tmpOutPath = GetAppDirPath();
+	tmpOutPath += "/tmppub.";
+	tmpOutPath += tmpExt;
+	pythonString = "output = publish_file(source_path='";
+	pythonString += tmpInPath;
+	pythonString += "', destination_path='";
+	pythonString += tmpOutPath;
+	pythonString += "', writer_name='";
+	if(tmpExt == "odt") pythonString += "odf_odt')";
+	else if(tmpExt == "tex") pythonString += "latex')";
+	else if(tmpExt == "htm") pythonString += "html')";
+	else if(tmpExt == "xml") pythonString += "xml')";
+	else if(tmpExt == "pdf")
+	{
+		// do nothing here.  there is no pythonstring to convert to pdf.
+		// but I want to account for any abnormalities that may arise
+		// if the wrong filetype is somehow selected.
+	}
+	else
+	{
+		eAlert = new ErrorAlert("4.3 Publish File Type Error: Invalid filetype.");
+		eAlert->Launch();
+	}
+	removeTmpFile.SetTo(tmpInPath);
+	previewFile.SetTo(tmpInPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+	if(previewFile.InitCheck() != B_OK)
+	{
+		eAlert = new ErrorAlert("3.4 Editor Error: Couldn't Create Initial Publish File.");
+		eAlert->Launch();
+	}
+	previewFile.Write(tmpData, strlen(tmpData));
+	previewFile.Unset();
+
+	if(tmpExt == "pdf")
+	{
+		runPath = "/boot/common/bin/rst2pdf ";
+		runPath += GetAppDirPath();
+		runPath += "/tmppub.tht -o ";
+		runPath += GetAppDirPath();
+		runPath += "/tmppub.pdf";
+		system(runPath);
+	}
+	else // not PDF run
+	{
+		try
+		{
+			py.run_string("from docutils.core import publish_file");
+			py.run_string(pythonString.String());
+		}
+		catch(Python_exception ex)
+		{
+			eAlert = new ErrorAlert("3.5 Editor Error: Python Issue - ", ex.what());
+			eAlert->Launch();
+			err = removeTmpFile.Remove();
+			if(err != B_OK)
+			{
+				eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+				eAlert->Launch();
+			}
+		}
+	}
+	
+	tmpInPath = GetAppDirPath();
+	tmpInPath += "/tmppub.";
+	tmpInPath += tmpExt;
+	printf(" Current tmppath: ");
+	printf(tmpInPath);
+	printf("\n");
+	printf("Current file name: %s\n\n", tmpName.String());
+	publishPath = tmpName;
+	publishPath.Append(".");
+	publishPath.Append(tmpExt);
+	publishFile.SetTo(tmpInPath);
+	publishFile.Rename(publishPath, true);
+	oldFilePath = GetAppDirPath();
+	oldFilePath += "/tmppub";
+	oldFilePath += ".";
+	oldFilePath += tmpExt;
+	entry.SetTo(&(tmpRef)); // directory where the file is to be saved as defined by user
+	entry.SetTo(&(tmpRef));
+	entry.GetPath(&path);
+	dirPath = path.Path();
+	dirPath += "/";				
+	newFilePath = dirPath;
+	newFilePath += tmpName;
+	newFilePath += ".";
+	newFilePath += tmpExt;
+	printf("old file: %s\n", oldFilePath.String());
+	printf("new file: %s\n", newFilePath.String());
+	if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
+	{
+		err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
+		if(err != B_OK)
+		{
+			if(err == B_CROSS_DEVICE_LINK)
+			{
+				BFile oldFile;
+				BFile newFile;
+				if(oldFile.SetTo(oldFilePath, B_READ_ONLY) == B_OK)
+				{
+					if(newFile.SetTo(newFilePath, B_WRITE_ONLY | B_CREATE_FILE | B_ERASE_FILE) == B_OK)
+					{
+						off_t length;
+						char* text;
+						oldFile.GetSize(&length);
+						text = (char*) malloc(length);
+						if(text && oldFile.Read(text, length) >= B_OK) // write text to the newfile
+						{
+							err = newFile.Write(text, length);
+							if(err >= B_OK)
+							{
+								eAlert = new ErrorAlert("3.13 Editor Error: File could not be written due to: ", strerror(err));
+								eAlert->Launch();		
+							}
+							else
+							{
+								removeOldFile.SetTo(oldFilePath);
+								err = removeOldFile.Remove();
+								if(err != B_OK)
+								{
+									eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+									eAlert->Launch();
+								}
+							}
+						}
+						free(text);
+					}
+				}
+			}
+			else
+			{
+				eAlert = new ErrorAlert("3.15 Editor Error: File could not be written due to: ", strerror(err));
+				eAlert->Launch();		
+			}
+		}
+	}
+	else
+	{
+		eAlert = new ErrorAlert("3.6 Editor Error: Directory Set Failed");
+		eAlert->Launch();
+	}
+
+	// clean up the temporary files...
+	err = removeTmpFile.Remove();
+	if(err != B_OK)
+	{
+		eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
+		eAlert->Launch();
+	}
+}
+
 ErrorAlert::ErrorAlert(BString tmpText)
 {
 	tmpAlert = new BAlert("Error:", tmpText, "OK", NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
