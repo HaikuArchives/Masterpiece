@@ -21,27 +21,68 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	AddShortcut('d', B_COMMAND_KEY, new BMessage(DELETE_BUILDER_THT));
 	publishPanel = NULL;
 	BRect r = Bounds();
-	//r.right -= B_V_SCROLL_BAR_WIDTH;
+	r.bottom = 16;
+	builderMenuBar = new BuilderMenu(r);
+	r = Bounds();
+	r.left += B_V_SCROLL_BAR_WIDTH;
+	r.right = 200;
+	r.top = 26;
+	r.bottom = 46;
+	availableStringView = new BStringView(r, NULL, "All Available Thoughts");
+	r = Bounds();
+	r.top = 26;
+	r.left = (int)(Bounds().right - Bounds().left) / 2;
+	r.right -= B_V_SCROLL_BAR_WIDTH;
+	r.bottom = 46;
+	orderedStringView = new BStringView(r, NULL, "Ordered Thoughts");
+	r = Bounds();
+	r.top = availableStringView->Bounds().bottom + 10;
+	r.left = availableStringView->Bounds().left;
+	r.bottom = (r.bottom - r.top) / 2;
+	r.right = orderedStringView->Bounds().left - 10;
+	availableThoughtListView = new BListView(r, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	orderedThoughtListView = new BListView(BRect(10, 100, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	builderTextView = new BTextView(BRect(0, 100, r.right, 100), NULL, BRect(10, 10, r.right, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	rightButton = new BButton(BRect(10, 100, 90, 35), NULL, ">", new BMessage(MOVE_RIGHT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
+	leftButton = new BButton(BRect(10, 100, 90, 35), NULL, "<", new BMessage(MOVE_LEFT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
+	topButton = new BButton(BRect(10, 100, 90, 35), NULL, "TOP", new BMessage(MOVE_TOP), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
+	upButton = new BButton(BRect(10, 100, 90, 35), NULL, "UP", new BMessage(MOVE_UP), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
+	downButton = new BButton(BRect(10, 100, 90, 35), NULL, "DOWN", new BMessage(MOVE_DOWN), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
+	bottomButton = new BButton(BRect(10, 100, 90, 35), NULL, "BOTTOM", new BMessage(MOVE_BOTTOM), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
+	deleteButton = new BButton(BRect(10, 100, 90, 35), NULL, "DELETE", new BMessage(DELETE_BUILDER_THT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
+	r = Bounds();
+	r.top = builderMenuBar->Frame().bottom + 1;
+	r.right -= B_V_SCROLL_BAR_WIDTH;
 	r.bottom -= B_H_SCROLL_BAR_HEIGHT;
-	//r.bottom = r.bottom - 50;
-	availableThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
-	orderedThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW);
-	builderTextView = new BTextView(BRect(0, 0, r.right, 100), NULL, BRect(10, 10, r.right, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
-	rightButton = new BButton(BRect(10, 10, 90, 35), NULL, ">", new BMessage(MOVE_RIGHT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
-	leftButton = new BButton(BRect(10, 10, 90, 35), NULL, "<", new BMessage(MOVE_LEFT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
-	topButton = new BButton(BRect(10, 10, 90, 35), NULL, "TOP", new BMessage(MOVE_TOP), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
-	upButton = new BButton(BRect(10, 10, 90, 35), NULL, "UP", new BMessage(MOVE_UP), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
-	downButton = new BButton(BRect(10, 10, 90, 35), NULL, "DOWN", new BMessage(MOVE_DOWN), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
-	bottomButton = new BButton(BRect(10, 10, 90, 35), NULL, "BOTTOM", new BMessage(MOVE_BOTTOM), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
-	deleteButton = new BButton(BRect(10, 10, 90, 35), NULL, "DELETE", new BMessage(DELETE_BUILDER_THT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
+	r.top = r.bottom + 1;
+	r.bottom = Bounds().bottom;
 	builderStatusBar = new BStringView(r, "statusbar", NULL, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM);
 	builderStatusBar->SetFontSize(10.0);
-	builderMenuBar = new BuilderMenu(r);
-	backView = new BView(r, "backview", B_FOLLOW_ALL, B_WILL_DRAW);
-	//backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
+	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
+	backView->AddChild(builderMenuBar);
+	backView->AddChild(availableStringView);
+	backView->AddChild(orderedStringView);
+	backView->AddChild(new BScrollView("scroll_available", availableThoughtListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER));
+	//backView->AddChild(rightButton);
+	//backView->AddChild(leftButton);
+	//backView->AddChild(topButton);
+	//backView->AddChild(upButton);
+	//backView->AddChild(downButton);
+	//backView->AddChild(bottomButton);
+	//backView->AddChild(deleteButton);
+	//backView->AddChild(new BScrollView("scroll_ordered", orderedThoughtListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER));
+	//r = Bounds();
+	//r.top = ;
+	//r.bottom = ;
+	//r.left = ;
+	//r.right = ;
+	//backView->AddChild(new BStringView(BRect(100, 10, 200, 30), NULL, "Quick Edit"));
+	//backView->AddChild(new BScrollView("scroll_editor", builderTextView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER));
+	//backView->AddChild(builderStatusBar);
 	deleteButton->SetEnabled(false);
+	/*
 	// gui layout builder
 	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
 	backView->AddChild(BGridLayoutBuilder()
@@ -62,7 +103,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 		.Add(builderStatusBar, 0, 19)
 		.SetInsets(0, 0, 0, 0)
 	);
-	// new textlabel
+	*/
 	
 	currentideaID = ideaID; // pass current idea id selected to builder window to use
 	PopulateBuilderListViews();

@@ -40,6 +40,9 @@ private:
 		BView*				backView;
 		BMessage			launcherMessage;
 		BMessenger			launcherMessenger;
+		BStringView*		availableStringView;
+		BStringView*		orderedStringView;
+		BStringView*		QuickStringView;
 		BListView*			availableThoughtListView;
 		BListView*			orderedThoughtListView;
 		BTextView*			builderTextView;
