@@ -42,7 +42,7 @@ private:
 		BMessenger			launcherMessenger;
 		BStringView*		availableStringView;
 		BStringView*		orderedStringView;
-		BStringView*		QuickStringView;
+		BStringView*		quickStringView;
 		BListView*			availableThoughtListView;
 		BListView*			orderedThoughtListView;
 		BTextView*			builderTextView;
