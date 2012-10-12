@@ -31,7 +31,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	availableStringView = new BStringView(r, NULL, "All Available Thoughts");
 	r = Bounds();
 	r.top = 26;
-	r.left = (int)(Bounds().right - Bounds().left) / 2;
+	r.left = (int)(Bounds().right - Bounds().left) / 2 + 100;
 	r.right -= B_V_SCROLL_BAR_WIDTH;
 	r.bottom = 46;
 	orderedStringView = new BStringView(r, NULL, "Ordered Thoughts");
@@ -39,14 +39,14 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	r.top = availableStringView->Frame().bottom + 10;
 	r.left = availableStringView->Frame().left;
 	r.bottom = (r.bottom - r.top) / 2 + 100;
-	r.right = orderedStringView->Frame().left - 100;
-	availableThoughtListView = new BListView(r, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	r.right = orderedStringView->Frame().left - 200;
+	availableThoughtListView = new BListView(r, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
 	r = Bounds();
 	r.top = orderedStringView->Frame().bottom + 10;
 	r.left = orderedStringView->Frame().left;
 	r.bottom = (r.bottom - r.top) / 2 + 100;
 	r.right -= B_V_SCROLL_BAR_WIDTH + 10;
-	orderedThoughtListView = new BListView(r, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	orderedThoughtListView = new BListView(r, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
 	builderTextView = new BTextView(BRect(0, 100, r.right, 100), NULL, BRect(10, 10, r.right, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 	rightButton = new BButton(BRect(10, 100, 90, 35), NULL, ">", new BMessage(MOVE_RIGHT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	leftButton = new BButton(BRect(10, 100, 90, 35), NULL, "<", new BMessage(MOVE_LEFT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
@@ -69,8 +69,8 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	backView->AddChild(builderMenuBar);
 	backView->AddChild(availableStringView);
 	backView->AddChild(orderedStringView);
-	backView->AddChild(new BScrollView("scroll_available", availableThoughtListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER));
-	backView->AddChild(new BScrollView("scroll_ordered", orderedThoughtListView, B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER));
+	backView->AddChild(new BScrollView("scroll_available", availableThoughtListView, B_FOLLOW_LEFT | B_FOLLOW_TOP, 0, false, true, B_FANCY_BORDER));
+	backView->AddChild(new BScrollView("scroll_ordered", orderedThoughtListView, B_FOLLOW_LEFT | B_FOLLOW_TOP, 0, false, true, B_FANCY_BORDER));
 	//backView->AddChild(rightButton);
 	//backView->AddChild(leftButton);
 	//backView->AddChild(topButton);
