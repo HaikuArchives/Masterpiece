@@ -99,6 +99,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
 				delete sqlObject;
+				SetStatusBar("Thought Saved");
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
