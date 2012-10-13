@@ -82,6 +82,8 @@ private:
 		BString				fileExt; // file extension of converted file
 		entry_ref			pubRef; // publish ref entry value
 		BString				pubName; // publish file name
+		BString				mpData;
+		
 };
 
 #endif

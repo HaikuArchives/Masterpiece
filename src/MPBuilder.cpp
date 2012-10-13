@@ -164,8 +164,9 @@ MPBuilder::~MPBuilder()
 void MPBuilder::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
-	BString mpData; // actual data of file
-	BString fileExt; // file extension of converted file
+	//BString mpData; // actual data of file
+	thread_id previewThread;
+	thread_id publishThread;
 
 	switch(msg->what)
 	{
@@ -245,14 +246,13 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			break;
 		case MENU_PRV_MP: // preview masterpiece
-			IdeaStringItem* previewItem;
-			mpData = "";
-			for(int32 i = 0; i < orderedThoughtListView->CountItems(); i++)
+			previewThread = spawn_thread(PreviewThread, "preview thread", B_NORMAL_PRIORITY, (void*)this);
+			if(previewThread >= 0) // successful
 			{
-				previewItem = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(i));
-				mpData += previewItem->ReturnText();
+				SetStatusBar("Generating Preview...");
+				UpdateIfNeeded();
+				resume_thread(previewThread);
 			}
-			ExecutePreview(mpData);
 			break;
 		case MENU_PUB_MP: // publish masterpiece
 			if(!publishPanel)
@@ -262,17 +262,32 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			publishPanel->Show();
 			break;
 		case PUBLISH_TYPE:
-			// write all the data to a file...
-			IdeaStringItem* publishItem;
-			mpData = "";
-			for(int32 i = 0; i < orderedThoughtListView->CountItems(); i++)
-			{
-				publishItem = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(i));
-				mpData += publishItem->ReturnText();
-			}
 			fileExt = publishPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
-			//ExecutePublish(msg, mpData, fileExt);
+			if(msg->FindString("name", &pubName) == B_OK)
+			{
+				// set's file name to pubName
+			}
+			else
+			{
+				eAlert = new ErrorAlert("2.1 Builder Error: Message not found");
+				eAlert->Launch();
+			}
+			if(msg->FindRef("directory", &pubRef) == B_OK)
+			{
+			}
+			else
+			{
+				eAlert = new ErrorAlert("2.1 Builder Error: Directory Reference not found");
+				eAlert->Launch();
+			}
+			publishThread = spawn_thread(PublishThread, "publish thread", B_NORMAL_PRIORITY, (void*)this);
+			if(publishThread >= 0) // successful
+			{
+				SetStatusBar("Publishing File...");
+				UpdateIfNeeded();
+				resume_thread(publishThread);
+			}
 			break;
 		case MENU_HLP_MP: // help topics
 			break;
@@ -675,4 +690,47 @@ void MPBuilder::ModifyOrderedItems(int curOrderNumber, int newOrderNumber)
 	ReorderOrderedListView(); // reorder orderedlistview items for mp
 	PopulateBuilderListViews(); // update listviews' items
 	orderedThoughtListView->Select(newOrderNumber); // highlight the newly moved item
+}
+void MPBuilder::SetStatusBar(const char* string)
+{
+	builderStatusBar->SetText(string);
+}
+int32 MPBuilder::PreviewThread(void* data)
+{
+	MPBuilder* parent = (MPBuilder*)data;
+	IdeaStringItem* previewItem;
+	parent->mpData = "";
+	for(int32 i = 0; i < parent->orderedThoughtListView->CountItems(); i++)
+	{
+		previewItem = dynamic_cast<IdeaStringItem*>(parent->orderedThoughtListView->ItemAt(i));
+		parent->mpData += previewItem->ReturnText();
+	}
+	ExecutePreview(parent->mpData);
+	
+	parent->Lock();
+	parent->SetStatusBar("Preview Completed Successfully");
+	parent->Unlock();
+	
+	return 0;
+}
+int32 MPBuilder::PublishThread(void* data)
+{
+	MPBuilder* parent = (MPBuilder*)data;
+	
+	// write all the data to a file...
+	IdeaStringItem* publishItem;
+	parent->mpData = "";
+	for(int32 i = 0; i < parent->orderedThoughtListView->CountItems(); i++)
+	{
+		publishItem = dynamic_cast<IdeaStringItem*>(parent->orderedThoughtListView->ItemAt(i));
+		parent->mpData += publishItem->ReturnText();
+	}
+	
+	ExecutePublish(parent->mpData, parent->fileExt, parent->pubRef, parent->pubName);
+	
+	parent->Lock();
+	parent->SetStatusBar("Publish Completed Successfully");
+	parent->Unlock();
+	
+	return 0;
 }

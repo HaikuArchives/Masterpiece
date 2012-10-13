@@ -226,7 +226,7 @@ int32 MPEditor::PreviewThread(void* data)
 }
 int32 MPEditor::PublishThread(void* data)
 {
-	MPEditor* parent = (MPEditor*) data;
+	MPEditor* parent = (MPEditor*)data;
 	
 	ExecutePublish(parent->editorTextView->Text(), parent->fileExt, parent->pubRef, parent->pubName);
 
