@@ -222,6 +222,10 @@ void MPEditor::SetStatusBar(const char* string)
 {
 	editorStatusBar->SetText(string);
 }
+const char* MPEditor::GetStatusBar(void)
+{
+	return editorStatusBar->Text();
+}
 int32 MPEditor::PreviewThread(void* data)
 {
 	MPEditor* parent = (MPEditor*)data;

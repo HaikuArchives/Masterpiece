@@ -706,6 +706,10 @@ void MPBuilder::SetStatusBar(const char* string)
 {
 	builderStatusBar->SetText(string);
 }
+const char* MPBuilder::GetStatusBar(void)
+{
+	return builderStatusBar->Text();
+}
 int32 MPBuilder::PreviewThread(void* data)
 {
 	MPBuilder* parent = (MPBuilder*)data;

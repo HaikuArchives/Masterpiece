@@ -38,6 +38,7 @@ public:
 		void				ReorderOrderedListView(void);
 		void				ModifyOrderedItems(int curOrderNumber, int newOrderNumber);
 		void				SetStatusBar(const char* string);
+		const char*			GetStatusBar(void);
 private:
 		BView*				backView;
 		BMessage			launcherMessage;

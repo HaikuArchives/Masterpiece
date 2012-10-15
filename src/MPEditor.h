@@ -22,6 +22,7 @@ public:
 		void				MessageReceived(BMessage* msg);
 		bool				QuitRequested(void);
 		void				SetStatusBar(const char* string);
+		const char*			GetStatusBar(void);
 private:
 		BView*				backView;
 		BMessage			launcherMessage;
