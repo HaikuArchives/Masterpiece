@@ -108,7 +108,8 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	r.top = quickStringView->Frame().bottom + 10;
 	r.bottom = builderStatusBar->Frame().top - 1;
 	r.right -= B_V_SCROLL_BAR_WIDTH + 10;
-	builderTextView = new BTextView(r, NULL, BRect(0, 0, r.right-10, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	//builderTextView = new BTextView(r, NULL, BRect(0, 0, r.right-10, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	builderTextView = new EditorTextView(r, NULL, BRect(0, 0, r.right-10, 100), B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE, BMessage(CLEAR_STATUS), BMessenger(this));
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	AddChild(backView);
@@ -222,6 +223,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
 				delete sqlObject;
+				Lock();
+				SetStatusBar("Thought Saved");
+				Unlock();
 				PopulateBuilderListViews();
 				if(availorderBit == 0)
 				{
@@ -580,6 +584,13 @@ void MPBuilder::MessageReceived(BMessage* msg)
 		case END_EDIT_VIEW:
 			printf("give focus to another element\n");
 			availableThoughtListView->MakeFocus(true);
+			break;
+		case CLEAR_STATUS:
+			if(msg->FindInt64("clearStatus", &clearStatus) == B_OK)
+			{
+				printf("it really worked\n\n");
+				SetStatusBar("");
+			}
 			break;
 		default:
 		{

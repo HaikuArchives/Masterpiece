@@ -22,7 +22,6 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	r.right -= B_V_SCROLL_BAR_WIDTH;
 	r.bottom -= B_H_SCROLL_BAR_HEIGHT;
 	//r.bottom = r.bottom - 50;
-	//editorTextView = new BTextView(r, NULL, r, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 	editorTextView = new EditorTextView(r, NULL, r, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE, BMessage(CLEAR_STATUS), BMessenger(this));
 	r.top = r.bottom + 1;
 	r.bottom = Bounds().bottom;

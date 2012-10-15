@@ -26,7 +26,6 @@ private:
 		BView*				backView;
 		BMessage			launcherMessage;
 		BMessenger			launcherMessenger;
-		//BTextView*			editorTextView;
 		EditorTextView*		editorTextView;
 		MPEditor*			tmpEditor;
 		ErrorAlert*			eAlert;

@@ -2,6 +2,7 @@
 #define MPBUILDER_H
 
 #include "BuilderMenu.h"
+#include "EditorTextView.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"
 #include "CommonFunctions.h"
@@ -24,6 +25,7 @@
 #define ORDER_THOUGHT_EDITOR	'oted' // open ordered thought editor
 #define AVAIL_THOUGHT_EDITOR	'ated' // open available thought editor
 #define END_EDIT_VIEW			'eedt' // end edit view
+#define CLEAR_STATUS			'clst' // clear statusbar
 
 class MPBuilder : public BWindow
 {
@@ -45,7 +47,8 @@ private:
 		BStringView*		quickStringView;
 		BListView*			availableThoughtListView;
 		BListView*			orderedThoughtListView;
-		BTextView*			builderTextView;
+		EditorTextView*		builderTextView;
+		//BTextView*			builderTextView;
 		BButton*			rightButton;
 		BButton*			leftButton;
 		BButton*			topButton;
@@ -83,6 +86,7 @@ private:
 		entry_ref			pubRef; // publish ref entry value
 		BString				pubName; // publish file name
 		BString				mpData;
+		int64				clearStatus;
 		
 };
 
