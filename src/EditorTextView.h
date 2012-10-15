@@ -3,15 +3,18 @@
 
 #include "CommonFunctions.h"
 
+#define	CLEAR_STATUS	'clst' // send message to clear statusbar
+
 class EditorTextView : public BTextView
 {
 public:
-					EditorTextView(BRect frame, const char* name, BRect textRect, uint32 resizingMode, uint32 flags);
+					EditorTextView(BRect frame, const char* name, BRect textRect, uint32 resizingMode, uint32 flags, const BMessage &msg, const BMessenger &msgr);
 		void		MessageReceived(BMessage* msg);
 		void		MouseDown(BPoint point);
 		void		KeyDown(const char* bytes, int32 numBytes);
 private:
-		BPoint		pt;
+		BMessage	statusMessage;
+		BMessenger	statusMessenger;		
 };
 
 #endif
