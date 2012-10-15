@@ -2,6 +2,7 @@
 #define MPEDITOR_H
 
 #include "EditorMenu.h"
+#include "EditorTextView.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"
 #include "HelperWindows.h"
@@ -24,7 +25,8 @@ private:
 		BView*				backView;
 		BMessage			launcherMessage;
 		BMessenger			launcherMessenger;
-		BTextView*			editorTextView;
+		//BTextView*			editorTextView;
+		EditorTextView*		editorTextView;
 		MPEditor*			tmpEditor;
 		ErrorAlert*			eAlert;
 		SaveIdea*			saveIdea;
@@ -53,6 +55,5 @@ private:
 		BString				pubName;  // publish file name
 		
 };
-
 
 #endif
