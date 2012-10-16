@@ -3,6 +3,7 @@
 
 #include "BuilderMenu.h"
 #include "EditorTextView.h"
+#include "BuilderButton.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"
 #include "CommonFunctions.h"
@@ -49,14 +50,13 @@ private:
 		BListView*			availableThoughtListView;
 		BListView*			orderedThoughtListView;
 		EditorTextView*		builderTextView;
-		//BTextView*			builderTextView;
-		BButton*			rightButton;
-		BButton*			leftButton;
-		BButton*			topButton;
-		BButton*			upButton;
-		BButton*			downButton;
-		BButton*			bottomButton;
-		BButton*			deleteButton;
+		BuilderButton*		rightButton;
+		BuilderButton*		leftButton;
+		BuilderButton*		topButton;
+		BuilderButton*		upButton;
+		BuilderButton*		downButton;
+		BuilderButton*		bottomButton;
+		BuilderButton*		deleteButton;
 		PublishFilePanel*	publishPanel;
 		MPEditor*			tmpEditor;
 		ErrorAlert*			eAlert;
