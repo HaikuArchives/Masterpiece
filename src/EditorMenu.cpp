@@ -1,7 +1,7 @@
 #include "EditorMenu.h"
 
-EditorMenu::EditorMenu(BRect rect)
-	:	BMenuBar(rect, "editorbar")
+EditorMenu::EditorMenu(BRect rect, const BMessage &msg, const BMessenger &msgr)
+	:	BMenuBar(rect, "editorbar"), statusMessage(msg), statusMessenger(msgr)
 {
 	// initialize menu and menuitems
 	helpMenu = new BMenu("Help");
@@ -31,4 +31,18 @@ EditorMenu::EditorMenu(BRect rect)
 	AddItem(helpMenu);
 	
 	// set enabled/disabled triggers at initialization
+}
+void EditorMenu::MouseDown(BPoint point)
+{
+	statusMessage.MakeEmpty();
+	statusMessage.AddInt64("clearStatus", 1);
+	statusMessenger.SendMessage(&statusMessage);
+	BMenuBar::MouseDown(point);
+}
+void EditorMenu::KeyDown(const char* bytes, int32 numBytes)
+{
+	statusMessage.MakeEmpty();
+	statusMessage.AddInt64("clearStatus", 1);
+	statusMessenger.SendMessage(&statusMessage);
+	BMenuBar::KeyDown(bytes, numBytes);
 }

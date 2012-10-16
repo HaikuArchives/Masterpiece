@@ -22,7 +22,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	publishPanel = NULL;
 	BRect r = Bounds();
 	r.bottom = 16;
-	builderMenuBar = new BuilderMenu(r);
+	builderMenuBar = new BuilderMenu(r, BMessage(CLEAR_STATUS), BMessenger(this));
 	r = Bounds();
 	r.left += B_V_SCROLL_BAR_WIDTH;
 	r.right = 225;

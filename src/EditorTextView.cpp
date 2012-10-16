@@ -5,10 +5,6 @@ EditorTextView::EditorTextView(BRect frame, const char* name, BRect textRect, ui
 {
 	
 }
-void EditorTextView::MessageReceived(BMessage* msg)
-{
-	BTextView::MessageReceived(msg);
-}
 void EditorTextView::MouseDown(BPoint point)
 {
 	statusMessage.MakeEmpty();

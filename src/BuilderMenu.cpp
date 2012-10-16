@@ -1,7 +1,7 @@
 #include "BuilderMenu.h"
 
-BuilderMenu::BuilderMenu(BRect rect)
-	:	BMenuBar(rect, "builderbar")
+BuilderMenu::BuilderMenu(BRect rect, const BMessage &msg, const BMessenger &msgr)
+	:	BMenuBar(rect, "builderbar"), statusMessage(msg), statusMessenger(msgr)
 {
 	// initialize menu and menuitems
 	helpMenu = new BMenu("Help");
@@ -29,4 +29,18 @@ BuilderMenu::BuilderMenu(BRect rect)
 	AddItem(helpMenu);
 	
 	// set enabled/disabled triggers at initialization
+}
+void BuilderMenu::MouseDown(BPoint point)
+{
+	statusMessage.MakeEmpty();
+	statusMessage.AddInt64("clearStatus", 1);
+	statusMessenger.SendMessage(&statusMessage);
+	BMenuBar::MouseDown(point);
+}
+void BuilderMenu::KeyDown(const char* bytes, int32 numBytes)
+{
+	statusMessage.MakeEmpty();
+	statusMessage.AddInt64("clearStatus", 1);
+	statusMessenger.SendMessage(&statusMessage);
+	BMenuBar::KeyDown(bytes, numBytes);
 }

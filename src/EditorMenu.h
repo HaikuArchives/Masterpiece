@@ -13,11 +13,12 @@
 #define	MENU_KEY_THT	'key'	// keyboard reference
 #define MENU_MRK_THT	'mark'	// markup reference
 #define MENU_ABT_THT	'abt'	// about editor
+#define CLEAR_STATUS	'clst'  // send message to clear statusbar
 
 class EditorMenu : public BMenuBar
 {
 public:
-						EditorMenu(BRect rect);	// editor menu
+						EditorMenu(BRect rect, const BMessage &msg, const BMessenger &msgr);	// editor menu
 			BMenu*		helpMenu;				// help menu
 			BMenuItem*	newThoughtMenuItem;		// new thought menu item
 			BMenuItem*	editThoughtMenuItem;	// edit thought menu item
@@ -28,8 +29,11 @@ public:
 			BMenuItem*	markupRefMenuItem;		// markup reference menu item
 			BMenuItem*	helpTopicsMenuItem;		// help topics menu item
 			BMenuItem*	aboutMenuItem;			// about menu item
+			void		MouseDown(BPoint point);
+			void		KeyDown(const char* bytes, int32 numBytes);
 private:
-
+			BMessage	statusMessage; 
+			BMessenger	statusMessenger;
 };
 
 #endif
