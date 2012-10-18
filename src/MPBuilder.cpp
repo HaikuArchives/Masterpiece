@@ -165,7 +165,6 @@ MPBuilder::~MPBuilder()
 void MPBuilder::MessageReceived(BMessage* msg)
 {
 	BRect r(Bounds());
-	//BString mpData; // actual data of file
 	thread_id previewThread;
 	thread_id publishThread;
 
@@ -442,6 +441,16 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			deleteButton->SetEnabled(false);
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
+			/*
+			if(GetStatusBar() != "")
+			{
+				SetStatusBar("");
+			}
+			else
+			{
+				printf("Error\n");
+			}
+			*/
 			if(availableThoughtListView->CurrentSelection() >= 0)
 			{
 				orderedThoughtListView->DeselectAll();
@@ -462,6 +471,16 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			break;
 		case DISPLAY_ORDER_TEXT: // display preview text from item id
+			/*
+			if(GetStatusBar() != "")
+			{
+				SetStatusBar("");
+			}
+			else
+			{
+				printf("Error");
+			}
+			*/
 			if(orderedThoughtListView->CurrentSelection() >= 0)
 			{
 				availableThoughtListView->DeselectAll();
