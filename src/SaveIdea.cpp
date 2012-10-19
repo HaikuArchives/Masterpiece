@@ -49,7 +49,7 @@ void SaveIdea::MessageReceived(BMessage* msg)
 				sqlObject->CloseSql();
 				delete sqlObject;
 				updatetitleMessage.MakeEmpty();
-				updatetitleMessage.AddString("updatetitle", titleText->Text());
+				updatetitleMessage.AddString("saveidea", titleText->Text());
 				updatetitleMessenger.SendMessage(&updatetitleMessage);
 			}
 			else

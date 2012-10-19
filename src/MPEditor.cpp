@@ -82,7 +82,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				sqlObject->StepSql();
 				xPos = (r.right - r.left) / 2; // find xpos for window
 				yPos = (r.bottom - r.top) / 2; // find ypos for window
-				saveIdea = new SaveIdea(BMessage(UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlObject->ReturnLastInsertRowID());
+				saveIdea = new SaveIdea(BMessage(SAVE_TITLE), BMessenger(this), xPos, yPos, sqlObject->ReturnLastInsertRowID());
 				currentideaID = sqlObject->ReturnLastInsertRowID();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
@@ -189,6 +189,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				tmpString = "Masterpiece Editor - ";
 				tmpString += updateTitle;
 				this->SetTitle(tmpString);
+				this->SetStatusBar("Name Change Saved");
 			}
 			else // 
 			{
@@ -196,10 +197,23 @@ void MPEditor::MessageReceived(BMessage* msg)
 				eAlert->Launch();
 			}
 			break;
+		case SAVE_TITLE: // update title with the name from the saveidea window
+			if(msg->FindString("saveidea", &saveTitle) == B_OK) // updated title exists in variable
+			{
+				tmpString = "Masterpiece Editor - ";
+				tmpString += saveTitle;
+				this->SetTitle(tmpString);
+				this->SetStatusBar("Thought Saved");
+			}
+			else // 
+			{
+				eAlert = new ErrorAlert("3.21 Editor Error: Message not found."); // message variable not found
+				eAlert->Launch();
+			}
+			break;
 		case CLEAR_STATUS:
 			if(msg->FindInt64("clearStatus", &clearStatus) == B_OK)
 			{
-				printf("it really worked\n\n");
 				SetStatusBar("");
 			}
 			break;

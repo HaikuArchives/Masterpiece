@@ -5,7 +5,6 @@
 
 #define SAVE_IDEA		'save' // save button
 #define	CANCEL_SAVE		'can'  // cancel save
-#define UPDATE_TITLE	'uttl' // update title...
 #define END_SAVE_IDEA	'esid' // tab from editor to next button
 
 class SaveIdea : public BWindow

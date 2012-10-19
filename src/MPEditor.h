@@ -13,6 +13,7 @@
 
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 #define UPDATE_TITLE		'uttl' // update title...
+#define SAVE_TITLE			'svid' // update title...
 #define CLEAR_STATUS		'clst' // clear statusbar
 
 class MPEditor : public BWindow
@@ -40,6 +41,7 @@ private:
 		char*				sqlErrMsg;
 		BString				tmpString;
 		BString				updateTitle;
+		BString				saveTitle;
 		BString				tmpText;
 		int					sqlValue;
 		int					currentideaID;

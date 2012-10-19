@@ -15,6 +15,7 @@
 
 #define SHOW_LAUNCHER			'lnch' // show mp launcher window
 #define MP_UPDATE_TITLE			'uttl' // update title
+#define SAVE_TITLE				'svid' // update title...
 #define	MOVE_RIGHT				'mvrt' // move right
 #define MOVE_LEFT				'mvlt' // move left
 #define MOVE_TOP				'mvtp' // move top
@@ -69,6 +70,7 @@ private:
 		sqlite3_stmt*		reorderStatement;
 		char*				sqlErrMsg;
 		BString				updateTitle;
+		BString				saveTitle;
 		BString				tmpString;
 		int64				showLauncher;
 		int					sqlValue;

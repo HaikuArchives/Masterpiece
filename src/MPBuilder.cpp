@@ -189,7 +189,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				sqlObject->StepSql();
 				xPos = (r.right - r.left) / 2; // find xpos for window
 				yPos = (r.bottom - r.top) / 2; // find ypos for window
-				saveIdea = new SaveIdea(BMessage(MP_UPDATE_TITLE), BMessenger(this), xPos, yPos, sqlObject->ReturnLastInsertRowID());
+				saveIdea = new SaveIdea(BMessage(SAVE_TITLE), BMessenger(this), xPos, yPos, sqlObject->ReturnLastInsertRowID());
 				currentideaID = sqlObject->ReturnLastInsertRowID();
 				sqlObject->FinalizeSql();
 				sqlObject->CloseSql();
@@ -584,6 +584,20 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				tmpString = "Masterpiece Builder - ";
 				tmpString += updateTitle;
 				this->SetTitle(tmpString);
+				this->SetStatusBar("Name Change Saved");
+			}
+			else
+			{
+				eAlert = new ErrorAlert("4.2 Builder Error: Message not found"); // message variable not found
+			}
+			break;
+		case SAVE_TITLE: // update title with the name from the editideawindow
+			if(msg->FindString("saveidea", &saveTitle) == B_OK) // updated title exists in variable
+			{
+				tmpString = "Masterpiece Builder - ";
+				tmpString += saveTitle;
+				this->SetTitle(tmpString);
+				this->SetStatusBar("Thought Saved");
 			}
 			else
 			{
