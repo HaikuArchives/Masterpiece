@@ -50,8 +50,6 @@ private:
 		BStringView*		quickStringView;
 		BuilderListView*	availableThoughtListView;
 		BuilderListView*	orderedThoughtListView;
-		//BListView*			availableThoughtListView;
-		//BListView*			orderedThoughtListView;
 		EditorTextView*		builderTextView;
 		BuilderButton*		rightButton;
 		BuilderButton*		leftButton;

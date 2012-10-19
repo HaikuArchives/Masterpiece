@@ -41,14 +41,12 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	r.bottom = (r.bottom - r.top) / 2 + 100;
 	r.right = orderedStringView->Frame().left - 150;
 	availableThoughtListView = new BuilderListView(r, BMessage(CLEAR_STATUS), BMessenger(this));
-	//availableThoughtListView = new BListView(r, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
 	r = Bounds();
 	r.top = orderedStringView->Frame().bottom + 10;
 	r.left = orderedStringView->Frame().left;
 	r.bottom = (r.bottom - r.top) / 2 + 100;
 	r.right -= B_V_SCROLL_BAR_WIDTH + 10;
 	orderedThoughtListView = new BuilderListView(r, BMessage(CLEAR_STATUS), BMessenger(this));
-	//orderedThoughtListView = new BListView(r, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
 	r = Bounds();
 	r.left = availableThoughtListView->Frame().left;
 	r.top = availableThoughtListView->Frame().bottom + 10;
@@ -599,7 +597,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 		case CLEAR_STATUS:
 			if(msg->FindInt64("clearStatus", &clearStatus) == B_OK)
 			{
-				SetStatusBar("");
+				if(GetStatusBar() != "") SetStatusBar("");
 			}
 			break;
 		default:
