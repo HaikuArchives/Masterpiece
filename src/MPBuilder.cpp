@@ -40,13 +40,15 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	r.left = availableStringView->Frame().left;
 	r.bottom = (r.bottom - r.top) / 2 + 100;
 	r.right = orderedStringView->Frame().left - 150;
-	availableThoughtListView = new BListView(r, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
+	availableThoughtListView = new BuilderListView(r, BMessage(CLEAR_STATUS), BMessenger(this));
+	//availableThoughtListView = new BListView(r, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_LEFT | B_FOLLOW_TOP, B_WILL_DRAW | B_NAVIGABLE);
 	r = Bounds();
 	r.top = orderedStringView->Frame().bottom + 10;
 	r.left = orderedStringView->Frame().left;
 	r.bottom = (r.bottom - r.top) / 2 + 100;
 	r.right -= B_V_SCROLL_BAR_WIDTH + 10;
-	orderedThoughtListView = new BListView(r, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
+	orderedThoughtListView = new BuilderListView(r, BMessage(CLEAR_STATUS), BMessenger(this));
+	//orderedThoughtListView = new BListView(r, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE);
 	r = Bounds();
 	r.left = availableThoughtListView->Frame().left;
 	r.top = availableThoughtListView->Frame().bottom + 10;
@@ -471,16 +473,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			}
 			break;
 		case DISPLAY_ORDER_TEXT: // display preview text from item id
-			/*
-			if(GetStatusBar() != "")
-			{
-				SetStatusBar("");
-			}
-			else
-			{
-				printf("Error");
-			}
-			*/
 			if(orderedThoughtListView->CurrentSelection() >= 0)
 			{
 				availableThoughtListView->DeselectAll();
@@ -607,7 +599,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 		case CLEAR_STATUS:
 			if(msg->FindInt64("clearStatus", &clearStatus) == B_OK)
 			{
-				printf("it really worked\n\n");
 				SetStatusBar("");
 			}
 			break;

@@ -4,6 +4,7 @@
 #include "BuilderMenu.h"
 #include "EditorTextView.h"
 #include "BuilderButton.h"
+#include "BuilderListView.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"
 #include "CommonFunctions.h"
@@ -47,8 +48,10 @@ private:
 		BStringView*		availableStringView;
 		BStringView*		orderedStringView;
 		BStringView*		quickStringView;
-		BListView*			availableThoughtListView;
-		BListView*			orderedThoughtListView;
+		BuilderListView*	availableThoughtListView;
+		BuilderListView*	orderedThoughtListView;
+		//BListView*			availableThoughtListView;
+		//BListView*			orderedThoughtListView;
 		EditorTextView*		builderTextView;
 		BuilderButton*		rightButton;
 		BuilderButton*		leftButton;

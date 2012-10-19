@@ -1,7 +1,7 @@
 #include "BuilderListView.h"
 
 BuilderListView::BuilderListView(BRect frame, const BMessage &msg, const BMessenger &msgr)
-	:	BListView(frame, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE)
+	:	BListView(frame, NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_TOP | B_FOLLOW_LEFT, B_WILL_DRAW | B_NAVIGABLE), statusMessage(msg), statusMessenger(msgr)
 {
 }
 void BuilderListView::MouseDown(BPoint point)
