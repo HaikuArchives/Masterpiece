@@ -9,14 +9,14 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 	{
 		BRect btnrect;
 		BRect viewrect;
+		float charWidth;
 		BView* v = w->ChildAt(0);
 		BView *cancelBtn = v->FindView("cancel button");
 		
 		if(cancelBtn)
 		{
-			BView* poseView = v->FindView("PoseView");
+			BView* poseView = v->FindView("DirMenuField");
 			BView* parentview;
-			float charWidth;
 			BEntry rst2pdfcheck("/boot/common/bin/rst2pdf");
 			BVolumeRoster volRoster;
 			BVolume bootVolume;
@@ -47,11 +47,13 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			parentview->AddChild(publishTypeMenuField);
 			if(poseView)
 			{
+				charWidth = poseView->StringWidth("Open When Done");
 				viewrect = poseView->Frame();
-				viewrect.bottom = viewrect.top - 10;
+				viewrect.left = viewrect.right - 50;
+				viewrect.right = viewrect.left + charWidth + 50;
 			}
-			openCheckBox = new BCheckBox(viewrect, NULL, "Open When Done", new BMessage(PUBLISH_OPEN), B_FOLLOW_NONE, B_WILL_DRAW);
-			parentview->AddChild(poseView);
+			openCheckBox = new BCheckBox(viewrect, NULL, "Open When Done", new BMessage(PUBLISH_TYPE), B_FOLLOW_NONE, B_WILL_DRAW);
+			parentview->AddChild(openCheckBox);
 			SetMessage(pubMsg);
 			SetTarget(*target);
 			publishTypeMenu->FindItem("HTM")->SetEnabled(false);

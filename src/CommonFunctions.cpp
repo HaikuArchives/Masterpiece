@@ -96,7 +96,7 @@ void ExecutePreview(BString tmpData)
 	system(tmpPath);
 }
 
-void ExecutePublish(BString tmpData, BString tmpExt, entry_ref tmpRef, BString tmpName)
+void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpRef, BString tmpName)
 {
 	ErrorAlert* eAlert;
 	BEntry entry;
@@ -109,6 +109,7 @@ void ExecutePublish(BString tmpData, BString tmpExt, entry_ref tmpRef, BString t
 	BString tmpInPath; // string path of tmppub.tht file, then string path of tmppub.ext
 	BString tmpOutPath;
 	BString pythonString;
+	BString executeString;
 	BFile previewFile; // tmppub.tht file
 	BString runPath; // rst2pdf execute path
 	BString dirPath; // user created directory path string
@@ -129,15 +130,29 @@ void ExecutePublish(BString tmpData, BString tmpExt, entry_ref tmpRef, BString t
 	pythonString += "', destination_path='";
 	pythonString += tmpOutPath;
 	pythonString += "', writer_name='";
-	if(tmpExt == "odt") pythonString += "odf_odt')";
-	else if(tmpExt == "tex") pythonString += "latex')";
-	else if(tmpExt == "htm") pythonString += "html')";
-	else if(tmpExt == "xml") pythonString += "xml')";
+	if(tmpExt == "odt")
+	{
+		pythonString += "odf_odt')";
+		executeString = "";
+	}
+	else if(tmpExt == "tex")
+	{
+		pythonString += "latex')";
+		executeString = "";
+	}
+	else if(tmpExt == "htm")
+	{
+		pythonString += "html')";
+		executeString = "";
+	}
+	else if(tmpExt == "xml")
+	{
+		pythonString += "xml')";
+		executeString = "";
+	}
 	else if(tmpExt == "pdf")
 	{
-		// do nothing here.  there is no pythonstring to convert to pdf.
-		// but I want to account for any abnormalities that may arise
-		// if the wrong filetype is somehow selected.
+		executeString = "";
 	}
 	else
 	{
@@ -237,6 +252,10 @@ void ExecutePublish(BString tmpData, BString tmpExt, entry_ref tmpRef, BString t
 							}
 							else
 							{
+								if(tmpFlag == 1)  // user wants to open file after created.
+								{
+									
+								}
 								removeOldFile.SetTo(oldFilePath);
 								err = removeOldFile.Remove();
 								if(err != B_OK)

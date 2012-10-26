@@ -57,6 +57,7 @@ private:
 		entry_ref			pubRef; // publish ref entry value
 		BString				pubName;  // publish file name
 		int64				clearStatus;
+		int					openflag;
 		
 };
 

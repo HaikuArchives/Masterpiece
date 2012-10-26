@@ -124,6 +124,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			// write data to a file
 			fileExt = pubEditorPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
+			openflag = pubEditorPanel->openCheckBox->Value();
 			if(msg->FindString("name", &pubName) == B_OK)
 			{
 				printf("default save message: %s\n", pubName.String());
@@ -256,7 +257,7 @@ int32 MPEditor::PublishThread(void* data)
 {
 	MPEditor* parent = (MPEditor*)data;
 	
-	ExecutePublish(parent->editorTextView->Text(), parent->fileExt, parent->pubRef, parent->pubName);
+	ExecutePublish(parent->editorTextView->Text(), parent->openflag, parent->fileExt, parent->pubRef, parent->pubName);
 
 	parent->Lock();
 	parent->SetStatusBar("Publish Completed Successfully");

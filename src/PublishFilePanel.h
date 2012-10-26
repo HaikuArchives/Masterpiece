@@ -13,7 +13,6 @@
 #include "CommonFunctions.h"
 
 #define PUBLISH_TYPE 'ptyp'
-#define PUBLISH_OPEN 'popn'
 
 class PublishFilePanel : public BFilePanel
 {
