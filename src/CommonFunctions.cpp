@@ -1,6 +1,6 @@
 #include "CommonFunctions.h"
 
-using namespace pyembed;
+//using namespace pyembed;
 
 void DisplayError(const char* errorNumber, const char* errorType, const char* errorValue)
 {
@@ -52,12 +52,6 @@ void TmpCleanUp(BString tmpExt)
 }
 void ExecutePreview(BString tmpData)
 {
-	/*
-	int argc = 1;
-	char* argvv = "ladida";
-	char** argv = &argvv;
-	Python py(argc, argv);
-	*/
 	BString tmpInPath; // string path of the tmppub.tht file then string path of tmppub.ext file
 	BString tmpOutPath;
 	BString pythonString;
@@ -67,13 +61,6 @@ void ExecutePreview(BString tmpData)
 	tmpInPath += "/tmp.tht";
 	tmpOutPath = GetAppDirPath();
 	tmpOutPath += "/tmp.html";
-	/*
-	pythonString = "output = publish_file(source_path='";
-	pythonString += tmpInPath;
-	pythonString += "', destination_path='";
-	pythonString += tmpOutPath;
-	pythonString += "', writer_name='html')";
-	*/
 	previewFile.SetTo(tmpInPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
 	if(previewFile.InitCheck() != B_OK)
 	{
@@ -83,25 +70,16 @@ void ExecutePreview(BString tmpData)
 	}
 	previewFile.Write(tmpData, strlen(tmpData));
 	previewFile.Unset();
-	/*
-	try
-	{
-		py.run_string("from docutils.core import publish_file");
-		py.run_string(pythonString.String());
-	}
-	catch(Python_exception ex)
-	{
-		eAlert = new ErrorAlert("4.3 Builder Error: Python Issue - ", ex.what());
-		eAlert->Launch();
-	}
-	*/
+	pythonString = "/boot/common/bin/rst2html.py ";
+	pythonString += tmpInPath;
+	pythonString += " ";
+	pythonString += tmpOutPath;
+	system(pythonString);
+	
 	BString tmpPath = "open ";
-	// BString tmpPath = "/boot/apps/WebPositive file://";
 	tmpPath += GetAppDirPath();
-	// tmpPath += "/tmp.html &";
 	tmpPath += "/tmp.html";
 	system(tmpPath);
-	// printf("open path: %s\n", tmpPath.String());
 }
 
 void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpRef, BString tmpName)
@@ -109,12 +87,6 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	ErrorAlert* eAlert;
 	BEntry entry;
 	BPath path;
-	/*
-	int argc = 1;
-	char* argvv = "ladida";
-	char** argv = &argvv;
-	Python py(argc, argv);
-	*/
 	BString publishPath; // user generated filename
 	BString tmpInPath; // string path of tmppub.tht file, then string path of tmppub.ext
 	BString tmpOutPath;
@@ -135,24 +107,6 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	tmpOutPath = GetAppDirPath();
 	tmpOutPath += "/tmppub.";
 	tmpOutPath += tmpExt;
-	pythonString = "output = publish_file(source_path='";
-	pythonString += tmpInPath;
-	pythonString += "', destination_path='";
-	pythonString += tmpOutPath;
-	pythonString += "', writer_name='";
-	if(tmpExt == "odt") pythonString += "odf_odt')";
-	else if(tmpExt == "tex") pythonString += "latex')";
-	else if(tmpExt == "htm") pythonString += "html')";
-	else if(tmpExt == "xml") pythonString += "xml')";
-	else if(tmpExt == "pdf")
-	{
-		// nothing goes here
-	}
-	else
-	{
-		eAlert = new ErrorAlert("4.3 Publish File Type Error: Invalid filetype.");
-		eAlert->Launch();
-	}
 	removeTmpFile.SetTo(tmpInPath);
 	previewFile.SetTo(tmpInPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
 	if(previewFile.InitCheck() != B_OK)
@@ -163,48 +117,29 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	previewFile.Write(tmpData, strlen(tmpData));
 	previewFile.Unset();
 
+	if(tmpExt == "odt") runPath = "/boot/common/bin/rst2odt.py ";
+	else if(tmpExt == "tex") runPath = "/boot/common/bin/rst2latex.py ";
+	else if(tmpExt == "htm") runPath = "/boot/common/bin/rst2html.py ";
+	else if(tmpExt == "xml") runPath = "/boot/common/bin/rst2xml.py ";
+	else if(tmpExt == "pdf") runPath = "/boot/common/bin/rst2pdf ";
+	else
+	{
+		eAlert = new ErrorAlert("4.3 Publish File Type Error: Invalid filetype.");
+		eAlert->Launch();
+	}
+	runPath += GetAppDirPath();
+	runPath += "/tmppub.tht ";
 	if(tmpExt == "pdf")
 	{
-		runPath = "/boot/common/bin/rst2pdf ";
-		runPath += GetAppDirPath();
-		runPath += "/tmppub.tht -o ";
-		runPath += GetAppDirPath();
-		runPath += "/tmppub.pdf";
-		system(runPath);
+		runPath += " -o ";
 	}
-	else // not PDF run
-	{
-		/*
-		int argc = 1;
-		char* argvv = "ladida";
-		char** argv = &argvv;
-		Python py(argc, argv);
-		*/
-		try
-		{
-			py.run_string("from docutils.core import publish_file");
-			py.run_string(pythonString.String());
-		}
-		catch(Python_exception ex)
-		{
-			eAlert = new ErrorAlert("3.5 Editor Error: Python Issue - ", ex.what());
-			eAlert->Launch();
-			err = removeTmpFile.Remove();
-			if(err != B_OK)
-			{
-				eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
-				eAlert->Launch();
-			}
-		}
-	}
-	
+	runPath += GetAppDirPath();
+	runPath += "/tmppub.";
+	runPath += tmpExt;
+	system(runPath);
 	tmpInPath = GetAppDirPath();
 	tmpInPath += "/tmppub.";
 	tmpInPath += tmpExt;
-	//printf(" Current tmppath: ");
-	//printf(tmpInPath);
-	//printf("\n");
-	//printf("Current file name: %s\n\n", tmpName.String());
 	publishPath = tmpName;
 	publishPath.Append(".");
 	publishPath.Append(tmpExt);
