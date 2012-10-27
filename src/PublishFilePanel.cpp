@@ -18,6 +18,11 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			BView* poseView = v->FindView("DirMenuField");
 			BView* parentview;
 			BEntry rst2pdfcheck("/boot/common/bin/rst2pdf");
+			BEntry rst2htmcheck("/boot/common/bin/rst2html.py");
+			BEntry rst2xmlcheck("/boot/common/bin/rst2xml.py");
+			BEntry rst2odtcheck("/boot/common/bin/rst2odt.py");
+			BEntry rst2texcheck("/boot/common/bin/rst2latex.py");
+			/*
 			BVolumeRoster volRoster;
 			BVolume bootVolume;
 			volRoster.GetBootVolume(&bootVolume);
@@ -27,6 +32,7 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			query.SetVolume(&bootVolume);
 			query.SetPredicate(predicate.String());
 			// /boot/common/lib/python2.6/site-packages/docutils/core.py
+			*/
 			
 			charWidth = cancelBtn->StringWidth("Select Current Directory");
 			btnrect = cancelBtn->Frame();
@@ -56,10 +62,13 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			parentview->AddChild(openCheckBox);
 			SetMessage(pubMsg);
 			SetTarget(*target);
+			/*
 			publishTypeMenu->FindItem("HTM")->SetEnabled(false);
 			publishTypeMenu->FindItem("ODT")->SetEnabled(false);
 			publishTypeMenu->FindItem("TEX")->SetEnabled(false);
 			publishTypeMenu->FindItem("XML")->SetEnabled(false);
+			*/
+			/*
 
 			// htm, odt, pdf, tex, xml
 			if(query.Fetch() == B_OK)
@@ -85,7 +94,12 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 					}
 				}
 			}
+			*/
 			if(!rst2pdfcheck.Exists()) publishTypeMenu->FindItem("PDF")->SetEnabled(false);
+			if(!rst2htmcheck.Exists()) publishTypeMenu->FindItem("HTM")->SetEnabled(false);
+			if(!rst2xmlcheck.Exists()) publishTypeMenu->FindItem("XML")->SetEnabled(false);
+			if(!rst2odtcheck.Exists()) publishTypeMenu->FindItem("ODT")->SetEnabled(false);
+			if(!rst2texcheck.Exists()) publishTypeMenu->FindItem("TEX")->SetEnabled(false);
 		}
 		
 		w->Unlock();
