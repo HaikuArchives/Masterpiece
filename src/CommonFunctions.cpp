@@ -52,10 +52,12 @@ void TmpCleanUp(BString tmpExt)
 }
 void ExecutePreview(BString tmpData)
 {
+	/*
 	int argc = 1;
 	char* argvv = "ladida";
 	char** argv = &argvv;
 	Python py(argc, argv);
+	*/
 	BString tmpInPath; // string path of the tmppub.tht file then string path of tmppub.ext file
 	BString tmpOutPath;
 	BString pythonString;
@@ -65,11 +67,13 @@ void ExecutePreview(BString tmpData)
 	tmpInPath += "/tmp.tht";
 	tmpOutPath = GetAppDirPath();
 	tmpOutPath += "/tmp.html";
+	/*
 	pythonString = "output = publish_file(source_path='";
 	pythonString += tmpInPath;
 	pythonString += "', destination_path='";
 	pythonString += tmpOutPath;
 	pythonString += "', writer_name='html')";
+	*/
 	previewFile.SetTo(tmpInPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
 	if(previewFile.InitCheck() != B_OK)
 	{
@@ -79,6 +83,7 @@ void ExecutePreview(BString tmpData)
 	}
 	previewFile.Write(tmpData, strlen(tmpData));
 	previewFile.Unset();
+	/*
 	try
 	{
 		py.run_string("from docutils.core import publish_file");
@@ -89,6 +94,7 @@ void ExecutePreview(BString tmpData)
 		eAlert = new ErrorAlert("4.3 Builder Error: Python Issue - ", ex.what());
 		eAlert->Launch();
 	}
+	*/
 	BString tmpPath = "open ";
 	// BString tmpPath = "/boot/apps/WebPositive file://";
 	tmpPath += GetAppDirPath();
@@ -103,10 +109,12 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	ErrorAlert* eAlert;
 	BEntry entry;
 	BPath path;
+	/*
 	int argc = 1;
 	char* argvv = "ladida";
 	char** argv = &argvv;
 	Python py(argc, argv);
+	*/
 	BString publishPath; // user generated filename
 	BString tmpInPath; // string path of tmppub.tht file, then string path of tmppub.ext
 	BString tmpOutPath;
