@@ -103,10 +103,12 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	ErrorAlert* eAlert;
 	BEntry entry;
 	BPath path;
+	/*
 	int argc = 1;
 	char* argvv = "ladida";
 	char** argv = &argvv;
 	Python py(argc, argv);
+	*/
 	BString publishPath; // user generated filename
 	BString tmpInPath; // string path of tmppub.tht file, then string path of tmppub.ext
 	BString tmpOutPath;
@@ -166,6 +168,10 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	}
 	else // not PDF run
 	{
+		int argc = 1;
+		char* argvv = "ladida";
+		char** argv = &argvv;
+		Python py(argc, argv);
 		try
 		{
 			py.run_string("from docutils.core import publish_file");
@@ -214,17 +220,7 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
 	{
 		err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
-		if(err == B_OK)
-		{
-			if(tmpFlag == 1)  // user wants to open file after created.
-			{
-				executeString = "open ";
-				executeString += newFilePath.String();
-				executeString += " &";
-				system(executeString);
-			}
-		}
-		else
+		if(err != B_OK)
 		{
 			if(err == B_CROSS_DEVICE_LINK)
 			{
@@ -267,6 +263,13 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 				eAlert->Launch();		
 			}
 		}
+		if(tmpFlag == 1)  // user wants to open file after created.
+		{
+			executeString = "open ";
+			executeString += newFilePath.String();
+			executeString += " &";
+			system(executeString);
+		}		
 	}
 	else
 	{
