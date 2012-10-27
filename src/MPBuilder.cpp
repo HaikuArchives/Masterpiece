@@ -267,6 +267,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 		case PUBLISH_TYPE:
 			fileExt = publishPanel->publishTypeMenu->FindMarked()->Label();
 			fileExt = fileExt.ToLower();
+			openflag = publishPanel->openCheckBox->Value();
 			if(msg->FindString("name", &pubName) == B_OK)
 			{
 				// set's file name to pubName
@@ -441,16 +442,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			deleteButton->SetEnabled(false);
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
-			/*
-			if(GetStatusBar() != "")
-			{
-				SetStatusBar("");
-			}
-			else
-			{
-				printf("Error\n");
-			}
-			*/
 			if(availableThoughtListView->CurrentSelection() >= 0)
 			{
 				orderedThoughtListView->DeselectAll();
@@ -763,7 +754,7 @@ int32 MPBuilder::PublishThread(void* data)
 		parent->mpData += publishItem->ReturnText();
 	}
 	
-	ExecutePublish(parent->mpData, parent->fileExt, parent->pubRef, parent->pubName);
+	ExecutePublish(parent->mpData, parent->openflag, parent->fileExt, parent->pubRef, parent->pubName);
 	
 	parent->Lock();
 	parent->SetStatusBar("Publish Completed Successfully");

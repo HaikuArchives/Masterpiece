@@ -89,11 +89,13 @@ void ExecutePreview(BString tmpData)
 		eAlert = new ErrorAlert("4.3 Builder Error: Python Issue - ", ex.what());
 		eAlert->Launch();
 	}
-	
-	BString tmpPath = "/boot/apps/WebPositive file://";
+	BString tmpPath = "open ";
+	// BString tmpPath = "/boot/apps/WebPositive file://";
 	tmpPath += GetAppDirPath();
-	tmpPath += "/tmp.html &";
+	// tmpPath += "/tmp.html &";
+	tmpPath += "/tmp.html";
 	system(tmpPath);
+	// printf("open path: %s\n", tmpPath.String());
 }
 
 void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpRef, BString tmpName)
@@ -130,29 +132,13 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	pythonString += "', destination_path='";
 	pythonString += tmpOutPath;
 	pythonString += "', writer_name='";
-	if(tmpExt == "odt")
-	{
-		pythonString += "odf_odt')";
-		executeString = "";
-	}
-	else if(tmpExt == "tex")
-	{
-		pythonString += "latex')";
-		executeString = "";
-	}
-	else if(tmpExt == "htm")
-	{
-		pythonString += "html')";
-		executeString = "";
-	}
-	else if(tmpExt == "xml")
-	{
-		pythonString += "xml')";
-		executeString = "";
-	}
+	if(tmpExt == "odt") pythonString += "odf_odt')";
+	else if(tmpExt == "tex") pythonString += "latex')";
+	else if(tmpExt == "htm") pythonString += "html')";
+	else if(tmpExt == "xml") pythonString += "xml')";
 	else if(tmpExt == "pdf")
 	{
-		executeString = "";
+		// nothing goes here
 	}
 	else
 	{
@@ -201,10 +187,10 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	tmpInPath = GetAppDirPath();
 	tmpInPath += "/tmppub.";
 	tmpInPath += tmpExt;
-	printf(" Current tmppath: ");
-	printf(tmpInPath);
-	printf("\n");
-	printf("Current file name: %s\n\n", tmpName.String());
+	//printf(" Current tmppath: ");
+	//printf(tmpInPath);
+	//printf("\n");
+	//printf("Current file name: %s\n\n", tmpName.String());
 	publishPath = tmpName;
 	publishPath.Append(".");
 	publishPath.Append(tmpExt);
@@ -223,12 +209,22 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	newFilePath += tmpName;
 	newFilePath += ".";
 	newFilePath += tmpExt;
-	printf("old file: %s\n", oldFilePath.String());
+	//printf("old file: %s\n", oldFilePath.String());
 	printf("new file: %s\n", newFilePath.String());
 	if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
 	{
 		err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
-		if(err != B_OK)
+		if(err == B_OK)
+		{
+			if(tmpFlag == 1)  // user wants to open file after created.
+			{
+				executeString = "open ";
+				executeString += newFilePath.String();
+				executeString += " &";
+				system(executeString);
+			}
+		}
+		else
 		{
 			if(err == B_CROSS_DEVICE_LINK)
 			{
@@ -252,10 +248,6 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 							}
 							else
 							{
-								if(tmpFlag == 1)  // user wants to open file after created.
-								{
-									
-								}
 								removeOldFile.SetTo(oldFilePath);
 								err = removeOldFile.Remove();
 								if(err != B_OK)

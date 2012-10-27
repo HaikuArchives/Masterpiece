@@ -91,6 +91,7 @@ private:
 		BString				pubName; // publish file name
 		BString				mpData;
 		int64				clearStatus;
+		int					openflag;
 		
 };
 
