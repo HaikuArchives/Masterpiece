@@ -103,12 +103,10 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	ErrorAlert* eAlert;
 	BEntry entry;
 	BPath path;
-	/*
 	int argc = 1;
 	char* argvv = "ladida";
 	char** argv = &argvv;
 	Python py(argc, argv);
-	*/
 	BString publishPath; // user generated filename
 	BString tmpInPath; // string path of tmppub.tht file, then string path of tmppub.ext
 	BString tmpOutPath;
@@ -168,10 +166,12 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	}
 	else // not PDF run
 	{
+		/*
 		int argc = 1;
 		char* argvv = "ladida";
 		char** argv = &argvv;
 		Python py(argc, argv);
+		*/
 		try
 		{
 			py.run_string("from docutils.core import publish_file");
