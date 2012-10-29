@@ -19,7 +19,6 @@ class BuilderMenu : public BMenuBar
 public:
 						BuilderMenu(BRect rect, const BMessage &msg, const BMessenger &msgr);// editor menu
 			BMenu*		helpMenu;				// help menu
-			//BMenu*		publishMenu;			// publish as menu
 			BMenu*		settingsMenu;			// settings
 			BMenuItem*	newMasterMenuItem;		// new thought menu item
 			BMenuItem*	editMPTitleMenuItem;	// edit thought menu item

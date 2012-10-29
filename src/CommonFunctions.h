@@ -1,8 +1,6 @@
 #ifndef COMMONFUNCTIONS_H
 #define COMMONFUNCTIONS_H
 
-//#include "pyembed.h"
-
 #include <Alert.h>
 #include <Application.h>
 #include <Button.h>

@@ -127,13 +127,13 @@ void MPEditor::MessageReceived(BMessage* msg)
 			openflag = pubEditorPanel->openCheckBox->Value();
 			if(msg->FindString("name", &pubName) == B_OK)
 			{
-				printf("default save message: %s\n", pubName.String());
+				//printf("default save message: %s\n", pubName.String());
 			}
 			else
 			{
 				eAlert = new ErrorAlert("3.1 Editor Error: Message not found."); // message variable not found
 				eAlert->Launch();
-				printf("no string name\n\n");
+				//printf("no string name\n\n");
 			}
 			if(msg->FindRef("directory", &pubRef) == B_OK)
 			{
@@ -142,7 +142,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			{
 				eAlert = new ErrorAlert("3.1 Editor Error: Directory Reference not found."); // message variable not found
 				eAlert->Launch();
-				printf("ref entry not found\n");
+				//printf("ref entry not found\n");
 			}
 			publishThread = spawn_thread(PublishThread, "publish thread", B_NORMAL_PRIORITY, (void*)this);
 			if(publishThread >= 0) // successful
@@ -167,7 +167,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			helperWindow->AddText(BRect(10, 135, 200, 150), "6", "Publish Thought :: ALT + p");
 			helperWindow->AddText(BRect(10, 160, 230, 175), "7", "View Keyboard Shortcuts :: ALT + k");
 			helperWindow->Show();
-			printf("open keyboard reference window");
+			//printf("open keyboard reference window");
 			break;
 		case MENU_MRK_THT: // open markup reference window
 			xPos = (r.right - r.left) / 2; // find xpos for window
@@ -175,14 +175,14 @@ void MPEditor::MessageReceived(BMessage* msg)
 			markupWindow = new MarkupWindow(BRect(xPos, yPos, xPos + 600, yPos + 400), "Markup Reference");
 			markupWindow->AddMarkupItem("Cheat Sheet", "cheatsheet.txt");
 			markupWindow->Show();
-			printf("open markup reference window");
+			//printf("open markup reference window");
 			break;
 		case MENU_ABT_THT: // open about window
 			xPos = (r.right - r.left) / 2; // find xpos for window
 			yPos = (r.bottom - r.top) / 2; // find ypos for window
 			aboutWindow = new AboutWindow(BRect(xPos, yPos, xPos + 600, yPos + 400), "About MasterPiece");
 			aboutWindow->Show();
-			printf("open about window");
+			//printf("open about window");
 			break;
 		case UPDATE_TITLE: // update title with the name from the saveidea window
 			if(msg->FindString("updatetitle", &updateTitle) == B_OK) // updated title exists in variable

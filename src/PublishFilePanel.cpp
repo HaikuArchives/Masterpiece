@@ -1,4 +1,5 @@
 #include "PublishFilePanel.h"
+
 PublishFilePanel::PublishFilePanel(BMessenger* target)
 	:	BFilePanel(B_SAVE_PANEL, target, NULL, B_FILE_NODE, false)
 {
@@ -22,18 +23,6 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			BEntry rst2xmlcheck("/boot/common/bin/rst2xml.py");
 			BEntry rst2odtcheck("/boot/common/bin/rst2odt.py");
 			BEntry rst2texcheck("/boot/common/bin/rst2latex.py");
-			/*
-			BVolumeRoster volRoster;
-			BVolume bootVolume;
-			volRoster.GetBootVolume(&bootVolume);
-			BString predicate("name==\"*[cC][oO][rR][eE].[pP][yY]\"");
-			BQuery query;
-			BString spath;
-			query.SetVolume(&bootVolume);
-			query.SetPredicate(predicate.String());
-			// /boot/common/lib/python2.6/site-packages/docutils/core.py
-			*/
-			
 			charWidth = cancelBtn->StringWidth("Select Current Directory");
 			btnrect = cancelBtn->Frame();
 			btnrect.right = btnrect.left - 10;
@@ -62,39 +51,6 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 			parentview->AddChild(openCheckBox);
 			SetMessage(pubMsg);
 			SetTarget(*target);
-			/*
-			publishTypeMenu->FindItem("HTM")->SetEnabled(false);
-			publishTypeMenu->FindItem("ODT")->SetEnabled(false);
-			publishTypeMenu->FindItem("TEX")->SetEnabled(false);
-			publishTypeMenu->FindItem("XML")->SetEnabled(false);
-			*/
-			/*
-
-			// htm, odt, pdf, tex, xml
-			if(query.Fetch() == B_OK)
-			{
-				//printf("Results of query \"%s\":\n", predicate.String());
-				BEntry entry;
-				BPath path;
-
-				while (query.GetNextEntry(&entry) == B_OK)
-				{
-					entry.GetPath(&path);
-					spath = path.Path();
-					//printf("\t%s\n", path.Path());
-					spath.RemoveSet("123456789.");
-					if(spath == "/boot/common/lib/python/site-packages/docutils/corepy")
-					{
-						publishTypeMenu->FindItem("HTM")->SetEnabled(true);
-						publishTypeMenu->FindItem("ODT")->SetEnabled(true);
-						publishTypeMenu->FindItem("TEX")->SetEnabled(true);
-						publishTypeMenu->FindItem("XML")->SetEnabled(true);
-						//printf(spath);
-						break;
-					}
-				}
-			}
-			*/
 			if(!rst2pdfcheck.Exists()) publishTypeMenu->FindItem("PDF")->SetEnabled(false);
 			if(!rst2htmcheck.Exists()) publishTypeMenu->FindItem("HTM")->SetEnabled(false);
 			if(!rst2xmlcheck.Exists()) publishTypeMenu->FindItem("XML")->SetEnabled(false);

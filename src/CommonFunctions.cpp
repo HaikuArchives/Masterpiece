@@ -1,7 +1,5 @@
 #include "CommonFunctions.h"
 
-//using namespace pyembed;
-
 void DisplayError(const char* errorNumber, const char* errorType, const char* errorValue)
 {
 	BString tmpString = errorNumber;
@@ -35,7 +33,7 @@ void TmpCleanUp(BString tmpExt)
 	BEntry removeTmpFile;
 	tmpPath += "/tmp.";
 	tmpPath += tmpExt;
-	printf("tht path: %s\n", tmpPath.String());
+	//printf("tht path: %s\n", tmpPath.String());
 	removeTmpFile.SetTo(tmpPath);
 	status_t err = removeTmpFile.Remove();
 	if(err == B_OK || err == B_ENTRY_NOT_FOUND)
@@ -159,7 +157,7 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	newFilePath += ".";
 	newFilePath += tmpExt;
 	//printf("old file: %s\n", oldFilePath.String());
-	printf("new file: %s\n", newFilePath.String());
+	//printf("new file: %s\n", newFilePath.String());
 	if(publishDirectory.SetTo(dirPath) == B_OK) // set publish directory to the user created directory
 	{
 		err = publishFile.MoveTo(&publishDirectory, NULL, true); // move publish file to publish directory
