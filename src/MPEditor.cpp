@@ -171,7 +171,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 			//printf("open keyboard reference window");
 			break;
 		case MENU_MRK_THT: // open markup reference window
-			cheatThread = spawn_thread(HelpThread, "cheat thread", B_NORMAL_PRIORITY, (void*)this);
+			const char* testItem;
+			testItem = "cheatsheet.txt";
+			cheatThread = spawn_thread(HelpThread, "cheat thread", B_NORMAL_PRIORITY, (void*)testItem);
 			if(cheatThread >= 0) // successful
 			{
 				resume_thread(cheatThread);
@@ -273,3 +275,16 @@ int32 MPEditor::PublishThread(void* data)
 	
 	return 0;
 }
+int32 MPEditor::HelpThread(void* data)
+{
+	BString executeString;
+	const char* helpItem;
+	helpItem = (const char*)data;
+	// take the data provided, which is the file, then call the system
+	executeString = "open ";
+	executeString += helpItem;
+	system(executeString);
+	
+	return 0;
+}
+

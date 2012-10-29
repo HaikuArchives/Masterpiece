@@ -226,17 +226,6 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	}
 }
 
-int32 HelpThread(void* data)
-{
-	BString executeString;
-	// take the data provided, which is the file, then call the system
-	executeString = "open ";
-	//executeString += data;
-	system(executeString);
-	
-	return 0;
-}
-
 ErrorAlert::ErrorAlert(BString tmpText)
 {
 	tmpAlert = new BAlert("Error:", tmpText, "OK", NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
