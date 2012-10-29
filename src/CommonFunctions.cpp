@@ -208,7 +208,6 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 		{
 			executeString = "open ";
 			executeString += newFilePath.String();
-			executeString += " &";
 			system(executeString);
 		}		
 	}
@@ -225,6 +224,17 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 		eAlert = new ErrorAlert("3.14 Editor Error: Tmp File could not be removed due to: ", strerror(err));
 		eAlert->Launch();
 	}
+}
+
+int32 HelpThread(void* data)
+{
+	BString executeString;
+	// take the data provided, which is the file, then call the system
+	executeString = "open ";
+	//executeString += data;
+	system(executeString);
+	
+	return 0;
 }
 
 ErrorAlert::ErrorAlert(BString tmpText)

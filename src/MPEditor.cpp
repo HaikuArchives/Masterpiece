@@ -60,7 +60,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 	BRect r(Bounds());
 	thread_id previewThread;
 	thread_id publishThread;
-	
+	thread_id cheatThread;
+		
 	switch(msg->what)
 	{
 		case MENU_NEW_THT: // open another untitled editor window
@@ -170,12 +171,19 @@ void MPEditor::MessageReceived(BMessage* msg)
 			//printf("open keyboard reference window");
 			break;
 		case MENU_MRK_THT: // open markup reference window
+			cheatThread = spawn_thread(HelpThread, "cheat thread", B_NORMAL_PRIORITY, (void*)this);
+			if(cheatThread >= 0) // successful
+			{
+				resume_thread(cheatThread);
+			}
+			/*
 			xPos = (r.right - r.left) / 2; // find xpos for window
 			yPos = (r.bottom - r.top) / 2; // find ypos for window
 			markupWindow = new MarkupWindow(BRect(xPos, yPos, xPos + 600, yPos + 400), "Markup Reference");
 			markupWindow->AddMarkupItem("Cheat Sheet", "cheatsheet.txt");
 			markupWindow->Show();
 			//printf("open markup reference window");
+			*/
 			break;
 		case MENU_ABT_THT: // open about window
 			xPos = (r.right - r.left) / 2; // find xpos for window

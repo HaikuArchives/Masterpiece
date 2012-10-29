@@ -30,12 +30,13 @@
 #include <Window.h>
 #include <OS.h>
 
-void	DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
-void	TmpCleanUp(BString tmpExt);
-void	ExecutePreview(BString tmpData);
-void	ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpRef, BString tmpName);
-BString	GetAppDirPath(void);
-BString GetUserDirPath(void);
+void			DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
+void			TmpCleanUp(BString tmpExt);
+void			ExecutePreview(BString tmpData);
+void			ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpRef, BString tmpName);
+static int32	HelpThread(void* data); // general thread to open help files.
+BString			GetAppDirPath(void);
+BString 		GetUserDirPath(void);
 
 class ErrorAlert
 {
