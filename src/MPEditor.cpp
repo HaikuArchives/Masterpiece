@@ -283,6 +283,7 @@ int32 MPEditor::HelpThread(void* data)
 	// take the data provided, which is the file, then call the system
 	executeString = "open ";
 	executeString += helpItem;
+	executeString += " &";
 	system(executeString);
 	
 	return 0;

@@ -20,14 +20,16 @@ class EditorMenu : public BMenuBar
 public:
 						EditorMenu(BRect rect, const BMessage &msg, const BMessenger &msgr);	// editor menu
 			BMenu*		helpMenu;				// help menu
+			BMenu*		helpTopics;				// help topics sub menu
 			BMenuItem*	newThoughtMenuItem;		// new thought menu item
 			BMenuItem*	editThoughtMenuItem;	// edit thought menu item
 			BMenuItem*	saveThoughtMenuItem;	// save thought menu item
 			BMenuItem*	previewMenuItem;		// preview menu item
 			BMenuItem*	publishMenuItem;		// publish menu item
+			BMenuItem*	cheatMenuItem;			// cheatsheat menu item
 			BMenuItem*	keyboardRefMenuItem;	// keyboard reference menu item
-			BMenuItem*	markupRefMenuItem;		// markup reference menu item
-			BMenuItem*	helpTopicsMenuItem;		// help topics menu item
+			//BMenuItem*	markupRefMenuItem;		// markup reference menu item
+			//BMenuItem*	helpTopicsMenuItem;		// help topics menu item
 			BMenuItem*	aboutMenuItem;			// about menu item
 			void		MouseDown(BPoint point);
 			void		KeyDown(const char* bytes, int32 numBytes);

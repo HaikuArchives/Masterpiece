@@ -77,6 +77,7 @@ void ExecutePreview(BString tmpData)
 	BString tmpPath = "open ";
 	tmpPath += GetAppDirPath();
 	tmpPath += "/tmp.html";
+	tmpPath += " &";
 	system(tmpPath);
 }
 
@@ -208,6 +209,7 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 		{
 			executeString = "open ";
 			executeString += newFilePath.String();
+			executeString += " &";
 			system(executeString);
 		}		
 	}
