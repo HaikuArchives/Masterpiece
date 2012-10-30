@@ -10,7 +10,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	AddShortcut('r', B_COMMAND_KEY, new BMessage(MENU_PRV_THT));
 	AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_THT));
 	AddShortcut('k', B_COMMAND_KEY, new BMessage(MENU_KEY_THT));
-	AddShortcut('m', B_COMMAND_KEY, new BMessage(MENU_MRK_THT));
+	//AddShortcut('m', B_COMMAND_KEY, new BMessage(MENU_CHT_THT));
 	AddShortcut('a', B_COMMAND_KEY, new BMessage(MENU_ABT_THT));
 	// initialize controls
 	pubEditorPanel = NULL;
@@ -61,6 +61,12 @@ void MPEditor::MessageReceived(BMessage* msg)
 	thread_id previewThread;
 	thread_id publishThread;
 	thread_id cheatThread;
+	thread_id quickstartThread;
+	thread_id rstThread;
+	thread_id directThread;
+	thread_id quickrefThread;
+	thread_id qseThread;
+	thread_id cheThread;
 
 	switch(msg->what)
 	{
@@ -170,22 +176,54 @@ void MPEditor::MessageReceived(BMessage* msg)
 			helperWindow->Show();
 			//printf("open keyboard reference window");
 			break;
-		case MENU_MRK_THT: // open markup reference window
-			const char* testItem;
-			testItem = "cheatsheet.txt";
-			cheatThread = spawn_thread(HelpThread, "cheat thread", B_NORMAL_PRIORITY, (void*)testItem);
+		case MENU_CHT_THT: // open markup reference window
+			cheatThread = spawn_thread(HelpThread, "cheat thread", B_NORMAL_PRIORITY, (void*)"cheatsheet.html");
 			if(cheatThread >= 0) // successful
 			{
 				resume_thread(cheatThread);
 			}
-			/*
-			xPos = (r.right - r.left) / 2; // find xpos for window
-			yPos = (r.bottom - r.top) / 2; // find ypos for window
-			markupWindow = new MarkupWindow(BRect(xPos, yPos, xPos + 600, yPos + 400), "Markup Reference");
-			markupWindow->AddMarkupItem("Cheat Sheet", "cheatsheet.txt");
-			markupWindow->Show();
-			//printf("open markup reference window");
-			*/
+			break;
+		case MENU_QKS_THT: // quick start quide
+			quickstartThread = spawn_thread(HelpThread, "qs thread", B_NORMAL_PRIORITY, (void*)"quickstart.html");
+			if(quickstartThread >= 0) // successful
+			{
+				resume_thread(quickstartThread);
+			}
+			break;
+		case MENU_RST_THT: // rst guide
+			rstThread = spawn_thread(HelpThread, "rst thread", B_NORMAL_PRIORITY, (void*)"restructuredtext.html");
+			if(rstThread >= 0) // successful
+			{
+				resume_thread(rstThread);
+			}
+			break;
+		case MENU_DRT_THT: // directives guide
+			directThread = spawn_thread(HelpThread, "direct thread", B_NORMAL_PRIORITY, (void*)"directives.html");
+			if(directThread >= 0) // successful
+			{
+				resume_thread(directThread);
+			}
+			break;
+		case MENU_QKE_THT: // quick start example
+			qseThread = spawn_thread(HelpThread, "quick example thread", B_NORMAL_PRIORITY, (void*)"quickstart.txt");
+			if(qseThread >= 0) // successful
+			{
+				resume_thread(qseThread);
+			}
+			break;
+		case MENU_CHE_THT: // cheat sheet example
+			cheThread = spawn_thread(HelpThread, "cheat example thread", B_NORMAL_PRIORITY, (void*)"cheatsheet.txt");
+			if(cheThread >= 0) // successful
+			{
+				resume_thread(cheThread);
+			}
+			break;
+		case MENU_QKR_THT: // quick ref guide
+			quickrefThread = spawn_thread(HelpThread, "quick ref thread", B_NORMAL_PRIORITY, (void*)"quickref.html");
+			if(quickrefThread >= 0) // successful
+			{
+				resume_thread(quickrefThread);
+			}
 			break;
 		case MENU_ABT_THT: // open about window
 			xPos = (r.right - r.left) / 2; // find xpos for window
@@ -278,11 +316,9 @@ int32 MPEditor::PublishThread(void* data)
 int32 MPEditor::HelpThread(void* data)
 {
 	BString executeString;
-	const char* helpItem;
-	helpItem = (const char*)data;
 	// take the data provided, which is the file, then call the system
 	executeString = "open ";
-	executeString += helpItem;
+	executeString += (const char*)data;
 	executeString += " &";
 	system(executeString);
 	

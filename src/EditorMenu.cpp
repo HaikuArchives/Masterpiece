@@ -5,26 +5,38 @@ EditorMenu::EditorMenu(BRect rect, const BMessage &msg, const BMessenger &msgr)
 {
 	// initialize menu and menuitems
 	helpMenu = new BMenu("Help");
-	helpTopics = new BMenu("Help Topics");
+	topicMenu = new BMenu("ReStructured Markup");
+	exampleMenu = new BMenu("ReStructured Examples");
 	newThoughtMenuItem = new BMenuItem("New Thought", new BMessage(MENU_NEW_THT));
 	editThoughtMenuItem = new BMenuItem("Edit Thought Name", new BMessage(MENU_EDT_THT));
 	saveThoughtMenuItem = new BMenuItem("Save Progress", new  BMessage(MENU_SAV_THT));
 	previewMenuItem = new BMenuItem("Preview", new BMessage(MENU_PRV_THT));
 	publishMenuItem = new BMenuItem("Publish", new BMessage(MENU_PUB_THT));
 	keyboardRefMenuItem = new BMenuItem("Keyboard Reference", new BMessage(MENU_KEY_THT));
-	cheatMenuItem = new BMenuItem("ReStructuredText Cheat Sheet", new BMessage(MENU_MRK_THT));
-	//markupRefMenuItem = new BMenuItem("Markup Reference", new BMessage(MENU_MRK_THT));
-	//helpTopicsMenuItem = new BMenuItem("Help Topics", new BMessage(MENU_HLP_THT));
+	quickStartMenuItem = new BMenuItem("Quick Start", new BMessage(MENU_QKS_THT));
+	cheatMenuItem = new BMenuItem("Cheat Sheet", new BMessage(MENU_CHT_THT));
+	guideMenuItem = new BMenuItem("Markup Specification", new BMessage(MENU_RST_THT));
+	directMenuItem = new BMenuItem("Directives Guide", new BMessage(MENU_DRT_THT));
+	quickExMenuItem = new BMenuItem("Quick Start Source", new BMessage(MENU_QKE_THT));
+	cheatExMenuItem = new BMenuItem("Cheat Sheet Source", new BMessage(MENU_CHE_THT));
+	quickRefMenuItem = new BMenuItem("Quick Reference", new BMessage(MENU_QKR_THT));
 	aboutMenuItem = new BMenuItem("About", new BMessage(MENU_ABT_THT));
 	
 	// lyout helptopics menu
-	helpTopics->AddItem(cheatMenuItem);
+	topicMenu->AddItem(quickStartMenuItem);
+	topicMenu->AddItem(cheatMenuItem);
+	topicMenu->AddItem(guideMenuItem);
+	topicMenu->AddItem(directMenuItem);
+	
+	//layout examples menu
+	exampleMenu->AddItem(quickExMenuItem);
+	exampleMenu->AddItem(cheatExMenuItem);
 	
 	//layout helpMenu
-	helpMenu->AddItem(helpTopics);
-	//helpMenu->AddItem(markupRefMenuItem);
+	helpMenu->AddItem(topicMenu);
+	helpMenu->AddItem(exampleMenu);
+	helpMenu->AddItem(quickRefMenuItem);
 	helpMenu->AddItem(keyboardRefMenuItem);
-	//helpMenu->AddItem(helpTopicsMenuItem);
 	helpMenu->AddSeparatorItem();
 	helpMenu->AddItem(aboutMenuItem);
 	
