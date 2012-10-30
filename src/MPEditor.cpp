@@ -61,7 +61,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 	thread_id previewThread;
 	thread_id publishThread;
 	thread_id cheatThread;
-		
+	BString buildItem;
+
 	switch(msg->what)
 	{
 		case MENU_NEW_THT: // open another untitled editor window
@@ -172,7 +173,10 @@ void MPEditor::MessageReceived(BMessage* msg)
 			break;
 		case MENU_MRK_THT: // open markup reference window
 			const char* testItem;
-			testItem = "cheatsheet.txt";
+			buildItem = GetAppDirPath();
+			buildItem += "/reference/cheatsheet.txt";
+			testItem = buildItem.String();
+			printf("%s\n\n", testItem);
 			cheatThread = spawn_thread(HelpThread, "cheat thread", B_NORMAL_PRIORITY, (void*)testItem);
 			if(cheatThread >= 0) // successful
 			{
