@@ -1,7 +1,7 @@
 #ifndef MPEDITOR_H
 #define MPEDITOR_H
 
-#include "EditorMenu.h"
+#include "MainMenu.h"
 #include "EditorTextView.h"
 #include "SaveIdea.h"
 #include "EditIdeaName.h"
@@ -50,7 +50,7 @@ private:
 		SqlObject*			sqlObject;
 		PublishFilePanel*	pubEditorPanel;
 		BStringView*		editorStatusBar;
-		EditorMenu*			editorMenuBar;
+		MainMenu*			editorMenuBar;
 		static int32		PreviewThread(void* data); // preview thread
 		static int32		PublishThread(void* data); // publish thread
 		static int32		HelpThread(void* data); // general help thread

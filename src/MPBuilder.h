@@ -1,7 +1,7 @@
 #ifndef MPBUILDER_H
 #define MPBUILDER_H
 
-#include "BuilderMenu.h"
+#include "MainMenu.h"
 #include "EditorTextView.h"
 #include "BuilderButton.h"
 #include "BuilderListView.h"
@@ -83,7 +83,7 @@ private:
 		SqlObject*			sqlObject;
 		SqlObject*			sqlObject2;
 		BStringView*		builderStatusBar;
-		BuilderMenu*		builderMenuBar;
+		MainMenu*			builderMenuBar;
 		static int32		PreviewThread(void* data); // preview thread
 		static int32		PublishThread(void* data); // publish thread
 		BString				fileExt; // file extension of converted file

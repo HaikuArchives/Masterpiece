@@ -16,7 +16,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	pubEditorPanel = NULL;
 	BRect r = Bounds();
 	r.bottom = 16;
-	editorMenuBar = new EditorMenu(r, BMessage(CLEAR_STATUS), BMessenger(this));
+	editorMenuBar = new MainMenu(r, "Edit Thought Name", BMessage(CLEAR_STATUS), BMessenger(this));
 	r = Bounds();
 	r.top = editorMenuBar->Frame().bottom + 1;
 	r.right -= B_V_SCROLL_BAR_WIDTH;

@@ -6,12 +6,12 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	// initialize controls
 	AddShortcut(B_TAB, B_COMMAND_KEY, new BMessage(END_EDIT_VIEW));
 	AddShortcut('q', B_COMMAND_KEY, new BMessage(B_QUIT_REQUESTED));
-	AddShortcut('n', B_COMMAND_KEY, new BMessage(MENU_NEW_MP));
-	AddShortcut('e', B_COMMAND_KEY, new BMessage(MENU_EDT_MP));
-	AddShortcut('s', B_COMMAND_KEY, new BMessage(MENU_SAV_MP));
-	AddShortcut('r', B_COMMAND_KEY, new BMessage(MENU_PRV_MP));
-	AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_MP));
-	AddShortcut('k', B_COMMAND_KEY, new BMessage(MENU_KEY_MP));
+	AddShortcut('n', B_COMMAND_KEY, new BMessage(MENU_NEW_THT));
+	AddShortcut('e', B_COMMAND_KEY, new BMessage(MENU_EDT_THT));
+	AddShortcut('s', B_COMMAND_KEY, new BMessage(MENU_SAV_THT));
+	AddShortcut('r', B_COMMAND_KEY, new BMessage(MENU_PRV_THT));
+	AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_THT));
+	AddShortcut('k', B_COMMAND_KEY, new BMessage(MENU_KEY_THT));
 	AddShortcut(B_RIGHT_ARROW, B_COMMAND_KEY, new BMessage(MOVE_RIGHT));
 	AddShortcut(B_LEFT_ARROW, B_COMMAND_KEY, new BMessage(MOVE_LEFT));
 	AddShortcut(B_UP_ARROW, B_COMMAND_KEY, new BMessage(MOVE_UP));
@@ -22,7 +22,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	publishPanel = NULL;
 	BRect r = Bounds();
 	r.bottom = 16;
-	builderMenuBar = new BuilderMenu(r, BMessage(CLEAR_STATUS), BMessenger(this));
+	builderMenuBar = new MainMenu(r, "Edit MasterPiece Name", BMessage(CLEAR_STATUS), BMessenger(this));
 	r = Bounds();
 	r.left += B_V_SCROLL_BAR_WIDTH;
 	r.right = 225;
@@ -170,17 +170,17 @@ void MPBuilder::MessageReceived(BMessage* msg)
 
 	switch(msg->what)
 	{
-		case MENU_NEW_MP: // open new untitled thought
+		case MENU_NEW_THT: // open new untitled thought
 			tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "Masterpiece Editor - untitled", -1);
 			tmpEditor->Show();
 			break;
-		case MENU_EDT_MP: // edit mp name
+		case MENU_EDT_THT: // edit mp name
 			xPos = (r.right - r.left) / 2; // find xpos for window
 			yPos = (r.bottom - r.top) / 2; // find ypos for window
 			editIdeaName = new EditIdeaName(BMessage(MP_UPDATE_TITLE), BMessenger(this), xPos, yPos, currentideaID);
 			editIdeaName->Show();
 			break;
-		case MENU_SAV_MP: // save mp information
+		case MENU_SAV_THT: // save mp information
 			// need to save a untitled mp.
 			if(currentideaID == -1) // save the mp first.
 			{
@@ -248,7 +248,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				eAlert->Launch();
 			}
 			break;
-		case MENU_PRV_MP: // preview masterpiece
+		case MENU_PRV_THT: // preview masterpiece
 			previewThread = spawn_thread(PreviewThread, "preview thread", B_NORMAL_PRIORITY, (void*)this);
 			if(previewThread >= 0) // successful
 			{
@@ -257,7 +257,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				resume_thread(previewThread);
 			}
 			break;
-		case MENU_PUB_MP: // publish masterpiece
+		case MENU_PUB_THT: // publish masterpiece
 			if(!publishPanel)
 			{
 				publishPanel = new PublishFilePanel(new BMessenger(this));
@@ -293,9 +293,9 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				resume_thread(publishThread);
 			}
 			break;
-		case MENU_HLP_MP: // help topics
+		case MENU_HLP_THT: // help topics
 			break;
-		case MENU_KEY_MP: // keyboard reference
+		case MENU_KEY_THT: // keyboard reference
 			xPos = (r.right - r.left) / 2; // find xpos for window
 			yPos = (r.bottom - r.top) / 2; // find ypos for window
 			helperWindow = new HelperWindows(BRect(xPos, yPos, xPos + 240, yPos + 190), "Keyboard Shortcuts");
@@ -308,7 +308,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			helperWindow->AddText(BRect(10, 160, 230, 175), "7", "View Keyboard Shortcuts :: ALT + k");
 			helperWindow->Show();
 			break;
-		case MENU_ABT_MP: // about window
+		case MENU_ABT_THT: // about window
 			break;
 		case MOVE_RIGHT: // add item to ordered list
 			selected = availableThoughtListView->CurrentSelection(); // selected list item value
