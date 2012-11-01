@@ -9,23 +9,28 @@ MasterPiece Tutorial
 Introduction
 -------------
 
-MasterPiece
-++++++++++++
-
-ReStructured Text
-++++++++++++++++++
+Installation
+------------
+Prerequisites, download packages, install script.
 
 Getting Started
 ---------------
 
 MP Launcher
-------------
+++++++++++++
 
 MP Builder
------------
++++++++++++
 
 MP Editor
-----------
+++++++++++
+
+Importing
+++++++++++
+
+Publishing
++++++++++++
 
 ReStructured Text
 -----------------
+
