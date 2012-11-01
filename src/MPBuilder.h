@@ -86,6 +86,7 @@ private:
 		MainMenu*			builderMenuBar;
 		static int32		PreviewThread(void* data); // preview thread
 		static int32		PublishThread(void* data); // publish thread
+		static int32		HelpThread(void* data); // general help thread
 		BString				fileExt; // file extension of converted file
 		entry_ref			pubRef; // publish ref entry value
 		BString				pubName; // publish file name

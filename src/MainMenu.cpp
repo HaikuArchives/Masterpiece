@@ -19,8 +19,9 @@ MainMenu::MainMenu(BRect rect, BString editText, const BMessage &msg, const BMes
 	directMenuItem = new BMenuItem("Directives Guide", new BMessage(MENU_DRT_THT));
 	quickExMenuItem = new BMenuItem("Quick Start Source", new BMessage(MENU_QKE_THT));
 	cheatExMenuItem = new BMenuItem("Cheat Sheet Source", new BMessage(MENU_CHE_THT));
-	quickRefMenuItem = new BMenuItem("Quick Reference", new BMessage(MENU_QKR_THT));
-	aboutMenuItem = new BMenuItem("About", new BMessage(MENU_ABT_THT));
+	mphelpMenuItem = new BMenuItem("MasterPiece Tutorial", new BMessage(MENU_MPH_THT));
+	quickRefMenuItem = new BMenuItem("RST Quick Reference", new BMessage(MENU_QKR_THT));
+	aboutMenuItem = new BMenuItem("About MasterPiece", new BMessage(MENU_ABT_THT));
 	
 	// layout helptopics menu
 	topicMenu->AddItem(quickStartMenuItem);
@@ -35,6 +36,7 @@ MainMenu::MainMenu(BRect rect, BString editText, const BMessage &msg, const BMes
 	//layout helpMenu
 	helpMenu->AddItem(topicMenu);
 	helpMenu->AddItem(exampleMenu);
+	helpMenu->AddItem(mphelpMenuItem);
 	helpMenu->AddItem(quickRefMenuItem);
 	helpMenu->AddItem(keyboardRefMenuItem);
 	helpMenu->AddSeparatorItem();
