@@ -61,6 +61,7 @@ EXPANDGROUP=yes
 SOURCEFILE=Resources.rdef
 SOURCEFILE=cheatsheet.txt
 SOURCEFILE=directives.html
+SOURCEFILE=masterpiece.txt
 SOURCEFILE=quickref.html
 SOURCEFILE=quickstart.txt
 SOURCEFILE=quickstart.html
