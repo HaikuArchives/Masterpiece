@@ -10,7 +10,6 @@
 #define	MENU_SAV_THT	'save'	// save thought
 #define MENU_PRV_THT	'prev'	// preview thought
 #define MENU_PUB_THT	'pub'	// publish thought
-#define MENU_HLP_THT	'help'	// help topics
 #define	MENU_KEY_THT	'key'	// keyboard reference
 #define MENU_QKS_THT	'qks'	// quick start reference
 #define MENU_RST_THT	'rst'	// rst guide

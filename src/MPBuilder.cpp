@@ -174,6 +174,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	thread_id quickrefThread;
 	thread_id qseThread;
 	thread_id cheThread;
+	thread_id mphelpThread;
 
 	switch(msg->what)
 	{
@@ -300,8 +301,6 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				resume_thread(publishThread);
 			}
 			break;
-		case MENU_HLP_THT: // help topics
-			break;
 		case MENU_KEY_THT: // keyboard reference
 			xPos = (r.right - r.left) / 2; // find xpos for window
 			yPos = (r.bottom - r.top) / 2; // find ypos for window
@@ -364,6 +363,13 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			if(quickrefThread >= 0) // successful
 			{
 				resume_thread(quickrefThread);
+			}
+			break;
+		case MENU_MPH_THT: // mp tutorial
+			mphelpThread = spawn_thread(HelpThread, "mphelp tutorial thread", B_NORMAL_PRIORITY, (void*)"masterpiece.html");
+			if(mphelpThread >= 0) // successful
+			{
+				resume_thread(mphelpThread);
 			}
 			break;
 		case MOVE_RIGHT: // add item to ordered list
