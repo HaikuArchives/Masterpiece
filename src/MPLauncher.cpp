@@ -13,7 +13,7 @@
 #include "MPLauncher.h"
 
 MPLauncher::MPLauncher(void)
-	:	BWindow(BRect(100, 100, 670, 400), "MasterPiece Launcher", B_TITLED_WINDOW,  B_NOT_H_RESIZABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
+	:	BWindow(BRect(100, 100, 840, 400), "MasterPiece Launcher", B_TITLED_WINDOW,  B_NOT_H_RESIZABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
 {
 	// mplauncher is the main window of the application
 	
@@ -26,6 +26,7 @@ MPLauncher::MPLauncher(void)
 	newMasterpieceButton = new BButton(BRect(0, 10, 80, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	delThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Delete Selected...", new BMessage(DELETE_LAUNCHER_THT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	delMasterpieceButton = new BButton(BRect(10, 10, 90, 35), NULL, "Delete Selected...", new BMessage(DELETE_MP), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
+	importThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Import Thought(s)...", new BMessage(IMPORT_THT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	delThoughtButton->SetEnabled(false);
 	delMasterpieceButton->SetEnabled(false);
 	thoughtStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Work on a Thought");
@@ -49,13 +50,14 @@ MPLauncher::MPLauncher(void)
 		.Add(delMasterpieceButton, 1, 1)
 		.Add(BSpaceLayoutItem::CreateGlue(), 1, 0)
 		.Add(newThoughtButton, 2, 1)
-		.Add(delThoughtButton, 3, 1)
+		.Add(delThoughtButton, 4, 1)
+		.Add(importThoughtButton, 3, 1)
 		.Add(openMasterpieceStringView, 0, 2)
 		.Add(BSpaceLayoutItem::CreateGlue(), 1, 2)
 		.Add(openThoughtStringView, 2, 2)
 		.Add(BSpaceLayoutItem::CreateGlue(), 3, 2)
 		.Add(new BScrollView("scroll_masterpiecelist", openMasterpieceListView,  B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 0, 3, 2, 3)
-		.Add(new BScrollView("scroll_thoughtlist", openThoughtListView,  B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 2, 3, 2, 3)
+		.Add(new BScrollView("scroll_thoughtlist", openThoughtListView,  B_FOLLOW_ALL_SIDES, 0, false, true, B_FANCY_BORDER), 2, 3, 3, 3)
 		.SetInsets(5, 5, 5, 2)
 	);
 	PopulateLauncherListViews(); // populate listview's here
@@ -118,6 +120,20 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				mpEditor->Show();
 				this->Hide();
 			}
+			break;
+		case IMPORT_THT:
+			// import file into a string...  use a separator like <tht> to start a new tht.
+			// take that string, use findlast to get int32, then use moveinto
+			/*
+			int32 IFindLast(const BString& string) const;
+			BString astring("AbcAbcAbc");
+			astring.FindLast("Abc", 7);
+			
+			BString& MoveInto(BString& destination, int32 sourceOffset, int32 charCount);
+			BString source, destination;
+			source.SetTo("abcdefg");
+			source.MoveInto(&destination, 2, 3);
+			 */
 			break;
 		case SELECT_EXIST_MP:
 			if(openMasterpieceListView->CurrentSelection() >= 0)

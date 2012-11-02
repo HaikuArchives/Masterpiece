@@ -14,6 +14,7 @@
 #define	OPEN_EXISTING_THT	'oett'
 #define DELETE_LAUNCHER_THT	'delt'
 #define DELETE_MP			'delm'
+#define IMPORT_THT			'impt' // import thought(s)
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 #define START_DELETE		'sdel' // start delete chooser
 
@@ -32,6 +33,7 @@ private:
 		BButton*		newThoughtButton;
 		BButton*		delThoughtButton;
 		BButton*		delMasterpieceButton;
+		BButton*		importThoughtButton;
 		BListView*		openThoughtListView;
 		BListView*		openMasterpieceListView;
 		BStringView*	thoughtStringView;
