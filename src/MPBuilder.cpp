@@ -129,6 +129,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	backView->AddChild(deleteButton);
 	backView->AddChild(builderStatusBar);
 	deleteButton->SetEnabled(false);
+	builderTextView->MakeEditable(false);
 	/*
 	// gui layout builder
 	backView->SetLayout(new BGroupLayout(B_HORIZONTAL, 0.0));
@@ -502,6 +503,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			ReorderOrderedListView(); // reorder orderedlistview items for mp
 			PopulateBuilderListViews(); // update listviews' items
 			deleteButton->SetEnabled(false);
+			builderTextView->SetText("");
+			builderTextView->MakeEditable(false);
 			break;
 		case DISPLAY_AVAIL_TEXT: // display preview text from item id
 			if(availableThoughtListView->CurrentSelection() >= 0)
@@ -521,6 +524,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				leftButton->SetEnabled(false); // disable left button
 				rightButton->SetEnabled(true); // enable right button
 				deleteButton->SetEnabled(true);
+				builderTextView->MakeEditable(true);
 			}
 			break;
 		case DISPLAY_ORDER_TEXT: // display preview text from item id
@@ -535,6 +539,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				item = dynamic_cast<IdeaStringItem*>(orderedThoughtListView->ItemAt(selected));
 				builderTextView->SetText(item->ReturnText());
 				deleteButton->SetEnabled(true);
+				builderTextView->MakeEditable(true);
 			}
 			if(selected == 0) // if its top item
 			{
