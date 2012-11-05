@@ -122,18 +122,8 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			}
 			break;
 		case IMPORT_THT:
-			// import file into a string...  use a separator like <tht> to start a new tht.
-			// take that string, use findlast to get int32, then use moveinto
-			/*
-			int32 IFindLast(const BString& string) const;
-			BString astring("AbcAbcAbc");
-			astring.FindLast("Abc", 7);
-			
-			BString& MoveInto(BString& destination, int32 sourceOffset, int32 charCount);
-			BString source, destination;
-			source.SetTo("abcdefg");
-			source.MoveInto(&destination, 2, 3);
-			 */
+			if(!importPanel) importPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_FILE_NODE, false);
+			importPanel->Show();
 			break;
 		case SELECT_EXIST_MP:
 			if(openMasterpieceListView->CurrentSelection() >= 0)
@@ -227,6 +217,56 @@ void MPLauncher::MessageReceived(BMessage* msg)
 			break;
 		}		
 	}
+}
+void MPLauncher::RefsReceived(BMessage* msg)
+{
+	//int32 ref_num;
+	entry_ref ref;
+	status_t err;
+	err = msg->FindRef("refs", 0, &ref);
+	if(err != B_OK) return;
+	// import file into a string...  use a separator like <tht> to start a new tht.
+	// take that string, use findlast to get int32, then use moveinto
+	/*
+
+	BFile file;
+	// get info from import dialog
+	BString contentPath = GetAppDirPath();
+	contentPath += "/";
+	contentPath += "filename";
+	if(file.SetTo(contentPath, B_READ_ONLY) == B_OK)
+	{
+		off_t length;
+		char* text;
+		file.GetSize(&length);
+		text = (char*) malloc(length);
+		if(text && (file.Read(text, length)) >= B_OK)
+		{
+			insert into db "text" here...
+		}
+		free(text);
+	}
+	
+	int32 IFindLast(const BString& string) const;
+	BString astring("AbcAbcAbc");
+	astring.FindLast("Abc", 7);
+	
+	BString& MoveInto(BString& destination, int32 sourceOffset, int32 charCount);
+	BString source, destination;
+	source.SetTo("abcdefg");
+	source.MoveInto(&destination, 2, 3);
+	 */
+	/*
+	// assuming multiple select is true then u can loop like that.
+	ref_num = 0;
+	do {
+		if((err = msg->FindRef("refs", ref_num, &ref)) != B_OK)
+			return;
+		// call function to do sql insert for the ref value.
+		// do sql insert stuff here for the ref.
+		ref_num++;
+	} while(1);
+	*/
 }
 bool MPLauncher::QuitRequested(void)
 {

@@ -23,6 +23,7 @@ class MPLauncher : public BWindow
 public:
 						MPLauncher(void);
 		void			MessageReceived(BMessage* msg);
+		void			RefsReceived(BMessage* msg);
 		bool			QuitRequested(void);
 		void			PopulateLauncherListViews(void);
 		
@@ -51,6 +52,8 @@ private:
 		MPBuilder*		mpBuilder;
 		MPEditor*		mpEditor;
 		SqlObject*		sqlObject;
+		BFilePanel*		importPanel;
+		BFile			importFile;
 };
 
 #endif
