@@ -72,6 +72,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 {
 	BEntry entry;
 	BPath path;
+	BFile file;
 	entry_ref ref;
 	status_t err;
 	
@@ -214,6 +215,20 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				entry.SetTo(&ref, true);
 				entry.GetRef(&ref);
 				entry.GetPath(&path);
+				if(file.SetTo(path.Path(), B_READ_ONLY) == B_OK)
+				{
+					off_t length;
+					char* text;
+					file.GetSize(&length);
+					text = (char*) malloc length;
+					if(text && (file.Read(text, length)) >= B_OK)
+					{
+						// save it to a string and loop for thoughts or
+						// force it to save as 1 thought only
+						// save it to a single thought
+						// insert into db text here...
+					}
+				}
 			}
 			break;
 		case START_DELETE:
