@@ -5,6 +5,7 @@
 #include "MPEditor.h"
 #include "CommonFunctions.h"
 #include "IdeaStringItem.h"
+#include "Entry.h"
 
 #define CREATE_NEW_MP		'cnmp'
 #define	CREATE_NEW_THT		'cntt'
@@ -23,7 +24,7 @@ class MPLauncher : public BWindow
 public:
 						MPLauncher(void);
 		void			MessageReceived(BMessage* msg);
-		void			RefsReceived(BMessage* msg);
+		//void			RefsReceived(BMessage* msg);
 		bool			QuitRequested(void);
 		void			PopulateLauncherListViews(void);
 		

@@ -34,6 +34,7 @@ MPLauncher::MPLauncher(void)
 	openMasterpieceStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Open an Existing...");
 	openThoughtStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Open an Existing...");
 	openThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
+	importPanel = NULL;
 	openMasterpieceListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
 	backView = new BView(Bounds(), "backview", B_FOLLOW_ALL, B_WILL_DRAW);
 	backView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
@@ -69,6 +70,11 @@ MPLauncher::MPLauncher(void)
 }
 void MPLauncher::MessageReceived(BMessage* msg)
 {
+	BEntry entry;
+	BPath path;
+	entry_ref ref;
+	status_t err;
+	
 	switch(msg->what)
 	{
 		case CREATE_NEW_MP: // create new mp by opening mp builder
@@ -201,6 +207,15 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				eAlert->Launch();
 			}
 			break;
+		case B_REFS_RECEIVED:
+			err = msg->FindRef("refs", 0, &ref);
+			if(err == B_OK)
+			{
+				entry.SetTo(&ref, true);
+				entry.GetRef(&ref);
+				entry.GetPath(&path);
+			}
+			break;
 		case START_DELETE:
 			if(delThoughtButton->IsEnabled() == true)
 			{
@@ -218,13 +233,6 @@ void MPLauncher::MessageReceived(BMessage* msg)
 		}		
 	}
 }
-void MPLauncher::RefsReceived(BMessage* msg)
-{
-	//int32 ref_num;
-	entry_ref ref;
-	status_t err;
-	err = msg->FindRef("refs", 0, &ref);
-	if(err != B_OK) return;
 	// import file into a string...  use a separator like <tht> to start a new tht.
 	// take that string, use findlast to get int32, then use moveinto
 	/*
@@ -267,7 +275,6 @@ void MPLauncher::RefsReceived(BMessage* msg)
 		ref_num++;
 	} while(1);
 	*/
-}
 bool MPLauncher::QuitRequested(void)
 {
 	TmpCleanUp("tht");
