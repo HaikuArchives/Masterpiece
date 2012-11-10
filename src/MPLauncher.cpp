@@ -220,9 +220,10 @@ void MPLauncher::MessageReceived(BMessage* msg)
 					off_t length;
 					char* text;
 					file.GetSize(&length);
-					text = (char*) malloc length;
+					text = (char*) malloc(length);
 					if(text && (file.Read(text, length)) >= B_OK)
 					{
+						printf(text);
 						// save it to a string and loop for thoughts or
 						// force it to save as 1 thought only
 						// save it to a single thought
