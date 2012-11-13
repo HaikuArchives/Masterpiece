@@ -55,6 +55,8 @@ private:
 		SqlObject*		sqlObject;
 		BFilePanel*		importPanel;
 		BFile			importFile;
+		//BString			importText;
+		char			importTitle[B_FILE_NAME_LENGTH];
 };
 
 #endif

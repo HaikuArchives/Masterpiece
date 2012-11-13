@@ -13,7 +13,7 @@
 #include "MPLauncher.h"
 
 MPLauncher::MPLauncher(void)
-	:	BWindow(BRect(100, 100, 840, 400), "MasterPiece Launcher", B_TITLED_WINDOW,  B_NOT_H_RESIZABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
+	:	BWindow(BRect(100, 100, 760, 400), "MasterPiece Launcher", B_TITLED_WINDOW,  B_NOT_H_RESIZABLE | B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS, B_CURRENT_WORKSPACE)
 {
 	// mplauncher is the main window of the application
 	
@@ -26,7 +26,7 @@ MPLauncher::MPLauncher(void)
 	newMasterpieceButton = new BButton(BRect(0, 10, 80, 35), NULL, "Create a New...", new BMessage(CREATE_NEW_MP), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	delThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Delete Selected...", new BMessage(DELETE_LAUNCHER_THT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	delMasterpieceButton = new BButton(BRect(10, 10, 90, 35), NULL, "Delete Selected...", new BMessage(DELETE_MP), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
-	importThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Import Thought(s)...", new BMessage(IMPORT_THT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
+	importThoughtButton = new BButton(BRect(10, 10, 90, 35), NULL, "Import...", new BMessage(IMPORT_THT), B_FOLLOW_NONE, B_WILL_DRAW | B_NAVIGABLE);
 	delThoughtButton->SetEnabled(false);
 	delMasterpieceButton->SetEnabled(false);
 	thoughtStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Work on a Thought");
@@ -215,6 +215,7 @@ void MPLauncher::MessageReceived(BMessage* msg)
 				entry.SetTo(&ref, true);
 				entry.GetRef(&ref);
 				entry.GetPath(&path);
+				entry.GetName(importTitle);
 				if(file.SetTo(path.Path(), B_READ_ONLY) == B_OK)
 				{
 					off_t length;
@@ -223,11 +224,23 @@ void MPLauncher::MessageReceived(BMessage* msg)
 					text = (char*) malloc(length);
 					if(text && (file.Read(text, length)) >= B_OK)
 					{
-						printf(text);
-						// save it to a string and loop for thoughts or
-						// force it to save as 1 thought only
-						// save it to a single thought
-						// insert into db text here...
+						sqlObject = new SqlObject(ideaStatement, "8");
+						sqlObject->PrepareSql("insert into ideatable (ideaname, ideatext, ismp) values(?, ?, 0)");
+						sqlObject->BindValue(1, importTitle);
+						sqlObject->BindValue(2, text);
+						sqlObject->StepSql();
+						sqlObject->FinalizeSql();
+						sqlObject->CloseSql();
+						delete sqlObject;
+						PopulateLauncherListViews();
+						//importText = text;
+						//printf(text);
+						/*
+						sqlObject = new SqlObject(ideaStatement, "8");
+						sqlObject->PrepareSql("insert into ideatable (ideaname, ideatext, ismp) values('untitled', ?, 0)");
+						sqlObject->BindValue(1, editorTextView->Text());
+						sqlObject->StepSql();
+						*/
 					}
 				}
 			}
