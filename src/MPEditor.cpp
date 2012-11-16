@@ -341,5 +341,11 @@ int32 MPEditor::HelpThread(void* data)
 }
 int32 MPEditor::ExportThread(void* data)
 {
-	// write export code here
+	ExportIdea(parent->GetTitle(), parent->EditorTextView->Text());
+	
+	parent->Lock();
+	parent->SetStatusBar("Export Completed Successfully");
+	parent->Unlock();
+	
+	return 0;
 }
