@@ -14,6 +14,7 @@
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 #define UPDATE_TITLE		'uttl' // update title...
 #define SAVE_TITLE			'svid' // update title...
+#define EXPORT_IDEA			'eida' // export idea
 #define CLEAR_STATUS		'clst' // clear statusbar
 
 class MPEditor : public BWindow
@@ -28,13 +29,13 @@ private:
 		BView*				backView;
 		BMessage			launcherMessage;
 		BMessenger			launcherMessenger;
+		BFilePanel*			exportPanel;
 		EditorTextView*		editorTextView;
 		MPEditor*			tmpEditor;
 		ErrorAlert*			eAlert;
 		SaveIdea*			saveIdea;
 		EditIdeaName*		editIdeaName;
 		HelperWindows*		helperWindow;
-		//MarkupWindow*		markupWindow;
 		AboutWindow*		aboutWindow;
 		sqlite3*			mpdb;
 		sqlite3_stmt*		ideaStatement;

@@ -113,7 +113,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 				Unlock();
 			}
 			break;
-		case MENU_EXP_THT: // export thought
+		case EXPORT_IDEA: // export idea
 			exportThread = spawn_thread(ExportThread, "export thread", B_NORMAL_PRIORITY, (void*)this);
 			if(exportThread >= 0) // successful
 			{
@@ -121,6 +121,9 @@ void MPEditor::MessageReceived(BMessage* msg)
 				UpdateIfNeeded();
 				resume_thread(exportThread);
 			}
+			break;
+		case MENU_EXP_THT: // export thought
+			if(!exportPanel) exportPanel = new BFilePanel(B_SAVE_PANEL, new BMessenger(this), NULL, B_DIRECTORY_NODE, false);
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
 			previewThread = spawn_thread(PreviewThread, "preview thread", B_NORMAL_PRIORITY, (void*)this);
