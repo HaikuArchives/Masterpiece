@@ -48,8 +48,24 @@ void TmpCleanUp(BString tmpExt)
 		eAlert->Launch();
 	}
 }
-void ExportIdea(BString tmpName, BString tmpData)
+void ExportIdea(BString tmpName, BString tmpData, entry_ref tmpRef)
 {
+	BEntry entry;
+	BPath path;
+	entry.SetTo(&(tmpRef)); // directory where the file is to be saved as defined by user
+	entry.GetPath(&path);
+	tmpPath = path.Path();
+	tmpPath += "/";				
+	tmpPath += tmpName;
+	BFile exportFile;
+	exportFile.SetTo(tmpPath, B_READ_WRITE | B_CREATE_FILE | B_ERASE_FILE); // B_ERASE_FILE
+	if(exportFile.InitCheck() != B_OK)
+	{
+		eAlert = new ErrorAlert("4.12 Export Error: Couldn't write EXPORT file.");
+		eAlert->Launch();
+	}
+	exportFile.Write(tmpData, strlen(tmpData));
+	exportFile.Unset();
 }
 void ExecutePreview(BString tmpData)
 {
@@ -67,7 +83,6 @@ void ExecutePreview(BString tmpData)
 	{
 		eAlert = new ErrorAlert("4.2 Builder Error: Couldn't Write TMP File.");
 		eAlert->Launch();
-		//printf("Couldn't write file\n");
 	}
 	previewFile.Write(tmpData, strlen(tmpData));
 	previewFile.Unset();
@@ -152,7 +167,6 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	oldFilePath += ".";
 	oldFilePath += tmpExt;
 	entry.SetTo(&(tmpRef)); // directory where the file is to be saved as defined by user
-	entry.SetTo(&(tmpRef));
 	entry.GetPath(&path);
 	dirPath = path.Path();
 	dirPath += "/";				

@@ -32,7 +32,7 @@
 
 void			DisplayError(const char* errorNumber, const char* errorType, const char* errorValue);
 void			TmpCleanUp(BString tmpExt);
-void			ExportIdea(BString tmpName, BString tmpData)
+void			ExportIdea(BString tmpName, BString tmpData, entry_ref tmpRef)
 void			ExecutePreview(BString tmpData);
 void			ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpRef, BString tmpName);
 BString			GetAppDirPath(void);
