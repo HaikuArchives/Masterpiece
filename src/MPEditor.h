@@ -1,6 +1,8 @@
 #ifndef MPEDITOR_H
 #define MPEDITOR_H
 
+#include <FilePanel.h>
+
 #include "MainMenu.h"
 #include "EditorTextView.h"
 #include "SaveIdea.h"
@@ -14,7 +16,7 @@
 #define SHOW_LAUNCHER		'lnch' // show mp launcher window
 #define UPDATE_TITLE		'uttl' // update title...
 #define SAVE_TITLE			'svid' // update title...
-#define EXPORT_IDEA			'eida' // export idea
+//#define EXPORT_IDEA			'eida' // export idea
 #define CLEAR_STATUS		'clst' // clear statusbar
 
 class MPEditor : public BWindow
@@ -61,7 +63,7 @@ private:
 		BString				pubName;  // publish file name
 		int64				clearStatus;
 		int					openflag;
-		
+		entry_ref			exportref; // export ref entry value
 };
 
 #endif

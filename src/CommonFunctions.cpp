@@ -50,8 +50,10 @@ void TmpCleanUp(BString tmpExt)
 }
 void ExportIdea(BString tmpName, BString tmpData, entry_ref tmpRef)
 {
+	BString tmpPath;
 	BEntry entry;
 	BPath path;
+	ErrorAlert* eAlert;
 	entry.SetTo(&(tmpRef)); // directory where the file is to be saved as defined by user
 	entry.GetPath(&path);
 	tmpPath = path.Path();

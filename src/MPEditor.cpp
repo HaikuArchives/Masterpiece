@@ -69,6 +69,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 	thread_id cheThread;
 	thread_id mphelpThread;
 	thread_id exportThread;
+	status_t err;
 
 	switch(msg->what)
 	{
@@ -113,13 +114,17 @@ void MPEditor::MessageReceived(BMessage* msg)
 				Unlock();
 			}
 			break;
-		case B_SAVE_IDEA: // export idea
-			exportThread = spawn_thread(ExportThread, "export thread", B_NORMAL_PRIORITY, (void*)this);
-			if(exportThread >= 0) // successful
+		case B_SAVE_REQUESTED: // export idea
+			err = msg->FindRef("directory", 0, &exportref);
+			if(err == B_OK)
 			{
-				SetStatusBar("Exporting...");
-				UpdateIfNeeded();
-				resume_thread(exportThread);
+				exportThread = spawn_thread(ExportThread, "export thread", B_NORMAL_PRIORITY, (void*)this);
+				if(exportThread >= 0) // successful
+				{
+					SetStatusBar("Exporting...");
+					UpdateIfNeeded();
+					resume_thread(exportThread);
+				}
 			}
 			break;
 		case MENU_EXP_THT: // export thought
@@ -345,7 +350,9 @@ int32 MPEditor::HelpThread(void* data)
 }
 int32 MPEditor::ExportThread(void* data)
 {
-	ExportIdea(parent->GetTitle(), parent->EditorTextView->Text());
+	MPEditor* parent = (MPEditor*)data;
+	
+	ExportIdea(parent->Title(), parent->editorTextView->Text(), parent->exportref);
 	
 	parent->Lock();
 	parent->SetStatusBar("Export Completed Successfully");
