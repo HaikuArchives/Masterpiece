@@ -10,8 +10,8 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	AddShortcut('r', B_COMMAND_KEY, new BMessage(MENU_PRV_THT));
 	AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_THT));
 	AddShortcut('k', B_COMMAND_KEY, new BMessage(MENU_KEY_THT));
-	//AddShortcut('m', B_COMMAND_KEY, new BMessage(MENU_CHT_THT));
 	AddShortcut('a', B_COMMAND_KEY, new BMessage(MENU_ABT_THT));
+	AddShortcut('x', B_COMMAND_KEY, new BMessage(MENU_EXP_THT));
 	// initialize controls
 	pubEditorPanel = NULL;
 	BRect r = Bounds();
@@ -68,6 +68,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 	thread_id qseThread;
 	thread_id cheThread;
 	thread_id mphelpThread;
+	thread_id exportThread;
 
 	switch(msg->what)
 	{
@@ -110,6 +111,15 @@ void MPEditor::MessageReceived(BMessage* msg)
 				Lock();
 				SetStatusBar("Thought Saved");
 				Unlock();
+			}
+			break;
+		case MENU_EXP_THT: // export thought
+			exportThread = spawn_thread(ExportThread, "export thread", B_NORMAL_PRIORITY, (void*)this);
+			if(exportThread >= 0) // successful
+			{
+				SetStatusBar("Exporting...");
+				UpdateIfNeeded();
+				resume_thread(exportThread);
 			}
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive

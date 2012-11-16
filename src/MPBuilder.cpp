@@ -12,6 +12,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	AddShortcut('r', B_COMMAND_KEY, new BMessage(MENU_PRV_THT));
 	AddShortcut('p', B_COMMAND_KEY, new BMessage(MENU_PUB_THT));
 	AddShortcut('k', B_COMMAND_KEY, new BMessage(MENU_KEY_THT));
+	AddShortcut('x', B_COMMAND_KEY, new BMessage(MENU_EXP_THT));
 	AddShortcut(B_RIGHT_ARROW, B_COMMAND_KEY, new BMessage(MOVE_RIGHT));
 	AddShortcut(B_LEFT_ARROW, B_COMMAND_KEY, new BMessage(MOVE_LEFT));
 	AddShortcut(B_UP_ARROW, B_COMMAND_KEY, new BMessage(MOVE_UP));
