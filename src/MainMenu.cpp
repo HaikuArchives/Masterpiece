@@ -10,6 +10,7 @@ MainMenu::MainMenu(BRect rect, BString editText, const BMessage &msg, const BMes
 	newThoughtMenuItem = new BMenuItem("New Thought", new BMessage(MENU_NEW_THT));
 	editThoughtMenuItem = new BMenuItem(editText, new BMessage(MENU_EDT_THT));
 	saveThoughtMenuItem = new BMenuItem("Save Progress", new  BMessage(MENU_SAV_THT));
+	exportMenuItem = new BMenuItem("Export", new BMessage(MENU_EXP_THT));
 	previewMenuItem = new BMenuItem("Preview", new BMessage(MENU_PRV_THT));
 	publishMenuItem = new BMenuItem("Publish", new BMessage(MENU_PUB_THT));
 	keyboardRefMenuItem = new BMenuItem("Keyboard Reference", new BMessage(MENU_KEY_THT));
@@ -46,6 +47,7 @@ MainMenu::MainMenu(BRect rect, BString editText, const BMessage &msg, const BMes
 	AddItem(newThoughtMenuItem);
 	AddItem(editThoughtMenuItem);
 	AddItem(saveThoughtMenuItem);
+	AddItem(exportMenuItem);
 	AddItem(previewMenuItem);
 	AddItem(publishMenuItem);
 	AddItem(helpMenu);

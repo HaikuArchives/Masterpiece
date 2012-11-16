@@ -20,6 +20,7 @@
 #define MENU_CHT_THT	'cht'	// cheat sheet reference
 #define MENU_ABT_THT	'abt'	// about editor
 #define MENU_MPH_THT	'mph'	// masterpiece tutorial
+#define MENU_EXP_THT	'exp'	// export thought
 #define CLEAR_STATUS	'clst'  // send message to clear statusbar
 
 class MainMenu : public BMenuBar
@@ -44,6 +45,7 @@ public:
 			BMenuItem*	keyboardRefMenuItem;	// keyboard reference menu item
 			BMenuItem*	aboutMenuItem;			// about menu item
 			BMenuItem*	mphelpMenuItem;			// masterpiece tutorial menu item
+			BMenuItem*	exportMenuItem;			// export menu item
 			void		MouseDown(BPoint point);
 			void		KeyDown(const char* bytes, int32 numBytes);
 private:
