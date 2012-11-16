@@ -339,4 +339,7 @@ int32 MPEditor::HelpThread(void* data)
 	
 	return 0;
 }
-
+int32 MPEditor::ExportThread(void* data)
+{
+	// write export code here
+}

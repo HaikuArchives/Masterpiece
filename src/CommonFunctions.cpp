@@ -48,6 +48,9 @@ void TmpCleanUp(BString tmpExt)
 		eAlert->Launch();
 	}
 }
+void ExportIdea(BString tmpName, BString tmpData)
+{
+}
 void ExecutePreview(BString tmpData)
 {
 	BString tmpInPath; // string path of the tmppub.tht file then string path of tmppub.ext file
