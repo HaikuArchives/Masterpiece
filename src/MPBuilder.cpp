@@ -334,7 +334,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 		case MENU_KEY_THT: // keyboard reference
 			xPos = (r.right - r.left) / 2; // find xpos for window
 			yPos = (r.bottom - r.top) / 2; // find ypos for window
-			helperWindow = new HelperWindows(BRect(xPos, yPos, xPos + 240, yPos + 190), "Keyboard Shortcuts");
+			helperWindow = new HelperWindows(BRect(xPos, yPos, xPos + 240, yPos + 215), "Keyboard Shortcuts");
 			helperWindow->AddText(BRect(10, 10, 200, 25), "1", "Close the Window :: ALT + q");
 			helperWindow->AddText(BRect(10, 35, 200, 50), "2", "New Thought :: ALT + n");
 			helperWindow->AddText(BRect(10, 60, 200, 75), "3", "Edit Masterpiece Name :: ALT + e");
