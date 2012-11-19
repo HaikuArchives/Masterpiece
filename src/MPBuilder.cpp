@@ -21,6 +21,7 @@ MPBuilder::MPBuilder(const BMessage &msg, const BMessenger &msgr, BString window
 	AddShortcut(B_END, B_COMMAND_KEY, new BMessage(MOVE_BOTTOM));
 	AddShortcut('d', B_COMMAND_KEY, new BMessage(DELETE_BUILDER_THT));
 	publishPanel = NULL;
+	exportPanel = NULL;
 	BRect r = Bounds();
 	r.bottom = 16;
 	builderMenuBar = new MainMenu(r, "Edit MasterPiece Name", BMessage(CLEAR_STATUS), BMessenger(this));
@@ -177,6 +178,8 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	thread_id qseThread;
 	thread_id cheThread;
 	thread_id mphelpThread;
+	thread_id exportThread;
+	status_t err;
 
 	switch(msg->what)
 	{
@@ -258,6 +261,31 @@ void MPBuilder::MessageReceived(BMessage* msg)
 				eAlert->Launch();
 			}
 			break;
+		case MENU_EXP_THT:
+			if(!exportPanel)
+			{
+				exportPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_DIRECTORY_NODE, false, new BMessage(EXPORT_IDEA), NULL, false, true);
+			}
+			exportPanel->Show();
+			break;
+		case EXPORT_IDEA:
+			err = msg->FindRef("refs", 0, &exportref);
+			if(err == B_OK)
+			{
+				exportThread = spawn_thread(ExportThread, "export thread", B_NORMAL_PRIORITY, (void*)this);
+				if(exportThread >= 0) // successful
+				{
+					SetStatusBar("Exporting...");
+					UpdateIfNeeded();
+					resume_thread(exportThread);
+				}
+			}
+			else
+			{
+				eAlert = new ErrorAlert("4.16 Builder Error: Directory Not Found");
+				eAlert->Launch();
+			}
+			break;
 		case MENU_PRV_THT: // preview masterpiece
 			previewThread = spawn_thread(PreviewThread, "preview thread", B_NORMAL_PRIORITY, (void*)this);
 			if(previewThread >= 0) // successful
@@ -314,6 +342,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			helperWindow->AddText(BRect(10, 110, 200, 125), "5", "Preview Masterpiece :: ALT + r");
 			helperWindow->AddText(BRect(10, 135, 200, 150), "6", "Publish Masterpiece :: ALT + p");
 			helperWindow->AddText(BRect(10, 160, 230, 175), "7", "View Keyboard Shortcuts :: ALT + k");
+			helperWindow->AddText(BRect(10, 185, 200, 200), "8", "Export Idea :: ALT + x");
 			helperWindow->Show();
 			break;
 		case MENU_ABT_THT: // about window
@@ -838,6 +867,35 @@ int32 MPBuilder::HelpThread(void* data)
 	executeString += (const char*)data;
 	executeString += " &";
 	system(executeString);
+	
+	return 0;
+}
+int32 MPBuilder::ExportThread(void* data)
+{
+	MPBuilder* parent = (MPBuilder*)data;
+
+	IdeaStringItem* publishItem;
+	parent->mpData = "";
+	for(int32 i = 0; i < parent->orderedThoughtListView->CountItems(); i++)
+	{
+		publishItem = dynamic_cast<IdeaStringItem*>(parent->orderedThoughtListView->ItemAt(i));
+		parent->mpData += publishItem->ReturnText();
+	}
+
+	parent->sqlObject = new SqlObject(parent->ideaStatement, "23");
+	parent->sqlObject->PrepareSql("select ideaname from ideatable where ideaid = ?");
+	parent->sqlObject->BindValue(1, parent->currentideaID);
+	while(parent->sqlObject->StepSql() == SQLITE_ROW)
+	{
+		ExportIdea(parent->sqlObject->ReturnText(0), parent->mpData, parent->exportref);
+	}
+	parent->sqlObject->FinalizeSql();
+	parent->sqlObject->CloseSql();
+	delete parent->sqlObject;
+	
+	parent->Lock();
+	parent->SetStatusBar("Export Completed Successfully");
+	parent->Unlock();
 	
 	return 0;
 }

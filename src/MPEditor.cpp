@@ -116,7 +116,6 @@ void MPEditor::MessageReceived(BMessage* msg)
 			}
 			break;
 		case EXPORT_IDEA: // export idea
-			printf("Export beginning\n");
 			err = msg->FindRef("refs", 0, &exportref);
 			if(err == B_OK)
 			{
@@ -200,6 +199,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			helperWindow->AddText(BRect(10, 110, 200, 125), "5", "Preview Thought :: ALT + r");
 			helperWindow->AddText(BRect(10, 135, 200, 150), "6", "Publish Thought :: ALT + p");
 			helperWindow->AddText(BRect(10, 160, 230, 175), "7", "View Keyboard Shortcuts :: ALT + k");
+			helperWindow->AddText(BRect(10, 185, 200, 200), "8", "Export Idea :: ALT + x");
 			helperWindow->Show();
 			//printf("open keyboard reference window");
 			break;
@@ -360,7 +360,6 @@ int32 MPEditor::HelpThread(void* data)
 }
 int32 MPEditor::ExportThread(void* data)
 {
-	printf("Export in the middle\n");
 	MPEditor* parent = (MPEditor*)data;
 	parent->sqlObject = new SqlObject(parent->ideaStatement, "23");
 	parent->sqlObject->PrepareSql("select ideaname from ideatable where ideaid = ?");

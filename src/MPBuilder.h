@@ -29,6 +29,7 @@
 #define AVAIL_THOUGHT_EDITOR	'ated' // open available thought editor
 #define END_EDIT_VIEW			'eedt' // end edit view
 #define CLEAR_STATUS			'clst' // clear statusbar
+#define EXPORT_IDEA				'expi' // export idea
 
 class MPBuilder : public BWindow
 {
@@ -60,6 +61,7 @@ private:
 		BuilderButton*		bottomButton;
 		BuilderButton*		deleteButton;
 		PublishFilePanel*	publishPanel;
+		BFilePanel*			exportPanel;
 		MPEditor*			tmpEditor;
 		ErrorAlert*			eAlert;
 		SaveIdea*			saveIdea;
@@ -87,12 +89,14 @@ private:
 		static int32		PreviewThread(void* data); // preview thread
 		static int32		PublishThread(void* data); // publish thread
 		static int32		HelpThread(void* data); // general help thread
+		static int32		ExportThread(void* data);
 		BString				fileExt; // file extension of converted file
 		entry_ref			pubRef; // publish ref entry value
 		BString				pubName; // publish file name
 		BString				mpData;
 		int64				clearStatus;
 		int					openflag;
+		entry_ref			exportref;
 		
 };
 
