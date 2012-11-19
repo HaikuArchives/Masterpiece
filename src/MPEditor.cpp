@@ -117,7 +117,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			break;
 		case EXPORT_IDEA: // export idea
 			printf("Export beginning\n");
-			err = msg->FindRef("directory", 0, &exportref);
+			err = msg->FindRef("refs", 0, &exportref);
 			if(err == B_OK)
 			{
 				exportThread = spawn_thread(ExportThread, "export thread", B_NORMAL_PRIORITY, (void*)this);
@@ -131,6 +131,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 			else
 			{
 				eAlert = new ErrorAlert("3.15 Editor Error: Directory Not Found");
+				eAlert->Launch();
 			}
 			break;
 		case MENU_EXP_THT: // export thought
@@ -361,8 +362,16 @@ int32 MPEditor::ExportThread(void* data)
 {
 	printf("Export in the middle\n");
 	MPEditor* parent = (MPEditor*)data;
-	
-	ExportIdea(parent->Title(), parent->editorTextView->Text(), parent->exportref);
+	parent->sqlObject = new SqlObject(parent->ideaStatement, "23");
+	parent->sqlObject->PrepareSql("select ideaname from ideatable where ideaid = ?");
+	parent->sqlObject->BindValue(1, parent->currentideaID);
+	while(parent->sqlObject->StepSql() == SQLITE_ROW)
+	{
+		ExportIdea(parent->sqlObject->ReturnText(0), parent->editorTextView->Text(), parent->exportref);
+	}
+	parent->sqlObject->FinalizeSql();
+	parent->sqlObject->CloseSql();
+	delete parent->sqlObject;
 	
 	parent->Lock();
 	parent->SetStatusBar("Export Completed Successfully");

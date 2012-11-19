@@ -233,14 +233,6 @@ void MPLauncher::MessageReceived(BMessage* msg)
 						sqlObject->CloseSql();
 						delete sqlObject;
 						PopulateLauncherListViews();
-						//importText = text;
-						//printf(text);
-						/*
-						sqlObject = new SqlObject(ideaStatement, "8");
-						sqlObject->PrepareSql("insert into ideatable (ideaname, ideatext, ismp) values('untitled', ?, 0)");
-						sqlObject->BindValue(1, editorTextView->Text());
-						sqlObject->StepSql();
-						*/
 					}
 				}
 			}
@@ -262,48 +254,6 @@ void MPLauncher::MessageReceived(BMessage* msg)
 		}		
 	}
 }
-	// import file into a string...  use a separator like <tht> to start a new tht.
-	// take that string, use findlast to get int32, then use moveinto
-	/*
-
-	BFile file;
-	// get info from import dialog
-	BString contentPath = GetAppDirPath();
-	contentPath += "/";
-	contentPath += "filename";
-	if(file.SetTo(contentPath, B_READ_ONLY) == B_OK)
-	{
-		off_t length;
-		char* text;
-		file.GetSize(&length);
-		text = (char*) malloc(length);
-		if(text && (file.Read(text, length)) >= B_OK)
-		{
-			insert into db "text" here...
-		}
-		free(text);
-	}
-	
-	int32 IFindLast(const BString& string) const;
-	BString astring("AbcAbcAbc");
-	astring.FindLast("Abc", 7);
-	
-	BString& MoveInto(BString& destination, int32 sourceOffset, int32 charCount);
-	BString source, destination;
-	source.SetTo("abcdefg");
-	source.MoveInto(&destination, 2, 3);
-	 */
-	/*
-	// assuming multiple select is true then u can loop like that.
-	ref_num = 0;
-	do {
-		if((err = msg->FindRef("refs", ref_num, &ref)) != B_OK)
-			return;
-		// call function to do sql insert for the ref value.
-		// do sql insert stuff here for the ref.
-		ref_num++;
-	} while(1);
-	*/
 bool MPLauncher::QuitRequested(void)
 {
 	TmpCleanUp("tht");
