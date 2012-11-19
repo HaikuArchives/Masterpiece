@@ -14,6 +14,7 @@ MPEditor::MPEditor(const BMessage &msg, const BMessenger &msgr, BString windowTi
 	AddShortcut('x', B_COMMAND_KEY, new BMessage(MENU_EXP_THT));
 	// initialize controls
 	pubEditorPanel = NULL;
+	exportPanel = NULL;
 	BRect r = Bounds();
 	r.bottom = 16;
 	editorMenuBar = new MainMenu(r, "Edit Thought Name", BMessage(CLEAR_STATUS), BMessenger(this));
@@ -114,7 +115,8 @@ void MPEditor::MessageReceived(BMessage* msg)
 				Unlock();
 			}
 			break;
-		case B_SAVE_REQUESTED: // export idea
+		case EXPORT_IDEA: // export idea
+			printf("Export beginning\n");
 			err = msg->FindRef("directory", 0, &exportref);
 			if(err == B_OK)
 			{
@@ -126,9 +128,16 @@ void MPEditor::MessageReceived(BMessage* msg)
 					resume_thread(exportThread);
 				}
 			}
+			else
+			{
+				eAlert = new ErrorAlert("3.15 Editor Error: Directory Not Found");
+			}
 			break;
 		case MENU_EXP_THT: // export thought
-			if(!exportPanel) exportPanel = new BFilePanel(B_SAVE_PANEL, new BMessenger(this), NULL, B_DIRECTORY_NODE, false);
+			if(!exportPanel)
+			{
+				exportPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_DIRECTORY_NODE, false, new BMessage(EXPORT_IDEA), NULL, false, true);
+			}
 			exportPanel->Show();
 			break;
 		case MENU_PRV_THT: // preview thought in html in webpositive
@@ -350,6 +359,7 @@ int32 MPEditor::HelpThread(void* data)
 }
 int32 MPEditor::ExportThread(void* data)
 {
+	printf("Export in the middle\n");
 	MPEditor* parent = (MPEditor*)data;
 	
 	ExportIdea(parent->Title(), parent->editorTextView->Text(), parent->exportref);
