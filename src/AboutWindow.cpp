@@ -30,7 +30,7 @@ AboutWindow::AboutWindow(BRect frame, const char* title)
 	font2.SetFace(B_ITALIC_FACE);
 	font2.SetSize(be_bold_font->Size());
 	creditView->SetFontAndColor(&font, B_FONT_ALL, &darkBlack);
-	creditView->Insert("Masterpiece\n\n");
+	creditView->Insert("MasterPiece\n\n");
 	creditView->SetFontAndColor(be_plain_font, B_FONT_ALL, &darkGrey);
 	creditView->Insert("Copyright 2010 - 2012 Pasquale J. Rinaldi, Jr.\n");
 	creditView->Insert("The copyright to the code is property of Pasquale J. Rinaldi, Jr.");

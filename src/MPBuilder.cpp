@@ -184,7 +184,7 @@ void MPBuilder::MessageReceived(BMessage* msg)
 	switch(msg->what)
 	{
 		case MENU_NEW_THT: // open new untitled thought
-			tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "Masterpiece Editor - untitled", -1);
+			tmpEditor = new MPEditor(BMessage(SHOW_LAUNCHER), BMessenger(this), "MasterPiece Editor - untitled", -1);
 			tmpEditor->Show();
 			break;
 		case MENU_EDT_THT: // edit mp name
@@ -337,10 +337,10 @@ void MPBuilder::MessageReceived(BMessage* msg)
 			helperWindow = new HelperWindows(BRect(xPos, yPos, xPos + 240, yPos + 215), "Keyboard Shortcuts");
 			helperWindow->AddText(BRect(10, 10, 200, 25), "1", "Close the Window :: ALT + q");
 			helperWindow->AddText(BRect(10, 35, 200, 50), "2", "New Thought :: ALT + n");
-			helperWindow->AddText(BRect(10, 60, 200, 75), "3", "Edit Masterpiece Name :: ALT + e");
+			helperWindow->AddText(BRect(10, 60, 200, 75), "3", "Edit MasterPiece Name :: ALT + e");
 			helperWindow->AddText(BRect(10, 85, 200, 100), "4", "Save Progress :: ALT + s");
-			helperWindow->AddText(BRect(10, 110, 200, 125), "5", "Preview Masterpiece :: ALT + r");
-			helperWindow->AddText(BRect(10, 135, 200, 150), "6", "Publish Masterpiece :: ALT + p");
+			helperWindow->AddText(BRect(10, 110, 200, 125), "5", "Preview MasterPiece :: ALT + r");
+			helperWindow->AddText(BRect(10, 135, 200, 150), "6", "Publish MasterPiece :: ALT + p");
 			helperWindow->AddText(BRect(10, 160, 230, 175), "7", "View Keyboard Shortcuts :: ALT + k");
 			helperWindow->AddText(BRect(10, 185, 200, 200), "8", "Export Idea :: ALT + x");
 			helperWindow->Show();
