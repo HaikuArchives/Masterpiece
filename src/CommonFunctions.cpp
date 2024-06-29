@@ -88,7 +88,7 @@ void ExecutePreview(BString tmpData)
 	}
 	previewFile.Write(tmpData, strlen(tmpData));
 	previewFile.Unset();
-	pythonString = "/boot/common/bin/rst2html.py ";
+	pythonString = "/boot/system/bin/rst2html ";
 	pythonString += tmpInPath;
 	pythonString += " ";
 	pythonString += tmpOutPath;
@@ -136,11 +136,11 @@ void ExecutePublish(BString tmpData, int tmpFlag, BString tmpExt, entry_ref tmpR
 	previewFile.Write(tmpData, strlen(tmpData));
 	previewFile.Unset();
 
-	if(tmpExt == "odt") runPath = "/boot/common/bin/rst2odt.py ";
-	else if(tmpExt == "tex") runPath = "/boot/common/bin/rst2latex.py ";
-	else if(tmpExt == "htm") runPath = "/boot/common/bin/rst2html.py ";
-	else if(tmpExt == "xml") runPath = "/boot/common/bin/rst2xml.py ";
-	else if(tmpExt == "pdf") runPath = "/boot/common/bin/rst2pdf ";
+	if(tmpExt == "odt") runPath = "/boot/system/bin/rst2odt ";
+	else if(tmpExt == "tex") runPath = "/boot/system/bin/rst2latex ";
+	else if(tmpExt == "htm") runPath = "/boot/system/bin/rst2html ";
+	else if(tmpExt == "xml") runPath = "/boot/system/bin/rst2xml ";
+	else if(tmpExt == "pdf") runPath = "/boot/system/bin/rst2pdf ";
 	else
 	{
 		eAlert = new ErrorAlert("4.3 Publish File Type Error: Invalid filetype.");

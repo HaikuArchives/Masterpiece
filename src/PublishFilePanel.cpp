@@ -18,11 +18,11 @@ PublishFilePanel::PublishFilePanel(BMessenger* target)
 		{
 			BView* poseView = v->FindView("DirMenuField");
 			BView* parentview;
-			BEntry rst2pdfcheck("/boot/common/bin/rst2pdf");
-			BEntry rst2htmcheck("/boot/common/bin/rst2html.py");
-			BEntry rst2xmlcheck("/boot/common/bin/rst2xml.py");
-			BEntry rst2odtcheck("/boot/common/bin/rst2odt.py");
-			BEntry rst2texcheck("/boot/common/bin/rst2latex.py");
+			BEntry rst2pdfcheck("/boot/system/bin/rst2pdf");
+			BEntry rst2htmcheck("/boot/system/bin/rst2html");
+			BEntry rst2xmlcheck("/boot/system/bin/rst2xml");
+			BEntry rst2odtcheck("/boot/system/bin/rst2odt");
+			BEntry rst2texcheck("/boot/system/bin/rst2latex");
 			charWidth = cancelBtn->StringWidth("Select Current Directory");
 			btnrect = cancelBtn->Frame();
 			btnrect.right = btnrect.left - 10;
