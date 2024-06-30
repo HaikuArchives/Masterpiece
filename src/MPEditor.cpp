@@ -269,7 +269,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 		case UPDATE_TITLE: // update title with the name from the saveidea window
 			if(msg->FindString("updatetitle", &updateTitle) == B_OK) // updated title exists in variable
 			{
-				tmpString = "Masterpiece Editor - ";
+				tmpString = "MasterPiece Editor - ";
 				tmpString += updateTitle;
 				this->SetTitle(tmpString);
 				this->SetStatusBar("Name Change Saved");
@@ -283,7 +283,7 @@ void MPEditor::MessageReceived(BMessage* msg)
 		case SAVE_TITLE: // update title with the name from the saveidea window
 			if(msg->FindString("saveidea", &saveTitle) == B_OK) // updated title exists in variable
 			{
-				tmpString = "Masterpiece Editor - ";
+				tmpString = "MasterPiece Editor - ";
 				tmpString += saveTitle;
 				this->SetTitle(tmpString);
 				this->SetStatusBar("Thought Saved");

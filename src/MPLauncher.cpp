@@ -30,7 +30,7 @@ MPLauncher::MPLauncher(void)
 	delThoughtButton->SetEnabled(false);
 	delMasterpieceButton->SetEnabled(false);
 	thoughtStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Work on a Thought");
-	masterpieceStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Work on a Masterpiece");
+	masterpieceStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Work on a MasterPiece");
 	openMasterpieceStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Open an Existing...");
 	openThoughtStringView = new BStringView(BRect(10, 10, 200, 30), NULL, "Open an Existing...");
 	openThoughtListView = new BListView(BRect(10, 10, 100, 30), NULL, B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE);
